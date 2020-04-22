@@ -12,6 +12,7 @@ import { SearchInput, SearchInputSize } from "../../components/SearchInput";
 import { DrawerActions } from 'react-navigation-drawer';
 import { ArticlesSection } from './ArticlesSection';
 import { GoogleSignin, statusCodes } from '@react-native-community/google-signin';
+import { LoginButton, AccessToken } from 'react-native-fbsdk';
 
 export interface HomeScreenParams {
     showSearchInput?: boolean;
@@ -49,17 +50,13 @@ export class HomeScreen extends React.Component<Props, object> {
             const userInfo = await GoogleSignin.signIn();
             console.warn(userInfo);
         } catch (error) {
+            // error.code === statusCodes.SIGN_IN_CANCELLED
             console.warn('Did not sign in to Google');
-            // if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-            //     // user cancelled the login flow
-            // } else if (error.code === statusCodes.IN_PROGRESS) {
-            //     // operation (e.g. sign in) is in progress already
-            // } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-            //     // play services not available or outdated
-            // } else {
-            //     // some other error happened
-            // }
         }
+    }
+
+    private facebookSignIn() {
+
     }
 
     public render() {
@@ -70,6 +67,25 @@ export class HomeScreen extends React.Component<Props, object> {
                 {(themeContext: ThemeContextValue) => (
                     <ScrollView style={{ backgroundColor: themeContext.theme.screenContainer?.backgroundColor }} contentContainerStyle={[styles.container, { padding: themeContext.theme.screenContainer?.padding }]}>
                         <Button onPress={() => { this.googleSignIn() }}>Google SignIn</Button>
+                        <Button onPress={() => { this.facebookSignIn() }}>Facebook SignIn</Button>
+
+                        <LoginButton
+                            onLoginFinished={
+                                (error, result) => {
+                                    if (error) {
+                                        console.warn("login has error: " + result.error);
+                                    } else if (result.isCancelled) {
+                                        console.warn("login is cancelled.");
+                                    } else {
+                                        AccessToken.getCurrentAccessToken().then(
+                                            (data:any) => {
+                                                console.warn(data.accessToken.toString())
+                                            }
+                                        )
+                                    }
+                                }
+                            }
+                            onLogoutFinished={() => console.log("logout.")} />
 
                         <Button onPress={() => { this.props.navigation.navigate('HomeStackNavigator_SearchResultsScreen') }}>Search results</Button>
                         <Button onPress={() => { this.props.navigation.navigate('HomeStackNavigator_FaqScreenScreen') }}>FAQ</Button>
