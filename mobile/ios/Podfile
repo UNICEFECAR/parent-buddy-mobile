@@ -35,6 +35,7 @@ target 'HaloBeba' do
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
   pod 'GoogleSignIn', '~> 5.0.2'
+  pod 'RNFS', :path => '../node_modules/react-native-fs'
 
   target 'HaloBebaTests' do
     inherit! :search_paths

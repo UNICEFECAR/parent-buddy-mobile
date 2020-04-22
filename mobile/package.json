@@ -13,7 +13,7 @@
   "dependencies": {
     "@react-native-community/async-storage": "1.8.1",
     "@react-native-community/datetimepicker": "2.2.2",
-    "@react-native-community/google-signin": "^4.0.0",
+    "@react-native-community/google-signin": "4.0.0",
     "@react-native-community/masked-view": "0.1.7",
     "@react-navigation/core": "3.6.1",
     "i18n-js": "3.5.1",
@@ -23,7 +23,9 @@
     "react-native-autoheight-webview": "1.4.2",
     "react-native-dev-menu": "4.0.0",
     "react-native-fast-image": "8.1.5",
+    "react-native-fs": "2.16.6",
     "react-native-gesture-handler": "1.6.0",
+    "react-native-google-drive-api-wrapper": "1.2.0",
     "react-native-image-crop-picker": "0.28.0",
     "react-native-keyboard-aware-scroll-view": "0.9.1",
     "react-native-linear-gradient": "2.5.6",

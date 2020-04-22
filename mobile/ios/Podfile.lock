@@ -265,6 +265,8 @@ PODS:
     - React
     - SDWebImage (~> 5.0)
     - SDWebImageWebPCoder (~> 0.4.1)
+  - RNFS (2.16.6):
+    - React
   - RNGestureHandler (1.6.0):
     - React
   - RNGoogleSignin (4.0.0):
@@ -334,6 +336,7 @@ DEPENDENCIES:
   - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
   - RNDevMenu (from `../node_modules/react-native-dev-menu`)
   - RNFastImage (from `../node_modules/react-native-fast-image`)
+  - RNFS (from `../node_modules/react-native-fs`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - "RNGoogleSignin (from `../node_modules/@react-native-community/google-signin`)"
   - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
@@ -422,6 +425,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-dev-menu"
   RNFastImage:
     :path: "../node_modules/react-native-fast-image"
+  RNFS:
+    :path: "../node_modules/react-native-fs"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   RNGoogleSignin:
@@ -479,6 +484,7 @@ SPEC CHECKSUMS:
   RNDateTimePicker: 501ab152e78882c183607e05074c37ce19ace5bf
   RNDevMenu: a95e09a3e18ba07e5a7d7281e8da00cadd7b8935
   RNFastImage: 35ae972d6727c84ee3f5c6897e07f84d0a3445e9
+  RNFS: 2bd9eb49dc82fa9676382f0585b992c424cd59df
   RNGestureHandler: dde546180bf24af0b5f737c8ad04b6f3fa51609a
   RNGoogleSignin: 068788c1e83e5e05ef0bad090ba67fd8f963a2a3
   RNImageCropPicker: cf129d17e042ce3e96fb9ada967c28f21f977c82
@@ -491,6 +497,6 @@ SPEC CHECKSUMS:
   SDWebImageWebPCoder: 36f8f47bd9879a8aea6044765c1351120fd8e3a8
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
 
-PODFILE CHECKSUM: 31a1c69670982a8af38577ca2b7841be2f6d3913
+PODFILE CHECKSUM: 9ffd84d2b3208243eeb0562f93e94e558257a771
 
 COCOAPODS: 1.8.3
