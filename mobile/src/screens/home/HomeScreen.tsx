@@ -11,6 +11,7 @@ import { ProfileIcon } from "../../components/ProfileIcon";
 import { SearchInput, SearchInputSize } from "../../components/SearchInput";
 import { DrawerActions } from 'react-navigation-drawer';
 import { ArticlesSection } from './ArticlesSection';
+import { GoogleSignin, statusCodes } from '@react-native-community/google-signin';
 
 export interface HomeScreenParams {
     showSearchInput?: boolean;
@@ -25,7 +26,7 @@ export interface Props {
  */
 export class HomeScreen extends React.Component<Props, object> {
 
-    public constructor(props:Props) {
+    public constructor(props: Props) {
         super(props);
         this.setDefaultScreenParams();
     }
@@ -42,32 +43,53 @@ export class HomeScreen extends React.Component<Props, object> {
         }
     }
 
+    private async googleSignIn() {
+        try {
+            await GoogleSignin.hasPlayServices();
+            const userInfo = await GoogleSignin.signIn();
+            console.warn(userInfo);
+        } catch (error) {
+            console.warn('Did not sign in to Google');
+            // if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+            //     // user cancelled the login flow
+            // } else if (error.code === statusCodes.IN_PROGRESS) {
+            //     // operation (e.g. sign in) is in progress already
+            // } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+            //     // play services not available or outdated
+            // } else {
+            //     // some other error happened
+            // }
+        }
+    }
+
     public render() {
         const screenParams = this.props.navigation.state.params!;
 
         return (
             <ThemeConsumer>
-            {(themeContext:ThemeContextValue) => (
-                <ScrollView style={{backgroundColor:themeContext.theme.screenContainer?.backgroundColor}} contentContainerStyle={ [styles.container, {padding:themeContext.theme.screenContainer?.padding}] }>
-                    <Button onPress={() => {this.props.navigation.navigate('HomeStackNavigator_SearchResultsScreen')}}>Search results</Button>
-                    <Button onPress={() => {this.props.navigation.navigate('HomeStackNavigator_FaqScreenScreen')}}>FAQ</Button>
-                    <Button onPress={() => {this.props.navigation.navigate('HomeStackNavigator_AboutScreen')}}>About US</Button>
-                    <Button onPress={() => {this.props.navigation.navigate('HomeStackNavigator_SettingsScreen')}}>Settings</Button>
-                    <Button onPress={() => {this.props.navigation.navigate('HomeStackNavigator_AppFeedbackScreen')}}>Give app feedback</Button>
-                    <Button onPress={() => {this.props.navigation.navigate('HomeStackNavigator_BirthDataScreen')}}>Birth data</Button>
-                    <Button onPress={() => {this.props.navigation.navigate('HomeStackNavigator_ExaminationReminderScreen')}}>Exam reminder</Button>
-                    <Button onPress={() => {this.props.navigation.navigate('HomeStackNavigator_ChildProfileScreen')}}>Child profile</Button>
-                    
-                    {/* Wzrw7WTBVuk, nHoMIuf7fWk, YwJA04-zpvQ,  */}
-                    {/* <Button onPress={() => {this.props.navigation.navigate('RootModalStackNavigator_VideoScreen', {
+                {(themeContext: ThemeContextValue) => (
+                    <ScrollView style={{ backgroundColor: themeContext.theme.screenContainer?.backgroundColor }} contentContainerStyle={[styles.container, { padding: themeContext.theme.screenContainer?.padding }]}>
+                        <Button onPress={() => { this.googleSignIn() }}>Google SignIn</Button>
+
+                        <Button onPress={() => { this.props.navigation.navigate('HomeStackNavigator_SearchResultsScreen') }}>Search results</Button>
+                        <Button onPress={() => { this.props.navigation.navigate('HomeStackNavigator_FaqScreenScreen') }}>FAQ</Button>
+                        <Button onPress={() => { this.props.navigation.navigate('HomeStackNavigator_AboutScreen') }}>About US</Button>
+                        <Button onPress={() => { this.props.navigation.navigate('HomeStackNavigator_SettingsScreen') }}>Settings</Button>
+                        <Button onPress={() => { this.props.navigation.navigate('HomeStackNavigator_AppFeedbackScreen') }}>Give app feedback</Button>
+                        <Button onPress={() => { this.props.navigation.navigate('HomeStackNavigator_BirthDataScreen') }}>Birth data</Button>
+                        <Button onPress={() => { this.props.navigation.navigate('HomeStackNavigator_ExaminationReminderScreen') }}>Exam reminder</Button>
+                        <Button onPress={() => { this.props.navigation.navigate('HomeStackNavigator_ChildProfileScreen') }}>Child profile</Button>
+
+                        {/* Wzrw7WTBVuk, nHoMIuf7fWk, YwJA04-zpvQ,  */}
+                        {/* <Button onPress={() => {this.props.navigation.navigate('RootModalStackNavigator_VideoScreen', {
                         videoId:'Wzrw7WTBVuk'
                     })}}>Video</Button> */}
 
-                    <View style={{height:scale(30)}} />
+                        <View style={{ height: scale(30) }} />
 
-                    <ArticlesSection />
-                </ScrollView>
-            )}
+                        <ArticlesSection />
+                    </ScrollView>
+                )}
             </ThemeConsumer>
         );
     }
@@ -80,8 +102,8 @@ export interface HomeScreenStyles {
 
 const styles = StyleSheet.create<HomeScreenStyles>({
     container: {
-        flexDirection:'column',
-        justifyContent:'flex-start',
-        alignItems:'stretch',
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        alignItems: 'stretch',
     },
 });
