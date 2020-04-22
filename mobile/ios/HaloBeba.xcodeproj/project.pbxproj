@@ -22,6 +22,7 @@
 		84302C7B8B2C40CDBD13535E /* SFUIDisplay-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8AC5609E8994404593BB0039 /* SFUIDisplay-Semibold.otf */; };
 		8956186E352145B7A927179B /* SFUIDisplay-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2A84DFB62A37461CBF66C823 /* SFUIDisplay-Bold.otf */; };
 		A431C974CD9809198A20826A /* libPods-HaloBeba.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 083F46009968CEC74B2CAFE0 /* libPods-HaloBeba.a */; };
+		C662EF95245055200024AF5F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C662EF94245055200024AF5F /* GoogleService-Info.plist */; };
 		CC150DDD568249D3BCA20A68 /* SFUIDisplay-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 79FD83B4F7D5451EB0ED429E /* SFUIDisplay-Regular.otf */; };
 		CD53EE6BD9909C1C7964AD91 /* libPods-HaloBeba-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D58A984E5CECB806B1DB7DBA /* libPods-HaloBeba-tvOSTests.a */; };
 /* End PBXBuildFile section */
@@ -84,6 +85,7 @@
 		BDDAF7C5FDAB46738DEA80CB /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		BF920098922902346D6D46C2 /* libPods-HaloBeba-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HaloBeba-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0CC987225554A303F378872 /* Pods-HaloBeba-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HaloBeba-tvOS.release.xcconfig"; path = "Target Support Files/Pods-HaloBeba-tvOS/Pods-HaloBeba-tvOS.release.xcconfig"; sourceTree = "<group>"; };
+		C662EF94245055200024AF5F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D023DE9EC10A4B0F907E00D3 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		D58A984E5CECB806B1DB7DBA /* libPods-HaloBeba-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HaloBeba-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D9B838C4708F463292035C22 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
@@ -210,6 +212,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				C662EF94245055200024AF5F /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* HaloBeba */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* HaloBebaTests */,
@@ -398,6 +401,7 @@
 				CC150DDD568249D3BCA20A68 /* SFUIDisplay-Regular.otf in Resources */,
 				8956186E352145B7A927179B /* SFUIDisplay-Bold.otf in Resources */,
 				0244A5D7255F4661BE8F0506 /* SFUIDisplay-Heavy.otf in Resources */,
+				C662EF95245055200024AF5F /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -520,6 +524,7 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-HaloBeba/Pods-HaloBeba-resources.sh",
+				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/RNImageCropPicker/QBImagePicker.bundle",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Entypo.ttf",
@@ -541,6 +546,7 @@
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/QBImagePicker.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AntDesign.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Entypo.ttf",
