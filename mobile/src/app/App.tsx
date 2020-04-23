@@ -48,7 +48,9 @@ export class App extends React.Component<object> {
 
     private configureGoogleSignin() {
         GoogleSignin.configure({
-            scopes: ['https://www.googleapis.com/auth/drive.file'],
+            scopes: [
+                'https://www.googleapis.com/auth/drive.file',
+            ],
         });
     }
 
