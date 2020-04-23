@@ -130,8 +130,8 @@ export class Google extends React.Component {
             // LIST: https://bit.ly/2xGQw7T
             const response: Response = await GDrive.files.list({
                 // Fields: https://bit.ly/3eIpXzG
-                // fields: '*', // Use only during development!
                 fields: 'files(id,name,mimeType,kind,parents,trashed,version,originalFilename,fileExtension)',
+                // fields: '*', // Use only during development!
 
                 // Filter: https://bit.ly/3ax8TJI
                 q: `trashed=false`,
