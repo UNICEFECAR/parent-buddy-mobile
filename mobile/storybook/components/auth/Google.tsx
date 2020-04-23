@@ -4,10 +4,9 @@ import { ScaledSheet, moderateScale, scale } from "react-native-size-matters";
 import { Typography, TypographyType } from "../../../src/components/Typography";
 import { Button, Colors } from "react-native-paper";
 import { GoogleSignin, statusCodes } from '@react-native-community/google-signin';
-import { LoginButton, AccessToken } from 'react-native-fbsdk';
 
 export class Google extends React.Component {
-    private googleSignIn = async () => {
+    private googleLogIn = async () => {
         try {
             await GoogleSignin.hasPlayServices();
             const userInfo = await GoogleSignin.signIn();
@@ -45,6 +44,7 @@ export class Google extends React.Component {
 
     private googleLogout = async () => {
         await GoogleSignin.signOut();
+        console.warn('Logged out');
     };
 
     private gdriveCreateFile = async () => {
@@ -63,8 +63,8 @@ export class Google extends React.Component {
                     Google Auth
                 </Typography>
 
-                <Button mode="contained" uppercase={false} onPress={ this.googleSignIn } color={Colors.blue700}>
-                    Sign in
+                <Button mode="contained" uppercase={false} onPress={ this.googleLogIn } color={Colors.blue700}>
+                    Log in
                 </Button>
                 <View style={{height:scale(10)}} />
 
