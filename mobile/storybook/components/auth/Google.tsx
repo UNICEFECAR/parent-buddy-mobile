@@ -86,12 +86,10 @@ export class Google extends React.Component {
         try {
             await this.setGDriveAccessToken();
 
-            // API: https://bit.ly/2xGQw7T
+            // LIST: https://bit.ly/2xGQw7T
             const response = await GDrive.files.list({
-                // spaces: 'drive',
-
                 // Fields: https://bit.ly/3eIpXzG
-                // fields: '*', // Use just during development!
+                // fields: '*', // Use only during development!
                 fields: 'files(id,name,mimeType,kind,trashed,version,originalFilename,fileExtension)',
 
                 // Filter: https://bit.ly/3ax8TJI
