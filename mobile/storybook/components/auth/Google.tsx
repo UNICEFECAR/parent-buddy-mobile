@@ -87,6 +87,9 @@ export class Google extends React.Component {
         }
     };
 
+    /**
+     * If folder exists, it simply returns its id.
+     */
     private gdriveCreateFolder = async () => {
         try {
             await this.setGDriveAccessToken();
