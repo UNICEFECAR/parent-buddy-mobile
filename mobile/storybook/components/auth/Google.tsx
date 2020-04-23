@@ -2,12 +2,12 @@ import React from 'react';
 import { ScrollView, View, Text } from 'react-native';
 import { ScaledSheet, moderateScale, scale } from "react-native-size-matters";
 import { Typography, TypographyType } from "../../../src/components/Typography";
-import { Button } from "react-native-paper";
+import { Button, Colors } from "react-native-paper";
 import { GoogleSignin, statusCodes } from '@react-native-community/google-signin';
 import { LoginButton, AccessToken } from 'react-native-fbsdk';
 
 export class Google extends React.Component {
-    private async googleSignIn() {
+    private googleSignIn = async () => {
         try {
             await GoogleSignin.hasPlayServices();
             const userInfo = await GoogleSignin.signIn();
@@ -16,7 +16,27 @@ export class Google extends React.Component {
             // error.code === statusCodes.SIGN_IN_CANCELLED
             console.warn('Did not sign in');
         }
-    }
+    };
+
+    private googleIsLoggedIn = async () => {
+
+    };
+
+    private googleRefreshToken = async () => {
+
+    };
+
+    private googleLogout = async () => {
+
+    };
+
+    private gdriveCreateFile = async () => {
+
+    };
+
+    private gdriveGetFiles = async () => {
+
+    };
 
     render() {
         return (
@@ -26,14 +46,28 @@ export class Google extends React.Component {
                     Google Auth
                 </Typography>
 
-                <Button mode="contained" onPress={ this.googleSignIn }>Sign in</Button>
+                <Button mode="contained" uppercase={false} onPress={ this.googleSignIn } color={Colors.blue700}>Sign in</Button>
+                <View style={{height:scale(10)}} />
 
+                <Button mode="contained" uppercase={false} onPress={ this.googleIsLoggedIn } color={Colors.blue700}>Is logged in?</Button>
+                <View style={{height:scale(10)}} />
+
+                <Button mode="contained" uppercase={false} onPress={ this.googleRefreshToken } color={Colors.blue700}>Refresh token</Button>
+                <View style={{height:scale(10)}} />
+
+                <Button mode="contained" uppercase={false} onPress={ this.googleLogout } color={Colors.blue700}>Logout</Button>
                 <View style={{height:scale(30)}} />
 
                 {/* GOOGLE DRIVE */}
                 <Typography type={TypographyType.headingSecondary}>
                     Google Drive
                 </Typography>
+
+                <Button mode="contained" uppercase={false} onPress={ this.gdriveCreateFile } color={Colors.deepPurple500}>Create file</Button>
+                <View style={{height:scale(10)}} />
+
+                <Button mode="contained" uppercase={false} onPress={ this.gdriveGetFiles } color={Colors.deepPurple500}>Get files</Button>
+                <View style={{height:scale(10)}} />
             </ScrollView>
         );
     }
