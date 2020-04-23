@@ -135,7 +135,8 @@ export class Google extends React.Component {
                 fields: 'files(id,name,mimeType,kind,parents,trashed,version,originalFilename,fileExtension)',
 
                 // Filter: https://bit.ly/3ax8TJI
-                q: `trashed=false`, // `trashed=false and name contains 'file1'`
+                q: `trashed=false`,
+                // q: `trashed=false and (name contains 'file1') and ('root' in parents) and (mimeType contains 'text/plain') or (mimeType contains 'folder')`,
 
                 // Order: https://bit.ly/34ZczTf
                 orderBy: 'name asc',
