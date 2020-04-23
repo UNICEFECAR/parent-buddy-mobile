@@ -7,7 +7,8 @@ import './rn-addons';
 
 // import stories
 configure(() => {
-    require('./stories');
+    require('./components/welcome/Welcome.stories');
+    require('./components/auth/Auth.stories');
     require('../src/components/Typography.stories');
     require('../src/components/GradientBackground.stories');
     require('../src/components/WalkthroughBackground/WalkthroughBackground.stories');
