@@ -30,7 +30,7 @@ export class Google extends React.Component {
         if (currentUser) {
             console.warn(JSON.stringify(currentUser, null, 4));
         } else {
-            console.warn('Not logged in');
+            console.warn('You must login first');
         }
     };
 
@@ -42,8 +42,7 @@ export class Google extends React.Component {
             const tokens = await GoogleSignin.getTokens();
             console.warn(JSON.stringify(tokens, null, 4));
         } catch (e) {
-            // Not logged in
-            console.warn(e);
+            console.warn('You must login first');
         }
     };
 
@@ -73,7 +72,7 @@ export class Google extends React.Component {
                 'text/plain',
                 {
                     parents: ['root'], // id of parent folder. 'root' has special meaning.
-                    name: 'file5.txt'
+                    name: 'file1.txt'
                 }
             );
 
@@ -84,7 +83,7 @@ export class Google extends React.Component {
                 console.warn(results);
             }
         } catch (e) {
-            console.warn('You are not logged in');
+            console.warn('You must login first');
         }
     };
 
@@ -99,7 +98,7 @@ export class Google extends React.Component {
 
             console.warn(`Folder created (id = ${id})`);
         } catch (e) {
-            console.warn('You are not logged in');
+            console.warn('You must login first');
         }
     };
 
@@ -120,7 +119,7 @@ export class Google extends React.Component {
                 console.warn('There is no item with that name');
             }
         } catch (e) {
-            console.warn(e);
+            console.warn('You must login first');
         }
     };
 
@@ -150,7 +149,7 @@ export class Google extends React.Component {
                 console.warn(results);
             }
         } catch (e) {
-            console.warn('You are not logged in');
+            console.warn('You must login first');
         }
     };
 
