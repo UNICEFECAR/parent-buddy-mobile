@@ -44,21 +44,6 @@ export class HomeScreen extends React.Component<Props, object> {
         }
     }
 
-    private async googleSignIn() {
-        try {
-            await GoogleSignin.hasPlayServices();
-            const userInfo = await GoogleSignin.signIn();
-            console.warn(userInfo);
-        } catch (error) {
-            // error.code === statusCodes.SIGN_IN_CANCELLED
-            console.warn('Did not sign in to Google');
-        }
-    }
-
-    private facebookSignIn() {
-
-    }
-
     public render() {
         const screenParams = this.props.navigation.state.params!;
 
@@ -66,26 +51,6 @@ export class HomeScreen extends React.Component<Props, object> {
             <ThemeConsumer>
                 {(themeContext: ThemeContextValue) => (
                     <ScrollView style={{ backgroundColor: themeContext.theme.screenContainer?.backgroundColor }} contentContainerStyle={[styles.container, { padding: themeContext.theme.screenContainer?.padding }]}>
-                        <Button onPress={() => { this.googleSignIn() }}>Google SignIn</Button>
-                        <Button onPress={() => { this.facebookSignIn() }}>Facebook SignIn</Button>
-
-                        <LoginButton
-                            onLoginFinished={
-                                (error, result) => {
-                                    if (error) {
-                                        console.warn("login has error: " + result.error);
-                                    } else if (result.isCancelled) {
-                                        console.warn("login is cancelled.");
-                                    } else {
-                                        AccessToken.getCurrentAccessToken().then(
-                                            (data:any) => {
-                                                console.warn(data.accessToken.toString())
-                                            }
-                                        )
-                                    }
-                                }
-                            }
-                            onLogoutFinished={() => console.log("logout.")} />
 
                         <Button onPress={() => { this.props.navigation.navigate('HomeStackNavigator_SearchResultsScreen') }}>Search results</Button>
                         <Button onPress={() => { this.props.navigation.navigate('HomeStackNavigator_FaqScreenScreen') }}>FAQ</Button>
