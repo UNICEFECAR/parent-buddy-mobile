@@ -67,18 +67,60 @@ export class Google extends React.Component {
         try {
             await this.setGDriveAccessToken();
 
-            GDrive.files.createFileMultipart(
+            // CREATE: https://bit.ly/3atW5DJ
+            const response: Response = await GDrive.files.createFileMultipart(
                 `Hello file`,
                 'text/plain',
                 {
-                    parents: ['root'],
-                    name: 'file1.txt'
+                    parents: ['root'], // id of parent folder. 'root' has special meaning.
+                    name: 'file5.txt'
                 }
             );
 
-            console.warn('File created');
+            if (response.status === 200) {
+                console.warn('File created');
+            } else {
+                let results = await response.text();
+                console.warn(results);
+            }
         } catch (e) {
             console.warn('You are not logged in');
+        }
+    };
+
+    private gdriveCreateFolder = async () => {
+        try {
+            await this.setGDriveAccessToken();
+
+            const id = await GDrive.files.safeCreateFolder({
+                name: "HaloBeba",
+                parents: ["root"]
+            });
+
+            console.warn(`Folder created (id = ${id})`);
+        } catch (e) {
+            console.warn('You are not logged in');
+        }
+    };
+
+    private gdriveGetId = async () => {
+        try {
+            await this.setGDriveAccessToken();
+
+            const id = await GDrive.files.getId(
+                'HaloBeba', // name
+                ['root'], // parents
+                'application/vnd.google-apps.folder', // mimeType
+                false, // trashed
+            );
+
+            if (id) {
+                console.warn(id);
+            } else {
+                console.warn('There is no item with that name');
+            }
+        } catch (e) {
+            console.warn(e);
         }
     };
 
@@ -87,10 +129,10 @@ export class Google extends React.Component {
             await this.setGDriveAccessToken();
 
             // LIST: https://bit.ly/2xGQw7T
-            const response = await GDrive.files.list({
+            const response: Response = await GDrive.files.list({
                 // Fields: https://bit.ly/3eIpXzG
                 // fields: '*', // Use only during development!
-                fields: 'files(id,name,mimeType,kind,trashed,version,originalFilename,fileExtension)',
+                fields: 'files(id,name,mimeType,kind,parents,trashed,version,originalFilename,fileExtension)',
 
                 // Filter: https://bit.ly/3ax8TJI
                 q: `trashed=false`, // `trashed=false and name contains 'file1'`
@@ -106,7 +148,7 @@ export class Google extends React.Component {
                 let results = await response.text();
                 console.warn(results);
             }
-        } catch(e) {
+        } catch (e) {
             console.warn('You are not logged in');
         }
     };
@@ -151,6 +193,16 @@ export class Google extends React.Component {
 
                 <Button mode="contained" uppercase={false} onPress={this.gdriveCreateFile} color={Colors.deepPurple500}>
                     Create file
+                </Button>
+                <View style={{ height: scale(10) }} />
+
+                <Button mode="contained" uppercase={false} onPress={this.gdriveCreateFolder} color={Colors.deepPurple500}>
+                    Create folder
+                </Button>
+                <View style={{ height: scale(10) }} />
+
+                <Button mode="contained" uppercase={false} onPress={this.gdriveGetId} color={Colors.deepPurple500}>
+                    Get ID
                 </Button>
                 <View style={{ height: scale(10) }} />
 
