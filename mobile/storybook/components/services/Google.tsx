@@ -48,27 +48,17 @@ export class Google extends React.Component {
     }
 
     private gdriveCreateFile = async () => {
-        try {
-            await this.setGDriveAccessToken();
+        const createFileResponse = await googleDrive.createFileMultipart({
+            name: 'file3.txt',
+            content: `Hello file`,
+            parentFolderId: 'root',
+            contentType: 'text/plain',
+        });
 
-            // CREATE: https://bit.ly/3atW5DJ
-            const response: Response = await GDrive.files.createFileMultipart(
-                `Hello file`,
-                'text/plain',
-                {
-                    parents: ['root'], // id of parent folder. 'root' has special meaning.
-                    name: 'file1.txt'
-                }
-            );
-
-            if (response.status === 200) {
-                console.warn('File created');
-            } else {
-                let results = await response.text();
-                console.warn(results);
-            }
-        } catch (e) {
-            console.warn('You must login first');
+        if(createFileResponse instanceof Error) {
+            console.warn(createFileResponse.message)
+        } else {
+            console.warn('File created. ID = ', createFileResponse)
         }
     };
 
