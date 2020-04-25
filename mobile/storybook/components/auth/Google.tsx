@@ -105,6 +105,28 @@ export class Google extends React.Component {
         }
     };
 
+    private gdriveGet = async () => {
+        try {
+            await this.setGDriveAccessToken();
+
+            const response = await GDrive.files.get(
+                '1RNrDUHIhJgwdmXUjbJsQf9GnUnOvNTAA', // id
+                // Fields: https://bit.ly/3eIpXzG
+                {'fields':'id,name,mimeType,kind,parents,trashed,version,originalFilename,fileExtension'}, // query params
+            );
+
+            if (response.status === 200) {
+                const results = await response.json();
+                console.warn(JSON.stringify(results, null, 4));
+            } else {
+                console.warn('There is no item with that id');
+            }
+        } catch (e) {
+            console.warn('You must login first');
+            // console.warn(await e.text());
+        }
+    };
+
     private gdriveGetId = async () => {
         try {
             await this.setGDriveAccessToken();
@@ -123,6 +145,7 @@ export class Google extends React.Component {
             }
         } catch (e) {
             console.warn('You must login first');
+            // console.warn(await e.text());
         }
     };
 
@@ -201,6 +224,11 @@ export class Google extends React.Component {
 
                 <Button mode="contained" uppercase={false} onPress={this.gdriveCreateFolder} color={Colors.deepPurple500}>
                     Create folder
+                </Button>
+                <View style={{ height: scale(10) }} />
+
+                <Button mode="contained" uppercase={false} onPress={this.gdriveGet} color={Colors.deepPurple500}>
+                    Get metadata
                 </Button>
                 <View style={{ height: scale(10) }} />
 
