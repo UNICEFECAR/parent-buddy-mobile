@@ -35,7 +35,7 @@ export class Google extends React.Component {
 
     private gdriveCreateFile = async () => {
         const response = await googleDrive.createFileMultipart({
-            name: 'file3.txt',
+            name: 'file1.txt',
             content: `Hello file`,
             parentFolderId: 'root',
             contentType: 'text/plain',
