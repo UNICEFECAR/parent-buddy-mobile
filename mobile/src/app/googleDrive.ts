@@ -1,4 +1,3 @@
-import { GoogleSignin, statusCodes } from '@react-native-community/google-signin';
 // @ts-ignore
 import GDrive from "react-native-google-drive-api-wrapper";
 import RNFS, { DownloadResult } from "react-native-fs";
@@ -141,6 +140,7 @@ class GoogleDrive {
             return new ErrorAccessTokenNotSet();
         }
 
+        // Get ID
         try {
             const id: string = await GDrive.files.getId(
                 args.name, // name

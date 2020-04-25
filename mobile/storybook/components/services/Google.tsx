@@ -3,10 +3,7 @@ import { ScrollView, View, Text } from 'react-native';
 import { ScaledSheet, moderateScale, scale } from "react-native-size-matters";
 import { Typography, TypographyType } from "../../../src/components/Typography";
 import { Button, Colors } from "react-native-paper";
-import { GoogleSignin, statusCodes } from '@react-native-community/google-signin';
-// @ts-ignore
-import GDrive from "react-native-google-drive-api-wrapper";
-import RNFS, { DownloadResult } from "react-native-fs";
+import RNFS from "react-native-fs";
 import { googleAuth } from "../../../src/app/googleAuth";
 import { googleDrive } from "../../../src/app/googleDrive";
 
@@ -35,17 +32,6 @@ export class Google extends React.Component {
         await googleAuth.signOut();
         console.warn('Logged out');
     };
-
-    private async setGDriveAccessToken() {
-        const tokens = await GoogleSignin.getTokens();
-
-        if (tokens && tokens.accessToken) {
-            GDrive.setAccessToken(tokens.accessToken);
-            GDrive.init();
-        } else {
-            throw 'Could not set Google access token';
-        }
-    }
 
     private gdriveCreateFile = async () => {
         const response = await googleDrive.createFileMultipart({
