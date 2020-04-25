@@ -258,7 +258,7 @@ class GoogleDrive {
 }
 
 class ErrorAccessTokenNotSet extends Error {
-    static defaultMessage = 'Google access token was not set';
+    static defaultMessage = 'You need to log in';
 
     public constructor(message:string = ErrorAccessTokenNotSet.defaultMessage) {
         super(message);
