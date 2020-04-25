@@ -23,12 +23,7 @@ export class Google extends React.Component {
 
     private googleGetUser = async () => {
         const currentUser = await googleAuth.getCurrentUser();
-
-        if (currentUser) {
-            console.warn(JSON.stringify(currentUser, null, 4));
-        } else {
-            console.warn('You must login first');
-        }
+        console.warn(JSON.stringify(currentUser, null, 4));
     };
 
     private googleGetTokens = async () => {
