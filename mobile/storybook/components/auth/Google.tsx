@@ -6,6 +6,7 @@ import { Button, Colors } from "react-native-paper";
 import { GoogleSignin, statusCodes } from '@react-native-community/google-signin';
 // @ts-ignore
 import GDrive from "react-native-google-drive-api-wrapper";
+import RNFS, { DownloadResult } from "react-native-fs";
 
 export class Google extends React.Component {
     private googleLogIn = async () => {
@@ -179,6 +180,38 @@ export class Google extends React.Component {
         }
     };
 
+    private gdriveDownloadFile = async () => {
+        try {
+            await this.setGDriveAccessToken();
+
+            const filePath = RNFS.TemporaryDirectoryPath + '/foo.txt';
+
+            let response: {jobId:number, promise:Promise<DownloadResult>} = GDrive.files.download(
+                // File ID
+                '1Qxn-e29NpmPvXg6fRRTgZC67lwYnPi_M',
+                
+                // Download file options: https://bit.ly/2S5CeEu
+                {
+                    toFile: filePath
+                },
+                
+                // Query params
+                {},
+            );
+
+            let downloadResult = await response.promise;
+            
+            if (downloadResult.statusCode === 200) {
+                const fileContent = await RNFS.readFile(filePath);
+                console.warn(fileContent);
+            } else {
+                console.warn('File was not downloaded');
+            }
+        } catch (e) {
+            console.warn('You must login first');
+        }
+    };
+
     render() {
         return (
             <ScrollView contentContainerStyle={{ flex: 1, padding: 24, alignItems: 'center' }}>
@@ -239,6 +272,11 @@ export class Google extends React.Component {
 
                 <Button mode="contained" uppercase={false} onPress={this.gdriveGetFiles} color={Colors.deepPurple500}>
                     Get files
+                </Button>
+                <View style={{ height: scale(10) }} />
+
+                <Button mode="contained" uppercase={false} onPress={this.gdriveDownloadFile} color={Colors.deepPurple500}>
+                    Download file
                 </Button>
                 <View style={{ height: scale(10) }} />
             </ScrollView>
