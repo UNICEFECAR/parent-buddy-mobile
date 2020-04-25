@@ -4,7 +4,7 @@ import { storiesOf } from '@storybook/react-native';
 import { Google } from "./Google";
 import { Facebook } from "./Facebook";
 
-storiesOf('Auth', module)
+storiesOf('Services', module)
 
 .add('google', () => (
     <Google />

@@ -7,26 +7,26 @@ import { GoogleSignin, statusCodes } from '@react-native-community/google-signin
 // @ts-ignore
 import GDrive from "react-native-google-drive-api-wrapper";
 import RNFS, { DownloadResult } from "react-native-fs";
+import { googleAuth } from "../../../src/app/googleAuth";
+import { googleDrive } from "../../../src/app/googleDrive";
 
 export class Google extends React.Component {
     private googleLogIn = async () => {
         try {
-            await GoogleSignin.hasPlayServices();
-            const userInfo = await GoogleSignin.signIn();
-            console.warn(userInfo);
+            let user = await googleAuth.signIn();
+            console.warn(user);
         } catch (error) {
-            // error.code === statusCodes.SIGN_IN_CANCELLED
             console.warn('Did not sign in');
         }
     };
 
     private googleIsLoggedIn = async () => {
-        const isSignedIn = await GoogleSignin.isSignedIn();
+        const isSignedIn = await googleAuth.isSignedIn();
         console.warn(isSignedIn);
     };
 
     private googleGetUser = async () => {
-        const currentUser = await GoogleSignin.getCurrentUser();
+        const currentUser = await googleAuth.getCurrentUser();
 
         if (currentUser) {
             console.warn(JSON.stringify(currentUser, null, 4));
@@ -35,12 +35,9 @@ export class Google extends React.Component {
         }
     };
 
-    /**
-     * Don't save token anywhere, always request new tokens so they are refreshed.
-     */
     private googleGetTokens = async () => {
         try {
-            const tokens = await GoogleSignin.getTokens();
+            const tokens = await googleAuth.getTokens();
             console.warn(JSON.stringify(tokens, null, 4));
         } catch (e) {
             console.warn('You must login first');
@@ -48,7 +45,7 @@ export class Google extends React.Component {
     };
 
     private googleLogout = async () => {
-        await GoogleSignin.signOut();
+        await googleAuth.signOut();
         console.warn('Logged out');
     };
 
