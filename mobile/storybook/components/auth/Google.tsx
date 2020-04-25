@@ -217,13 +217,13 @@ export class Google extends React.Component {
                     Google Drive
                 </Typography>
 
-                <Button mode="contained" uppercase={false} onPress={this.gdriveCreateFile} color={Colors.deepPurple500}>
-                    Create file
+                <Button mode="contained" uppercase={false} onPress={this.gdriveCreateFolder} color={Colors.deepPurple500}>
+                    Create folder
                 </Button>
                 <View style={{ height: scale(10) }} />
 
-                <Button mode="contained" uppercase={false} onPress={this.gdriveCreateFolder} color={Colors.deepPurple500}>
-                    Create folder
+                <Button mode="contained" uppercase={false} onPress={this.gdriveCreateFile} color={Colors.deepPurple500}>
+                    Create file
                 </Button>
                 <View style={{ height: scale(10) }} />
 
