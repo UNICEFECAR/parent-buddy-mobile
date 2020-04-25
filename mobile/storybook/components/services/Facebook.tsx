@@ -4,59 +4,33 @@ import { ScaledSheet, moderateScale, scale } from "react-native-size-matters";
 import { Typography, TypographyType } from "../../../src/components/Typography";
 import { Button, Colors } from "react-native-paper";
 import { LoginManager, GraphRequest, GraphRequestManager, AccessToken } from 'react-native-fbsdk';
+import { facebook } from "../../../src/app/facebook";
 
 export class Facebook extends React.Component {
     private logIn = async () => {
-        try {
-            // Permissions: https://bit.ly/3eJcrfg
-            const loginResult = await LoginManager.logInWithPermissions([
-                "public_profile",
-                "email",
-            ]);
+        const loginResult = await facebook.logIn();
 
-            if (loginResult.isCancelled) {
-                console.warn("Login cancelled");
-            } else if (loginResult.error) {
-                console.warn("Login fail with error: " + loginResult.error);
-            } else {
-                console.warn("Login success with permissions: " + loginResult.grantedPermissions?.toString());
-            }
-        } catch (e) {
-            console.warn("Login fail with error: " + e);
+        if (loginResult.isCancelled) {
+            console.warn("Login cancelled");
+        } else if (loginResult.error) {
+            console.warn("Login fail with error: " + loginResult.error);
+        } else {
+            console.warn("Login success with permissions: " + loginResult.grantedPermissions?.toString());
         }
     };
 
-    private getUser = () => {
-        // Create graph request
-        const graphRequest = new GraphRequest(
-            '/me',
-            
-            {
-                parameters: {
-                    fields: {
-                        // For gender and some others, you need to ask FB for permission
-                        string: 'id,name,email,first_name,last_name,gender'
-                    }
-                },
-            },
-
-            (error?:object, result?:object) => {
-                if (result) console.warn(JSON.stringify(result, null, 4));
-                if (error) console.warn('You are not logged in');
-            },
-        );
-
-        // Start graph request
-        new GraphRequestManager().addRequest(graphRequest).start();
+    private getUser = async () => {
+        const currentUser = await facebook.getCurrentUser();
+        console.warn( JSON.stringify(currentUser, null, 4) );
     };
 
     private getAccessToken = async () => {
-        const accessToken = await AccessToken.getCurrentAccessToken();
+        const accessToken = await facebook.getCurrentAccessToken();
         console.warn( JSON.stringify(accessToken, null, 4) );
     };
 
     private logOut = async () => {
-        LoginManager.logOut();
+        facebook.logOut();
         console.warn('Logged out');
     };
 
