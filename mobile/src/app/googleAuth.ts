@@ -70,12 +70,6 @@ class GoogleAuth {
 
         return signOut;
     }
-
-    public async foo() {
-        try {
-            
-        } catch (error) {}
-    }
 }
 
 export const googleAuth = GoogleAuth.getInstance();

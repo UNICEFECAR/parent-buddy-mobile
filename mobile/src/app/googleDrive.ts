@@ -12,6 +12,12 @@ class GoogleDrive {
         }
         return GoogleDrive.instance;
     }
+
+    public async foo() {
+        try {
+            
+        } catch (error) {}
+    }
 }
 
 export const googleDrive = GoogleDrive.getInstance();
