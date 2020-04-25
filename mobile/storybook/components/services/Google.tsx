@@ -12,12 +12,8 @@ import { googleDrive } from "../../../src/app/googleDrive";
 
 export class Google extends React.Component {
     private googleLogIn = async () => {
-        try {
-            let user = await googleAuth.signIn();
-            console.warn(user);
-        } catch (error) {
-            console.warn('Did not sign in');
-        }
+        let user = await googleAuth.signIn();
+        console.warn(user);
     };
 
     private googleIsLoggedIn = async () => {
@@ -36,12 +32,8 @@ export class Google extends React.Component {
     };
 
     private googleGetTokens = async () => {
-        try {
-            const tokens = await googleAuth.getTokens();
-            console.warn(JSON.stringify(tokens, null, 4));
-        } catch (e) {
-            console.warn('You must login first');
-        }
+        const tokens = await googleAuth.getTokens();
+        console.warn(JSON.stringify(tokens, null, 4));
     };
 
     private googleLogout = async () => {
