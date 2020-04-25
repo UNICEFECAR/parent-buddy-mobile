@@ -48,141 +48,87 @@ export class Google extends React.Component {
     }
 
     private gdriveCreateFile = async () => {
-        const createFileResponse = await googleDrive.createFileMultipart({
+        const response = await googleDrive.createFileMultipart({
             name: 'file3.txt',
             content: `Hello file`,
             parentFolderId: 'root',
             contentType: 'text/plain',
         });
 
-        if(createFileResponse instanceof Error) {
-            console.warn(createFileResponse.message)
+        if (response instanceof Error) {
+            console.warn(response.message);
         } else {
-            console.warn('File created. ID = ', createFileResponse)
+            console.warn('File created. ID = ', response);
         }
     };
 
-    /**
-     * If folder exists, it simply returns its id.
-     */
     private gdriveCreateFolder = async () => {
-        try {
-            await this.setGDriveAccessToken();
+        const response = await googleDrive.safeCreateFolder({
+            name: 'HaloBeba',
+            parentFolderId: 'root',
+        });
 
-            const id = await GDrive.files.safeCreateFolder({
-                name: "HaloBeba",
-                parents: ["root"]
-            });
-
-            console.warn(`Folder created (id = ${id})`);
-        } catch (e) {
-            console.warn('You must login first');
+        if (response instanceof Error) {
+            console.warn(response.message);
+        } else {
+            console.warn('Folder created. ID = ', response);
         }
     };
 
-    private gdriveGet = async () => {
-        try {
-            await this.setGDriveAccessToken();
+    private gdriveGetMetadata = async () => {
+        const response = await googleDrive.getMetadata(
+            '1Qxn-e29NpmPvXg6fRRTgZC67lwYnPi_M'
+        );
 
-            const response = await GDrive.files.get(
-                '1RNrDUHIhJgwdmXUjbJsQf9GnUnOvNTAA', // id
-                // Fields: https://bit.ly/3eIpXzG
-                {'fields':'id,name,mimeType,kind,parents,trashed,version,originalFilename,fileExtension'}, // query params
-            );
-
-            if (response.status === 200) {
-                const results = await response.json();
-                console.warn(JSON.stringify(results, null, 4));
-            } else {
-                console.warn('There is no item with that id');
-            }
-        } catch (e) {
-            console.warn('You must login first');
-            // console.warn(await e.text());
+        if (response instanceof Error) {
+            console.warn(response.message);
+        } else {
+            console.warn(JSON.stringify(response, null, 4));
         }
     };
 
     private gdriveGetId = async () => {
-        try {
-            await this.setGDriveAccessToken();
+        const response = await googleDrive.getId({
+            name: 'HaloBeba',
+            parentFolderId: 'root',
+            mimeType: 'application/vnd.google-apps.folder',
+            trashed: false,
+        });
 
-            const id = await GDrive.files.getId(
-                'HaloBeba', // name
-                ['root'], // parents
-                'application/vnd.google-apps.folder', // mimeType
-                false, // trashed
-            );
-
-            if (id) {
-                console.warn(id);
-            } else {
-                console.warn('There is no item with that name');
-            }
-        } catch (e) {
-            console.warn('You must login first');
-            // console.warn(await e.text());
+        if (response instanceof Error) {
+            console.warn(response.message);
+        } else {
+            console.warn(response);
         }
     };
 
     private gdriveGetFiles = async () => {
-        try {
-            await this.setGDriveAccessToken();
+        const response = await googleDrive.list({
+            filter: 'trashed=false',
+            orderBy: 'name asc'
+        });
 
-            // LIST: https://bit.ly/2xGQw7T
-            const response: Response = await GDrive.files.list({
-                // Fields: https://bit.ly/3eIpXzG
-                fields: 'files(id,name,mimeType,kind,parents,trashed,version,originalFilename,fileExtension)',
-                // fields: '*', // Use only during development!
-
-                // Filter: https://bit.ly/3ax8TJI
-                q: `trashed=false`,
-                // q: `trashed=false and (name contains 'file1') and ('root' in parents) and (mimeType contains 'text/plain') or (mimeType contains 'folder')`,
-
-                // Order: https://bit.ly/34ZczTf
-                orderBy: 'name asc',
-            });
-
-            if (response.status === 200) {
-                let results = await response.json();
-                console.warn(JSON.stringify(results.files, null, 4));
-            } else {
-                let results = await response.text();
-                console.warn(results);
-            }
-        } catch (e) {
-            console.warn('You must login first');
+        if (response instanceof Error) {
+            console.warn(response.message);
+        } else {
+            console.warn(JSON.stringify(response, null, 4));
         }
     };
 
     private gdriveDownloadFile = async () => {
-        try {
-            await this.setGDriveAccessToken();
+        const fileId = '1Qxn-e29NpmPvXg6fRRTgZC67lwYnPi_M';
+        const filePath = RNFS.TemporaryDirectoryPath + '/foo.txt';
 
-            const filePath = RNFS.TemporaryDirectoryPath + '/foo.txt';
+        const response = await googleDrive.download({
+            fileId,
+            filePath,
+        });
 
-            let response: {jobId:number, promise:Promise<DownloadResult>} = GDrive.files.download(
-                // File ID
-                '1Qxn-e29NpmPvXg6fRRTgZC67lwYnPi_M',
-                
-                // Download file options: https://bit.ly/2S5CeEu
-                {
-                    toFile: filePath
-                },
-                
-                // Query params
-                {},
-            );
-
-            let downloadResult = await response.promise;
-            
-            if (downloadResult.statusCode === 200) {
-                const fileContent = await RNFS.readFile(filePath);
-                console.warn(fileContent);
-            } else {
-                console.warn('File was not downloaded');
-            }
-        } catch (e) {
-            console.warn('You must login first');
+        if (response instanceof Error) {
+            console.warn(response.message);
+        } else {
+            const fileContent = await RNFS.readFile(filePath);
+            console.warn(fileContent);
         }
     };
 
@@ -234,7 +180,7 @@ export class Google extends React.Component {
                 </Button>
                 <View style={{ height: scale(10) }} />
 
-                <Button mode="contained" uppercase={false} onPress={this.gdriveGet} color={Colors.deepPurple500}>
+                <Button mode="contained" uppercase={false} onPress={this.gdriveGetMetadata} color={Colors.deepPurple500}>
                     Get metadata
                 </Button>
                 <View style={{ height: scale(10) }} />
