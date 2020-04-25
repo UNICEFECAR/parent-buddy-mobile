@@ -34,6 +34,7 @@ export class Facebook extends React.Component {
             {
                 parameters: {
                     fields: {
+                        // For gender and some others, you need to ask FB for permission
                         string: 'id,name,email,first_name,last_name,gender'
                     }
                 },
