@@ -6,6 +6,7 @@ import { Provider as PaperProvider } from 'react-native-paper';
 import Storybook from '../../storybook';
 import { ThemeProvider } from '../themes/ThemeContext';
 import { GoogleSignin } from '@react-native-community/google-signin';
+import { googleAuth } from './googleAuth';
 
 // Warnings to ignore
 YellowBox.ignoreWarnings([
@@ -32,7 +33,7 @@ export class App extends React.Component<object> {
 
     public componentDidMount() {
         this.addItemsToDevMenu();
-        this.configureGoogleSignin();
+        googleAuth.configure();
     }
 
     private addItemsToDevMenu() {
@@ -45,14 +46,6 @@ export class App extends React.Component<object> {
     private gotoStorybookScreen() {
         navigation.navigate('RootModalStackNavigator_StorybookScreen');
     };
-
-    private configureGoogleSignin() {
-        GoogleSignin.configure({
-            scopes: [
-                'https://www.googleapis.com/auth/drive.file',
-            ],
-        });
-    }
 
     public render() {
         return (

@@ -15,6 +15,17 @@ class GoogleAuth {
         return GoogleAuth.instance;
     }
 
+    /**
+     * Must be called before any other method.
+     */
+    public configure() {
+        GoogleSignin.configure({
+            scopes: [
+                'https://www.googleapis.com/auth/drive.file',
+            ],
+        });
+    }
+
     public async signIn() {
         let user: User|null = null;
 

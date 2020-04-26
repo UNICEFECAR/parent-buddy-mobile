@@ -10,7 +10,7 @@ import { googleDrive } from "../../../src/app/googleDrive";
 export class Google extends React.Component {
     private googleLogIn = async () => {
         let user = await googleAuth.signIn();
-        console.warn(user);
+        console.warn(JSON.stringify(user, null, 4));
     };
 
     private googleIsLoggedIn = async () => {
