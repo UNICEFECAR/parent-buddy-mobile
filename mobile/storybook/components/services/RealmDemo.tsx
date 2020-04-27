@@ -1,11 +1,10 @@
 import React, { Fragment } from 'react';
 import { ScrollView, View, Text } from 'react-native';
-import { ScaledSheet, moderateScale, scale } from "react-native-size-matters";
+import { scale } from "react-native-size-matters";
 import { Typography, TypographyType } from "../../../src/components/Typography";
-import { LoginManager, GraphRequest, GraphRequestManager, AccessToken } from 'react-native-fbsdk';
-import { facebook } from "../../../src/app/facebook";
-import { Button, Paragraph, Dialog, Portal, Colors } from 'react-native-paper';
+import { Button, Colors } from 'react-native-paper';
 import Realm from 'realm';
+
 import { dataRealmConfig } from "../../../src/stores/dataRealmConfig";
 import { ArticleEntity, ArticleEntitySchema } from "../../../src/stores/ArticleEntity";
 import { DataRealmContext, DataRealmContextValue, DataRealmConsumer } from '../../../src/stores/DataRealmContext';
