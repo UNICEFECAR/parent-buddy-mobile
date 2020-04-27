@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { ScrollView, View, Text } from 'react-native';
 import { ScaledSheet, moderateScale, scale } from "react-native-size-matters";
 import { Typography, TypographyType } from "../../../src/components/Typography";
@@ -8,6 +8,7 @@ import { Button, Paragraph, Dialog, Portal, Colors } from 'react-native-paper';
 import Realm from 'realm';
 import { dataRealmConfig } from "../../../src/stores/dataRealmConfig";
 import { ArticleEntity, ArticleEntitySchema } from "../../../src/stores/ArticleEntity";
+import { DataRealmContext, DataRealmContextValue, DataRealmConsumer } from '../../../src/stores/DataRealmContext';
 
 const EXTERNAL_ID = 44444401;
 
@@ -54,7 +55,7 @@ export class RealmDemo extends React.Component {
                     coverImageUrl: 'https://terrigen-cdn-dev.marvel.com/content/prod/1x/002irm_ons_mas_mob_01_0.jpg',
                 });
 
-                console.warn(JSON.stringify(record, null, 4));
+                // console.warn(JSON.stringify(record, null, 4));
             });
         } catch (e) {
             console.warn(e);
@@ -145,6 +146,17 @@ export class RealmDemo extends React.Component {
                     Close realm
                 </Button>
                 <View style={{ height: scale(10) }} />
+
+                {/* SHOW RECORDS */}
+                <DataRealmConsumer>
+                {(dataRealmContext:DataRealmContextValue) => (
+                    <Fragment>
+                        {dataRealmContext.realm?.objects<ArticleEntity>(ArticleEntitySchema.name).map(record => (
+                            <Text>{record.title}</Text>
+                        ))}
+                    </Fragment>
+                )}
+                </DataRealmConsumer>
             </ScrollView>
         );
     }

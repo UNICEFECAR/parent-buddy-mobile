@@ -1,9 +1,9 @@
 import React from 'react';
 import Realm from 'realm';
+import { dataRealmConfig } from "../stores/dataRealmConfig";
 
 export interface DataRealmContextValue {
     realm: Realm | null,
-    setRealm: (realm:Realm | null)=>void
 }
 
 interface DataRealmProviderState {
@@ -19,20 +19,38 @@ export class DataRealmProvider extends React.Component<object, DataRealmProvider
 
     constructor(props: object) {
         super(props);
+        this.onRealmChange = this.onRealmChange.bind(this);
+        this.openRealm();
     }
 
-    private setRealm(realm:Realm | null) {
-        this.setState((state:DataRealmProviderState) => {
-            return {
-                realm: realm
-            };
-        });
-    };
+    private openRealm() {
+        Realm.open(dataRealmConfig)
+            .then(realm => {
+                this.setState({realm});
+                realm.addListener('change', this.onRealmChange);
+            })
+            .catch(error => {
+                console.warn(error);
+            });
+    }
+
+    private onRealmChange() {
+        this.forceUpdate();
+    }
+
+    public componentWillUnmount() {
+        if (this.state.realm) {
+            this.state.realm.removeListener('change', this.onRealmChange);
+            
+            if (!this.state.realm.isClosed) {
+                this.state.realm.close();
+            }
+        }
+    }
 
     public render() {
         const contextValue: DataRealmContextValue = {
             realm: this.state.realm,
-            setRealm: this.setRealm.bind(this),
         };
 
         return (

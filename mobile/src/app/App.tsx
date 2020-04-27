@@ -7,6 +7,7 @@ import Storybook from '../../storybook';
 import { ThemeProvider } from '../themes/ThemeContext';
 import { GoogleSignin } from '@react-native-community/google-signin';
 import { googleAuth } from './googleAuth';
+import { DataRealmProvider } from '../stores/DataRealmContext';
 
 // Warnings to ignore
 YellowBox.ignoreWarnings([
@@ -52,12 +53,14 @@ export class App extends React.Component<object> {
         return (
             <ThemeProvider>
                 <PaperProvider>
-                    {/* <Storybook /> */}
-                    <AppNavigationContainer
-                        ref={(navigatorRef: NavigationContainerComponent) => {
-                            return navigation.setTopLevelNavigator(navigatorRef);
-                        }}
-                    />
+                    <DataRealmProvider>
+                        {/* <Storybook /> */}
+                        <AppNavigationContainer
+                            ref={(navigatorRef: NavigationContainerComponent) => {
+                                return navigation.setTopLevelNavigator(navigatorRef);
+                            }}
+                        />
+                    </DataRealmProvider>
                 </PaperProvider>
             </ThemeProvider>
         );
