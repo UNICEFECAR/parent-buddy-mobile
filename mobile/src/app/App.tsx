@@ -13,6 +13,7 @@ YellowBox.ignoreWarnings([
     'Warning: ',
     'Require cycle',
     'Sending `onAnimatedValueUpdate` with no listeners registered',
+    'Unable to find module for UIManager',
     // 'createStackNavigator',
 ]);
 
