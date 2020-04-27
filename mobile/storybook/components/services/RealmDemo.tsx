@@ -18,8 +18,10 @@ export class RealmDemo extends React.Component {
         super(props);
 
         this.realm = null;
+        this.openRealm();
+    }
 
-        // OPEN REALM
+    private openRealm() {
         Realm.open(dataRealmConfig)
             .then(realm => {
                 this.realm = realm;
