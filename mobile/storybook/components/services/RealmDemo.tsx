@@ -117,6 +117,7 @@ export class RealmDemo extends React.Component {
                     Realm
                 </Typography>
 
+                {/* BUTTONS */}
                 <Button mode="contained" uppercase={false} onPress={() => { this.getPath() }} color={Colors.blue700}>
                     Get path
                 </Button>
@@ -142,20 +143,26 @@ export class RealmDemo extends React.Component {
                 </Button>
                 <View style={{ height: scale(10) }} />
 
-                <Button mode="contained" uppercase={false} onPress={() => { this.closeRealm() }} color={Colors.blue700}>
+                <Button mode="contained" uppercase={false} onPress={() => { this.closeRealm() }} color={Colors.red700}>
                     Close realm
                 </Button>
                 <View style={{ height: scale(10) }} />
 
-                {/* SHOW RECORDS */}
+                {/* SHOW REALM RECORDS */}
                 <DataRealmConsumer>
                 {(dataRealmContext:DataRealmContextValue) => (
                     <Fragment>
                         {dataRealmContext.realm?.empty ? (
-                            <Text>No records</Text>
-                        ) : dataRealmContext.realm?.objects<ArticleEntity>(ArticleEntitySchema.name).map(record => (
-                            <Text>{record.title}</Text>
-                        ))}
+                            <Text>
+                                No records
+                            </Text>
+                        ) : dataRealmContext.realm?.objects<ArticleEntity>(ArticleEntitySchema.name)
+                            .filtered(`externalId = ${EXTERNAL_ID}`).map(record => (
+                                <Text>
+                                    {record.title}
+                                </Text>
+                            ))
+                        }
                     </Fragment>
                 )}
                 </DataRealmConsumer>

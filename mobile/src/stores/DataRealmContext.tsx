@@ -1,6 +1,6 @@
 import React from 'react';
 import Realm from 'realm';
-import { dataRealmConfig } from "../stores/dataRealmConfig";
+import { dataRealmConfig as realmConfig } from "../stores/dataRealmConfig";
 
 export interface DataRealmContextValue {
     realm: Realm | null;
@@ -12,7 +12,7 @@ interface DataRealmProviderState {
 
 export const DataRealmContext = React.createContext<DataRealmContextValue>( {} as DataRealmContextValue );
 
-export class DataRealmProvider extends React.Component<object, DataRealmProviderState> {
+export class DataRealmProvider extends React.PureComponent<object, DataRealmProviderState> {
     public state: Readonly<DataRealmProviderState> = {
         realm: null
     };
@@ -24,7 +24,7 @@ export class DataRealmProvider extends React.Component<object, DataRealmProvider
     }
 
     private openRealm() {
-        Realm.open(dataRealmConfig)
+        Realm.open(realmConfig)
             .then(realm => {
                 this.setState({realm});
                 realm.addListener('change', this.onRealmChange);
