@@ -2,6 +2,7 @@
  * Article entity used by stores.
  */
 export type ArticleEntity = {
+    externalId: number;
     title: string;
     coverImageUrl: string;
     coverImageLocalPath?: string;
@@ -14,6 +15,7 @@ export type ArticleEntity = {
 export const ArticleEntitySchema = {
     name: 'ArticleEntity',
     properties: {
+        externalId: {type:'int'},
         title: {type:'string'},
         coverImageUrl: {type:'string'},
         coverImageLocalPath: {type:'string', optional:true},
