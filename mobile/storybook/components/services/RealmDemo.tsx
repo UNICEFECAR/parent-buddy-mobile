@@ -11,7 +11,7 @@ import { DataRealmContext, DataRealmContextValue, DataRealmConsumer } from '../.
 
 const EXTERNAL_ID = 44444401;
 
-export class RealmDemo extends React.Component {
+export class RealmDemo extends React.Component<object> {
     private realm: Realm | null;
 
     public constructor(props: object) {
@@ -156,16 +156,42 @@ export class RealmDemo extends React.Component {
                                     No records
                                 </Text>
                             ) : !dataRealmContext.realm?.isClosed && dataRealmContext.realm?.objects<ArticleEntity>(ArticleEntitySchema.name)
-                                .filtered(`externalId = ${EXTERNAL_ID}`).map(record => (
-                                    <Text>
-                                        {record.title}
-                                    </Text>
-                                ))
+                                .filtered(`externalId = ${EXTERNAL_ID}`).map(record => {
+                                    let recordCopy = {title:record.title};
+
+                                    return (
+                                        <RealmItem record={recordCopy} />
+                                    );
+                                })
                             }
                         </Fragment>
                     )}
                 </DataRealmConsumer>
             </ScrollView>
+        );
+    }
+}
+
+interface RealmItemProps {
+    record: {title:string}
+}
+
+class RealmItem extends React.Component<RealmItemProps> {
+    public shouldComponentUpdate(nextProps:RealmItemProps): boolean {
+        if (nextProps.record.title !== this.props.record.title) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    render() {
+        console.warn('aaa');
+
+        return (
+            <Text>
+                {this.props.record.title}
+            </Text>
         );
     }
 }
