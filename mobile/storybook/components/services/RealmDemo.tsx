@@ -186,7 +186,7 @@ class RealmItem extends React.Component<RealmItemProps> {
     }
 
     render() {
-        console.warn('aaa');
+        // console.warn('aaa');
 
         return (
             <Text>
