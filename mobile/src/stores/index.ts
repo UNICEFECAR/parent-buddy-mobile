@@ -6,4 +6,4 @@ import { dataRealmConfig } from "./dataRealmConfig";
 export { ArticleEntity };
 export { ArticleViewEntity };
 export { CategoryArticlesViewEntity };
-export { dataRealmConfig };
+export { dataRealmConfig };//

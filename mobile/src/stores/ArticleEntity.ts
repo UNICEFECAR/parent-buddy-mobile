@@ -1,31 +1,25 @@
-import Realm from "realm";
-
 /**
  * Article entity used by stores.
  */
-export class ArticleEntity {
-    static schema: Realm.ObjectSchema;
-
-    // id: number = 0;
-    title: string = '';
-    coverImageUrl: string = '';
-    coverImageLocalPath: string = '';
+export type ArticleEntity = {
+    title: string;
+    coverImageUrl: string;
+    coverImageLocalPath?: string;
     youTubeVideoId?: string;
-    categoryId: number = 0;
-    tagsIds: number[] = [];
-    bodyHTML: string = '';
-}
+    categoryId: number;
+    tagsIds?: Array<number>;
+    bodyHTML: string;
+};
 
-ArticleEntity.schema = {
+export const ArticleEntitySchema = {
     name: 'ArticleEntity',
-    // API: https://realm.io/docs/javascript/latest/#supported-types
     properties: {
-        title: 'string',
-        coverImageUrl: 'string',
-        coverImageLocalPath: 'string',
-        youTubeVideoId: 'string?',
-        categoryId: 'int',
-        tagsIds: 'int[]',
-        bodyHTML: 'string',
+        title: {type:'string'},
+        coverImageUrl: {type:'string'},
+        coverImageLocalPath: {type:'string', optional:true},
+        youTubeVideoId: {type:'string', optional:true},
+        categoryId: {type:'int'},
+        tagsIds: {type:'int[]', optional:true},
+        bodyHTML: {type:'string'}
     }
 };
