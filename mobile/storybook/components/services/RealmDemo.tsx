@@ -149,21 +149,21 @@ export class RealmDemo extends React.Component {
 
                 {/* SHOW REALM RECORDS */}
                 <DataRealmConsumer>
-                {(dataRealmContext:DataRealmContextValue) => (
-                    <Fragment>
-                        {!dataRealmContext.realm?.isClosed && dataRealmContext.realm?.empty ? (
-                            <Text>
-                                No records
-                            </Text>
-                        ) : !dataRealmContext.realm?.isClosed && dataRealmContext.realm?.objects<ArticleEntity>(ArticleEntitySchema.name)
-                            .filtered(`externalId = ${EXTERNAL_ID}`).map(record => (
+                    {(dataRealmContext: DataRealmContextValue) => (
+                        <Fragment>
+                            {!dataRealmContext.realm?.isClosed && dataRealmContext.realm?.empty ? (
                                 <Text>
-                                    {record.title}
+                                    No records
                                 </Text>
-                            ))
-                        }
-                    </Fragment>
-                )}
+                            ) : !dataRealmContext.realm?.isClosed && dataRealmContext.realm?.objects<ArticleEntity>(ArticleEntitySchema.name)
+                                .filtered(`externalId = ${EXTERNAL_ID}`).map(record => (
+                                    <Text>
+                                        {record.title}
+                                    </Text>
+                                ))
+                            }
+                        </Fragment>
+                    )}
                 </DataRealmConsumer>
             </ScrollView>
         );
