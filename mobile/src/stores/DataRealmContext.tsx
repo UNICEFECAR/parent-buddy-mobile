@@ -3,7 +3,7 @@ import Realm from 'realm';
 import { dataRealmConfig } from "../stores/dataRealmConfig";
 
 export interface DataRealmContextValue {
-    realm: Realm | null,
+    realm: Realm | null;
 }
 
 interface DataRealmProviderState {

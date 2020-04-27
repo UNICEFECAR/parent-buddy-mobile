@@ -151,7 +151,9 @@ export class RealmDemo extends React.Component {
                 <DataRealmConsumer>
                 {(dataRealmContext:DataRealmContextValue) => (
                     <Fragment>
-                        {dataRealmContext.realm?.objects<ArticleEntity>(ArticleEntitySchema.name).map(record => (
+                        {dataRealmContext.realm?.empty ? (
+                            <Text>No records</Text>
+                        ) : dataRealmContext.realm?.objects<ArticleEntity>(ArticleEntitySchema.name).map(record => (
                             <Text>{record.title}</Text>
                         ))}
                     </Fragment>
