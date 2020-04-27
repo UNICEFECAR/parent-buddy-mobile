@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { storiesOf } from '@storybook/react-native';
 import { Google } from "./Google";
 import { Facebook } from "./Facebook";
-import { Realm } from './Realm';
+import { RealmDemo } from './RealmDemo';
 
 storiesOf('Services', module)
 
@@ -16,6 +16,6 @@ storiesOf('Services', module)
 ))
 
 .add('realm', () => (
-    <Realm />
+    <RealmDemo />
 ))
 ;
