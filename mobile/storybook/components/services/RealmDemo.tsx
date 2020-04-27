@@ -92,11 +92,16 @@ export class RealmDemo extends React.Component {
             let allRecords = this.realm?.objects<ArticleEntity>(ArticleEntitySchema.name);
             let filteredRecords = allRecords?.filtered(`externalId = ${EXTERNAL_ID}`);
 
+            let deleteRecord: ArticleEntity & Realm.Object | null = null;
             filteredRecords?.forEach((record, index, collection) => {
-                this.realm?.write(() => {
-                    this.realm?.delete(record);
-                });
+                deleteRecord = record;
             });
+
+            if (deleteRecord) {
+                this.realm?.write(() => {
+                    this.realm?.delete(deleteRecord);
+                });
+            }
         } catch (e) {
             console.warn(e);
         }
