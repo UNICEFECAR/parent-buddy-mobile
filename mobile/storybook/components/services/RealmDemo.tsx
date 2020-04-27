@@ -111,7 +111,7 @@ export class RealmDemo extends React.Component {
 
     render() {
         return (
-            <ScrollView contentContainerStyle={{ flex: 1, padding: 24, alignItems: 'center' }}>
+            <ScrollView contentContainerStyle={{ padding: 24, alignItems: 'center' }}>
                 <Typography type={TypographyType.headingSecondary}>
                     Realm
                 </Typography>
@@ -151,11 +151,11 @@ export class RealmDemo extends React.Component {
                 <DataRealmConsumer>
                 {(dataRealmContext:DataRealmContextValue) => (
                     <Fragment>
-                        {dataRealmContext.realm?.empty ? (
+                        {!dataRealmContext.realm?.isClosed && dataRealmContext.realm?.empty ? (
                             <Text>
                                 No records
                             </Text>
-                        ) : dataRealmContext.realm?.objects<ArticleEntity>(ArticleEntitySchema.name)
+                        ) : !dataRealmContext.realm?.isClosed && dataRealmContext.realm?.objects<ArticleEntity>(ArticleEntitySchema.name)
                             .filtered(`externalId = ${EXTERNAL_ID}`).map(record => (
                                 <Text>
                                     {record.title}
