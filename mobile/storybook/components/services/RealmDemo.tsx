@@ -44,7 +44,7 @@ export class RealmDemo extends React.Component {
     private createArticle() {
         try {
             this.realm?.write(() => {
-                const record = this.realm?.create<ArticleEntity>('ArticleEntity', {
+                const record = this.realm?.create<ArticleEntity>(ArticleEntitySchema.name, {
                     externalId: EXTERNAL_ID,
                     title: 'Test Article 01',
                     bodyHTML: 'Enim ad aliquip tempor voluptate eiusmod est Lorem commodo id fugiat elit duis. Sit laborum anim pariatur fugiat reprehenderit dolore. Cillum culpa enim irure elit voluptate sit ex occaecat fugiat.',
@@ -53,6 +53,49 @@ export class RealmDemo extends React.Component {
                 });
 
                 console.warn(JSON.stringify(record, null, 4));
+            });
+        } catch (e) {
+            console.warn(e);
+        }
+    }
+
+    private readArticle() {
+        try {
+            let allRecords = this.realm?.objects<ArticleEntity>(ArticleEntitySchema.name);
+            let filteredRecords = allRecords?.filtered(`externalId = ${EXTERNAL_ID}`);
+
+            filteredRecords?.forEach((record, index, collection) => {
+                console.warn(JSON.stringify(record, null, 4));
+            });
+        } catch (e) {
+            console.warn(e);
+        }
+    }
+
+    private editArticle() {
+        try {
+            let allRecords = this.realm?.objects<ArticleEntity>(ArticleEntitySchema.name);
+            let filteredRecords = allRecords?.filtered(`externalId = ${EXTERNAL_ID}`);
+
+            filteredRecords?.forEach((record, index, collection) => {
+                this.realm?.write(() => {
+                    record.title += ' EDITED';
+                });
+            });
+        } catch (e) {
+            console.warn(e);
+        }
+    }
+
+    private deleteArticle() {
+        try {
+            let allRecords = this.realm?.objects<ArticleEntity>(ArticleEntitySchema.name);
+            let filteredRecords = allRecords?.filtered(`externalId = ${EXTERNAL_ID}`);
+
+            filteredRecords?.forEach((record, index, collection) => {
+                this.realm?.write(() => {
+                    this.realm?.delete(record);
+                });
             });
         } catch (e) {
             console.warn(e);
@@ -73,6 +116,21 @@ export class RealmDemo extends React.Component {
 
                 <Button mode="contained" uppercase={false} onPress={() => { this.createArticle() }} color={Colors.blue700}>
                     Create article
+                </Button>
+                <View style={{ height: scale(10) }} />
+
+                <Button mode="contained" uppercase={false} onPress={() => { this.readArticle() }} color={Colors.blue700}>
+                    Read article
+                </Button>
+                <View style={{ height: scale(10) }} />
+
+                <Button mode="contained" uppercase={false} onPress={() => { this.editArticle() }} color={Colors.blue700}>
+                    Edit article
+                </Button>
+                <View style={{ height: scale(10) }} />
+
+                <Button mode="contained" uppercase={false} onPress={() => { this.deleteArticle() }} color={Colors.blue700}>
+                    Delete article
                 </Button>
                 <View style={{ height: scale(10) }} />
 
