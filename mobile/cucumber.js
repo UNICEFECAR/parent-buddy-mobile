@@ -6,7 +6,7 @@
 const common = [
     'features/**/*.feature', // Specify feature files to parse
     '--require-module ts-node/register', // Load TypeScript module
-    '--require features-steps/**/*.ts', // Load step definitions
+    '--require features/step-definitions/**/*.ts', // Load step definitions
 ].join(' ');
 
 module.exports = {
