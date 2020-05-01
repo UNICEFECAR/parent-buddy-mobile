@@ -1,6 +1,3 @@
-/**
- * Article entity used by stores.
- */
 export type ArticleEntity = {
     externalId: number;
     title: string;
@@ -12,6 +9,9 @@ export type ArticleEntity = {
     bodyHTML: string;
 };
 
+/**
+ * Realm schema for ArticleEntity.
+ */
 export const ArticleEntitySchema = {
     name: 'ArticleEntity',
     properties: {
