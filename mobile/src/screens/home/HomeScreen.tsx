@@ -51,7 +51,7 @@ export class HomeScreen extends React.Component<Props, object> {
         // const record = dataRealmStore.getVariable('setting2');
         // console.warn( JSON.stringify(record, null, 4), typeof record );
 
-        dataRealmStore.deleteVariable("setting2").catch(() => {console.warn('Already deleted')});
+        // dataRealmStore.deleteVariable("setting2").catch(() => {console.warn('Already deleted')});
     }
 
     public render() {
