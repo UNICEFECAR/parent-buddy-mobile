@@ -96,6 +96,33 @@ class DataRealmStore {
             return null;
         }
     }
+
+    public async deleteVariable<T extends VariableKey>(key:T): Promise<void> {
+        return new Promise((resolve, reject) => {
+            if (!this.realm) {
+                reject();
+                return;
+            }
+
+            try {
+                const allVariables = this.realm.objects<VariableEntity>(VariableEntitySchema.name);
+                const variablesWithKey = allVariables.filtered(`key == "${key}"`);
+        
+                if (variablesWithKey && variablesWithKey.length > 0) {
+                    const record = variablesWithKey.find(obj => obj.key === key);
+                    
+                    this.realm.write(() => {
+                        this.realm?.delete(record);
+                        resolve();
+                    });
+                } else {
+                    reject();
+                }
+            } catch(e) {
+                reject();
+            }
+        });
+    }
 }
 
 export const dataRealmStore = DataRealmStore.getInstance();

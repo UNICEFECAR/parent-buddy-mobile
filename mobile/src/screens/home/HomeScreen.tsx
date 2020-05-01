@@ -46,10 +46,12 @@ export class HomeScreen extends React.Component<Props, object> {
     }
 
     private async onTestButtonClick() {
-        await dataRealmStore.setVariable('setting2', 'ssssd');
-        
-        const record = dataRealmStore.getVariable('setting2');
-        console.warn( JSON.stringify(record, null, 4), typeof record );
+        // await dataRealmStore.setVariable('setting2', 'misha');
+
+        // const record = dataRealmStore.getVariable('setting2');
+        // console.warn( JSON.stringify(record, null, 4), typeof record );
+
+        dataRealmStore.deleteVariable("setting2").catch(() => {console.warn('Already deleted')});
     }
 
     public render() {
