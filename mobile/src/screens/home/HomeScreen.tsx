@@ -45,9 +45,11 @@ export class HomeScreen extends React.Component<Props, object> {
         }
     }
 
-    private onTestButtonClick() {
-        dataRealmStore.setKeyValue('test', 4);
-        console.warn( dataRealmStore.getKeyValue('test'), typeof dataRealmStore.getKeyValue('test') );
+    private async onTestButtonClick() {
+        await dataRealmStore.setVariable('setting2', 'ssssd');
+        
+        const record = dataRealmStore.getVariable('setting2');
+        console.warn( JSON.stringify(record, null, 4), typeof record );
     }
 
     public render() {

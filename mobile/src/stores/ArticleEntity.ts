@@ -14,6 +14,8 @@ export type ArticleEntity = {
  */
 export const ArticleEntitySchema = {
     name: 'ArticleEntity',
+
+    // API: https://bit.ly/3f7k9jq
     properties: {
         externalId: {type:'int'},
         title: {type:'string'},
