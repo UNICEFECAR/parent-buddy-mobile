@@ -3,9 +3,12 @@ import { dataRealmConfig } from "./dataRealmConfig";
 import { VariableEntity, VariableEntitySchema } from './VariableEntity';
 
 type Variables = {
-    'setting1': boolean;
-    'setting2': string | null;
-    'setting3': number;
+    'userIsLoggedIn': boolean;
+    'userIsOnboarded': boolean;
+    'userEnteredChildData': boolean;
+    'userEneteredHisData': boolean;
+    'userEmail': string;
+    'userLoggedInDate': Date;
 };
 
 type VariableKey = keyof Variables;
