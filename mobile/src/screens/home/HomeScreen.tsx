@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, View, Text, StyleSheet, ViewStyle, ScrollView } from 'react-native';
+import { SafeAreaView, View, Text, StyleSheet, ViewStyle, ScrollView, Alert } from 'react-native';
 import { NavigationScreenConfigProps } from 'react-navigation';
 import { NavigationStackProp, NavigationStackState, NavigationStackOptions } from 'react-navigation-stack';
 import { themes } from '../../themes/themes';
@@ -13,6 +13,7 @@ import { DrawerActions } from 'react-navigation-drawer';
 import { ArticlesSection } from './ArticlesSection';
 import { GoogleSignin, statusCodes } from '@react-native-community/google-signin';
 import { LoginButton, AccessToken } from 'react-native-fbsdk';
+import { dataRealmStore } from "../../stores/dataRealmStore";
 
 export interface HomeScreenParams {
     showSearchInput?: boolean;
@@ -44,6 +45,11 @@ export class HomeScreen extends React.Component<Props, object> {
         }
     }
 
+    private onTestButtonClick() {
+        dataRealmStore.setKeyValue('test', 4);
+        console.warn( dataRealmStore.getKeyValue('test'), typeof dataRealmStore.getKeyValue('test') );
+    }
+
     public render() {
         const screenParams = this.props.navigation.state.params!;
 
@@ -52,6 +58,7 @@ export class HomeScreen extends React.Component<Props, object> {
                 {(themeContext: ThemeContextValue) => (
                     <ScrollView style={{ backgroundColor: themeContext.theme.screenContainer?.backgroundColor }} contentContainerStyle={[styles.container, { padding: themeContext.theme.screenContainer?.padding }]}>
 
+                        <Button onPress={() => { this.onTestButtonClick() }}>Test</Button>
                         <Button onPress={() => { this.props.navigation.navigate('HomeStackNavigator_SearchResultsScreen') }}>Search results</Button>
                         <Button onPress={() => { this.props.navigation.navigate('HomeStackNavigator_FaqScreenScreen') }}>FAQ</Button>
                         <Button onPress={() => { this.props.navigation.navigate('HomeStackNavigator_AboutScreen') }}>About US</Button>
