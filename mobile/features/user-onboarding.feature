@@ -29,7 +29,7 @@ Scenario: Reminding user to enter child birth data
   Then application alerts the user to enter child birth data
 
 Scenario: Entering child birth data
-  Given user is logged in 
+  Given user is logged in
   And user is on home page
   And user has entered child essential data
   But user has not entered child birth data

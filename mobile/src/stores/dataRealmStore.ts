@@ -40,7 +40,7 @@ class DataRealmStore {
             });
     }
 
-    public async setVariable<T extends VariableKey>(key: T, value: Variables[T]): Promise<boolean> {
+    public async setVariable<T extends VariableKey>(key: T, value: Variables[T] | null): Promise<boolean> {
         return new Promise((resolve, reject) => {
             if (!this.realm) {
                 reject();
