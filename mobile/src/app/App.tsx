@@ -1,6 +1,6 @@
 import React from 'react';
 import { navigation, AppNavigationContainer } from './Navigators';
-import { NavigationContainerComponent } from 'react-navigation';
+import { NavigationContainerComponent, StackActions, NavigationActions } from 'react-navigation';
 import { YellowBox, View, Text, Platform, UIManager } from 'react-native';
 import { Provider as PaperProvider } from 'react-native-paper';
 import Storybook from '../../storybook';
@@ -8,6 +8,7 @@ import { ThemeProvider } from '../themes/ThemeContext';
 import { GoogleSignin } from '@react-native-community/google-signin';
 import { googleAuth } from './googleAuth';
 import { DataRealmProvider } from '../stores/DataRealmContext';
+import { dataRealmStore } from '../stores';
 
 // Warnings to ignore
 YellowBox.ignoreWarnings([
@@ -36,6 +37,7 @@ export class App extends React.Component<object> {
     public componentDidMount() {
         this.addItemsToDevMenu();
         googleAuth.configure();
+        this.gotoFirstScreen();
     }
 
     private addItemsToDevMenu() {
@@ -48,6 +50,35 @@ export class App extends React.Component<object> {
     private gotoStorybookScreen() {
         navigation.navigate('RootModalStackNavigator_StorybookScreen');
     };
+
+    private gotoFirstScreen() {
+        // Flags
+        const userIsLoggedIn = dataRealmStore.getVariable('userIsLoggedIn');
+        const userIsOnboarded = dataRealmStore.getVariable('userIsOnboarded');
+        const userEnteredChildData = dataRealmStore.getVariable('userEnteredChildData');
+        const userEnteredHisData = dataRealmStore.getVariable('userEnteredHisData');
+
+        // Set routeName
+        let routeName: string | null = null;
+        
+        if (!userIsLoggedIn) {
+            routeName = 'LoginStackNavigator';
+        } else if (!userIsOnboarded) {
+            routeName = 'WalkthroughStackNavigator';
+        } else if (!userEnteredChildData || !userEnteredHisData) {
+            routeName = 'AccountStackNavigator';
+        }
+
+        // Navigate
+        if (routeName) {
+            const resetAction = StackActions.reset({
+                index: 0,
+                actions: [NavigationActions.navigate({ routeName: routeName})],
+            });
+    
+            navigation.dispatch(resetAction);
+        }
+    }
 
     public render() {
         return (

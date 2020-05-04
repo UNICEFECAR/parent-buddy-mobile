@@ -6,7 +6,7 @@ type Variables = {
     'userIsLoggedIn': boolean;
     'userIsOnboarded': boolean;
     'userEnteredChildData': boolean;
-    'userEneteredHisData': boolean;
+    'userEnteredHisData': boolean;
     'userEmail': string;
     'userLoggedInDate': Date;
 };
