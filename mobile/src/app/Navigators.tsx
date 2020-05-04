@@ -410,7 +410,7 @@ const RootModalStackNavigator = createStackNavigator({
         },
         mode: "modal",
         headerMode: "none",
-        initialRouteName: "DrawerNavigator"
+        initialRouteName: "LoginStackNavigator"
     });
 
 export const AppNavigationContainer = createAppContainer(RootModalStackNavigator);

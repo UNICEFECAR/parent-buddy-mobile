@@ -61,12 +61,15 @@ export class App extends React.Component<object> {
         // Set routeName
         let routeName: string | null = null;
         
-        if (!userIsLoggedIn) {
-            routeName = 'LoginStackNavigator';
-        } else if (!userIsOnboarded) {
-            routeName = 'WalkthroughStackNavigator';
-        } else if (!userEnteredChildData || !userEnteredHisData) {
-            routeName = 'AccountStackNavigator';
+        // Default route name: LoginStackNavigator
+        if (userIsLoggedIn) {
+            if (!userIsOnboarded) {
+                routeName = 'WalkthroughStackNavigator';
+            } else if (!userEnteredChildData || !userEnteredHisData) {
+                routeName = 'AccountStackNavigator';
+            } else if (userIsLoggedIn && userIsOnboarded && userEnteredChildData && userEnteredHisData) {
+                routeName = 'DrawerNavigator';
+            }
         }
 
         // Navigate
