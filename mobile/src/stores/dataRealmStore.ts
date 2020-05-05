@@ -4,11 +4,11 @@ import { VariableEntity, VariableEntitySchema } from './VariableEntity';
 
 type Variables = {
     'userIsLoggedIn': boolean;
+    'userLoggedInDate': Date;
     'userIsOnboarded': boolean;
     'userEnteredChildData': boolean;
     'userEnteredHisData': boolean;
     'userEmail': string;
-    'userLoggedInDate': Date;
 };
 
 type VariableKey = keyof Variables;

@@ -11,6 +11,7 @@ import { translate } from '../../translations/translate';
 import { Animated, Easing } from 'react-native';
 import { WalkthroughScreenParams } from './WalkthroughScreen';
 import { StackActions, NavigationActions } from 'react-navigation';
+import { googleAuth } from '../../app';
 
 export interface Props {
     navigation: NavigationSwitchProp<NavigationState>;
@@ -139,6 +140,14 @@ export class LoginScreen extends React.Component<Props, State & AnimationsState>
         return animationsState;
     }
 
+    private async googleLogin() {
+        let response = await googleAuth.signIn();
+        
+        if (response?.user?.email) {
+            console.warn(response.user.email);
+        }
+    }
+
     public render() {
         const anim = this.state.animatedStyles;
 
@@ -163,7 +172,7 @@ export class LoginScreen extends React.Component<Props, State & AnimationsState>
                             {/* LOGIN WITH GOOGLE */}
                             <RoundedButton
                                 type={RoundedButtonType.google}
-                                onPress={() => { }}
+                                onPress={() => { this.googleLogin() }}
                                 style={{ marginBottom: 15, width:'100%' }}
                             />
 
