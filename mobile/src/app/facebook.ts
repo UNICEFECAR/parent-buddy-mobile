@@ -22,9 +22,7 @@ class Facebook {
      * 
      * Permissions are listed [here](https://bit.ly/3eJcrfg).
      */
-    public async logIn(
-        permissions:string[] = PERMISSIONS
-    ): Promise<LoginResult> {
+    public async logIn(permissions:string[] = PERMISSIONS): Promise<LoginResult> {
         const loginResult = await LoginManager.logInWithPermissions(permissions);
         return loginResult;
     }

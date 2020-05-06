@@ -11,16 +11,20 @@ import { translate } from '../../translations/translate';
 import { Animated, Easing } from 'react-native';
 import { WalkthroughScreenParams } from './WalkthroughScreen';
 import { StackActions, NavigationActions } from 'react-navigation';
-import { googleAuth, navigation } from '../../app';
+import { googleAuth, navigation, facebook } from '../../app';
 import { dataRealmStore } from '../../stores';
 import { utils } from '../../app/utils';
+import { Button, Snackbar, Colors } from 'react-native-paper';
+import { moderateScale } from 'react-native-size-matters';
+import { themes } from '../../themes/themes';
 
 export interface Props {
     navigation: NavigationSwitchProp<NavigationState>;
 }
 
 export interface State {
-
+    isSnackbarVisible: boolean;
+    snackbarMessage: string;
 }
 
 interface Animations {
@@ -53,6 +57,8 @@ export class LoginScreen extends React.Component<Props, State & AnimationsState>
         const animationsState = this.initAnimationsState();
 
         let state: State & AnimationsState = {
+            isSnackbarVisible: false,
+            snackbarMessage: '',
             ...animationsState
         };
 
@@ -135,16 +141,46 @@ export class LoginScreen extends React.Component<Props, State & AnimationsState>
 
     private async googleLogin() {
         let response = await googleAuth.signIn();
-        
+
         if (response?.user?.email) {
             dataRealmStore.setVariable('userEmail', response.user.email);
             dataRealmStore.setVariable('userIsLoggedIn', true);
             utils.gotoNextScreenOnAppOpen();
+        } else {
+            this.setState({
+                isSnackbarVisible: true,
+                snackbarMessage: 'Login failed',
+            });
+        }
+    }
+
+    private async facebookLogin() {
+        let loginResult = await facebook.logIn();
+
+        if (loginResult.grantedPermissions) {
+            let facebookUser = await facebook.getCurrentUser();
+
+            if (facebookUser && facebookUser.email) {
+                dataRealmStore.setVariable('userEmail', facebookUser.email);
+                dataRealmStore.setVariable('userIsLoggedIn', true);
+                utils.gotoNextScreenOnAppOpen();
+            } else {
+                this.setState({
+                    isSnackbarVisible: true,
+                    snackbarMessage: 'Login failed',
+                });
+            }
+        } else {
+            this.setState({
+                isSnackbarVisible: true,
+                snackbarMessage: 'Login failed',
+            });
         }
     }
 
     public render() {
         const anim = this.state.animatedStyles;
+        const snackbarErrorStyle = themes.getCurrentTheme().theme.snackbarError;
 
         return (
             <GradientBackground>
@@ -168,14 +204,14 @@ export class LoginScreen extends React.Component<Props, State & AnimationsState>
                             <RoundedButton
                                 type={RoundedButtonType.google}
                                 onPress={() => { this.googleLogin() }}
-                                style={{ marginBottom: 15, width:'100%' }}
+                                style={{ marginBottom: 15, width: '100%' }}
                             />
 
                             {/* LOGIN WITH FACEBOOK */}
                             <RoundedButton
                                 type={RoundedButtonType.facebook}
-                                onPress={() => { }}
-                                style={{ marginBottom: 15, width:'100%' }}
+                                onPress={() => { this.facebookLogin() }}
+                                style={{ marginBottom: 15, width: '100%' }}
                             />
 
                             {/* REGISTER ACCOUNT */}
@@ -183,7 +219,7 @@ export class LoginScreen extends React.Component<Props, State & AnimationsState>
                                 text={translate('registerAccount')}
                                 type={RoundedButtonType.purple}
                                 onPress={() => { this.gotoRegisterScreen() }}
-                                style={{ marginBottom: 15, width:'100%' }}
+                                style={{ marginBottom: 15, width: '100%' }}
                             />
                         </Animated.View>
 
@@ -240,6 +276,23 @@ export class LoginScreen extends React.Component<Props, State & AnimationsState>
 
                         <View style={{ height: 30 }} />
                     </KeyboardAwareScrollView>
+
+                    <Snackbar
+                        visible={ this.state.isSnackbarVisible }
+                        duration={ Snackbar.DURATION_SHORT }
+                        onDismiss={ () => { this.setState({isSnackbarVisible:false}) } }
+                        theme={{colors:{onSurface:snackbarErrorStyle?.backgroundColor, accent:snackbarErrorStyle?.actionButtonColor}}}
+                        action={{
+                            label: 'Ok',
+                            onPress: () => {
+                                this.setState({isSnackbarVisible:false});
+                            },
+                        }}
+                    >
+                        <Text style={{fontSize:snackbarErrorStyle?.fontSize}}>
+                            { this.state.snackbarMessage }
+                        </Text>
+                    </Snackbar>
                 </SafeAreaView>
             </GradientBackground>
         );

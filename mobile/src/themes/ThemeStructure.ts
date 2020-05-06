@@ -12,6 +12,8 @@ export class ThemeStructure {
     screenContainer?: ViewStyle;
     contentContainer?: ViewStyle;
     headerTitle?: TextStyle;
+    snackbarNormal?: Snackbar;
+    snackbarError?: Snackbar;
 }
 
 interface Variables {
@@ -55,4 +57,11 @@ interface Variables {
         verticalPaddingSmall: number,
         verticalPaddingLarge: number,
     },
+}
+
+interface Snackbar {
+    textColor?: string;
+    actionButtonColor?: string;
+    backgroundColor?: string;
+    fontSize?: number;
 }
