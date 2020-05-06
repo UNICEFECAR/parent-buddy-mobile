@@ -1,19 +1,19 @@
 import React from 'react';
 import Realm from 'realm';
-import { dataRealmStore } from './dataRealmStore';
+import { userRealmStore } from './userRealmStore';
 
-export interface DataRealmContextValue {
+export interface UserRealmContextValue {
     realm: Realm | null;
 }
 
-interface DataRealmProviderState {
+interface UserRealmProviderState {
     realm: Realm | null;
 }
 
-export const DataRealmContext = React.createContext<DataRealmContextValue>( {} as DataRealmContextValue );
+export const UserRealmContext = React.createContext<UserRealmContextValue>( {} as UserRealmContextValue );
 
-export class DataRealmProvider extends React.PureComponent<object, DataRealmProviderState> {
-    public state: Readonly<DataRealmProviderState> = {
+export class UserRealmProvider extends React.PureComponent<object, UserRealmProviderState> {
+    public state: Readonly<UserRealmProviderState> = {
         realm: null
     };
 
@@ -24,13 +24,13 @@ export class DataRealmProvider extends React.PureComponent<object, DataRealmProv
     }
 
     private async openRealm() {
-        const realm = await dataRealmStore.openRealm();
+        const realm = await userRealmStore.openRealm();
 
         if (realm) {
             this.setState({realm});
             realm.addListener('change', this.onRealmChange);
         } else {
-            console.warn('DataRealmProvider was not able to open realm');
+            console.warn('UserRealmProvider was not able to open realm');
         }
     }
 
@@ -49,14 +49,14 @@ export class DataRealmProvider extends React.PureComponent<object, DataRealmProv
     }
 
     public render() {
-        const contextValue: DataRealmContextValue = {
+        const contextValue: UserRealmContextValue = {
             realm: this.state.realm,
         };
 
         return (
-            <DataRealmContext.Provider value={contextValue}>{this.props.children}</DataRealmContext.Provider>
+            <UserRealmContext.Provider value={contextValue}>{this.props.children}</UserRealmContext.Provider>
         );
     }
 }
 
-export const DataRealmConsumer = DataRealmContext.Consumer;
+export const UserRealmConsumer = UserRealmContext.Consumer;

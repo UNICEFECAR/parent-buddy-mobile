@@ -5,6 +5,9 @@ import { CategoryArticlesViewEntity } from './CategoryArticlesViewEntity';
 import { dataRealmConfig } from "./dataRealmConfig";
 import { DataRealmContext } from "./DataRealmContext";
 import { dataRealmStore } from "./dataRealmStore";
+import { userRealmConfig } from "./userRealmConfig";
+import { UserRealmContext } from "./UserRealmContext";
+import { userRealmStore } from "./userRealmStore";
 
 export { ArticleEntity };
 export { VariableEntity };
@@ -13,3 +16,6 @@ export { CategoryArticlesViewEntity };
 export { dataRealmConfig };
 export { DataRealmContext };
 export { dataRealmStore };
+export { userRealmConfig };
+export { UserRealmContext };
+export { userRealmStore };

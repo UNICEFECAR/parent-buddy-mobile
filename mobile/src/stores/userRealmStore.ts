@@ -1,31 +1,28 @@
 import Realm from 'realm';
-import { dataRealmConfig } from "./dataRealmConfig";
+import { userRealmConfig } from "./userRealmConfig";
 import { VariableEntity, VariableEntitySchema } from './VariableEntity';
 import { appConfig } from '../app/appConfig';
 
 type Variables = {
-    'userIsLoggedIn': boolean;
-    'userIsOnboarded': boolean;
-    'userEnteredChildData': boolean;
-    'userEnteredHisData': boolean;
-    'userEmail': string;
+    'userChildren': any;
+    'userData': any;
 };
 
 type VariableKey = keyof Variables;
 
-class DataRealmStore {
+class UserRealmStore {
     public realm?: Realm;
-    private static instance: DataRealmStore;
+    private static instance: UserRealmStore;
 
     private constructor() {
         this.openRealm();
     }
 
-    static getInstance(): DataRealmStore {
-        if (!DataRealmStore.instance) {
-            DataRealmStore.instance = new DataRealmStore();
+    static getInstance(): UserRealmStore {
+        if (!UserRealmStore.instance) {
+            UserRealmStore.instance = new UserRealmStore();
         }
-        return DataRealmStore.instance;
+        return UserRealmStore.instance;
     }
 
     public async openRealm(): Promise<Realm | null> {
@@ -35,11 +32,11 @@ class DataRealmStore {
             } else {
                 // Delete realm file
                 if (appConfig.deleteRealmFilesBeforeOpen) {
-                    Realm.deleteFile(dataRealmConfig);
+                    Realm.deleteFile(userRealmConfig);
                 }
 
                 // Open realm file
-                Realm.open(dataRealmConfig)
+                Realm.open(userRealmConfig)
                 .then(realm => {
                     this.realm = realm;
                     resolve(realm);
@@ -139,4 +136,4 @@ class DataRealmStore {
     }
 }
 
-export const dataRealmStore = DataRealmStore.getInstance();
+export const userRealmStore = UserRealmStore.getInstance();
