@@ -19,19 +19,30 @@ export interface Props {
 }
 
 export interface State {
-
+    children: ChildEntity[];
 }
 
 export class AddChildrenScreen extends React.Component<Props, State> {
 
     public constructor(props:Props) {
         super(props);
+        this.initState();
+    }
+
+    private initState() {
+        const state: State = {
+            children: [
+                {name:'', gender:'girl'}
+            ]
+        };
+
+        this.state = state;
     }
 
     private gotoAddParentsScreen() {
         userRealmStore.create<ChildEntity>(ChildEntitySchema, {
             name: 'foo2',
-            photo: 'lll',
+            // photoData: 'lll',
             gender: 'boy',
         });
 
