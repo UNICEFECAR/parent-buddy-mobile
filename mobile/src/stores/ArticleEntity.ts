@@ -1,3 +1,5 @@
+import { ObjectSchema } from "realm";
+
 export type ArticleEntity = {
     externalId: number;
     title: string;
@@ -12,7 +14,7 @@ export type ArticleEntity = {
 /**
  * Realm schema for ArticleEntity.
  */
-export const ArticleEntitySchema = {
+export const ArticleEntitySchema: ObjectSchema = {
     name: 'ArticleEntity',
 
     // API: https://bit.ly/3f7k9jq

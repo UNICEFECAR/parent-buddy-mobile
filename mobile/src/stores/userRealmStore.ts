@@ -1,4 +1,4 @@
-import Realm from 'realm';
+import Realm, { ObjectSchema } from 'realm';
 import { userRealmConfig } from "./userRealmConfig";
 import { VariableEntity, VariableEntitySchema } from './VariableEntity';
 import { appConfig } from '../app/appConfig';
@@ -130,6 +130,24 @@ class UserRealmStore {
                     reject();
                 }
             } catch(e) {
+                reject();
+            }
+        });
+    }
+
+    public async create<Entity>(entitySchema:ObjectSchema, record:Entity): Promise<Entity> {
+        return new Promise((resolve, reject) => {
+            if (!this.realm) {
+                reject();
+                return;
+            }
+
+            try {
+                this.realm.write(() => {
+                    this.realm?.create<Entity>(entitySchema.name, record);
+                    resolve(record);
+                });
+            } catch (e) {
                 reject();
             }
         });

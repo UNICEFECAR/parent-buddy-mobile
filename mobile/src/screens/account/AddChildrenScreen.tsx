@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, View, Text, Button, StyleSheet, ViewStyle } from 'react-native';
+import { SafeAreaView, View, Text, Button, StyleSheet, ViewStyle, Alert } from 'react-native';
 import { NavigationStackProp, NavigationStackState, NavigationStackOptions } from 'react-navigation-stack';
 import { translate } from '../../translations/translate';
 import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
@@ -10,8 +10,9 @@ import { RadioButtons, RadioButtonsStyles } from "../../components/RadioButtons"
 import { RoundedTextInput, RoundedTextInputStyles } from "../../components/RoundedTextInput";
 import { TextButton, TextButtonSize, TextButtonColor } from "../../components/TextButton";
 import { RoundedButton, RoundedButtonType } from '../../components/RoundedButton';
-import { dataRealmStore } from '../../stores';
+import { dataRealmStore, userRealmStore } from '../../stores';
 import { utils } from '../../app';
+import { ChildEntity, ChildEntitySchema } from '../../stores/ChildEntity';
 
 export interface Props {
     navigation: NavigationStackProp<NavigationStackState>;
@@ -28,9 +29,15 @@ export class AddChildrenScreen extends React.Component<Props, State> {
     }
 
     private gotoAddParentsScreen() {
-        dataRealmStore.setVariable('userEnteredChildData', true);
+        userRealmStore.create<ChildEntity>(ChildEntitySchema, {
+            name: 'foo2',
+            photo: 'lll',
+            gender: 'boy',
+        });
+
+        // dataRealmStore.setVariable('userEnteredChildData', true);
         
-        this.props.navigation.navigate('AccountStackNavigator_AddParentsScreen');
+        // this.props.navigation.navigate('AccountStackNavigator_AddParentsScreen');
     }
 
     public render() {
