@@ -26,7 +26,7 @@ class Utils {
         const userIsLoggedIn = dataRealmStore.getVariable('userIsLoggedIn');
         const userIsOnboarded = dataRealmStore.getVariable('userIsOnboarded');
         const userEnteredChildData = dataRealmStore.getVariable('userEnteredChildData');
-        const userEnteredHisData = dataRealmStore.getVariable('userEnteredHisData');
+        const userParentalRole = dataRealmStore.getVariable('userParentalRole');
 
         // Set routeName
         let routeName: string | null = null;
@@ -35,9 +35,9 @@ class Utils {
         if (userIsLoggedIn) {
             if (!userIsOnboarded) {
                 routeName = 'WalkthroughStackNavigator';
-            } else if (!userEnteredChildData || !userEnteredHisData) {
+            } else if (!userEnteredChildData || !userParentalRole) {
                 routeName = 'AccountStackNavigator';
-            } else if (userIsLoggedIn && userIsOnboarded && userEnteredChildData && userEnteredHisData) {
+            } else if (userIsLoggedIn && userIsOnboarded && userEnteredChildData && userParentalRole) {
                 routeName = 'DrawerNavigator'; // Contains home screen
             }
         }

@@ -10,6 +10,8 @@ import { RadioButtons, RadioButtonsStyles } from "../../components/RadioButtons"
 import { RoundedTextInput, RoundedTextInputStyles } from "../../components/RoundedTextInput";
 import { TextButton, TextButtonSize, TextButtonColor } from "../../components/TextButton";
 import { RoundedButton, RoundedButtonType } from '../../components/RoundedButton';
+import { dataRealmStore } from '../../stores';
+import { utils } from '../../app';
 
 export interface Props {
     navigation: NavigationStackProp<NavigationStackState>;
@@ -26,6 +28,8 @@ export class AddChildrenScreen extends React.Component<Props, State> {
     }
 
     private gotoAddParentsScreen() {
+        dataRealmStore.setVariable('userEnteredChildData', true);
+        
         this.props.navigation.navigate('AccountStackNavigator_AddParentsScreen');
     }
 

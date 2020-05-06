@@ -5,10 +5,12 @@ import { appConfig } from '../app/appConfig';
 
 type Variables = {
     'userEmail': string;
+    'userName': string;
     'userIsLoggedIn': boolean;
     'userIsOnboarded': boolean;
     'userEnteredChildData': boolean;
     'userEnteredHisData': boolean;
+    'userParentalRole': 'mother' | 'father';
     'followGrowth': boolean;
     'followDevelopment': boolean;
     'followDoctorVisits': boolean;
@@ -118,7 +120,7 @@ class DataRealmStore {
     public async deleteVariable<T extends VariableKey>(key:T): Promise<void> {
         return new Promise((resolve, reject) => {
             if (!this.realm) {
-                reject();
+                resolve();
                 return;
             }
 
@@ -134,10 +136,10 @@ class DataRealmStore {
                         resolve();
                     });
                 } else {
-                    reject();
+                    resolve();
                 }
             } catch(e) {
-                reject();
+                resolve();
             }
         });
     }

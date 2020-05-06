@@ -61,15 +61,6 @@ export class LoginScreen extends React.Component<Props, State & AnimationsState>
 
     private onLoginClick() {
         Keyboard.dismiss();
-        // this.gotoWalkthroughScreen();
-        // this.gotoTermsScreen();
-
-        // Go to WalkthroughScreen and reset history
-        const resetAction = StackActions.reset({
-            index: 0,
-            actions: [NavigationActions.navigate({ routeName: 'WalkthroughStackNavigator'})],
-        });
-        this.props.navigation.dispatch(resetAction);
     }
 
     private onInputFocus() {

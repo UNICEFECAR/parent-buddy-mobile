@@ -9,6 +9,8 @@ import { RadioButtons, RadioButtonsStyles } from "../../components/RadioButtons"
 import { RoundedTextInput, RoundedTextInputStyles } from "../../components/RoundedTextInput";
 import { RoundedButton, RoundedButtonType } from '../../components/RoundedButton';
 import { TextButton, TextButtonSize, TextButtonColor } from "../../components/TextButton";
+import { dataRealmStore } from '../../stores';
+import { utils } from '../../app';
 
 export interface Props {
     navigation: NavigationStackProp<NavigationStackState>;
@@ -16,6 +18,7 @@ export interface Props {
 
 export interface State {
     parent: 'mother' | 'father';
+    parentName?: string;
 }
 
 export class AddParentsScreen extends React.Component<Props, State> {
@@ -43,6 +46,18 @@ export class AddParentsScreen extends React.Component<Props, State> {
         this.state = state;
     }
 
+    private saveParentsData() {
+        dataRealmStore.setVariable('userParentalRole', this.state.parent);
+
+        if (this.state.parentName) {
+            dataRealmStore.setVariable('userName', this.state.parentName);
+        } else {
+            dataRealmStore.deleteVariable('userName');
+        }
+
+        utils.gotoNextScreenOnAppOpen();
+    }
+
     public render() {
         return (
             <SafeAreaView style={ [styles.container] }>
@@ -68,7 +83,8 @@ export class AddParentsScreen extends React.Component<Props, State> {
                     <RoundedTextInput
                         label={ translate('accountName') }
                         icon="email-outline"
-                        onChange={ () => {} }
+                        value={ this.state.parentName }
+                        onChange={ (value) => { this.setState({parentName:value}) } }
                     />
 
                     <View style={{height:scale(30)}}></View>
@@ -84,7 +100,7 @@ export class AddParentsScreen extends React.Component<Props, State> {
                     <RoundedButton
                         text = { translate('accountSave') }
                         type = { RoundedButtonType.purple }
-                        onPress={ () => {} }
+                        onPress={ () => { this.saveParentsData() } }
                     />
                 </View>
             </SafeAreaView>
