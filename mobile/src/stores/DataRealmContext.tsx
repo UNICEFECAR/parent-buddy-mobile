@@ -1,6 +1,7 @@
 import React from 'react';
 import Realm from 'realm';
 import { dataRealmConfig as realmConfig } from "../stores/dataRealmConfig";
+import { dataRealmStore } from './dataRealmStore';
 
 export interface DataRealmContextValue {
     realm: Realm | null;
@@ -23,15 +24,15 @@ export class DataRealmProvider extends React.PureComponent<object, DataRealmProv
         this.openRealm();
     }
 
-    private openRealm() {
-        Realm.open(realmConfig)
-            .then(realm => {
-                this.setState({realm});
-                realm.addListener('change', this.onRealmChange);
-            })
-            .catch(error => {
-                console.warn(error);
-            });
+    private async openRealm() {
+        const realm = await dataRealmStore.openRealm();
+
+        if (realm) {
+            this.setState({realm});
+            realm.addListener('change', this.onRealmChange);
+        } else {
+            console.warn('DataRealmProvider was not able to open realm');
+        }
     }
 
     private onRealmChange() {

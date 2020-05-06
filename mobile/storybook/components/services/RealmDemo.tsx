@@ -8,6 +8,7 @@ import Realm from 'realm';
 import { dataRealmConfig } from "../../../src/stores/dataRealmConfig";
 import { ArticleEntity, ArticleEntitySchema } from "../../../src/stores/ArticleEntity";
 import { DataRealmContext, DataRealmContextValue, DataRealmConsumer } from '../../../src/stores/DataRealmContext';
+import { dataRealmStore } from '../../../src/stores';
 
 const EXTERNAL_ID = 44444401;
 
@@ -21,14 +22,14 @@ export class RealmDemo extends React.Component<object> {
         this.openRealm();
     }
 
-    private openRealm() {
-        Realm.open(dataRealmConfig)
-            .then(realm => {
-                this.realm = realm;
-            })
-            .catch(error => {
-                console.warn(error);
-            });
+    private async openRealm() {
+        const realm = await dataRealmStore.openRealm();
+        
+        if (realm) {
+            this.realm = realm;
+        } else {
+            console.warn('RealmDemo was not able to open realm');
+        }
     }
 
     private closeRealm() {

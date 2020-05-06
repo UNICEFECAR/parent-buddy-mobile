@@ -30,14 +30,24 @@ class DataRealmStore {
         return DataRealmStore.instance;
     }
 
-    private openRealm() {
-        Realm.open(dataRealmConfig)
-            .then(realm => {
-                this.realm = realm;
-            })
-            .catch(error => {
-                // console.warn(error);
-            });
+    public async openRealm(): Promise<Realm | null> {
+        return new Promise((resolve, reject) => {
+            if (this.realm) {
+                console.warn('Realm already opened');
+                resolve(this.realm);
+            } else {
+                console.warn('Realm opened');
+                Realm.open(dataRealmConfig)
+                .then(realm => {
+                    this.realm = realm;
+                    resolve(realm);
+                })
+                .catch(error => {
+                    // console.warn(error);
+                    resolve(null);
+                });
+            }
+        });
     }
 
     public async setVariable<T extends VariableKey>(key: T, value: Variables[T] | null): Promise<boolean> {
