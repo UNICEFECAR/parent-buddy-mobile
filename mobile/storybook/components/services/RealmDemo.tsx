@@ -143,10 +143,10 @@ export class RealmDemo extends React.Component<object> {
                 </Button>
                 <View style={{ height: scale(10) }} />
 
-                <Button mode="contained" uppercase={false} onPress={() => { this.closeRealm() }} color={Colors.red700}>
+                {/* <Button mode="contained" uppercase={false} onPress={() => { this.closeRealm() }} color={Colors.red700}>
                     Close realm
                 </Button>
-                <View style={{ height: scale(10) }} />
+                <View style={{ height: scale(10) }} /> */}
 
                 {/* SHOW REALM RECORDS */}
                 <DataRealmConsumer>

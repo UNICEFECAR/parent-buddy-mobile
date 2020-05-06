@@ -1,6 +1,7 @@
 import Realm from 'realm';
 import { dataRealmConfig } from "./dataRealmConfig";
 import { VariableEntity, VariableEntitySchema } from './VariableEntity';
+import { appConfig } from '../app/appConfig';
 
 type Variables = {
     'userIsLoggedIn': boolean;
@@ -33,17 +34,20 @@ class DataRealmStore {
     public async openRealm(): Promise<Realm | null> {
         return new Promise((resolve, reject) => {
             if (this.realm) {
-                console.warn('Realm already opened');
                 resolve(this.realm);
             } else {
-                console.warn('Realm opened');
+                // Delete realm file
+                if (appConfig.deleteRealmFilesBeforeOpen) {
+                    Realm.deleteFile(dataRealmConfig);
+                }
+
+                // Open realm file
                 Realm.open(dataRealmConfig)
                 .then(realm => {
                     this.realm = realm;
                     resolve(realm);
                 })
                 .catch(error => {
-                    // console.warn(error);
                     resolve(null);
                 });
             }
