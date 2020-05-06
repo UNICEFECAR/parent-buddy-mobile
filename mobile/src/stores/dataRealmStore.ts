@@ -4,11 +4,15 @@ import { VariableEntity, VariableEntitySchema } from './VariableEntity';
 import { appConfig } from '../app/appConfig';
 
 type Variables = {
+    'userEmail': string;
     'userIsLoggedIn': boolean;
     'userIsOnboarded': boolean;
     'userEnteredChildData': boolean;
     'userEnteredHisData': boolean;
-    'userEmail': string;
+    'followGrowth': boolean;
+    'followDevelopment': boolean;
+    'followDoctorVisits': boolean;
+    'allowAnonymousUsage': boolean;
 };
 
 type VariableKey = keyof Variables;

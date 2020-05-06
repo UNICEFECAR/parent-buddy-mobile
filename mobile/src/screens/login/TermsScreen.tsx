@@ -9,6 +9,8 @@ import { themes } from '../../themes/themes';
 import { Typography, TypographyType } from '../../components/Typography';
 import { RoundedButton, RoundedButtonType, RoundedButtonStyles } from '../../components/RoundedButton';
 import { TextButton, TextButtonColor } from '../../components/TextButton';
+import { dataRealmStore } from '../../stores';
+import { utils } from '../../app';
 
 export interface TermsScreenParams {
     showSearchInput?: boolean;
@@ -52,17 +54,25 @@ export class TermsScreen extends React.Component<Props, State> {
     }
 
     private initState() {
+        let allowAnonymousUsage = dataRealmStore.getVariable('allowAnonymousUsage');
+
+        if (allowAnonymousUsage === null) {
+            allowAnonymousUsage = true;
+            dataRealmStore.setVariable('allowAnonymousUsage', true);
+        }
+
         let state: State = {
             checkPrivateData: false,
             checkOtherConditions: false,
-            checkAnonDataAccess: true,
+            checkAnonDataAccess: allowAnonymousUsage,
         };
 
         this.state = state;
     }
 
     private onAcceptButtonClick() {
-        this.gotoAddChildrenScreen();
+        dataRealmStore.setVariable('userIsOnboarded', true);
+        utils.gotoNextScreenOnAppOpen();
     }
 
     private gotoAddChildrenScreen() {
@@ -73,6 +83,16 @@ export class TermsScreen extends React.Component<Props, State> {
         this.props.navigation.goBack();
     }
     
+    private onAnonDataAccessPress() {
+        this.setState((prevState) => {
+            return {
+                checkAnonDataAccess: !prevState.checkAnonDataAccess,
+            };
+        }, () => {
+            dataRealmStore.setVariable('allowAnonymousUsage', this.state.checkAnonDataAccess);
+        });
+    }
+
     public render() {
         let colors = themes.getCurrentTheme().theme.variables?.colors;
         const screenParams = this.props.navigation.state.params!;
@@ -152,10 +172,10 @@ export class TermsScreen extends React.Component<Props, State> {
                                     <View style={{flexDirection:'row', marginTop:scale(14), alignItems:'center'}}>
                                         <Checkbox.Android
                                             status={ this.state.checkAnonDataAccess ? 'checked' : 'unchecked' }
-                                            onPress={() => { this.setState({checkAnonDataAccess:!this.state.checkAnonDataAccess}); }}
+                                            onPress={() => { this.onAnonDataAccessPress() }}
                                             color={ colors?.checkboxColor }
                                         />
-                                        <TouchableWithoutFeedback style={{padding:5}} onPress={() => { this.setState({checkAnonDataAccess:!this.state.checkAnonDataAccess}); }}>
+                                        <TouchableWithoutFeedback style={{padding:5}} onPress={() => { this.onAnonDataAccessPress() }}>
                                             <Typography type={ TypographyType.bodyRegular } style={{flex:1, textAlign:'left', marginLeft:scale(5)}}>
                                                 Pristajem da se podaci o korišćenju anonimno obrađuju za poboljšanje aplikacije 
                                             </Typography>

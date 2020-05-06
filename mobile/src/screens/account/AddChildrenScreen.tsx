@@ -53,10 +53,10 @@ export class AddChildrenScreen extends React.Component<Props, State> {
 
                         <View style={{height:scale(20)}}></View>
 
-                        {/* EMAIL */}
+                        {/* NAME */}
                         <RoundedTextInput
-                            label={ translate('accountEmail') }
-                            icon="email-outline"
+                            label={ translate('accountName') }
+                            icon="account-outline"
                             onChange={ () => {} }
                         />
 

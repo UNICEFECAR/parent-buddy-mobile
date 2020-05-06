@@ -1,6 +1,6 @@
-import { navigation, AppNavigationContainer } from './Navigators';
-import { NavigationContainerComponent, StackActions, NavigationActions } from 'react-navigation';
+import { navigation } from './Navigators';
 import { dataRealmStore } from '../stores';
+import { userRealmStore } from '../stores';
 
 /**
  * Various utils methods.

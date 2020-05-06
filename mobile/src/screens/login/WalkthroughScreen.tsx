@@ -9,6 +9,7 @@ import { Switch } from 'react-native-paper';
 import { themes } from '../../themes/themes';
 import { translate } from '../../translations/translate';
 import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
+import { dataRealmStore } from '../../stores';
 
 export interface WalkthroughScreenParams {
     /**
@@ -49,10 +50,14 @@ export class WalkthroughScreen extends React.Component<Props, State> {
     }
 
     private initState() {
+        const followGrowth = dataRealmStore.getVariable('followGrowth');
+        const followDevelopment = dataRealmStore.getVariable('followDevelopment');
+        const followDoctorVisits = dataRealmStore.getVariable('followDoctorVisits');
+
         let state: State = {
-            followGrowth: false,
-            followDevelopment: false,
-            followDoctorVisits: false,
+            followGrowth: followGrowth ? followGrowth : false,
+            followDevelopment: followDevelopment ? followDevelopment : false,
+            followDoctorVisits: followDoctorVisits ? followDoctorVisits : false,
         };
 
         this.state = state;
@@ -79,6 +84,36 @@ export class WalkthroughScreen extends React.Component<Props, State> {
     private gotoTermsScreen() {
         this.props.navigation.navigate('WalkthroughStackNavigator_TermsScreen');
     };
+
+    private onFollowGrowthChange() {
+        this.setState((prevState) => {
+            return {
+                followGrowth: !prevState.followGrowth,
+            };
+        }, () => {
+            dataRealmStore.setVariable('followGrowth', this.state.followGrowth);
+        });
+    }
+
+    private onFollowDevelopmentChange() {
+        this.setState((prevState) => {
+            return {
+                followDevelopment: !prevState.followDevelopment,
+            };
+        }, () => {
+            dataRealmStore.setVariable('followDevelopment', this.state.followDevelopment);
+        });
+    }
+
+    private onFollowDoctorVisitsChange() {
+        this.setState((prevState) => {
+            return {
+                followDoctorVisits: !prevState.followDoctorVisits,
+            };
+        }, () => {
+            dataRealmStore.setVariable('followDoctorVisits', this.state.followDoctorVisits);
+        });
+    }
 
     public render() {
         const screenParams = this.props.navigation.state.params!;
@@ -127,7 +162,7 @@ export class WalkthroughScreen extends React.Component<Props, State> {
                             <Switch
                                 value={ this.state.followGrowth }
                                 color={ themes.getCurrentTheme().theme.variables?.colors?.switchColor }
-                                onValueChange={ () => {this.setState({followGrowth:!this.state.followGrowth})} }
+                                onValueChange={ () => { this.onFollowGrowthChange() } }
                                 style={{marginRight:20}}
                             />
                             <Typography type={TypographyType.bodyRegular} style={{ flex: 1, color: '#262628', textAlign: 'left' }}>
@@ -181,7 +216,7 @@ export class WalkthroughScreen extends React.Component<Props, State> {
                             <Switch
                                 value={ this.state.followDevelopment }
                                 color={ themes.getCurrentTheme().theme.variables?.colors?.switchColor }
-                                onValueChange={ () => {this.setState({followDevelopment:!this.state.followDevelopment})} }
+                                onValueChange={ () => { this.onFollowDevelopmentChange() } }
                                 style={{marginRight:20}}
                             />
                             <Typography type={TypographyType.bodyRegular} style={{ flex: 1, color: '#262628', textAlign: 'left' }}>
@@ -213,7 +248,7 @@ export class WalkthroughScreen extends React.Component<Props, State> {
                             <Switch
                                 value={ this.state.followDoctorVisits }
                                 color={ themes.getCurrentTheme().theme.variables?.colors?.switchColor }
-                                onValueChange={ () => {this.setState({followDoctorVisits:!this.state.followDoctorVisits})} }
+                                onValueChange={ () => { this.onFollowDoctorVisitsChange() } }
                                 style={{marginRight:20}}
                             />
                             <Typography type={TypographyType.bodyRegular} style={{ flex: 1, color: '#262628', textAlign: 'left' }}>
