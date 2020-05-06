@@ -5,7 +5,6 @@ import { appConfig } from '../app/appConfig';
 
 type Variables = {
     'userIsLoggedIn': boolean;
-    'userLoggedInDate': Date;
     'userIsOnboarded': boolean;
     'userEnteredChildData': boolean;
     'userEnteredHisData': boolean;

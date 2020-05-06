@@ -9,6 +9,7 @@ import { GoogleSignin } from '@react-native-community/google-signin';
 import { googleAuth } from './googleAuth';
 import { DataRealmProvider } from '../stores/DataRealmContext';
 import { dataRealmStore } from '../stores';
+import { utils } from './utils';
 
 // Warnings to ignore
 YellowBox.ignoreWarnings([
@@ -37,7 +38,7 @@ export class App extends React.Component<object> {
     public componentDidMount() {
         this.addItemsToDevMenu();
         googleAuth.configure();
-        this.gotoFirstScreen();
+        utils.gotoNextScreenOnAppOpen();
     }
 
     private addItemsToDevMenu() {
@@ -50,38 +51,6 @@ export class App extends React.Component<object> {
     private gotoStorybookScreen() {
         navigation.navigate('RootModalStackNavigator_StorybookScreen');
     };
-
-    private gotoFirstScreen() {
-        // Flags
-        const userIsLoggedIn = dataRealmStore.getVariable('userIsLoggedIn');
-        const userIsOnboarded = dataRealmStore.getVariable('userIsOnboarded');
-        const userEnteredChildData = dataRealmStore.getVariable('userEnteredChildData');
-        const userEnteredHisData = dataRealmStore.getVariable('userEnteredHisData');
-
-        // Set routeName
-        let routeName: string | null = null;
-        
-        // Default route name: LoginStackNavigator
-        if (userIsLoggedIn) {
-            if (!userIsOnboarded) {
-                routeName = 'WalkthroughStackNavigator';
-            } else if (!userEnteredChildData || !userEnteredHisData) {
-                routeName = 'AccountStackNavigator';
-            } else if (userIsLoggedIn && userIsOnboarded && userEnteredChildData && userEnteredHisData) {
-                routeName = 'DrawerNavigator';
-            }
-        }
-
-        // Navigate
-        if (routeName) {
-            const resetAction = StackActions.reset({
-                index: 0,
-                actions: [NavigationActions.navigate({ routeName: routeName})],
-            });
-    
-            navigation.dispatch(resetAction);
-        }
-    }
 
     public render() {
         return (

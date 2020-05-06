@@ -11,7 +11,9 @@ import { translate } from '../../translations/translate';
 import { Animated, Easing } from 'react-native';
 import { WalkthroughScreenParams } from './WalkthroughScreen';
 import { StackActions, NavigationActions } from 'react-navigation';
-import { googleAuth } from '../../app';
+import { googleAuth, navigation } from '../../app';
+import { dataRealmStore } from '../../stores';
+import { utils } from '../../app/utils';
 
 export interface Props {
     navigation: NavigationSwitchProp<NavigationState>;
@@ -144,7 +146,9 @@ export class LoginScreen extends React.Component<Props, State & AnimationsState>
         let response = await googleAuth.signIn();
         
         if (response?.user?.email) {
-            console.warn(response.user.email);
+            dataRealmStore.setVariable('userEmail', response.user.email);
+            dataRealmStore.setVariable('userIsLoggedIn', true);
+            utils.gotoNextScreenOnAppOpen();
         }
     }
 

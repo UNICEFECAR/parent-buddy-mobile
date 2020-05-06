@@ -3,7 +3,7 @@ import { BackHandler, ScrollView, Text, View } from "react-native";
 import { IconButton } from "react-native-paper";
 import { moderateScale, scale } from "react-native-size-matters";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { createAppContainer, createSwitchNavigator, NavigationAction, NavigationActions, NavigationContainerComponent, NavigationScreenConfigProps, SafeAreaView } from "react-navigation";
+import { createAppContainer, createSwitchNavigator, NavigationAction, NavigationActions, NavigationContainerComponent, NavigationScreenConfigProps, SafeAreaView, StackActions } from "react-navigation";
 import { createDrawerNavigator, DrawerActions } from 'react-navigation-drawer';
 import { createStackNavigator, NavigationStackOptions, NavigationStackProp, NavigationStackState } from "react-navigation-stack";
 import { ProfileIcon } from "../components/ProfileIcon";
@@ -79,6 +79,19 @@ class Navigation {
         this.navigator!.dispatch(
             NavigationActions.navigate({ routeName, params })
         );
+    }
+
+    /**
+     * Unload all the screens from the stack, and open given route
+     * as the first screen on the stack.
+     */
+    public resetStackAndNavigate(routeName:string, params:any = undefined) {
+        const resetAction = StackActions.reset({
+            index: 0,
+            actions: [NavigationActions.navigate({ routeName, params })],
+        });
+
+        this.dispatch(resetAction);        
     }
 
     public goBack() {
