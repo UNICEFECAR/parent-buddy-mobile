@@ -2,7 +2,7 @@ import { ObjectSchema } from "realm";
 
 export type ChildEntity = {
     name: string;
-    gender: 'boy' | 'girl',
+    gender: ChildGender,
     photoData?: string;
 };
 
@@ -19,3 +19,5 @@ export const ChildEntitySchema: ObjectSchema = {
         photoData: {type:'string', optional:true},
     }
 };
+
+export type ChildGender = 'boy' | 'girl';

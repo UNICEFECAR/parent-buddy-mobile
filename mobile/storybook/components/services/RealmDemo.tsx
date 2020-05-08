@@ -41,7 +41,7 @@ export class RealmDemo extends React.Component<object> {
     private getPath() {
         if (!this.realm) return;
 
-        console.warn(this.realm.path);
+        console.log( this.realm.path.replace('data.realm', '') );
     }
 
     private createArticle() {
@@ -119,7 +119,7 @@ export class RealmDemo extends React.Component<object> {
 
                 {/* BUTTONS */}
                 <Button mode="contained" uppercase={false} onPress={() => { this.getPath() }} color={Colors.blue700}>
-                    Get path
+                    Log realms path
                 </Button>
                 <View style={{ height: scale(10) }} />
 

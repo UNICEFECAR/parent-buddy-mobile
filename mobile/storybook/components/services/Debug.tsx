@@ -3,7 +3,7 @@ import { ScrollView, View, Text } from 'react-native';
 import { ScaledSheet, moderateScale, scale } from "react-native-size-matters";
 import { Typography, TypographyType } from "../../../src/components/Typography";
 import { Button, Colors } from "react-native-paper";
-import { dataRealmStore } from '../../../src/stores';
+import { dataRealmStore, userRealmStore } from '../../../src/stores';
 
 export class Debug extends React.Component {
     private deleteAllOnboardingData() {
@@ -19,12 +19,21 @@ export class Debug extends React.Component {
         dataRealmStore.deleteVariable('userName');
     }
 
+    private logRealmPath() {
+        console.log( userRealmStore.realm?.path.replace('user.realm', '') );
+    }
+
     render() {
         return (
             <ScrollView contentContainerStyle={{ flex: 1, padding: 24, alignItems: 'center' }}>
                 <Typography type={TypographyType.headingSecondary}>
                     Debug
                 </Typography>
+
+                <Button mode="contained" uppercase={false} onPress={ () => {this.logRealmPath()} } color={Colors.blue700}>
+                    Log realms path
+                </Button>
+                <View style={{ height: scale(10) }} />
 
                 <Button mode="contained" uppercase={false} onPress={ () => {this.deleteAllOnboardingData()} } color={Colors.blue700}>
                     Delete all onboarding data
