@@ -1,4 +1,4 @@
-import React, { RefObject, createRef } from 'react';
+import React, { RefObject, createRef, Fragment } from 'react';
 import { SafeAreaView, View, Text, Button, StyleSheet, ViewStyle, Alert } from 'react-native';
 import { NavigationStackProp, NavigationStackState, NavigationStackOptions } from 'react-navigation-stack';
 import { translate } from '../../translations/translate';
@@ -14,6 +14,8 @@ import { dataRealmStore, userRealmStore } from '../../stores';
 import { utils } from '../../app';
 import { ChildEntity, ChildEntitySchema, ChildGender } from '../../stores/ChildEntity';
 import { IconButton, Colors } from 'react-native-paper';
+import { debounce } from "lodash";
+import Realm, { ObjectSchema } from 'realm';
 
 export interface Props {
     navigation: NavigationStackProp<NavigationStackState>;
@@ -30,14 +32,22 @@ export class AddChildrenScreen extends React.Component<Props, State> {
     public constructor(props: Props) {
         super(props);
         this.scrollView = createRef<KeyboardAwareScrollView>();
+        this.saveChildrenToStoreDebounce = debounce(this.saveChildrenToStore, 500);
         this.initState();
     }
 
     private initState() {
+        let records = userRealmStore.getAll<ChildEntity>(ChildEntitySchema);
+
+        if (records.length === 0) {
+            records.push({
+                name: '',
+                gender: 'girl'
+            });
+        }
+
         const state: State = {
-            children: [
-                { name: '', gender: 'girl' }
-            ]
+            children: records
         };
 
         this.state = state;
@@ -62,6 +72,8 @@ export class AddChildrenScreen extends React.Component<Props, State> {
             return {
                 children: newChildren,
             };
+        }, () => {
+            this.saveChildrenToStore();
         });
     }
 
@@ -70,7 +82,20 @@ export class AddChildrenScreen extends React.Component<Props, State> {
             const children = prevState.children;
             children[childIndex].name = newName;
 
-            return {children};
+            return { children };
+        }, () => {
+            this.saveChildrenToStoreDebounce();
+        });
+    }
+
+    private onChildPhotoChange(childIndex: number, imageData: string) {
+        this.setState((prevState) => {
+            const children = prevState.children;
+            children[childIndex].photoData = imageData;
+
+            return { children };
+        }, () => {
+            this.saveChildrenToStore();
         });
     }
 
@@ -83,7 +108,7 @@ export class AddChildrenScreen extends React.Component<Props, State> {
                 gender: 'girl',
             });
 
-            return {children};
+            return { children };
         }, () => {
             setTimeout(() => {
                 this.scrollView.current?.scrollToEnd();
@@ -91,14 +116,26 @@ export class AddChildrenScreen extends React.Component<Props, State> {
         });
     }
 
-    private removeChild(childIndex:number) {
+    private removeChild(childIndex: number) {
         this.setState((prevState) => {
             const children = prevState.children;
             children.splice(childIndex, 1);
 
-            return {children};
+            return { children };
+        }, () => {
+            this.saveChildrenToStore();
         });
     }
+
+    private async saveChildrenToStore() {
+        await userRealmStore.deleteAll(ChildEntitySchema);
+
+        this.state.children.forEach((child, index) => {
+            userRealmStore.create<ChildEntity>(ChildEntitySchema, child);
+        });
+    }
+
+    private saveChildrenToStoreDebounce: () => void;
 
     public render() {
         return (
@@ -113,22 +150,26 @@ export class AddChildrenScreen extends React.Component<Props, State> {
                     {this.state.children.map((child, childIndex) => (
                         <View key={childIndex}>
                             {/* CHILD HEADER */}
-                            { childIndex !== 0 && (
-                                <View style={{ height:scale(45), paddingLeft:scale(10), backgroundColor: '#F8F8F8', flexDirection:'row', alignItems:'center' }}>
-                                    <Text style={{ flex:1, fontSize:moderateScale(16), fontWeight:'bold' }}>
+                            {childIndex !== 0 && (
+                                <View style={{ height: scale(45), paddingLeft: scale(10), backgroundColor: '#F8F8F8', flexDirection: 'row', alignItems: 'center' }}>
+                                    <Text style={{ flex: 1, fontSize: moderateScale(16), fontWeight: 'bold' }}>
                                         {translate('accountSisterOrBrother')}
                                     </Text>
 
                                     <IconButton
                                         icon="close"
                                         size={scale(25)}
-                                        onPress={() => {this.removeChild(childIndex)}}
+                                        onPress={() => { this.removeChild(childIndex) }}
                                     />
                                 </View>
-                            ) }
+                            )}
 
                             {/* PHOTO PICKER */}
-                            <PhotoPicker imageData={child.photoData} onChange={imageData => child.photoData = imageData} />
+                            <PhotoPicker
+                                imageData={this.state.children[childIndex].photoData}
+                                onChange={imageData => this.onChildPhotoChange(childIndex, imageData)}
+                            />
+
 
                             <View style={{ height: scale(30) }}></View>
 
@@ -137,7 +178,7 @@ export class AddChildrenScreen extends React.Component<Props, State> {
                                 <RadioButtons
                                     value={child.gender}
                                     buttons={[{ text: translate('accountGirl'), value: 'girl' }, { text: translate('accountBoy'), value: 'boy' }]}
-                                    onChange={value => { if (value) { child.gender = value as ChildGender; } }}
+                                    onChange={value => { if (value) { this.onChildGenderChange(childIndex, value as ChildGender) } }}
                                 />
 
                                 <View style={{ height: scale(20) }}></View>

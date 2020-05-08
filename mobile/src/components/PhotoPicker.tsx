@@ -44,6 +44,8 @@ export class PhotoPicker extends React.Component<Props, State> {
     private onPhotoPress() {
         ImagePicker.openPicker({
             includeBase64: true,
+            compressImageMaxWidth: 500,
+            compressImageMaxHeight: 500,
 
             cropping: true,
             width: CROPPED_IMAGE_WIDTH, // Width of result image when used with cropping option

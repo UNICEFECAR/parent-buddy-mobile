@@ -152,6 +152,41 @@ class UserRealmStore {
             }
         });
     }
+
+    public async deleteAll(entitySchema:ObjectSchema): Promise<void> {
+        return new Promise((resolve, reject) => {
+            if (!this.realm) {
+                reject();
+                return;
+            }
+
+            try {
+                const allRecords = this.realm?.objects(entitySchema.name);
+    
+                this.realm?.write(() => {
+                    this.realm?.delete(allRecords);
+                    resolve();
+                });
+            } catch(e) {
+                reject(e);
+            }
+        });
+    }
+
+    public getAll<Entity>(entitySchema:ObjectSchema): Entity[] {
+        const records: any[] = [];
+        const allRecords = this.realm?.objects<Entity>(entitySchema.name);
+        
+        allRecords?.forEach((record: any) => {
+            records.push( {
+                name: record.name,
+                gender: record.gender,
+                photoData: record.photoData,
+            } );
+        });
+
+        return records;
+    }
 }
 
 export const userRealmStore = UserRealmStore.getInstance();
