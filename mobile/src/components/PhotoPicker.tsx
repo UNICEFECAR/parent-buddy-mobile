@@ -8,15 +8,15 @@ const CROPPED_IMAGE_HEIGHT = 800;
 
 export interface Props {
     /**
-     * Image in base64 format. For example: data:image/png;base64,iVBORw0KG...
+     * File path or URL.
      */
-    imageData?: string;
+    imageUri?: string;
     style?: StyleProp<ViewStyle>;
-    onChange?: (imageData:string)=>void
+    onChange?: (image:ImageObject)=>void
 }
 
 export interface State {
-    imageData?: string;
+    imageUri?: string;
     windowWidth: number;
     windowHeight: number;
 }
@@ -33,7 +33,7 @@ export class PhotoPicker extends React.Component<Props, State> {
 
     private initState() {
         let state: State = {
-            imageData: this.props.imageData,
+            imageUri: this.props.imageUri,
             windowWidth: Dimensions.get('screen').width,
             windowHeight: Dimensions.get('screen').height,
         };
@@ -42,8 +42,9 @@ export class PhotoPicker extends React.Component<Props, State> {
     }
 
     private onPhotoPress() {
+        // API: https://bit.ly/2AdeTLf
         ImagePicker.openPicker({
-            includeBase64: true,
+            includeBase64: false,
             compressImageMaxWidth: 500,
             compressImageMaxHeight: 500,
 
@@ -54,13 +55,11 @@ export class PhotoPicker extends React.Component<Props, State> {
             showCropGuidelines: true,
         }).then((image:ImageObject | ImageObject[]) => {
             if (!Array.isArray(image)) {
-                let imageData = `data:${image.mime};base64,${image.data}`;
-
                 this.setState({
-                    imageData: image.data ? imageData : undefined
+                    imageUri: image.path
                 }, () => {
-                    if (this.props.onChange && image.data) {
-                        this.props.onChange(imageData);
+                    if (this.props.onChange && image.path) {
+                        this.props.onChange(image);
                     }
                 });
             }
@@ -75,7 +74,7 @@ export class PhotoPicker extends React.Component<Props, State> {
             let iconStyle: ViewStyle = {};
             let iconContainerStyle: ViewStyle = {};
 
-            if (this.state.imageData) {
+            if (this.state.imageUri) {
                 iconStyle.shadowOpacity = 0.5;
                 iconStyle.shadowOffset = {width:2, height:2};
                 iconStyle.elevation = 2;
@@ -103,7 +102,7 @@ export class PhotoPicker extends React.Component<Props, State> {
             <TouchableWithoutFeedback onPress={ () => {this.onPhotoPress()} }>
                 <View style={ [styles.container, this.props.style] }>
                     {/* NO PHOTO */}
-                    {!this.state.imageData ? (
+                    {!this.state.imageUri ? (
                         <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
                             <Icon
                                 name='baby'
@@ -114,10 +113,10 @@ export class PhotoPicker extends React.Component<Props, State> {
                     ) : null}
 
                     {/* SHOW PHOTO */}
-                    {this.state.imageData ? (
+                    {this.state.imageUri ? (
                         <View style={{flex:1}}>
                             <ImageBackground
-                                source={ {uri: this.state.imageData} }
+                                source={ {uri: this.state.imageUri} }
                                 style={{ width:'100%', height:'100%' }}
                                 resizeMode="cover"
                             >

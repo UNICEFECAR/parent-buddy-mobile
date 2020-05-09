@@ -17,6 +17,7 @@ import { IconButton, Colors } from 'react-native-paper';
 import { debounce } from "lodash";
 import Realm, { ObjectSchema } from 'realm';
 import { UserRealmContext, UserRealmContextValue, UserRealmConsumer } from '../../stores/UserRealmContext';
+import ImagePicker, { Image as ImageObject } from 'react-native-image-crop-picker';
 
 export interface Props {
     navigation: NavigationStackProp<NavigationStackState>;
@@ -34,6 +35,7 @@ export class AddChildrenScreen extends React.Component<Props, State> {
         super(props);
         this.scrollView = createRef<KeyboardAwareScrollView>();
         this.initState();
+        this.addFirstChild();
     }
 
     private initState() {
@@ -42,6 +44,21 @@ export class AddChildrenScreen extends React.Component<Props, State> {
         };
 
         this.state = state;
+    }
+
+    private addFirstChild() {
+        let numberOfChildren = userRealmStore.realm?.objects<ChildEntity>(ChildEntitySchema.name).length;
+
+        if (numberOfChildren !== undefined && numberOfChildren !== 0) {
+            return;
+        }
+
+        userRealmStore.create<ChildEntity>(ChildEntitySchema, {
+            name: '',
+            gender: 'girl',
+            createdAt: new Date(),
+            updatedAt: new Date(),
+        });
     }
 
     private gotoAddParentsScreen() {
@@ -69,7 +86,8 @@ export class AddChildrenScreen extends React.Component<Props, State> {
         });
     }
 
-    private onChildPhotoChange(childIndex: number, imageData: string) {
+    private onChildPhotoChange(childIndex: number, image: ImageObject) {
+        console.warn(image.path);
         // this.setState((prevState) => {
         //     const children = prevState.children;
         //     children[childIndex].photoData = imageData;
@@ -130,8 +148,7 @@ export class AddChildrenScreen extends React.Component<Props, State> {
 
                                     {/* PHOTO PICKER */}
                                     <PhotoPicker
-                                        imageData={child.photoData}
-                                        onChange={imageData => this.onChildPhotoChange(childIndex, imageData)}
+                                        onChange={image => this.onChildPhotoChange(childIndex, image)}
                                     />
 
                                     <View style={{ height: scale(30) }}></View>
