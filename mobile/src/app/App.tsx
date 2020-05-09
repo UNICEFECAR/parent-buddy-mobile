@@ -8,6 +8,7 @@ import { ThemeProvider } from '../themes/ThemeContext';
 import { GoogleSignin } from '@react-native-community/google-signin';
 import { googleAuth } from './googleAuth';
 import { DataRealmProvider } from '../stores/DataRealmContext';
+import { UserRealmProvider } from '../stores/UserRealmContext';
 import { dataRealmStore } from '../stores';
 import { utils } from './utils';
 
@@ -57,12 +58,14 @@ export class App extends React.Component<object> {
             <ThemeProvider>
                 <PaperProvider>
                     <DataRealmProvider>
-                        {/* <Storybook /> */}
-                        <AppNavigationContainer
-                            ref={(navigatorRef: NavigationContainerComponent) => {
-                                return navigation.setTopLevelNavigator(navigatorRef);
-                            }}
-                        />
+                        <UserRealmProvider>
+                            {/* <Storybook /> */}
+                            <AppNavigationContainer
+                                ref={(navigatorRef: NavigationContainerComponent) => {
+                                    return navigation.setTopLevelNavigator(navigatorRef);
+                                }}
+                            />
+                        </UserRealmProvider>
                     </DataRealmProvider>
                 </PaperProvider>
             </ThemeProvider>

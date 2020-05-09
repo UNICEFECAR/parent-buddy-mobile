@@ -16,13 +16,14 @@ import { ChildEntity, ChildEntitySchema, ChildGender } from '../../stores/ChildE
 import { IconButton, Colors } from 'react-native-paper';
 import { debounce } from "lodash";
 import Realm, { ObjectSchema } from 'realm';
+import { UserRealmContext, UserRealmContextValue, UserRealmConsumer } from '../../stores/UserRealmContext';
 
 export interface Props {
     navigation: NavigationStackProp<NavigationStackState>;
 }
 
 export interface State {
-    children: ChildEntity[];
+
 }
 
 export class AddChildrenScreen extends React.Component<Props, State> {
@@ -32,22 +33,12 @@ export class AddChildrenScreen extends React.Component<Props, State> {
     public constructor(props: Props) {
         super(props);
         this.scrollView = createRef<KeyboardAwareScrollView>();
-        this.saveChildrenToStoreDebounce = debounce(this.saveChildrenToStore, 500);
         this.initState();
     }
 
     private initState() {
-        let records = userRealmStore.getAll<ChildEntity>(ChildEntitySchema);
-
-        if (records.length === 0) {
-            records.push({
-                name: '',
-                gender: 'girl'
-            });
-        }
-
         const state: State = {
-            children: records
+
         };
 
         this.state = state;
@@ -64,81 +55,51 @@ export class AddChildrenScreen extends React.Component<Props, State> {
         // this.props.navigation.navigate('AccountStackNavigator_AddParentsScreen');
     }
 
-    private onChildGenderChange(childIndex: number, newGender: ChildGender) {
-        this.setState((prevState) => {
-            const newChildren = prevState.children;
-            newChildren[childIndex].gender = newGender;
-
-            return {
-                children: newChildren,
-            };
-        }, () => {
-            this.saveChildrenToStore();
+    private onChildGenderChange(child: ChildEntity, newGender: ChildGender) {
+        userRealmStore.realm?.write(() => {
+            child.gender = newGender;
+            child.updatedAt = new Date();
         });
     }
 
-    private onChildNameChange(childIndex: number, newName: string) {
-        this.setState((prevState) => {
-            const children = prevState.children;
-            children[childIndex].name = newName;
-
-            return { children };
-        }, () => {
-            this.saveChildrenToStoreDebounce();
+    private onChildNameChange(child: ChildEntity, newName: string) {
+        userRealmStore.realm?.write(() => {
+            child.name = newName;
+            child.updatedAt = new Date();
         });
     }
 
     private onChildPhotoChange(childIndex: number, imageData: string) {
-        this.setState((prevState) => {
-            const children = prevState.children;
-            children[childIndex].photoData = imageData;
+        // this.setState((prevState) => {
+        //     const children = prevState.children;
+        //     children[childIndex].photoData = imageData;
 
-            return { children };
-        }, () => {
-            this.saveChildrenToStore();
-        });
+        //     return { children };
+        // }, () => {
+        //     this.saveChildrenToStore();
+        // });
     }
 
-    private addAnotherChild() {
-        this.setState((prevState) => {
-            const children = prevState.children;
-
-            children.push({
-                name: '',
-                gender: 'girl',
-            });
-
-            return { children };
-        }, () => {
-            setTimeout(() => {
-                this.scrollView.current?.scrollToEnd();
-            }, 0);
+    private async addAnotherChild() {
+        await userRealmStore.create<ChildEntity>(ChildEntitySchema, {
+            name:'',
+            gender:'girl',
+            createdAt: new Date(),
+            updatedAt: new Date(),
         });
+
+        setTimeout(() => {
+            this.scrollView.current?.scrollToEnd();
+        }, 0);
     }
 
-    private removeChild(childIndex: number) {
-        this.setState((prevState) => {
-            const children = prevState.children;
-            children.splice(childIndex, 1);
-
-            return { children };
-        }, () => {
-            this.saveChildrenToStore();
-        });
+    private async removeChild(child: ChildEntity) {
+        await userRealmStore.delete(child);
     }
-
-    private async saveChildrenToStore() {
-        await userRealmStore.deleteAll(ChildEntitySchema);
-
-        this.state.children.forEach((child, index) => {
-            userRealmStore.create<ChildEntity>(ChildEntitySchema, child);
-        });
-    }
-
-    private saveChildrenToStoreDebounce: () => void;
 
     public render() {
         return (
+
             <SafeAreaView style={[styles.container]}>
                 <KeyboardAwareScrollView ref={this.scrollView} contentContainerStyle={{ backgroundColor: 'white', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'stretch' }}>
                     {/* TITLE */}
@@ -147,63 +108,68 @@ export class AddChildrenScreen extends React.Component<Props, State> {
                     </Typography>
 
                     {/* CHILDREN */}
-                    {this.state.children.map((child, childIndex) => (
-                        <View key={childIndex}>
-                            {/* CHILD HEADER */}
-                            {childIndex !== 0 && (
-                                <View style={{ height: scale(45), paddingLeft: scale(10), backgroundColor: '#F8F8F8', flexDirection: 'row', alignItems: 'center' }}>
-                                    <Text style={{ flex: 1, fontSize: moderateScale(16), fontWeight: 'bold' }}>
-                                        {translate('accountSisterOrBrother')}
-                                    </Text>
+                    <UserRealmConsumer>
+                        {(userRealmContext: UserRealmContextValue) => (
+                            <Fragment>
+                                {userRealmContext.realm?.objects<ChildEntity>(ChildEntitySchema.name).map((child, childIndex) => (
+                                <View key={childIndex}>
+                                    {/* CHILD HEADER */}
+                                    {childIndex !== 0 && (
+                                        <View style={{ height: scale(45), paddingLeft: scale(10), backgroundColor: '#F8F8F8', flexDirection: 'row', alignItems: 'center' }}>
+                                            <Text style={{ flex: 1, fontSize: moderateScale(16), fontWeight: 'bold' }}>
+                                                {translate('accountSisterOrBrother')}
+                                            </Text>
 
-                                    <IconButton
-                                        icon="close"
-                                        size={scale(25)}
-                                        onPress={() => { this.removeChild(childIndex) }}
+                                            <IconButton
+                                                icon="close"
+                                                size={scale(25)}
+                                                onPress={() => { this.removeChild(child) }}
+                                            />
+                                        </View>
+                                    )}
+
+                                    {/* PHOTO PICKER */}
+                                    <PhotoPicker
+                                        imageData={child.photoData}
+                                        onChange={imageData => this.onChildPhotoChange(childIndex, imageData)}
                                     />
+
+                                    <View style={{ height: scale(30) }}></View>
+
+                                    <View style={{ padding: scale(30), alignItems: 'center' }}>
+                                        {/* CHOOSE GENDER */}
+                                        <RadioButtons
+                                            value={child.gender}
+                                            buttons={[{ text: translate('accountGirl'), value: 'girl' }, { text: translate('accountBoy'), value: 'boy' }]}
+                                            onChange={value => { if (value) { this.onChildGenderChange(child, value as ChildGender) } }}
+                                        />
+
+                                        <View style={{ height: scale(20) }}></View>
+
+                                        {/* NAME */}
+                                        <RoundedTextInput
+                                            label={translate('accountName')}
+                                            icon="account-outline"
+                                            value={child.name}
+                                            onChange={(value) => { this.onChildNameChange(child, value) }}
+                                        />
+
+                                        <View style={{ height: scale(20) }}></View>
+
+                                        {/* ADD SIBLING */}
+                                        {(userRealmContext.realm?.objects(ChildEntitySchema.name) && childIndex === userRealmContext.realm?.objects(ChildEntitySchema.name).length-1) && (
+                                            <TextButton color={TextButtonColor.purple} onPress={() => { this.addAnotherChild() }}>
+                                                + { translate('accountHasSibling')}
+                                            </TextButton>
+                                        )}
+
+                                        {/* <View style={{height:scale(20)}}></View> */}
+                                    </View>
                                 </View>
-                            )}
-
-                            {/* PHOTO PICKER */}
-                            <PhotoPicker
-                                imageData={this.state.children[childIndex].photoData}
-                                onChange={imageData => this.onChildPhotoChange(childIndex, imageData)}
-                            />
-
-
-                            <View style={{ height: scale(30) }}></View>
-
-                            <View style={{ padding: scale(30), alignItems: 'center' }}>
-                                {/* CHOOSE GENDER */}
-                                <RadioButtons
-                                    value={child.gender}
-                                    buttons={[{ text: translate('accountGirl'), value: 'girl' }, { text: translate('accountBoy'), value: 'boy' }]}
-                                    onChange={value => { if (value) { this.onChildGenderChange(childIndex, value as ChildGender) } }}
-                                />
-
-                                <View style={{ height: scale(20) }}></View>
-
-                                {/* NAME */}
-                                <RoundedTextInput
-                                    label={translate('accountName')}
-                                    icon="account-outline"
-                                    value={child.name}
-                                    onChange={(value) => { this.onChildNameChange(childIndex, value) }}
-                                />
-
-                                <View style={{ height: scale(20) }}></View>
-
-                                {/* ADD SIBLING */}
-                                {childIndex === this.state.children.length - 1 && (
-                                    <TextButton color={TextButtonColor.purple} onPress={() => { this.addAnotherChild() }}>
-                                        + { translate('accountHasSibling')}
-                                    </TextButton>
-                                )}
-
-                                {/* <View style={{height:scale(20)}}></View> */}
-                            </View>
-                        </View>
-                    ))}
+                                ))}
+                            </Fragment>
+                        )}
+                    </UserRealmConsumer>
 
                     <View style={{ height: scale(20) }}></View>
 
@@ -218,6 +184,7 @@ export class AddChildrenScreen extends React.Component<Props, State> {
 
                 </KeyboardAwareScrollView>
             </SafeAreaView>
+
         );
     }
 

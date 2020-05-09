@@ -153,6 +153,24 @@ class UserRealmStore {
         });
     }
 
+    public async delete(record:any): Promise<void> {
+        return new Promise((resolve, reject) => {
+            if (!this.realm) {
+                reject();
+                return;
+            }
+
+            try {
+                this.realm.write(() => {
+                    this.realm?.delete(record);
+                    resolve();
+                });
+            } catch (e) {
+                reject();
+            }
+        });
+    }
+
     public async deleteAll(entitySchema:ObjectSchema): Promise<void> {
         return new Promise((resolve, reject) => {
             if (!this.realm) {
@@ -171,21 +189,6 @@ class UserRealmStore {
                 reject(e);
             }
         });
-    }
-
-    public getAll<Entity>(entitySchema:ObjectSchema): Entity[] {
-        const records: any[] = [];
-        const allRecords = this.realm?.objects<Entity>(entitySchema.name);
-        
-        allRecords?.forEach((record: any) => {
-            records.push( {
-                name: record.name,
-                gender: record.gender,
-                photoData: record.photoData,
-            } );
-        });
-
-        return records;
     }
 }
 
