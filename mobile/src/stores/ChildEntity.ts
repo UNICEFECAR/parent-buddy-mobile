@@ -4,6 +4,8 @@ export type ChildEntity = {
     name: string;
     gender: ChildGender,
     photoData?: string;
+    createdAt?: Date;
+    updatedAt: Date;
 };
 
 /**
@@ -17,6 +19,8 @@ export const ChildEntitySchema: ObjectSchema = {
         name: {type:'string'},
         gender: {type:'string'},
         photoData: {type:'string', optional:true},
+        createdAt: {type:'date', optional:true},
+        updatedAt: {type:'date'},
     }
 };
 

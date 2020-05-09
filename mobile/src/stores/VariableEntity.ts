@@ -17,7 +17,7 @@ export const VariableEntitySchema: ObjectSchema = {
     properties: {
         key: {type:'string'},
         value: {type:'string'},
-        createdAt: {type:'date'},
+        createdAt: {type:'date', optional:true},
         updatedAt: {type:'date'},
     }
 };

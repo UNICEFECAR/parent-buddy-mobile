@@ -9,6 +9,8 @@ export type ArticleEntity = {
     categoryId: number;
     tagsIds?: Array<number>;
     bodyHTML: string;
+    createdAt?: Date;
+    updatedAt: Date;
 };
 
 /**
@@ -26,6 +28,8 @@ export const ArticleEntitySchema: ObjectSchema = {
         youTubeVideoId: {type:'string', optional:true},
         categoryId: {type:'int'},
         tagsIds: {type:'int[]', optional:true},
-        bodyHTML: {type:'string'}
+        bodyHTML: {type:'string'},
+        createdAt: {type:'date', optional:true},
+        updatedAt: {type:'date'},
     }
 };

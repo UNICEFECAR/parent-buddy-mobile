@@ -1,5 +1,6 @@
 import { ArticleEntity } from './ArticleEntity';
 import { VariableEntity } from './VariableEntity';
+import { ChildEntity } from './ChildEntity';
 import { ArticleViewEntity } from './ArticleViewEntity';
 import { CategoryArticlesViewEntity } from './CategoryArticlesViewEntity';
 import { dataRealmConfig } from "./dataRealmConfig";
@@ -11,6 +12,7 @@ import { userRealmStore } from "./userRealmStore";
 
 export { ArticleEntity };
 export { VariableEntity };
+export { ChildEntity };
 export { ArticleViewEntity };
 export { CategoryArticlesViewEntity };
 export { dataRealmConfig };
