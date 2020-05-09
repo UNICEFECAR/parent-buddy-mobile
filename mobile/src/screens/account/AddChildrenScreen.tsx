@@ -1,5 +1,5 @@
 import React, { createRef, Fragment, RefObject } from 'react';
-import { SafeAreaView, StyleSheet, Text, View, ViewStyle } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, View, ViewStyle, Platform } from 'react-native';
 import { copyFile, DocumentDirectoryPath, exists, mkdir, unlink } from "react-native-fs";
 import 'react-native-get-random-values';
 import { Image as ImageObject } from 'react-native-image-crop-picker';
@@ -116,7 +116,7 @@ export class AddChildrenScreen extends React.Component<Props, State> {
 
         // Save imageUri to realm
         userRealmStore.realm?.write(() => {
-            child.photoUri = destPath;
+            child.photoUri = destPath.replace(DocumentDirectoryPath, '');
         });
     }
 
@@ -158,6 +158,21 @@ export class AddChildrenScreen extends React.Component<Props, State> {
         return rval;
     }
 
+    private getAbsolutePathToDocumentFolder(relativePath:string | undefined){
+        let finalPath = relativePath;
+        finalPath = DocumentDirectoryPath + finalPath;
+
+        if (finalPath && Platform.OS === 'android') {
+            let re = new RegExp('^file:');
+            let match = finalPath.match(re);
+            if (!match) {
+                finalPath = 'file://' + finalPath;
+            }
+        }
+
+        return finalPath;
+    }
+
     public render() {
         return (
 
@@ -191,7 +206,7 @@ export class AddChildrenScreen extends React.Component<Props, State> {
 
                                         {/* PHOTO PICKER */}
                                         <PhotoPicker
-                                            imageUri={child.photoUri}
+                                            imageUri={ this.getAbsolutePathToDocumentFolder(child.photoUri) }
                                             onChange={image => this.onChildPhotoChange(child, image)}
                                         />
 

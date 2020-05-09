@@ -34,26 +34,16 @@ export class PhotoPicker extends React.Component<Props, State> {
 
     private initState() {
         let state: State = {
-            // imageUri: this.props.imageUri,
             windowWidth: Dimensions.get('screen').width,
             windowHeight: Dimensions.get('screen').height,
         };
 
+        // Set imageUri only if that file exists
         if (this.props.imageUri) {
             exists(this.props.imageUri).then((fileExists) => {
                 if (fileExists) {
-                    let finalPath = this.props.imageUri;
-
-                    if (finalPath && Platform.OS === 'android') {
-                        let re = new RegExp('^file:');
-                        let match = finalPath.match(re);
-                        if (!match) {
-                            finalPath = 'file://' + finalPath;
-                        }
-                    }
-
                     this.setState({
-                        imageUri: finalPath,
+                        imageUri: this.props.imageUri,
                     });
                 }
             });
