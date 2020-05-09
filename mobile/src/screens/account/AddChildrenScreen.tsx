@@ -18,6 +18,7 @@ import { debounce } from "lodash";
 import Realm, { ObjectSchema } from 'realm';
 import { UserRealmContext, UserRealmContextValue, UserRealmConsumer } from '../../stores/UserRealmContext';
 import ImagePicker, { Image as ImageObject } from 'react-native-image-crop-picker';
+import { DocumentDirectoryPath } from "react-native-fs";
 
 export interface Props {
     navigation: NavigationStackProp<NavigationStackState>;
@@ -87,7 +88,14 @@ export class AddChildrenScreen extends React.Component<Props, State> {
     }
 
     private onChildPhotoChange(childIndex: number, image: ImageObject) {
-        console.warn(image.path);
+        // Set imageExt
+        let imageExt = '';
+
+        // Set copyToPath
+        let copyToPath = '';
+
+        console.warn('image.path', image.path);
+        console.warn('copyToPath', copyToPath);
         // this.setState((prevState) => {
         //     const children = prevState.children;
         //     children[childIndex].photoData = imageData;
