@@ -9,7 +9,7 @@ export type ArticleEntity = {
     categoryId: number;
     tagsIds?: Array<number>;
     bodyHTML: string;
-    createdAt?: Date;
+    createdAt: Date;
     updatedAt: Date;
 };
 
@@ -29,7 +29,7 @@ export const ArticleEntitySchema: ObjectSchema = {
         categoryId: {type:'int'},
         tagsIds: {type:'int[]', optional:true},
         bodyHTML: {type:'string'},
-        createdAt: {type:'date', optional:true},
+        createdAt: {type:'date'},
         updatedAt: {type:'date'},
     }
 };

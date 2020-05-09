@@ -3,7 +3,7 @@ import { ObjectSchema } from "realm";
 export type VariableEntity = {
     key: string;
     value: string;
-    createdAt?: Date;
+    createdAt: Date;
     updatedAt: Date;
 };
 
@@ -17,7 +17,7 @@ export const VariableEntitySchema: ObjectSchema = {
     properties: {
         key: {type:'string'},
         value: {type:'string'},
-        createdAt: {type:'date', optional:true},
+        createdAt: {type:'date'},
         updatedAt: {type:'date'},
     }
 };
