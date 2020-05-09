@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dimensions, View, StyleProp, ViewStyle, StyleSheet, TouchableWithoutFeedback, ImageBackground, TextStyle } from 'react-native';
+import { Dimensions, View, StyleProp, ViewStyle, StyleSheet, TouchableWithoutFeedback, ImageBackground, TextStyle, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import ImagePicker, { Image as ImageObject } from 'react-native-image-crop-picker';
 import { DocumentDirectoryPath, copyFile, exists, unlink, mkdir } from "react-native-fs";
@@ -42,8 +42,18 @@ export class PhotoPicker extends React.Component<Props, State> {
         if (this.props.imageUri) {
             exists(this.props.imageUri).then((fileExists) => {
                 if (fileExists) {
+                    let finalPath = this.props.imageUri;
+
+                    if (finalPath && Platform.OS === 'android') {
+                        let re = new RegExp('^file:');
+                        let match = finalPath.match(re);
+                        if (!match) {
+                            finalPath = 'file://' + finalPath;
+                        }
+                    }
+
                     this.setState({
-                        imageUri: this.props.imageUri,
+                        imageUri: finalPath,
                     });
                 }
             });

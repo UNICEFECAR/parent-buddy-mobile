@@ -1,26 +1,23 @@
-import React, { RefObject, createRef, Fragment } from 'react';
-import { SafeAreaView, View, Text, Button, StyleSheet, ViewStyle, Alert } from 'react-native';
-import { NavigationStackProp, NavigationStackState, NavigationStackOptions } from 'react-navigation-stack';
-import { translate } from '../../translations/translate';
-import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { Typography, TypographyType } from '../../components/Typography';
-import { PhotoPicker, PhotoPickerStyles } from "../../components/PhotoPicker";
-import { RadioButtons, RadioButtonsStyles } from "../../components/RadioButtons";
-import { RoundedTextInput, RoundedTextInputStyles } from "../../components/RoundedTextInput";
-import { TextButton, TextButtonSize, TextButtonColor } from "../../components/TextButton";
-import { RoundedButton, RoundedButtonType } from '../../components/RoundedButton';
-import { dataRealmStore, userRealmStore } from '../../stores';
-import { utils } from '../../app';
-import { ChildEntity, ChildEntitySchema, ChildGender } from '../../stores/ChildEntity';
-import { IconButton, Colors, Snackbar } from 'react-native-paper';
-import { debounce } from "lodash";
-import Realm, { ObjectSchema } from 'realm';
-import { UserRealmContext, UserRealmContextValue, UserRealmConsumer } from '../../stores/UserRealmContext';
-import ImagePicker, { Image as ImageObject } from 'react-native-image-crop-picker';
-import { DocumentDirectoryPath, copyFile, exists, unlink, mkdir } from "react-native-fs";
+import React, { createRef, Fragment, RefObject } from 'react';
+import { SafeAreaView, StyleSheet, Text, View, ViewStyle } from 'react-native';
+import { copyFile, DocumentDirectoryPath, exists, mkdir, unlink } from "react-native-fs";
 import 'react-native-get-random-values';
+import { Image as ImageObject } from 'react-native-image-crop-picker';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { Colors, IconButton, Snackbar } from 'react-native-paper';
+import { moderateScale, scale } from 'react-native-size-matters';
+import { NavigationStackProp, NavigationStackState } from 'react-navigation-stack';
 import { v4 as uuidv4 } from 'uuid';
+import { PhotoPicker } from "../../components/PhotoPicker";
+import { RadioButtons } from "../../components/RadioButtons";
+import { RoundedButton, RoundedButtonType } from '../../components/RoundedButton';
+import { RoundedTextInput } from "../../components/RoundedTextInput";
+import { TextButton, TextButtonColor } from "../../components/TextButton";
+import { Typography, TypographyType } from '../../components/Typography';
+import { dataRealmStore, userRealmStore } from '../../stores';
+import { ChildEntity, ChildEntitySchema, ChildGender } from '../../stores/ChildEntity';
+import { UserRealmConsumer, UserRealmContextValue } from '../../stores/UserRealmContext';
+import { translate } from '../../translations/translate';
 
 export interface Props {
     navigation: NavigationStackProp<NavigationStackState>;
@@ -94,7 +91,7 @@ export class AddChildrenScreen extends React.Component<Props, State> {
         // Set newFilename
         let newFilename: string;
 
-        let parts = image.filename.split('.');
+        let parts = image.path.split('.');
         let extension: string | null = null;
         if (parts.length > 1) {
             extension = parts[parts.length - 1].toLowerCase();
