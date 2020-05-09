@@ -11,7 +11,6 @@ import { DataRealmProvider } from '../stores/DataRealmContext';
 import { UserRealmProvider } from '../stores/UserRealmContext';
 import { dataRealmStore } from '../stores';
 import { utils } from './utils';
-import 'react-native-get-random-values'
 
 // Warnings to ignore
 YellowBox.ignoreWarnings([
