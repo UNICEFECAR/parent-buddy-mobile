@@ -10,9 +10,6 @@
         "other": true
     },
     "typescript.tsserver.experimental.enableProjectDiagnostics": false,
-    "files.exclude": {
-        "**/node_modules/**": true
-    },
     "javascript.preferences.importModuleSpecifier": "relative",
     "typescript.preferences.importModuleSpecifier": "relative",
 }
