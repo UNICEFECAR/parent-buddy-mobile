@@ -27,6 +27,8 @@
     "accountSave": "Sačuvajte podatke",
     "accountInviteFather": "Pošaljite SMS poziv tati da koristi aplikaciju",
     "accountInviteMother": "Pošaljite SMS poziv mami da koristi aplikaciju",
+    "accountErrorAllNamesMustBeGiven": "Popuni sva imena",
+    "accountErrorEnterName": "Unesi ime",
 
     "drawerTitleArticles": "Članci i saveti",
     "drawerTitleGrowthDiary": "Dnevnik razvoja",

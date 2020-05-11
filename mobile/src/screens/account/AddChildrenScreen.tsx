@@ -139,7 +139,7 @@ export class AddChildrenScreen extends React.Component<Props, State> {
         } else {
             this.setState({
                 isSnackbarVisible: true,
-                snackbarMessage: 'All names must be given',
+                snackbarMessage: translate('accountErrorAllNamesMustBeGiven'),
             });
         }
     }

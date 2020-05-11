@@ -9,7 +9,6 @@ type Variables = {
     'userIsLoggedIn': boolean;
     'userIsOnboarded': boolean;
     'userEnteredChildData': boolean;
-    'userEnteredHisData': boolean;
     'userParentalRole': 'mother' | 'father';
     'followGrowth': boolean;
     'followDevelopment': boolean;

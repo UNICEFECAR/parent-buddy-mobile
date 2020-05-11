@@ -11,6 +11,7 @@ import { RoundedButton, RoundedButtonType } from '../../components/RoundedButton
 import { TextButton, TextButtonSize, TextButtonColor } from "../../components/TextButton";
 import { dataRealmStore } from '../../stores';
 import { utils } from '../../app';
+import { Snackbar, Colors } from 'react-native-paper';
 
 export interface Props {
     navigation: NavigationStackProp<NavigationStackState>;
@@ -19,6 +20,8 @@ export interface Props {
 export interface State {
     parent: 'mother' | 'father';
     parentName?: string;
+    isSnackbarVisible: boolean;
+    snackbarMessage: string;
 }
 
 export class AddParentsScreen extends React.Component<Props, State> {
@@ -40,22 +43,25 @@ export class AddParentsScreen extends React.Component<Props, State> {
 
     private initState() {
         let state: State = {
-            parent: "mother"
+            parent: "mother",
+            isSnackbarVisible: false,
+            snackbarMessage: '',
         };
 
         this.state = state;
     }
 
     private saveParentsData() {
-        dataRealmStore.setVariable('userParentalRole', this.state.parent);
-
         if (this.state.parentName) {
+            dataRealmStore.setVariable('userParentalRole', this.state.parent);
             dataRealmStore.setVariable('userName', this.state.parentName);
+            utils.gotoNextScreenOnAppOpen();
         } else {
-            dataRealmStore.deleteVariable('userName');
+            this.setState({
+                isSnackbarVisible: true,
+                snackbarMessage: translate('accountErrorEnterName'),
+            });
         }
-
-        utils.gotoNextScreenOnAppOpen();
     }
 
     public render() {
@@ -103,6 +109,23 @@ export class AddParentsScreen extends React.Component<Props, State> {
                         onPress={ () => { this.saveParentsData() } }
                     />
                 </View>
+
+                <Snackbar
+                    visible={this.state.isSnackbarVisible}
+                    duration={Snackbar.DURATION_SHORT}
+                    onDismiss={() => { this.setState({ isSnackbarVisible: false }) }}
+                    theme={{ colors: { onSurface: Colors.red500, accent: 'white' } }}
+                    action={{
+                        label: 'Ok',
+                        onPress: () => {
+                            this.setState({ isSnackbarVisible: false });
+                        },
+                    }}
+                >
+                    <Text style={{ fontSize: moderateScale(16) }}>
+                        { this.state.snackbarMessage }
+                    </Text>
+                </Snackbar>
             </SafeAreaView>
         );
     }
