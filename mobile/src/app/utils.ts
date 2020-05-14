@@ -1,6 +1,6 @@
 import { navigation } from './Navigators';
 import { dataRealmStore } from '../stores';
-import { userRealmStore } from '../stores';
+import SendSMS, { AndroidSuccessTypes } from 'react-native-sms'
 
 /**
  * Various utils methods.
@@ -8,7 +8,7 @@ import { userRealmStore } from '../stores';
 class Utils {
     private static instance: Utils;
 
-    private constructor() {}
+    private constructor() { }
 
     static getInstance(): Utils {
         if (!Utils.instance) {
@@ -48,23 +48,15 @@ class Utils {
         }
     }
 
-    /**
-     * Convert ArrayBuffer to string.
-     */
-    public ab2str(buf:ArrayBuffer): string {
-        return String.fromCharCode.apply(null, new Uint16Array(buf) as any);
-    }
-    
-    /**
-     * Convert string to ArrayBuffer.
-     */
-    public str2ab(str:string) {
-        var buf = new ArrayBuffer(str.length * 2); // 2 bytes for each char
-        var bufView = new Uint16Array(buf);
-        for (var i = 0, strLen = str.length; i < strLen; i++) {
-            bufView[i] = str.charCodeAt(i);
-        }
-        return buf;
+    public sendSms(text:string) {
+        SendSMS.send({
+            body: text,
+            // @ts-ignore
+            successTypes: ['sent', 'queued'],
+            allowAndroidSendWithoutReadPermission: true
+        }, (completed:boolean, cancelled:boolean, error:boolean) => {
+            console.log('SMS Callback: completed: ' + completed + ' cancelled: ' + cancelled + 'error: ' + error);
+        });
     }
 }
 

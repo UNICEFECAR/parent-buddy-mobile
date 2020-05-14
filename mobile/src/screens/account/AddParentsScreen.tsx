@@ -64,6 +64,22 @@ export class AddParentsScreen extends React.Component<Props, State> {
         }
     }
 
+    private sendSms() {
+        if (this.state.parentName) {
+            let message = translate('accountSendSmsText');
+            
+            message = message.replace('%PARENT%', this.state.parentName);
+            message = message.replace('%APP_URL%', 'https://www.halobeba.rs');
+            
+            utils.sendSms(message);
+        } else {
+            this.setState({
+                isSnackbarVisible: true,
+                snackbarMessage: translate('accountErrorEnterName'),
+            });
+        }
+    }
+
     public render() {
         return (
             <SafeAreaView style={ [styles.container] }>
@@ -95,8 +111,8 @@ export class AddParentsScreen extends React.Component<Props, State> {
 
                     <View style={{height:scale(30)}}></View>
 
-                    {/* INVITE OTHER PARENT */}
-                    <TextButton color={TextButtonColor.purple} onPress={ () => {} } textStyle={{textAlign:'center'}}>
+                    {/* INVITE OTHER PARENT WITH SMS */}
+                    <TextButton color={TextButtonColor.purple} onPress={ () => { this.sendSms() } } textStyle={{textAlign:'center'}}>
                         { this.state.parent === 'mother' ? translate('accountInviteFather') : translate('accountInviteMother') }
                     </TextButton>
 

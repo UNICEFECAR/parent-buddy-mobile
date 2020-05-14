@@ -4,6 +4,8 @@ import { NavigationStackProp, NavigationStackState } from 'react-navigation-stac
 import { GestureResponderEvent } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Storybook from '../../storybook';
+import { IconButton } from "react-native-paper";
+import { scale } from 'react-native-size-matters';
 
 export interface Props {
     navigation: NavigationStackProp<NavigationStackState>;
@@ -15,7 +17,7 @@ export class StorybookScreen extends React.Component<Props, object> {
         super(props);
     }
 
-    private onCloseIconPress(e:GestureResponderEvent) {
+    private onCloseIconPress() {
         this.props.navigation.goBack();
     };
 
@@ -25,10 +27,12 @@ export class StorybookScreen extends React.Component<Props, object> {
                 <StatusBar barStyle="dark-content" />
                 <View style={{flex:1}}>
                     <Storybook />
-                    <Icon
-                        name={ "close" }
-                        style={{ fontSize:30, color:"white", position:'absolute', top:10, right:5, shadowOffset:{width:1,height:1}, shadowColor:'black', shadowOpacity:0.7 }}
-                        onPress={ (e) => {this.onCloseIconPress(e)} }
+                    <IconButton
+                        icon="close"
+                        size={scale(30)}
+                        color="white"
+                        style={{ position:'absolute', top:10, right:5, shadowOffset:{width:1,height:1}, shadowColor:'black', shadowOpacity:0.7, elevation:2 }}
+                        onPress={ () => {this.onCloseIconPress()} }
                     />
                 </View>
             </SafeAreaView>

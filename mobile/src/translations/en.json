@@ -29,6 +29,7 @@
     "accountInviteMother": "Pošaljite SMS poziv mami da koristi aplikaciju",
     "accountErrorAllNamesMustBeGiven": "Popuni sva imena",
     "accountErrorEnterName": "Unesi ime",
+    "accountSendSmsText": "%PARENT% ti kaže da instaliraš ovu aplikaciju: %APP_URL%",
 
     "drawerTitleArticles": "Članci i saveti",
     "drawerTitleGrowthDiary": "Dnevnik razvoja",
