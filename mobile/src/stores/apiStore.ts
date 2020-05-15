@@ -46,6 +46,10 @@ class ApiStore {
         let response: ContentResponse = {total:0, data:[]};
 
         try {
+            if (appConfig.showLog) {
+                console.log('apiStore.getContent(): ', args);
+            }
+
             let rawResponse: Response = await fetch(url, {
                 // Fetch API: https://mzl.la/2CuHdZa
                 method: 'GET',
@@ -76,6 +80,52 @@ class ApiStore {
         } catch (rejectError) { }
 
         return response;
+    }
+
+    public async getAllContent(contentType:ContentEntityType, updatedFromDate:number|undefined = undefined): Promise<ContentResponse> {
+        const numberOfItems = 10;
+
+        // Make first request
+        let finalContentResponse = await this.getContent({
+            type: contentType,
+            page: 0,
+            numberOfItems: numberOfItems,
+            updatedFromDate: updatedFromDate,
+        });
+
+        // If all items are returned in first request
+        if (finalContentResponse.total <= numberOfItems) {
+            if (appConfig.showLog) {
+                console.log(`apiStore.getAllContent(): contentType=${contentType}, updatedFromDate=${updatedFromDate}, total response: ${finalContentResponse.total}`, );
+            }
+
+            return finalContentResponse;
+        }
+
+        // Make other requests
+        let promises: Promise<any>[] = [];
+
+        for (let page=1; page<Math.ceil(finalContentResponse.total/numberOfItems); page++) {
+            promises.push( this.getContent({
+                type: contentType,
+                page: page,
+                numberOfItems: numberOfItems,
+                updatedFromDate: updatedFromDate,
+            }) );
+        }
+
+        let allResponses = await Promise.all<ContentResponse>(promises);
+
+        // Combine all responses
+        allResponses.forEach((contentResponse) => {
+            finalContentResponse.data = finalContentResponse.data.concat(contentResponse.data);
+        });
+
+        if (appConfig.showLog) {
+            console.log(`apiStore.getAllContent(): contentType=${contentType}, updatedFromDate=${updatedFromDate}, total response: ${finalContentResponse.total}`, );
+        }
+
+        return finalContentResponse;
     }
 }
 

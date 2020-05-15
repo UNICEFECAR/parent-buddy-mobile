@@ -38,10 +38,17 @@ export class HomeScreen extends React.Component<Props, object> {
     }
 
     private async onTestButtonClick() {
-        let response = await apiStore.getContent({
-            type: 'article',
+        let response = await apiStore.getAllContent('article');
+
+        response.data = response.data.map((value) => {
+            value.body = 'radim nesto';
+            return value;
         });
-        console.log( JSON.stringify(response.data, null, 4) );
+
+        // let response = await apiStore.getContent({
+        //     type: 'article',
+        // });
+        // console.log( JSON.stringify(response.data, null, 4) );
     }
 
     public render() {
