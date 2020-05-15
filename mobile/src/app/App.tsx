@@ -11,8 +11,7 @@ import { DataRealmProvider } from '../stores/DataRealmContext';
 import { UserRealmProvider } from '../stores/UserRealmContext';
 import { dataRealmStore } from '../stores';
 import { utils } from './utils';
-import * as RNLocalize from "react-native-localize";
-import { Locale } from "react-native-localize";
+import { localize } from './localize';
 
 // Warnings to ignore
 YellowBox.ignoreWarnings([
@@ -20,7 +19,6 @@ YellowBox.ignoreWarnings([
     'Require cycle',
     'Sending `onAnimatedValueUpdate` with no listeners registered',
     'Unable to find module for UIManager',
-    // 'createStackNavigator',
 ]);
 
 // Turn on layout animations on Android
@@ -41,33 +39,14 @@ export class App extends React.Component<object> {
     public componentDidMount() {
         this.addItemsToDevMenu();
         googleAuth.configure();
+        localize.setLocalesIfNotSet();
         utils.gotoNextScreenOnAppOpen();
-        this.setLocale();
     }
 
     private addItemsToDevMenu() {
         if (__DEV__) {
             const DevMenu = require('react-native-dev-menu');
             DevMenu.addItem('Storybook', () => this.gotoStorybookScreen());
-        }
-    }
-
-    private setLocale() {
-        const locales = RNLocalize.getLocales();
-        let firstLocale: Locale|null = null;
-        if (locales && locales.length > 0) {
-            firstLocale = locales[0];
-        }
-
-        let languageCode = dataRealmStore.getVariable('languageCode');
-        let countryCode = dataRealmStore.getVariable('countryCode');
-
-        if (!languageCode && firstLocale) {
-            dataRealmStore.setVariable('languageCode', firstLocale.languageCode);
-        }
-
-        if (!countryCode && firstLocale) {
-            dataRealmStore.setVariable('countryCode', firstLocale.countryCode);
         }
     }
 
