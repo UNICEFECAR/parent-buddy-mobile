@@ -1,20 +1,11 @@
 import React from 'react';
-import { SafeAreaView, View, Text, StyleSheet, ViewStyle, ScrollView, Alert } from 'react-native';
-import { NavigationScreenConfigProps } from 'react-navigation';
-import { NavigationStackProp, NavigationStackState, NavigationStackOptions } from 'react-navigation-stack';
-import { themes } from '../../themes/themes';
-import { ThemeContextValue, ThemeConsumer } from '../../themes/ThemeContext';
-import { translate } from '../../translations/translate';
-import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
-import { IconButton, Button } from 'react-native-paper';
-import { ProfileIcon } from "../../components/ProfileIcon";
-import { SearchInput, SearchInputSize } from "../../components/SearchInput";
-import { DrawerActions } from 'react-navigation-drawer';
+import { ScrollView, StyleSheet, View, ViewStyle } from 'react-native';
+import { Button } from 'react-native-paper';
+import { scale } from 'react-native-size-matters';
+import { NavigationStackProp, NavigationStackState } from 'react-navigation-stack';
+import { apiStore } from '../../stores';
+import { ThemeConsumer, ThemeContextValue } from '../../themes/ThemeContext';
 import { ArticlesSection } from './ArticlesSection';
-import { GoogleSignin, statusCodes } from '@react-native-community/google-signin';
-import { LoginButton, AccessToken } from 'react-native-fbsdk';
-import { dataRealmStore } from "../../stores/dataRealmStore";
-import * as RNLocalize from "react-native-localize";
 
 export interface HomeScreenParams {
     showSearchInput?: boolean;
@@ -47,16 +38,10 @@ export class HomeScreen extends React.Component<Props, object> {
     }
 
     private async onTestButtonClick() {
-        // console.warn(RNLocalize.findBestAvailableLanguage([]) );
-        // console.warn(RNLocalize.getCountry() );
-        console.warn( RNLocalize.getLocales() );
-
-        // await dataRealmStore.setVariable('setting2', 'misha');
-
-        // const record = dataRealmStore.getVariable('userEmail');
-        // console.warn( JSON.stringify(record, null, 4), typeof record );
-
-        // dataRealmStore.deleteVariable("userEmail").catch(() => {console.warn('Already deleted')});
+        let response = await apiStore.getContent({
+            type: 'article',
+        });
+        console.log( JSON.stringify(response.data, null, 4) );
     }
 
     public render() {
