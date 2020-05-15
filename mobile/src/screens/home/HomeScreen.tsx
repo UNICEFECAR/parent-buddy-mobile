@@ -14,6 +14,7 @@ import { ArticlesSection } from './ArticlesSection';
 import { GoogleSignin, statusCodes } from '@react-native-community/google-signin';
 import { LoginButton, AccessToken } from 'react-native-fbsdk';
 import { dataRealmStore } from "../../stores/dataRealmStore";
+import * as RNLocalize from "react-native-localize";
 
 export interface HomeScreenParams {
     showSearchInput?: boolean;
@@ -46,6 +47,10 @@ export class HomeScreen extends React.Component<Props, object> {
     }
 
     private async onTestButtonClick() {
+        // console.warn(RNLocalize.findBestAvailableLanguage([]) );
+        // console.warn(RNLocalize.getCountry() );
+        console.warn( RNLocalize.getLocales() );
+
         // await dataRealmStore.setVariable('setting2', 'misha');
 
         // const record = dataRealmStore.getVariable('userEmail');

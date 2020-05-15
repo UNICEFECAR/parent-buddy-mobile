@@ -14,6 +14,8 @@ type Variables = {
     'followDevelopment': boolean;
     'followDoctorVisits': boolean;
     'allowAnonymousUsage': boolean;
+    'languageCode': string;
+    'countryCode': string;
 };
 
 type VariableKey = keyof Variables;
