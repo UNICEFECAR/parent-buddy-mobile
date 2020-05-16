@@ -1,6 +1,7 @@
 import { navigation } from './Navigators';
 import { dataRealmStore } from '../stores';
 import SendSMS, { AndroidSuccessTypes } from 'react-native-sms'
+import URLParser from 'url';
 
 /**
  * Various utils methods.
@@ -57,6 +58,28 @@ class Utils {
         }, (completed:boolean, cancelled:boolean, error:boolean) => {
             console.log('SMS Callback: completed: ' + completed + ' cancelled: ' + cancelled + 'error: ' + error);
         });
+    }
+
+    public getExtensionFromUrl(url: string): string | null {
+        let rval: string | null = null;
+
+        let parsedUrl = URLParser.parse(url);
+
+        if (parsedUrl?.pathname) {
+            let parts = parsedUrl.pathname.split('.');
+            if (parts.length > 1) {
+                rval = parts[parts.length - 1].toLowerCase();
+
+                // ext must not have / in it
+                let re = new RegExp('/');
+                let match = rval.match(re);
+                if (match) {
+                    rval = null;
+                }
+            }
+        }
+
+        return rval;
     }
 }
 
