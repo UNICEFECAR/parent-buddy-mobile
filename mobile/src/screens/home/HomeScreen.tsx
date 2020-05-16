@@ -40,16 +40,17 @@ export class HomeScreen extends React.Component<Props, object> {
     }
 
     private async onTestButtonClick() {
-        let ext = utils.getExtensionFromUrl('http://ecaroparentingappt8q2psucpz.devcloud.acquia-sites.com/sites/default/files/styles/crop_freeform/public/2020-05/UNI114991resized.JPG?itok=_-LnJkk0');
-        console.log(ext);
-
         // IMAGES
-        // let response = await apiStore.downloadImage({
-        //     srcUrl: 'http://ecaroparentingappt8q2psucpz.devcloud.acquia-sites.com/sites/default/files/styles/crop_freeform/public/2020-05/UNI114991resized.JPG?itok=_-LnJkk0',
-        //     destFolder: RNFS.DocumentDirectoryPath,
-        //     destFilename: 'foo.jpg'
-        // });
-        // console.log(response);
+        const imageUrl = 'http://ecaroparentingappt8q2psucpz.devcloud.acquia-sites.com/sites/default/files/styles/crop_freeform/public/2020-05/UNI114991resized.JPG?itok=_-LnJkk0';
+        const imageExt = utils.getExtensionFromUrl(imageUrl);
+
+        let response = await apiStore.downloadImage({
+            srcUrl: imageUrl,
+            destFolder: RNFS.DocumentDirectoryPath + '/content',
+            destFilename: `foo3${imageExt ? '.'+imageExt : ''}`,
+        });
+
+        console.log(response);
 
         // VOCABULARIES
         // let response = await apiStore.getVocabulariesAndTerms();

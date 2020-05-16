@@ -202,10 +202,12 @@ class ApiStore {
 
             if (downloadResult.statusCode === 200) {
                 rval = true;
+
+                if (appConfig.showLog) {
+                    console.log(`apiStore.downloadImage(): ${args.srcUrl}`, );
+                }
             }
-        } catch(rejectError) {
-            console.log('rejectError', rejectError);
-        }
+        } catch(rejectError) {}
 
         return rval;
     }
