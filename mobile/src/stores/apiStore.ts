@@ -124,7 +124,7 @@ class ApiStore {
         return finalContentResponse;
     }
 
-    public getVocabularies(): Vocabulary[] {
+    private getVocabularies(): Vocabulary[] {
         return ['categories', 'keywords', 'predefined_tags'];
     }
 
@@ -211,6 +211,18 @@ class ApiStore {
 
         return rval;
     }
+
+    public async downloadImages(args: DownloadImageArgs[]): Promise<boolean[]> {
+        const promises: Promise<boolean>[] = [];
+
+        args.forEach((downloadImageArgs) => {
+            promises.push( this.downloadImage(downloadImageArgs) );
+        });
+
+        let allResponses = await Promise.all<boolean>(promises);
+
+        return allResponses;
+    }
 }
 
 interface GetContentArgs {
@@ -253,7 +265,7 @@ export type VocabulariesAndTermsResponse  = {
     }[];
 };
 
-type DownloadImageArgs = {
+export type DownloadImageArgs = {
     srcUrl: string;
     destFolder: string;
     destFilename: string;

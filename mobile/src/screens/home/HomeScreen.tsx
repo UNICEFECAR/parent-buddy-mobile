@@ -8,6 +8,7 @@ import { ThemeConsumer, ThemeContextValue } from '../../themes/ThemeContext';
 import { ArticlesSection } from './ArticlesSection';
 import RNFS from 'react-native-fs';
 import { utils } from '../../app';
+import { DownloadImageArgs } from '../../stores/apiStore';
 
 export interface HomeScreenParams {
     showSearchInput?: boolean;
@@ -40,32 +41,32 @@ export class HomeScreen extends React.Component<Props, object> {
     }
 
     private async onTestButtonClick() {
-        // IMAGES
-        const imageUrl = 'http://ecaroparentingappt8q2psucpz.devcloud.acquia-sites.com/sites/default/files/styles/crop_freeform/public/2020-05/UNI114991resized.JPG?itok=_-LnJkk0';
-        const imageExt = utils.getExtensionFromUrl(imageUrl);
-
-        let response = await apiStore.downloadImage({
-            srcUrl: imageUrl,
-            destFolder: RNFS.DocumentDirectoryPath + '/content',
-            destFilename: `foo3${imageExt ? '.'+imageExt : ''}`,
+        // CONTENT
+        let allContentResponse = await apiStore.getAllContent('article');
+        
+        allContentResponse.data = allContentResponse.data.map((value) => {
+            value.body = 'bla';
+            return value;
         });
 
-        console.log(response);
+        // IMAGES
+        const downloadImageArgs: DownloadImageArgs[] = allContentResponse.data.map((contentEntity) => {
+            const imageExt = utils.getExtensionFromUrl(contentEntity.coverImageUrl);
+            return {
+                srcUrl: contentEntity.coverImageUrl,
+                destFolder: RNFS.DocumentDirectoryPath + '/content',
+                destFilename: `cover_image_${contentEntity.id}${imageExt ? '.'+imageExt : ''}`, 
+            } as DownloadImageArgs;
+        });
+
+        let downloadImagesResponse = await apiStore.downloadImages(downloadImageArgs);
 
         // VOCABULARIES
         // let response = await apiStore.getVocabulariesAndTerms();
         // console.log( JSON.stringify(response, null, 4) );
 
-        // CONTENT
-        // let response = await apiStore.getAllContent('article');
-
-        // response.data = response.data.map((value) => {
-        //     value.body = 'radim nesto';
-        //     return value;
-        // });
-
-        // let response = await apiStore.getContent({type:'article'});
-        // console.log( JSON.stringify(response.data, null, 4) );
+        // RESPONSE
+        // console.log( JSON.stringify(downloadImagesResponse, null, 4) );
     }
 
     public render() {
