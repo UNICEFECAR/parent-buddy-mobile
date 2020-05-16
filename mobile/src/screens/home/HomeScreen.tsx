@@ -38,12 +38,17 @@ export class HomeScreen extends React.Component<Props, object> {
     }
 
     private async onTestButtonClick() {
-        let response = await apiStore.getAllContent('article');
+        // VOCABULARIES
+        let response = await apiStore.getVocabulariesAndTerms();
+        console.log( JSON.stringify(response, null, 4) );
 
-        response.data = response.data.map((value) => {
-            value.body = 'radim nesto';
-            return value;
-        });
+        // CONTENT
+        // let response = await apiStore.getAllContent('article');
+
+        // response.data = response.data.map((value) => {
+        //     value.body = 'radim nesto';
+        //     return value;
+        // });
 
         // let response = await apiStore.getContent({type:'article'});
         // console.log( JSON.stringify(response.data, null, 4) );

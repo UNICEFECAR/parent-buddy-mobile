@@ -72,13 +72,13 @@ class ApiStore {
                     };
                 });
             }
-        } catch (rejectError) { console.log(rejectError) }
+        } catch (rejectError) { }
 
         return response;
     }
 
     public async getAllContent(contentType:ContentEntityType, updatedFromDate:number|undefined = undefined): Promise<ContentResponse> {
-        const numberOfItems = 10;
+        const numberOfItems = appConfig.apiNumberOfItems;
 
         // Make first request
         let finalContentResponse = await this.getContent({
@@ -122,11 +122,62 @@ class ApiStore {
 
         return finalContentResponse;
     }
-}
 
-interface ContentResponse {
-    total: number;
-    data: ContentEntity[];
+    public getVocabularies(): Vocabulary[] {
+        return ['categories', 'keywords', 'predefined_tags'];
+    }
+
+    public async getVocabulariesAndTerms(): Promise<VocabulariesAndTermsResponse> {
+        const language = localize.getLanguage();
+        let vocabularies = this.getVocabularies();
+
+        let response: VocabulariesAndTermsResponse = {};
+
+        const objectToArray = (obj:any) => {
+            const rval: any = [];
+
+            for (let id in obj) {
+                let value = obj[id];
+                let children = value.children;
+                
+                if (!Array.isArray(children)) {
+                    children = objectToArray(children);
+                }
+                
+                rval.push({
+                    id: parseInt(id),
+                    name: value.name,
+                    children: children,
+                });
+            }
+
+            return rval;
+        };
+
+        for (let index in vocabularies) {
+            let vocabulary = vocabularies[index];
+
+            let url = `${appConfig.apiUrl}/list-taxonomy/${language}/${vocabulary}`;
+
+            try {
+                let axiosResponse: AxiosResponse = await axios({
+                    // API: https://bit.ly/2ZatNfQ
+                    url: url,
+                    method: 'GET',
+                    responseType: 'json',
+                    timeout: appConfig.apiTimeout, // milliseconds
+                    maxContentLength: 100000, // bytes
+                });
+
+                // Transform response
+                if (axiosResponse.data?.data) {
+                    response[vocabulary] = objectToArray(axiosResponse.data.data);
+                }
+            } catch (rejectError) { }
+        }
+
+        return response;
+    }
 }
 
 interface GetContentArgs {
@@ -147,5 +198,26 @@ interface GetContentArgs {
      */
     updatedFromDate?: number;
 }
+
+interface ContentResponse {
+    total: number;
+    data: ContentEntity[];
+}
+
+type Vocabulary = 'categories' | 'keywords' | 'predefined_tags';
+
+type TermChildren = {
+    id: number;
+    name: string;
+    children: TermChildren[];
+};
+
+export type VocabulariesAndTermsResponse  = Partial<{
+    [key in Vocabulary]?: {
+        id: number;
+        name: string;
+        children: TermChildren[];
+    }[];
+}>;
 
 export const apiStore = ApiStore.getInstance();
