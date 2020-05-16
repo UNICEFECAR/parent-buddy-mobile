@@ -131,7 +131,11 @@ class ApiStore {
         const language = localize.getLanguage();
         let vocabularies = this.getVocabularies();
 
-        let response: VocabulariesAndTermsResponse = {};
+        let response: VocabulariesAndTermsResponse = {
+            categories: [],
+            keywords: [],
+            predefined_tags: [],
+        };
 
         const objectToArray = (obj:any) => {
             const rval: any = [];
@@ -156,7 +160,6 @@ class ApiStore {
 
         for (let index in vocabularies) {
             let vocabulary = vocabularies[index];
-
             let url = `${appConfig.apiUrl}/list-taxonomy/${language}/${vocabulary}`;
 
             try {
@@ -212,12 +215,12 @@ type TermChildren = {
     children: TermChildren[];
 };
 
-export type VocabulariesAndTermsResponse  = Partial<{
-    [key in Vocabulary]?: {
+export type VocabulariesAndTermsResponse  = {
+    [key in Vocabulary]: {
         id: number;
         name: string;
         children: TermChildren[];
     }[];
-}>;
+};
 
 export const apiStore = ApiStore.getInstance();
