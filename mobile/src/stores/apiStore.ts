@@ -2,6 +2,7 @@ import { appConfig } from "../app/appConfig";
 import { localize } from "../app";
 import { ContentEntity, ContentEntityType } from "./ContentEntity";
 import axios, { AxiosResponse } from 'axios';
+import RNFS from 'react-native-fs';
 
 /**
  * Communication with API.
@@ -181,6 +182,33 @@ class ApiStore {
 
         return response;
     }
+
+    public async downloadImage(args: DownloadImageArgs): Promise<boolean> {
+        let rval: boolean = false;
+
+        try {
+            // Create dest folder if it doesn't exist
+            if (!(await RNFS.exists(args.destFolder))) {
+                await RNFS.mkdir(args.destFolder);
+            }
+
+            // Download image
+            let {jobId, promise:downloadPromise} = RNFS.downloadFile({
+                fromUrl: args.srcUrl,
+                toFile: args.destFolder + `/${args.destFilename}`,
+            });
+
+            let downloadResult = await downloadPromise;
+
+            if (downloadResult.statusCode === 200) {
+                rval = true;
+            }
+        } catch(rejectError) {
+            console.log('rejectError', rejectError);
+        }
+
+        return rval;
+    }
 }
 
 interface GetContentArgs {
@@ -221,6 +249,12 @@ export type VocabulariesAndTermsResponse  = {
         name: string;
         children: TermChildren[];
     }[];
+};
+
+type DownloadImageArgs = {
+    srcUrl: string;
+    destFolder: string;
+    destFilename: string;
 };
 
 export const apiStore = ApiStore.getInstance();

@@ -6,6 +6,7 @@ import { NavigationStackProp, NavigationStackState } from 'react-navigation-stac
 import { apiStore } from '../../stores';
 import { ThemeConsumer, ThemeContextValue } from '../../themes/ThemeContext';
 import { ArticlesSection } from './ArticlesSection';
+import RNFS from 'react-native-fs';
 
 export interface HomeScreenParams {
     showSearchInput?: boolean;
@@ -38,9 +39,17 @@ export class HomeScreen extends React.Component<Props, object> {
     }
 
     private async onTestButtonClick() {
+        // IMAGES
+        let response = await apiStore.downloadImage({
+            srcUrl: 'http://ecaroparentingappt8q2psucpz.devcloud.acquia-sites.com/sites/default/files/styles/crop_freeform/public/2020-05/UNI114991resized.JPG?itok=_-LnJkk0',
+            destFolder: RNFS.DocumentDirectoryPath,
+            destFilename: 'foo.jpg'
+        });
+        console.log(response);
+
         // VOCABULARIES
-        let response = await apiStore.getVocabulariesAndTerms();
-        console.log( JSON.stringify(response, null, 4) );
+        // let response = await apiStore.getVocabulariesAndTerms();
+        // console.log( JSON.stringify(response, null, 4) );
 
         // CONTENT
         // let response = await apiStore.getAllContent('article');
