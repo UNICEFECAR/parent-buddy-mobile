@@ -1,6 +1,7 @@
 import { appConfig } from "../app/appConfig";
 import { localize } from "../app";
 import { ContentEntity, ContentEntityType } from "./ContentEntity";
+import axios, { AxiosResponse } from 'axios';
 
 /**
  * Communication with API.
@@ -18,29 +19,19 @@ class ApiStore {
     }
 
     public async getContent(args: GetContentArgs): Promise<ContentResponse> {
-        // Type
-        const contentType: string = args.type;
-
-        // Query string
-        const queryArray: any[] = [];
-        
-        queryArray.push(
-            args.page !== undefined ? ['page', args.page] : ['page', 0]
-        );
-        queryArray.push(
-            args.numberOfItems !== undefined ? ['numberOfItems', args.numberOfItems] : ['numberOfItems', 10]
-        );
-        if (args.updatedFromDate !== undefined) {
-            queryArray.push(['updatedFromDate', args.updatedFromDate]);
-        }
-
-        const queryString = queryArray.map((value:any) => `${value[0]}=${value[1]}`).join('&');
-
-        // Language
-        const language = localize.getLanguage();
-
         // URL
-        const url = `${appConfig.apiUrl}/list-content/${language}/${contentType}?${queryString}`;
+        const language = localize.getLanguage();
+        const contentType: string = args.type;
+        let url = `${appConfig.apiUrl}/list-content/${language}/${contentType}`;
+
+        // URL params
+        const urlParams: any = {};
+
+        urlParams.page = args.page !== undefined ? args.page : 0;
+        urlParams.numberOfItems = args.numberOfItems !== undefined ? args.numberOfItems : 10;
+        if (args.updatedFromDate !== undefined) {
+            urlParams.updatedFromDate = args.updatedFromDate;
+        }
 
         // Get API response
         let response: ContentResponse = {total:0, data:[]};
@@ -50,13 +41,17 @@ class ApiStore {
                 console.log('apiStore.getContent(): ', args);
             }
 
-            let rawResponse: Response = await fetch(url, {
-                // Fetch API: https://mzl.la/2CuHdZa
+            let axiosResponse: AxiosResponse = await axios({
+                // API: https://bit.ly/2ZatNfQ
+                url: url,
+                params: urlParams,
                 method: 'GET',
+                responseType: 'json',
+                timeout: appConfig.apiTimeout, // milliseconds
+                maxContentLength: 100000, // bytes
             });
 
-            // Response API: https://mzl.la/2ARLxBl
-            const rawResponseJson = await rawResponse.json();
+            let rawResponseJson = axiosResponse.data;
 
             if (rawResponseJson) {
                 response.total = rawResponseJson.total;
@@ -77,7 +72,7 @@ class ApiStore {
                     };
                 });
             }
-        } catch (rejectError) { }
+        } catch (rejectError) { console.log(rejectError) }
 
         return response;
     }
@@ -96,7 +91,7 @@ class ApiStore {
         // If all items are returned in first request
         if (finalContentResponse.total <= numberOfItems) {
             if (appConfig.showLog) {
-                console.log(`apiStore.getAllContent(): contentType=${contentType}, updatedFromDate=${updatedFromDate}, total response: ${finalContentResponse.total}`, );
+                console.log(`apiStore.getAllContent(): contentType=${contentType}, updatedFromDate=${updatedFromDate}, total: ${finalContentResponse.total}, data length: ${finalContentResponse.data?.length}`, );
             }
 
             return finalContentResponse;
@@ -122,7 +117,7 @@ class ApiStore {
         });
 
         if (appConfig.showLog) {
-            console.log(`apiStore.getAllContent(): contentType=${contentType}, updatedFromDate=${updatedFromDate}, total response: ${finalContentResponse.total}`, );
+            console.log(`apiStore.getAllContent(): contentType=${contentType}, updatedFromDate=${updatedFromDate}, total: ${finalContentResponse.total}, data length: ${finalContentResponse.data?.length}`, );
         }
 
         return finalContentResponse;

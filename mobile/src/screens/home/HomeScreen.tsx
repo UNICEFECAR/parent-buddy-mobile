@@ -45,9 +45,7 @@ export class HomeScreen extends React.Component<Props, object> {
             return value;
         });
 
-        // let response = await apiStore.getContent({
-        //     type: 'article',
-        // });
+        // let response = await apiStore.getContent({type:'article'});
         // console.log( JSON.stringify(response.data, null, 4) );
     }
 
