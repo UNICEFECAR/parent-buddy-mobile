@@ -3,6 +3,7 @@ import { localize } from "../app";
 import { ContentEntity, ContentEntityType } from "./ContentEntity";
 import axios, { AxiosResponse } from 'axios';
 import RNFS from 'react-native-fs';
+import URLParser from 'url';
 
 /**
  * Communication with API.
@@ -78,7 +79,7 @@ class ApiStore {
         return response;
     }
 
-    public async getAllContent(contentType:ContentEntityType, updatedFromDate:number|undefined = undefined): Promise<ContentResponse> {
+    public async getAllContent(contentType:ContentEntityType, updatedFromDate?:number): Promise<ContentResponse> {
         const numberOfItems = appConfig.apiNumberOfItems;
 
         // Make first request
@@ -203,8 +204,10 @@ class ApiStore {
             if (downloadResult.statusCode === 200) {
                 rval = true;
 
+                let parsedUrl = URLParser.parse(args.srcUrl);
+
                 if (appConfig.showLog) {
-                    console.log(`apiStore.downloadImage(): ${args.srcUrl}`, );
+                    console.log(`apiStore.downloadImage(): ${parsedUrl.pathname}`, );
                 }
             }
         } catch(rejectError) {}
