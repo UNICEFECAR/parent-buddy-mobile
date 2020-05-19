@@ -19,6 +19,7 @@ import { RegisterScreen } from "../screens/login/RegisterScreen";
 import { TermsScreen } from "../screens/login/TermsScreen";
 import { WalkthroughScreen } from "../screens/login/WalkthroughScreen";
 import { StorybookScreen } from "../screens/StorybookScreen";
+import { SyncingScreen } from "../screens/SyncingScreen";
 import { themes } from "../themes/themes";
 import { translate } from '../translations/translate';
 import { ArticleScreen } from "../screens/home/ArticleScreen";
@@ -404,6 +405,12 @@ const RootModalStackNavigator = createStackNavigator({
     },
     RootModalStackNavigator_StorybookScreen: {
         screen: StorybookScreen,
+        navigationOptions: {
+            title: "Title"
+        }
+    },
+    RootModalStackNavigator_SyncingScreen: {
+        screen: SyncingScreen,
         navigationOptions: {
             title: "Title"
         }

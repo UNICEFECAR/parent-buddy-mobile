@@ -41,25 +41,25 @@ export class HomeScreen extends React.Component<Props, object> {
     }
 
     private async onTestButtonClick() {
-        // CONTENT
-        let allContentResponse = await apiStore.getAllContent('article');
+        // // CONTENT
+        // let allContentResponse = await apiStore.getAllContent('article');
 
-        allContentResponse.data = allContentResponse.data.map((value) => {
-            value.body = 'bla bla';
-            return value;
-        });
+        // allContentResponse.data = allContentResponse.data.map((value) => {
+        //     value.body = 'bla bla';
+        //     return value;
+        // });
 
-        // IMAGES
-        const downloadImageArgs: DownloadImageArgs[] = allContentResponse.data.map((contentEntity) => {
-            const imageExt = utils.getExtensionFromUrl(contentEntity.coverImageUrl);
-            return {
-                srcUrl: contentEntity.coverImageUrl,
-                destFolder: RNFS.DocumentDirectoryPath + '/content',
-                destFilename: `cover_image_${contentEntity.id}${imageExt ? '.' + imageExt : ''}`,
-            } as DownloadImageArgs;
-        });
+        // // IMAGES
+        // const downloadImageArgs: DownloadImageArgs[] = allContentResponse.data.map((contentEntity) => {
+        //     const imageExt = utils.getExtensionFromUrl(contentEntity.coverImageUrl);
+        //     return {
+        //         srcUrl: contentEntity.coverImageUrl,
+        //         destFolder: RNFS.DocumentDirectoryPath + '/content',
+        //         destFilename: `cover_image_${contentEntity.id}${imageExt ? '.' + imageExt : ''}`,
+        //     } as DownloadImageArgs;
+        // });
 
-        let downloadImagesResponse = await apiStore.downloadImages(downloadImageArgs);
+        // let downloadImagesResponse = await apiStore.downloadImages(downloadImageArgs);
 
         // VOCABULARIES
         // let response = await apiStore.getVocabulariesAndTerms();
@@ -78,6 +78,7 @@ export class HomeScreen extends React.Component<Props, object> {
                     <ScrollView style={{ backgroundColor: themeContext.theme.screenContainer?.backgroundColor }} contentContainerStyle={[styles.container, { padding: themeContext.theme.screenContainer?.padding }]}>
 
                         <Button onPress={() => { this.onTestButtonClick() }}>Test</Button>
+                        <Button onPress={() => { this.props.navigation.navigate('RootModalStackNavigator_SyncingScreen') }}>Sync data</Button>
                         <Button onPress={() => { this.props.navigation.navigate('HomeStackNavigator_SearchResultsScreen') }}>Search results</Button>
                         <Button onPress={() => { this.props.navigation.navigate('HomeStackNavigator_FaqScreenScreen') }}>FAQ</Button>
                         <Button onPress={() => { this.props.navigation.navigate('HomeStackNavigator_AboutScreen') }}>About US</Button>
