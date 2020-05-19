@@ -23,8 +23,8 @@ class ApiStore {
     public async getContent(args: GetContentArgs): Promise<ContentResponse> {
         // URL
         const language = localize.getLanguage();
-        const contentType: string = args.type;
-        let url = `${appConfig.apiUrl}/list-content/${language}/${contentType}`;
+        const contentType: string|undefined = args.type;
+        let url = `${appConfig.apiUrl}/list-content/${language}${contentType ? `/${contentType}` : ''}`;
 
         // URL params
         const urlParams: any = {};
@@ -79,7 +79,7 @@ class ApiStore {
         return response;
     }
 
-    public async getAllContent(contentType:ContentEntityType, updatedFromDate?:number): Promise<ContentResponse> {
+    public async getAllContent(contentType?:ContentEntityType, updatedFromDate?:number): Promise<ContentResponse> {
         const numberOfItems = appConfig.apiNumberOfItems;
 
         // Make first request
@@ -93,7 +93,7 @@ class ApiStore {
         // If all items are returned in first request
         if (finalContentResponse.total <= numberOfItems) {
             if (appConfig.showLog) {
-                console.log(`apiStore.getAllContent(): contentType=${contentType}, updatedFromDate=${updatedFromDate}, total: ${finalContentResponse.total}, data length: ${finalContentResponse.data?.length}`, );
+                console.log(`apiStore.getAllContent(): contentType=${contentType ? contentType : 'all'}, updatedFromDate=${updatedFromDate}, total: ${finalContentResponse.total}, data length: ${finalContentResponse.data?.length}`, );
             }
 
             return finalContentResponse;
@@ -119,7 +119,7 @@ class ApiStore {
         });
 
         if (appConfig.showLog) {
-            console.log(`apiStore.getAllContent(): contentType=${contentType}, updatedFromDate=${updatedFromDate}, total: ${finalContentResponse.total}, data length: ${finalContentResponse.data?.length}`, );
+            console.log(`apiStore.getAllContent(): contentType=${contentType ? contentType : 'all'}, updatedFromDate=${updatedFromDate}, total: ${finalContentResponse.total}, data length: ${finalContentResponse.data?.length}`, );
         }
 
         return finalContentResponse;
@@ -229,7 +229,7 @@ class ApiStore {
 }
 
 interface GetContentArgs {
-    type: ContentEntityType;
+    type?: ContentEntityType;
 
     /**
      * Defaults to 10

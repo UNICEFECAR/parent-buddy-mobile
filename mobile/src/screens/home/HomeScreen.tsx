@@ -41,13 +41,13 @@ export class HomeScreen extends React.Component<Props, object> {
     }
 
     private async onTestButtonClick() {
-        // // CONTENT
-        // let allContentResponse = await apiStore.getAllContent('article');
+        // CONTENT
+        let allContentResponse = await apiStore.getAllContent();
 
-        // allContentResponse.data = allContentResponse.data.map((value) => {
-        //     value.body = 'bla bla';
-        //     return value;
-        // });
+        allContentResponse.data = allContentResponse.data.map((value) => {
+            value.body = 'bla bla';
+            return value;
+        });
 
         // // IMAGES
         // const downloadImageArgs: DownloadImageArgs[] = allContentResponse.data.map((contentEntity) => {
@@ -66,7 +66,7 @@ export class HomeScreen extends React.Component<Props, object> {
         // console.log( JSON.stringify(response, null, 4) );
 
         // RESPONSE
-        // console.log( JSON.stringify(downloadImagesResponse, null, 4) );
+        console.log( JSON.stringify(allContentResponse, null, 4) );
     }
 
     public render() {
