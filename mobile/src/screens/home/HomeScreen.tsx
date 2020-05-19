@@ -43,7 +43,7 @@ export class HomeScreen extends React.Component<Props, object> {
     private async onTestButtonClick() {
         // CONTENT
         let allContentResponse = await apiStore.getAllContent('article');
-        
+
         allContentResponse.data = allContentResponse.data.map((value) => {
             value.body = 'bla';
             return value;
@@ -55,7 +55,7 @@ export class HomeScreen extends React.Component<Props, object> {
             return {
                 srcUrl: contentEntity.coverImageUrl,
                 destFolder: RNFS.DocumentDirectoryPath + '/content',
-                destFilename: `cover_image_${contentEntity.id}${imageExt ? '.'+imageExt : ''}`, 
+                destFilename: `cover_image_${contentEntity.id}${imageExt ? '.' + imageExt : ''}`,
             } as DownloadImageArgs;
         });
 
