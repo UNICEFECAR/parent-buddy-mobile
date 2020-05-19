@@ -45,7 +45,7 @@ export class HomeScreen extends React.Component<Props, object> {
         let allContentResponse = await apiStore.getAllContent('article');
 
         allContentResponse.data = allContentResponse.data.map((value) => {
-            value.body = 'bla';
+            value.body = 'bla bla';
             return value;
         });
 
