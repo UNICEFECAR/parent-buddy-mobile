@@ -7,13 +7,12 @@ export type ContentEntity = {
     type: ContentEntityType;
     langcode: string;
     title: string;
-    body: string;
-    category: number;
+    body?: string;
+    category?: number;
     predefinedTags: number[];
     keywords: number[];
-    coverImageUrl: string;
-    coverImageAlt: string;
-    createdAt: Date;
+    coverImageUrl?: string;
+    coverImageAlt?: string;
     updatedAt: Date;
 };
 
@@ -30,13 +29,12 @@ export const ContentEntitySchema: ObjectSchema = {
         type: {type:'string'},
         langcode: {type:'string'},
         title: {type:'string'},
-        body: {type:'string'},
-        category: {type:'int'},
+        body: {type:'string', optional:true},
+        category: {type:'int', optional:true},
         predefinedTags: {type:'int[]'},
         keywords: {type:'int[]'},
-        coverImageUrl: {type:'string'},
-        coverImageAlt: {type:'string'},
-        createdAt: {type:'date'},
+        coverImageUrl: {type:'string', optional:true},
+        coverImageAlt: {type:'string', optional:true},
         updatedAt: {type:'date'},
     }
 };

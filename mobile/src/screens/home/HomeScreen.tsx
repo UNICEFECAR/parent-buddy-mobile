@@ -8,7 +8,8 @@ import { ThemeConsumer, ThemeContextValue } from '../../themes/ThemeContext';
 import { ArticlesSection } from './ArticlesSection';
 import RNFS from 'react-native-fs';
 import { utils } from '../../app';
-import { DownloadImageArgs } from '../../stores/apiStore';
+import { ApiImageData } from '../../stores/apiStore';
+import { syncData } from '../../app/syncData';
 
 export interface HomeScreenParams {
     showSearchInput?: boolean;
@@ -42,12 +43,12 @@ export class HomeScreen extends React.Component<Props, object> {
 
     private async onTestButtonClick() {
         // CONTENT
-        let allContentResponse = await apiStore.getAllContent();
+        // let allContentResponse = await apiStore.getAllContent();
 
-        allContentResponse.data = allContentResponse.data.map((value) => {
-            value.body = 'bla bla';
-            return value;
-        });
+        // allContentResponse.data = allContentResponse.data.map((value) => {
+        //     value.body = 'bla bla';
+        //     return value;
+        // });
 
         // // IMAGES
         // const downloadImageArgs: DownloadImageArgs[] = allContentResponse.data.map((contentEntity) => {
@@ -66,7 +67,17 @@ export class HomeScreen extends React.Component<Props, object> {
         // console.log( JSON.stringify(response, null, 4) );
 
         // RESPONSE
-        console.log( JSON.stringify(allContentResponse, null, 4) );
+        // console.log( JSON.stringify(allContentResponse, null, 4) );
+    }
+
+    private async syncData() {
+        try {
+            this.props.navigation.navigate('RootModalStackNavigator_SyncingScreen');
+            await syncData.sync();
+            this.props.navigation.navigate('HomeStackNavigator_HomeScreen');
+        } catch(e) {
+            this.props.navigation.navigate('HomeStackNavigator_HomeScreen');
+        }
     }
 
     public render() {
@@ -78,7 +89,7 @@ export class HomeScreen extends React.Component<Props, object> {
                     <ScrollView style={{ backgroundColor: themeContext.theme.screenContainer?.backgroundColor }} contentContainerStyle={[styles.container, { padding: themeContext.theme.screenContainer?.padding }]}>
 
                         <Button onPress={() => { this.onTestButtonClick() }}>Test</Button>
-                        <Button onPress={() => { this.props.navigation.navigate('RootModalStackNavigator_SyncingScreen') }}>Sync data</Button>
+                        <Button onPress={() => { this.syncData() }}>Sync data</Button>
                         <Button onPress={() => { this.props.navigation.navigate('HomeStackNavigator_SearchResultsScreen') }}>Search results</Button>
                         <Button onPress={() => { this.props.navigation.navigate('HomeStackNavigator_FaqScreenScreen') }}>FAQ</Button>
                         <Button onPress={() => { this.props.navigation.navigate('HomeStackNavigator_AboutScreen') }}>About US</Button>

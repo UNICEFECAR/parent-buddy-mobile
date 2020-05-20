@@ -1,7 +1,8 @@
-import Realm from 'realm';
+import Realm, { ObjectSchema } from 'realm';
 import { dataRealmConfig } from "./dataRealmConfig";
 import { VariableEntity, VariableEntitySchema } from './VariableEntity';
 import { appConfig } from '../app/appConfig';
+import { VocabulariesAndTermsResponse } from './apiStore';
 
 type Variables = {
     'userEmail': string;
@@ -16,6 +17,8 @@ type Variables = {
     'allowAnonymousUsage': boolean;
     'languageCode': string;
     'countryCode': string;
+    'lastSyncTimestamp': number;
+    'vocabulariesAndTerms': VocabulariesAndTermsResponse;
 };
 
 type VariableKey = keyof Variables;
@@ -141,6 +144,32 @@ class DataRealmStore {
                 }
             } catch(e) {
                 resolve();
+            }
+        });
+    }
+
+    /**
+     * Create new record or update existing one.
+     * 
+     * ### WARNING
+     * 
+     * - You must give primary key in record, or return promise will reject
+     * - entitySchema must have primaryKey defined, or return promise will reject
+     */
+    public async createOrUpdate<Entity>(entitySchema:ObjectSchema, record:Entity): Promise<Entity> {
+        return new Promise((resolve, reject) => {
+            if (!this.realm || !entitySchema.primaryKey) {
+                reject();
+                return;
+            }
+
+            try {
+                this.realm.write(() => {
+                    this.realm?.create<Entity>(entitySchema.name, record, true);
+                    resolve(record);
+                });
+            } catch (e) {
+                reject();
             }
         });
     }

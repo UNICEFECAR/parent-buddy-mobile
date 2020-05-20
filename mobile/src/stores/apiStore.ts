@@ -56,7 +56,7 @@ class ApiStore {
             let rawResponseJson = axiosResponse.data;
 
             if (rawResponseJson) {
-                response.total = rawResponseJson.total;
+                response.total = parseInt(rawResponseJson.total);
                 response.data = rawResponseJson.data.map((rawContent:any): ContentEntity => {
                     return {
                         id: parseInt(rawContent.id),
@@ -67,7 +67,6 @@ class ApiStore {
                         category: parseInt(rawContent.category),
                         predefinedTags: rawContent.predefined_tags.map((value:any) => parseInt(value)),
                         keywords: rawContent.keywords.map((value:any) => parseInt(value)),
-                        createdAt: new Date(),
                         updatedAt: new Date(),
                         coverImageUrl: rawContent.cover_image?.url,
                         coverImageAlt: rawContent.cover_image?.alt,
@@ -184,7 +183,7 @@ class ApiStore {
         return response;
     }
 
-    public async downloadImage(args: DownloadImageArgs): Promise<boolean> {
+    public async downloadImage(args: ApiImageData): Promise<boolean> {
         let rval: boolean = false;
 
         try {
@@ -206,16 +205,16 @@ class ApiStore {
 
                 let parsedUrl = URLParser.parse(args.srcUrl);
 
-                if (appConfig.showLog) {
-                    console.log(`apiStore.downloadImage(): ${parsedUrl.pathname}`, );
-                }
+                // if (appConfig.showLog) {
+                //     console.log(`apiStore.downloadImage(): ${parsedUrl.pathname}`, );
+                // }
             }
         } catch(rejectError) {}
 
         return rval;
     }
 
-    public async downloadImages(args: DownloadImageArgs[]): Promise<boolean[]> {
+    public async downloadImages(args: ApiImageData[]): Promise<boolean[]> {
         const promises: Promise<boolean>[] = [];
 
         args.forEach((downloadImageArgs) => {
@@ -223,6 +222,10 @@ class ApiStore {
         });
 
         let allResponses = await Promise.all<boolean>(promises);
+
+        if (appConfig.showLog) {
+            console.log(`apiStore.downloadImages(): Downloaded ${args.length} images`, );
+        }
 
         return allResponses;
     }
@@ -247,7 +250,7 @@ interface GetContentArgs {
     updatedFromDate?: number;
 }
 
-interface ContentResponse {
+export interface ContentResponse {
     total: number;
     data: ContentEntity[];
 }
@@ -268,7 +271,7 @@ export type VocabulariesAndTermsResponse  = {
     }[];
 };
 
-export type DownloadImageArgs = {
+export type ApiImageData = {
     srcUrl: string;
     destFolder: string;
     destFilename: string;
