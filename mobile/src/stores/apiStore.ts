@@ -40,7 +40,7 @@ class ApiStore {
 
         try {
             if (appConfig.showLog) {
-                console.log('apiStore.getContent(): ', args);
+                console.log(`apiStore.getContent(): numberOfItems:${urlParams.numberOfItems}, page:${urlParams.page}, type:${contentType?contentType:'all'}, updatedFromDate:${urlParams.updatedFromDate}`);
             }
 
             let axiosResponse: AxiosResponse = await axios({
@@ -92,7 +92,7 @@ class ApiStore {
         // If all items are returned in first request
         if (finalContentResponse.total <= numberOfItems) {
             if (appConfig.showLog) {
-                console.log(`apiStore.getAllContent(): contentType=${contentType ? contentType : 'all'}, updatedFromDate=${updatedFromDate}, total: ${finalContentResponse.total}, data length: ${finalContentResponse.data?.length}`, );
+                console.log(`apiStore.getAllContent(): contentType=${contentType ? contentType : 'all'}, updatedFromDate=${updatedFromDate}, total:${finalContentResponse.total}, data length:${finalContentResponse.data?.length}`, );
             }
 
             return finalContentResponse;
@@ -118,7 +118,7 @@ class ApiStore {
         });
 
         if (appConfig.showLog) {
-            console.log(`apiStore.getAllContent(): contentType=${contentType ? contentType : 'all'}, updatedFromDate=${updatedFromDate}, total: ${finalContentResponse.total}, data length: ${finalContentResponse.data?.length}`, );
+            console.log(`apiStore.getAllContent(): contentType=${contentType ? contentType : 'all'}, updatedFromDate=${updatedFromDate}, total:${finalContentResponse.total}, data length:${finalContentResponse.data?.length}`, );
         }
 
         return finalContentResponse;
@@ -178,6 +178,10 @@ class ApiStore {
                     response[vocabulary] = objectToArray(axiosResponse.data.data);
                 }
             } catch (rejectError) { }
+        }
+
+        if (appConfig.showLog) {
+            console.log(`apiStore.getVocabulariesAndTerms(): categories: ${response.categories.length}, keywords: ${response.keywords.length}, predefined_tags: ${response.predefined_tags.length}`);
         }
 
         return response;

@@ -23,7 +23,7 @@ class SyncData {
         let rval = false;
         const lastSyncTimestamp = dataRealmStore.getVariable('lastSyncTimestamp');
 
-        // VOCABULARIES AND TERMS
+        // DOWNLOAD VOCABULARIES AND TERMS
         const vocabulariesAndTerms = await apiStore.getVocabulariesAndTerms();
         
         if (vocabulariesAndTerms?.categories && vocabulariesAndTerms.categories.length > 0) {
@@ -34,7 +34,7 @@ class SyncData {
             }
         }
 
-        // ALL CONTENT
+        // DOWNLOAD ALL CONTENT
         let allContent: ContentResponse = {total:0, data:[]};
 
         try {
@@ -62,7 +62,7 @@ class SyncData {
             } catch(e) {}
         }
 
-        // COVER IMAGES
+        // DOWNLOAD COVER IMAGES
         if (allContent?.data && allContent.data.length > 0) {
             const apiImagesData: ApiImageData[] = [];
 
@@ -84,6 +84,10 @@ class SyncData {
             if (appConfig.showLog) {
                 console.log('syncData.sync(): Updated lastSyncTimestamp');
             }
+        }
+
+        if (appConfig.showLog) {
+            console.log('syncData.sync(): Finished');
         }
 
         return rval;
