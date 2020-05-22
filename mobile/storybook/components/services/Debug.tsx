@@ -4,6 +4,7 @@ import { ScaledSheet, moderateScale, scale } from "react-native-size-matters";
 import { Typography, TypographyType } from "../../../src/components/Typography";
 import { Button, Colors } from "react-native-paper";
 import { dataRealmStore, userRealmStore } from '../../../src/stores';
+import { syncData } from '../../../src/app/syncData';
 
 export class Debug extends React.Component {
     private deleteAllOnboardingData() {
@@ -23,6 +24,16 @@ export class Debug extends React.Component {
         console.log( userRealmStore.realm?.path.replace('user.realm', '') );
     }
 
+    private async syncData() {
+        console.warn('Sync started');
+        const timestamp = Math.round(Date.now()/1000);
+        
+        await syncData.sync();
+        
+        const timestampDiff = Math.round(Date.now()/1000) - timestamp;
+        console.warn(`Sync finished in ${timestampDiff} s`);
+    }
+
     render() {
         return (
             <ScrollView contentContainerStyle={{ flex: 1, padding: 24, alignItems: 'center' }}>
@@ -37,6 +48,11 @@ export class Debug extends React.Component {
 
                 <Button mode="contained" uppercase={false} onPress={ () => {this.deleteAllOnboardingData()} } color={Colors.blue700}>
                     Delete all onboarding data
+                </Button>
+                <View style={{ height: scale(10) }} />
+
+                <Button mode="contained" uppercase={false} onPress={ () => {this.syncData()} } color={Colors.blue700}>
+                    Sync data
                 </Button>
                 <View style={{ height: scale(10) }} />
             </ScrollView>

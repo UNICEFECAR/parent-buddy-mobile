@@ -3,6 +3,7 @@ import { ContentResponse, ApiImageData } from "../stores/apiStore";
 import { ContentEntitySchema, ContentEntity } from "../stores/ContentEntity";
 import { appConfig } from "./appConfig";
 import { content } from "./content";
+import { navigation } from "../app/Navigators";
 
 /**
  * Sync data between API and realm.
@@ -91,6 +92,16 @@ class SyncData {
         }
 
         return rval;
+    }
+
+    public async syncAndShowSyncingScreen() {
+        try {
+            navigation.navigate('RootModalStackNavigator_SyncingScreen');
+            await syncData.sync();
+            navigation.navigate('HomeStackNavigator_HomeScreen');
+        } catch(e) {
+            navigation.navigate('HomeStackNavigator_HomeScreen');
+        }
     }
 }
 
