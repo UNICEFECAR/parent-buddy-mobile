@@ -17,6 +17,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { ContentEntity } from '../../stores/ContentEntity';
 import { content } from '../../app';
 import { ContentViewEntity } from '../../stores/ContentViewEntity';
+import { VocabulariesAndTermsResponse } from '../../stores/apiStore';
 
 export interface Props {
     data: ArticlesSectionData;
@@ -32,7 +33,8 @@ export interface ArticlesSectionData {
     title: string;
     featuredArticle?: ContentEntity;
     otherFeaturedArticles?: ContentEntity[];
-    categoryArticles?: CategoryArticlesViewEntity[],
+    categoryArticles?: CategoryArticlesViewEntity[];
+    vocabulariesAndTermsResponse?: VocabulariesAndTermsResponse;
 }
 
 /**
@@ -73,7 +75,8 @@ export class ArticlesSection extends React.Component<Props, State> {
         const pushAction = StackActions.push({
             routeName: 'HomeStackNavigator_ArticleScreen',
             params: {
-                article: article
+                article: article,
+                categoryName: content.toContentViewEntity(article, this.props.data.vocabulariesAndTermsResponse).category?.name
             },
         });
 

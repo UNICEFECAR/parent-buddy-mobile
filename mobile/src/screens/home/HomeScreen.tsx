@@ -43,77 +43,6 @@ export class HomeScreen extends React.Component<Props, object> {
         }
     }
 
-    private getHomeScreenArticles(realm: Realm | null): ArticlesSectionData {
-        const rval: ArticlesSectionData = {
-            title: translate('noArticles'),
-            categoryArticles: [],
-        };
-
-        // Set categories
-        const vocabulariesAndTermsResponse = dataRealmStore.getVariable('vocabulariesAndTerms');
-
-        if (!vocabulariesAndTermsResponse || !vocabulariesAndTermsResponse.categories || !Array.isArray(vocabulariesAndTermsResponse.categories)) {
-            return rval;
-        }
-
-        const categories = vocabulariesAndTermsResponse.categories;
-
-        // Set categoryIds
-        const categoryIds = [
-            55, // Play and Learning
-            2, // Health and Wellbeing
-            3, // Safety and Protection
-            56, // Responsive Parenting
-            4, // Parenting Corner
-            1, // Nutrition and Breastfeeding
-        ];
-
-        // Get artciles for each category
-        categoryIds.forEach((categoryId) => {
-            // Set categoryName
-            let thisCategoryArray = categories.filter((category) => {
-                return category.id === categoryId;
-            });
-
-            let categoryName = '';
-            if (thisCategoryArray && thisCategoryArray.length > 0) {
-                categoryName = thisCategoryArray[0].name;
-            }
-            
-            // Set categoryArticles
-            const categoryArticles: CategoryArticlesViewEntity = {
-                categoryId: categoryId,
-                categoryName: categoryName,
-                articles: []
-            };
-
-            try {
-                const allContent = realm?.objects<ContentEntity>(ContentEntitySchema.name);
-                const filteredRecords = allContent?.filtered(`category == ${categoryId} AND type == 'article' SORT(id ASC) LIMIT(5)`);
-        
-                filteredRecords?.forEach((record, index, collection) => {
-                    categoryArticles.articles.push(
-                        record
-                        // content.toContentViewEntity(record, vocabulariesAndTermsResponse)
-                    );
-                });
-            } catch (e) {
-                console.warn(e);
-            }
-    
-            if (categoryArticles.articles.length > 0) {
-                rval.categoryArticles?.push(categoryArticles);
-            }
-        });
-
-        // Change title
-        if (rval.categoryArticles && rval.categoryArticles.length > 0) {
-            rval.title = translate('popularArticles');
-        }
-
-        return rval;
-    }
-
     public render() {
         const screenParams = this.props.navigation.state.params!;
 
@@ -123,7 +52,7 @@ export class HomeScreen extends React.Component<Props, object> {
                     <ScrollView style={{ backgroundColor: themeContext.theme.screenContainer?.backgroundColor }} contentContainerStyle={[styles.container, { padding: themeContext.theme.screenContainer?.padding }]}>
                         <DataRealmConsumer>
                             {(dataRealmContext: DataRealmContextValue) => (
-                                <ArticlesSection data={ this.getHomeScreenArticles(dataRealmContext.realm) } />
+                                <ArticlesSection data={ content.getHomeScreenArticles(dataRealmContext.realm) } />
                             )}
                         </DataRealmConsumer>
                     </ScrollView>

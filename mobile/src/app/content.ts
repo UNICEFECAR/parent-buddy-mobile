@@ -1,8 +1,11 @@
-import { ContentEntity } from "../stores/ContentEntity";
+import { ContentEntity, ContentEntitySchema } from "../stores/ContentEntity";
 import { ApiImageData, VocabulariesAndTermsResponse } from "../stores/apiStore";
 import RNFS from 'react-native-fs';
 import { utils } from "./utils";
 import { ContentViewEntity } from "../stores/ContentViewEntity";
+import { ArticlesSectionData } from "../screens/home/ArticlesSection";
+import { translate } from "../translations/translate";
+import { dataRealmStore, CategoryArticlesViewEntity } from "../stores";
 
 /**
  * Utility methods related to ContentEntity.
@@ -48,7 +51,7 @@ class Content {
         return rval;
     }
 
-    public toContentViewEntity(contentEntity: ContentEntity, vocabulariesAndTermsResponse:VocabulariesAndTermsResponse): ContentViewEntity {
+    public toContentViewEntity(contentEntity: ContentEntity, vocabulariesAndTermsResponse?:VocabulariesAndTermsResponse): ContentViewEntity {
         const contentViewEntity: ContentViewEntity = {
             id: contentEntity.id,
             type: contentEntity.type,
@@ -64,6 +67,10 @@ class Content {
             keywords: [{id:0, name:''}],
             coverImageFilepath: '',
         };
+
+        if (!vocabulariesAndTermsResponse) {
+            return contentViewEntity;
+        }
 
         // category
         let categoryName: string | null = null;
@@ -107,6 +114,77 @@ class Content {
         }
 
         return contentViewEntity;
+    }
+
+    public getHomeScreenArticles(realm: Realm | null): ArticlesSectionData {
+        const rval: ArticlesSectionData = {
+            title: translate('noArticles'),
+            categoryArticles: [],
+        };
+
+        // Set categories
+        const vocabulariesAndTermsResponse = dataRealmStore.getVariable('vocabulariesAndTerms');
+
+        if (!vocabulariesAndTermsResponse || !vocabulariesAndTermsResponse.categories || !Array.isArray(vocabulariesAndTermsResponse.categories)) {
+            return rval;
+        }
+
+        const categories = vocabulariesAndTermsResponse.categories;
+
+        // Set categoryIds
+        const categoryIds = [
+            55, // Play and Learning
+            2, // Health and Wellbeing
+            3, // Safety and Protection
+            56, // Responsive Parenting
+            4, // Parenting Corner
+            1, // Nutrition and Breastfeeding
+        ];
+
+        // Get artciles for each category
+        categoryIds.forEach((categoryId) => {
+            // Set categoryName
+            let thisCategoryArray = categories.filter((category) => {
+                return category.id === categoryId;
+            });
+
+            let categoryName = '';
+            if (thisCategoryArray && thisCategoryArray.length > 0) {
+                categoryName = thisCategoryArray[0].name;
+            }
+            
+            // Set categoryArticles
+            const categoryArticles: CategoryArticlesViewEntity = {
+                categoryId: categoryId,
+                categoryName: categoryName,
+                articles: []
+            };
+
+            try {
+                const allContent = realm?.objects<ContentEntity>(ContentEntitySchema.name);
+                const filteredRecords = allContent?.filtered(`category == ${categoryId} AND type == 'article' SORT(id ASC) LIMIT(5)`);
+        
+                filteredRecords?.forEach((record, index, collection) => {
+                    categoryArticles.articles.push(
+                        record
+                    );
+                });
+            } catch (e) {
+                console.warn(e);
+            }
+    
+            if (categoryArticles.articles.length > 0) {
+                rval.categoryArticles?.push(categoryArticles);
+            }
+        });
+
+        // Change title
+        if (rval.categoryArticles && rval.categoryArticles.length > 0) {
+            rval.title = translate('popularArticles');
+            rval.vocabulariesAndTermsResponse = vocabulariesAndTermsResponse;
+        }
+
+        return rval;
     }
 }
 
