@@ -14,6 +14,7 @@ import { ArticleScreenParams } from './ArticleScreen';
 import { BorderlessButton, RectButton, TouchableHighlight, TouchableNativeFeedback, TouchableOpacity } from "react-native-gesture-handler";
 import { StackActions } from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { ContentEntity } from '../../stores/ContentEntity';
 
 export interface Props {
     data: ArticlesSectionData;
@@ -27,8 +28,8 @@ export interface State {
 
 export interface ArticlesSectionData {
     title: string;
-    featuredArticle?: ArticleViewEntity;
-    otherFeaturedArticles?: ArticleViewEntity[];
+    featuredArticle?: ContentEntity;
+    otherFeaturedArticles?: ContentEntity[];
     categoryArticles?: CategoryArticlesViewEntity[],
 }
 
@@ -37,8 +38,8 @@ export interface ArticlesSectionData {
  */
 export class ArticlesSection extends React.Component<Props, State> {
     static defaultProps: Props = {
-        // data: {title:'No articles'},
-        data: articlesSectionAllData,
+        data: {title:'No articles'},
+        // data: articlesSectionAllData,
         hideTitleUnderline: false,
     };
 
@@ -63,25 +64,25 @@ export class ArticlesSection extends React.Component<Props, State> {
         navigation.navigate('HomeStackNavigator_CategoryArticlesScreen', params);
     }
 
-    private onArticlePress(article?: ArticleViewEntity) {
+    private onArticlePress(article?: ContentEntity) {
         if (!article) return;
         
-        if (!article.youTubeVideoId) {
-            // Text article
-            const pushAction = StackActions.push({
-                routeName: 'HomeStackNavigator_ArticleScreen',
-                params: {
-                    article: article
-                },
-            });
+        // if (!article.youTubeVideoId) {
+        //     // Text article
+        //     const pushAction = StackActions.push({
+        //         routeName: 'HomeStackNavigator_ArticleScreen',
+        //         params: {
+        //             article: article
+        //         },
+        //     });
 
-            navigation.dispatch(pushAction);
-        } else {
-            // Video article
-            navigation.navigate('RootModalStackNavigator_VideoScreen', {
-                videoId: article?.youTubeVideoId
-            });
-        }
+        //     navigation.dispatch(pushAction);
+        // } else {
+        //     // Video article
+        //     navigation.navigate('RootModalStackNavigator_VideoScreen', {
+        //         videoId: article?.youTubeVideoId
+        //     });
+        // }
     }
 
     public render() {
@@ -130,7 +131,7 @@ export class ArticlesSection extends React.Component<Props, State> {
                                             style={[styles.image, { width: '100%', aspectRatio: 1.7 }]}
                                             resizeMode="cover"
                                         >
-                                            {this.props?.data?.featuredArticle.youTubeVideoId ? getPlayIcon(themeContext) : null}
+                                            {/* {this.props?.data?.featuredArticle.youTubeVideoId ? getPlayIcon(themeContext) : null} */}
                                         </ImageBackground>
 
                                         <View style={{ height: scale(10) }} />
@@ -152,7 +153,7 @@ export class ArticlesSection extends React.Component<Props, State> {
                                                     style={[styles.image, { width: '100%', aspectRatio: 1 }]}
                                                     resizeMode="cover"
                                                 >
-                                                    {article.youTubeVideoId ? getPlayIcon(themeContext, scale(60)) : null}
+                                                    {/* {article.youTubeVideoId ? getPlayIcon(themeContext, scale(60)) : null} */}
                                                 </ImageBackground>
 
                                                 <View style={{ height: scale(10) }} />
@@ -194,7 +195,7 @@ export class ArticlesSection extends React.Component<Props, State> {
                                                             style={[styles.image, { width: '100%', aspectRatio: 1 }]}
                                                             resizeMode="cover"
                                                         >
-                                                            {article.youTubeVideoId ? getPlayIcon(themeContext, scale(60)) : null}
+                                                            {/* {article.youTubeVideoId ? getPlayIcon(themeContext, scale(60)) : null} */}
                                                         </ImageBackground>
 
                                                         <View style={{ height: scale(10) }} />
