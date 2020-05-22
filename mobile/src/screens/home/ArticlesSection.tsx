@@ -1,11 +1,9 @@
 import React, { Fragment } from 'react';
 import { View, Text, StyleProp, StyleSheet, ViewStyle, TextStyle, ImageStyle, Image, ScrollView, ImageBackground } from 'react-native';
 import { ThemeContextValue, ThemeConsumer } from '../../themes/ThemeContext';
-import { ArticleViewEntity } from '../../stores/ArticleViewEntity';
 import { CategoryArticlesViewEntity } from '../../stores/CategoryArticlesViewEntity';
 import { scale, moderateScale } from 'react-native-size-matters';
 import { translate } from '../../translations/translate';
-import { articlesSectionAllData } from '../../dummy-data/articlesSectionAllData';
 import { Typography, TypographyType } from '../../components/Typography';
 import { TextButton, TextButtonColor } from '../../components/TextButton';
 import { CategoryArticlesScreenParams } from './CategoryArticlesScreen';
@@ -16,7 +14,6 @@ import { StackActions } from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { ContentEntity } from '../../stores/ContentEntity';
 import { content } from '../../app';
-import { ContentViewEntity } from '../../stores/ContentViewEntity';
 import { VocabulariesAndTermsResponse } from '../../stores/apiStore';
 
 export interface Props {

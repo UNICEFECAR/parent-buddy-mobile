@@ -1,6 +1,5 @@
 import { apiStore } from "./apiStore";
-import { ArticleEntity } from './ArticleEntity';
-import { ArticleViewEntity } from './ArticleViewEntity';
+import { ContentEntity } from './ContentEntity';
 import { CategoryArticlesViewEntity } from './CategoryArticlesViewEntity';
 import { ChildEntity } from './ChildEntity';
 import { dataRealmConfig } from "./dataRealmConfig";
@@ -11,10 +10,9 @@ import { UserRealmContext } from "./UserRealmContext";
 import { userRealmStore } from "./userRealmStore";
 import { VariableEntity } from './VariableEntity';
 
-export { ArticleEntity };
+export { ContentEntity };
 export { VariableEntity };
 export { ChildEntity };
-export { ArticleViewEntity };
 export { CategoryArticlesViewEntity };
 export { dataRealmConfig };
 export { DataRealmContext };

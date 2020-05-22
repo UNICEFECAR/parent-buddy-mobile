@@ -6,7 +6,7 @@ import { Button, Colors } from 'react-native-paper';
 import Realm from 'realm';
 
 import { dataRealmConfig } from "../../../src/stores/dataRealmConfig";
-import { ArticleEntity, ArticleEntitySchema } from "../../../src/stores/ArticleEntity";
+import { ContentEntity, ContentEntitySchema } from "../../../src/stores/ContentEntity";
 import { DataRealmContext, DataRealmContextValue, DataRealmConsumer } from '../../../src/stores/DataRealmContext';
 import { dataRealmStore } from '../../../src/stores';
 
@@ -47,7 +47,7 @@ export class RealmDemo extends React.Component<object> {
     private createArticle() {
         try {
             this.realm?.write(() => {
-                const record = this.realm?.create<ArticleEntity>(ArticleEntitySchema.name, {
+                const record = this.realm?.create<ContentEntity>(ContentEntitySchema.name, {
                     externalId: EXTERNAL_ID,
                     title: 'Test Article 01',
                     bodyHTML: 'Enim ad aliquip tempor voluptate eiusmod est Lorem commodo id fugiat elit duis. Sit laborum anim pariatur fugiat reprehenderit dolore. Cillum culpa enim irure elit voluptate sit ex occaecat fugiat.',
@@ -64,7 +64,7 @@ export class RealmDemo extends React.Component<object> {
 
     private readArticle() {
         try {
-            let allRecords = this.realm?.objects<ArticleEntity>(ArticleEntitySchema.name);
+            let allRecords = this.realm?.objects<ContentEntity>(ContentEntitySchema.name);
             let filteredRecords = allRecords?.filtered(`externalId = ${EXTERNAL_ID}`);
 
             filteredRecords?.forEach((record, index, collection) => {
@@ -77,7 +77,7 @@ export class RealmDemo extends React.Component<object> {
 
     private editArticle() {
         try {
-            let allRecords = this.realm?.objects<ArticleEntity>(ArticleEntitySchema.name);
+            let allRecords = this.realm?.objects<ContentEntity>(ContentEntitySchema.name);
             let filteredRecords = allRecords?.filtered(`externalId = ${EXTERNAL_ID}`);
 
             filteredRecords?.forEach((record, index, collection) => {
@@ -92,10 +92,10 @@ export class RealmDemo extends React.Component<object> {
 
     private deleteArticle() {
         try {
-            let allRecords = this.realm?.objects<ArticleEntity>(ArticleEntitySchema.name);
+            let allRecords = this.realm?.objects<ContentEntity>(ContentEntitySchema.name);
             let filteredRecords = allRecords?.filtered(`externalId = ${EXTERNAL_ID}`);
 
-            let deleteRecord: ArticleEntity & Realm.Object | null = null;
+            let deleteRecord: ContentEntity & Realm.Object | null = null;
             filteredRecords?.forEach((record, index, collection) => {
                 deleteRecord = record;
             });
@@ -156,7 +156,7 @@ export class RealmDemo extends React.Component<object> {
                                 <Text>
                                     No records
                                 </Text>
-                            ) : !dataRealmContext.realm?.isClosed && dataRealmContext.realm?.objects<ArticleEntity>(ArticleEntitySchema.name)
+                            ) : !dataRealmContext.realm?.isClosed && dataRealmContext.realm?.objects<ContentEntity>(ContentEntitySchema.name)
                                 .filtered(`externalId = ${EXTERNAL_ID}`).map(record => {
                                     let recordCopy = {title:record.title};
 

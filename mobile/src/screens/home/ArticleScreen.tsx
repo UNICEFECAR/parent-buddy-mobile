@@ -11,7 +11,6 @@ import { Tag } from '../../components/Tag';
 import { Divider } from '../../components/Divider';
 import { ArticlesSection } from './ArticlesSection';
 import AutoHeightWebView from 'react-native-autoheight-webview'
-import { articlesSectionRelatedArticles } from "../../dummy-data/articlesSectionRelatedArticles";
 import { Dimensions, Linking } from 'react-native';
 // @ts-ignore
 import HTML from 'react-native-render-html';

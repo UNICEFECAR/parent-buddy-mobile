@@ -1,5 +1,4 @@
 import Realm from 'realm';
-import { ArticleEntitySchema } from './ArticleEntity';
 import { ContentEntitySchema } from './ContentEntity';
 import { VariableEntitySchema } from './VariableEntity';
 
@@ -9,6 +8,5 @@ export const dataRealmConfig: Realm.Configuration = {
     schema: [
         ContentEntitySchema,
         VariableEntitySchema,
-        ArticleEntitySchema,
     ],
 };
