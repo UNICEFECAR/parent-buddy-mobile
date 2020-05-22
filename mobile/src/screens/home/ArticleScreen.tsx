@@ -15,10 +15,12 @@ import { articlesSectionRelatedArticles } from "../../dummy-data/articlesSection
 import { Dimensions, Linking } from 'react-native';
 // @ts-ignore
 import HTML from 'react-native-render-html';
-import { ContentViewEntity } from '../../stores/ContentViewEntity';
+import { ContentEntity } from '../../stores/ContentEntity';
+import { content } from '../../app';
 
 export interface ArticleScreenParams {
-    article: ContentViewEntity
+    article: ContentEntity;
+    categoryName: string;
 }
 
 export interface Props {
@@ -38,7 +40,8 @@ export class ArticleScreen extends React.Component<Props, object> {
 
     private setDefaultScreenParams() {
         let defaultScreenParams: ArticleScreenParams = {
-            article: {} as any
+            article: {} as any,
+            categoryName: '',
         };
 
         if (this.props.navigation.state.params) {
@@ -76,15 +79,15 @@ export class ArticleScreen extends React.Component<Props, object> {
                         </Typography>
 
                         {/* TAG WITH CATEGORY NAME */}
-                        {screenParams?.article?.category?.name ? (
-                            <Tag>{screenParams?.article?.category?.name}</Tag>
+                        {screenParams?.categoryName ? (
+                            <Tag>{screenParams?.categoryName}</Tag>
                         ) : null}
                     </View>
 
                     <View style={{paddingBottom:scale(25)}}>
                         {/* ARTICLE IMAGE */}
                         <Image
-                            source={ {uri:screenParams.article.coverImageUrl} }
+                            source={ {uri: content.getCoverImageFilepath(screenParams.article)} }
                             style={[{width:'100%', aspectRatio:1.4}]}
                             resizeMode="cover"
                         />

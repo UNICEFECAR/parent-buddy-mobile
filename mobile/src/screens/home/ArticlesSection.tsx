@@ -30,8 +30,8 @@ export interface State {
 
 export interface ArticlesSectionData {
     title: string;
-    featuredArticle?: ContentViewEntity;
-    otherFeaturedArticles?: ContentViewEntity[];
+    featuredArticle?: ContentEntity;
+    otherFeaturedArticles?: ContentEntity[];
     categoryArticles?: CategoryArticlesViewEntity[],
 }
 
@@ -66,7 +66,7 @@ export class ArticlesSection extends React.Component<Props, State> {
         navigation.navigate('HomeStackNavigator_CategoryArticlesScreen', params);
     }
 
-    private onArticlePress(article?: ContentViewEntity) {
+    private onArticlePress(article?: ContentEntity) {
         if (!article) return;
 
         // Text article
@@ -141,7 +141,7 @@ export class ArticlesSection extends React.Component<Props, State> {
                                     >
                                         {/* Featured image */}
                                         <ImageBackground
-                                            source={{ uri: this.props?.data?.featuredArticle.coverImageFilepath }}
+                                            source={{ uri: content.getCoverImageFilepath(this.props?.data?.featuredArticle) }}
                                             style={[styles.image, { width: '100%', aspectRatio: 1.7 }]}
                                             resizeMode="cover"
                                         >
@@ -164,7 +164,7 @@ export class ArticlesSection extends React.Component<Props, State> {
                                             <TouchableOpacity key={index} onPress={() => { this.onArticlePress(article) }} style={{ width: scale(180), marginRight: scale(15), marginBottom: scale(10) }}>
                                                 <ImageBackground
                                                     // source={{ uri: (article.coverImageUrl ? article.coverImageUrl : undefined) }}
-                                                    source={{ uri: article.coverImageFilepath }}
+                                                    source={{ uri: content.getCoverImageFilepath(article) }}
                                                     style={[styles.image, { width: '100%', aspectRatio: 1 }]}
                                                     resizeMode="cover"
                                                 >
@@ -207,7 +207,7 @@ export class ArticlesSection extends React.Component<Props, State> {
                                                     <TouchableOpacity onPress={() => { this.onArticlePress(article) }} key={index} style={{ width: scale(180), marginRight: scale(15), marginBottom: scale(15) }}>
                                                         <ImageBackground
                                                             // source={{ uri: (article.coverImageUrl ? article.coverImageUrl : undefined) }}
-                                                            source={{ uri: article.coverImageFilepath }}
+                                                            source={{ uri: content.getCoverImageFilepath(article) }}
                                                             style={[styles.image, { width: '100%', aspectRatio: 1 }]}
                                                             resizeMode="cover"
                                                         >

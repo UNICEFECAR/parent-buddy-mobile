@@ -93,7 +93,8 @@ export class HomeScreen extends React.Component<Props, object> {
         
                 filteredRecords?.forEach((record, index, collection) => {
                     categoryArticles.articles.push(
-                        content.toContentViewEntity(record, vocabulariesAndTermsResponse)
+                        record
+                        // content.toContentViewEntity(record, vocabulariesAndTermsResponse)
                     );
                 });
             } catch (e) {
