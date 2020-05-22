@@ -17,6 +17,7 @@ import { Dimensions, Linking } from 'react-native';
 import HTML from 'react-native-render-html';
 import { ContentEntity } from '../../stores/ContentEntity';
 import { content } from '../../app';
+import { DataRealmContext, DataRealmContextValue, DataRealmConsumer } from '../../stores/DataRealmContext';
 
 export interface ArticleScreenParams {
     article: ContentEntity;
@@ -32,7 +33,7 @@ export interface Props {
  */
 export class ArticleScreen extends React.Component<Props, object> {
 
-    public constructor(props:Props) {
+    public constructor(props: Props) {
         super(props);
 
         this.setDefaultScreenParams();
@@ -60,45 +61,45 @@ export class ArticleScreen extends React.Component<Props, object> {
 
         return (
             <ThemeConsumer>
-            {(themeContext:ThemeContextValue) => (
-                <ScrollView
-                    style={{backgroundColor:themeContext.theme.screenContainer?.backgroundColor}}
-                    contentContainerStyle={ [styles.container] }
-                >
-                    <View style={{alignItems:'flex-start', padding:themeContext.theme.screenContainer?.padding}}>
-                        {/* GO BACK */}
-                        <TextButton style={{padding:0}} icon="chevron-left" iconStyle={{color:'#AA40BF'}} textStyle={{fontSize:scale(16)}} color={TextButtonColor.purple} onPress={ () => {this.gotoBack()} }>
-                            {translate('buttonBack')}
-                        </TextButton>
+                {(themeContext: ThemeContextValue) => (
+                    <ScrollView
+                        style={{ backgroundColor: themeContext.theme.screenContainer?.backgroundColor }}
+                        contentContainerStyle={[styles.container]}
+                    >
+                        <View style={{ alignItems: 'flex-start', padding: themeContext.theme.screenContainer?.padding }}>
+                            {/* GO BACK */}
+                            <TextButton style={{ padding: 0 }} icon="chevron-left" iconStyle={{ color: '#AA40BF' }} textStyle={{ fontSize: scale(16) }} color={TextButtonColor.purple} onPress={() => { this.gotoBack() }}>
+                                {translate('buttonBack')}
+                            </TextButton>
 
-                        <View style={{height:scale(15)}} />
+                            <View style={{ height: scale(15) }} />
 
-                        {/* ARTICLE TITLE */}
-                        <Typography style={{textAlign:'left'}} type={TypographyType.headingPrimary}>
-                            {screenParams.article.title}
-                        </Typography>
+                            {/* ARTICLE TITLE */}
+                            <Typography style={{ textAlign: 'left' }} type={TypographyType.headingPrimary}>
+                                {screenParams.article.title}
+                            </Typography>
 
-                        {/* TAG WITH CATEGORY NAME */}
-                        {screenParams?.categoryName ? (
-                            <Tag>{screenParams?.categoryName}</Tag>
-                        ) : null}
-                    </View>
+                            {/* TAG WITH CATEGORY NAME */}
+                            {screenParams?.categoryName ? (
+                                <Tag>{screenParams?.categoryName}</Tag>
+                            ) : null}
+                        </View>
 
-                    <View style={{paddingBottom:scale(25)}}>
-                        {/* ARTICLE IMAGE */}
-                        <Image
-                            source={ {uri: content.getCoverImageFilepath(screenParams.article)} }
-                            style={[{width:'100%', aspectRatio:1.4}]}
-                            resizeMode="cover"
-                        />
+                        <View style={{ paddingBottom: scale(25) }}>
+                            {/* ARTICLE IMAGE */}
+                            <Image
+                                source={{ uri: content.getCoverImageFilepath(screenParams.article) }}
+                                style={[{ width: '100%', aspectRatio: 1.4 }]}
+                                resizeMode="cover"
+                            />
 
-                        {/* SHARE BUTTON */}
-                        <ShareButton style={{position:'absolute', bottom:scale(0), right:scale(20)}} onPress={ () => {} } />
-                    </View>
+                            {/* SHARE BUTTON */}
+                            <ShareButton style={{ position: 'absolute', bottom: scale(0), right: scale(20) }} onPress={() => { }} />
+                        </View>
 
-                    <View style={{flexDirection:'column', justifyContent:'flex-start', padding:themeContext.theme.screenContainer?.padding}}>
-                        {/* ARTICLE BODY */}
-                        {/* <AutoHeightWebView
+                        <View style={{ flexDirection: 'column', justifyContent: 'flex-start', padding: themeContext.theme.screenContainer?.padding }}>
+                            {/* ARTICLE BODY */}
+                            {/* <AutoHeightWebView
                             source={{ html:screenParams.article.bodyHTML}}
                             style={{width: '100%'}}
                             customStyle={ `p {font-size:20px}` }
@@ -108,29 +109,33 @@ export class ArticleScreen extends React.Component<Props, object> {
                             // onSizeUpdated={ size => console.warn(size.height) }
                         /> */}
 
-                        <HTML
-                            html={ screenParams.article.body }
-                            baseFontStyle={ { fontSize:scale(17) } }
-                            tagsStyles={ {p:{marginBottom:15}, a:{fontWeight:'bold', textDecorationLine:'none'}} }
-                            imagesMaxWidth={ Dimensions.get('window').width }
-                            staticContentMaxWidth={ Dimensions.get('window').width }
-                            onLinkPress={(event:any, href:string) => {
-                                Linking.openURL(href);
-                            }}
-                        />
+                            <HTML
+                                html={screenParams.article.body}
+                                baseFontStyle={{ fontSize: scale(17) }}
+                                tagsStyles={{ p: { marginBottom: 15 }, a: { fontWeight: 'bold', textDecorationLine: 'none' } }}
+                                imagesMaxWidth={Dimensions.get('window').width}
+                                staticContentMaxWidth={Dimensions.get('window').width}
+                                onLinkPress={(event: any, href: string) => {
+                                    Linking.openURL(href);
+                                }}
+                            />
 
-                        {/* SHARE BUTTON */}
-                        <TextButton icon="share-alt" iconStyle={{color:'#AA40BF'}} color={TextButtonColor.purple}>
-                            {translate('buttonShare')}
-                        </TextButton>
+                            {/* SHARE BUTTON */}
+                            <TextButton icon="share-alt" iconStyle={{ color: '#AA40BF' }} color={TextButtonColor.purple}>
+                                {translate('buttonShare')}
+                            </TextButton>
 
-                        <Divider style={{marginTop:scale(30), marginBottom:scale(30)}} />
+                            <Divider style={{ marginTop: scale(30), marginBottom: scale(30) }} />
 
-                        {/* RELATED ARTICLES */}
-                        {/* <ArticlesSection data={articlesSectionRelatedArticles} hideTitleUnderline={true} /> */}
-                    </View>
-                </ScrollView>
-            )}
+                            {/* RELATED ARTICLES */}
+                            <DataRealmConsumer>
+                                {(dataRealmContext: DataRealmContextValue) => (
+                                    <ArticlesSection data={content.getRelatedArticles(dataRealmContext.realm, screenParams.article)} hideTitleUnderline={true} />
+                                )}
+                            </DataRealmConsumer>
+                        </View>
+                    </ScrollView>
+                )}
             </ThemeConsumer>
         );
     }
@@ -143,6 +148,6 @@ export interface ArticleScreenStyles {
 
 const styles = StyleSheet.create<ArticleScreenStyles>({
     container: {
-        
+
     },
 });

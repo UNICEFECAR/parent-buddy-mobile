@@ -186,6 +186,33 @@ class Content {
 
         return rval;
     }
+
+    public getRelatedArticles(realm: Realm | null, contentEntity: ContentEntity): ArticlesSectionData {
+        const rval: ArticlesSectionData = {
+            title: translate('relatedArticles'),
+            otherFeaturedArticles: [],
+        };
+
+        // Get all articles from contentEntity category except contentEntity
+        let allArticles: ContentEntity[] = []; 
+        
+        try {
+            const allContent = realm?.objects<ContentEntity>(ContentEntitySchema.name);
+            const filteredRecords = allContent?.filtered(`category == ${contentEntity.category} AND type == 'article' AND id <> ${contentEntity.id}`);
+    
+            filteredRecords?.forEach((record, index, collection) => {
+                allArticles.push(record);
+            });
+        } catch (e) {
+            console.warn(e);
+        }
+
+        // Randomize articles
+        allArticles = utils.randomizeArray(allArticles);
+
+        rval.otherFeaturedArticles = allArticles.slice(0, 5);
+        return rval;
+    }
 }
 
 export const content = Content.getInstance();
