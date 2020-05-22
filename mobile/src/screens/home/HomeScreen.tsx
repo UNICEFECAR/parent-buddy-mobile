@@ -9,6 +9,9 @@ import { ArticlesSection, ArticlesSectionData } from './ArticlesSection';
 import { DataRealmContext, DataRealmContextValue, DataRealmConsumer } from '../../stores/DataRealmContext';
 import { ContentEntity, ContentEntitySchema } from '../../stores/ContentEntity';
 import { CategoryArticlesViewEntity } from '../../stores/CategoryArticlesViewEntity';
+import { dataRealmStore } from '../../stores';
+import { translate } from '../../translations/translate';
+import { content } from '../../app';
 
 export interface HomeScreenParams {
     showSearchInput?: boolean;
@@ -42,27 +45,70 @@ export class HomeScreen extends React.Component<Props, object> {
 
     private getHomeScreenArticles(realm: Realm | null): ArticlesSectionData {
         const rval: ArticlesSectionData = {
-            title:'Bla bla'
+            title: translate('noArticles'),
+            categoryArticles: [],
         };
 
-        const category2Articles: CategoryArticlesViewEntity = {
-            categoryId: 55,
-            categoryName: 'Neka Category',
-            articles: []
-        };
+        // Set categories
+        const vocabulariesAndTermsResponse = dataRealmStore.getVariable('vocabulariesAndTerms');
 
-        try {
-            const allContent = realm?.objects<ContentEntity>(ContentEntitySchema.name);
-            const filteredRecords = allContent?.filtered(`category == 55 AND type == 'article'`);
-    
-            filteredRecords?.forEach((record, index, collection) => {
-                category2Articles.articles.push(record);
-            });
-        } catch (e) {
-            console.warn(e);
+        if (!vocabulariesAndTermsResponse || !vocabulariesAndTermsResponse.categories || !Array.isArray(vocabulariesAndTermsResponse.categories)) {
+            return rval;
         }
 
-        rval.categoryArticles = [category2Articles];
+        const categories = vocabulariesAndTermsResponse.categories;
+
+        // Set categoryIds
+        const categoryIds = [
+            55, // Play and Learning
+            2, // Health and Wellbeing
+            3, // Safety and Protection
+            56, // Responsive Parenting
+            4, // Parenting Corner
+            1, // Nutrition and Breastfeeding
+        ];
+
+        // Get artciles for each category
+        categoryIds.forEach((categoryId) => {
+            // Set categoryName
+            let thisCategoryArray = categories.filter((category) => {
+                return category.id === categoryId;
+            });
+
+            let categoryName = '';
+            if (thisCategoryArray && thisCategoryArray.length > 0) {
+                categoryName = thisCategoryArray[0].name;
+            }
+            
+            // Set categoryArticles
+            const categoryArticles: CategoryArticlesViewEntity = {
+                categoryId: categoryId,
+                categoryName: categoryName,
+                articles: []
+            };
+
+            try {
+                const allContent = realm?.objects<ContentEntity>(ContentEntitySchema.name);
+                const filteredRecords = allContent?.filtered(`category == ${categoryId} AND type == 'article' SORT(id ASC) LIMIT(5)`);
+        
+                filteredRecords?.forEach((record, index, collection) => {
+                    categoryArticles.articles.push(
+                        content.toContentViewEntity(record, vocabulariesAndTermsResponse)
+                    );
+                });
+            } catch (e) {
+                console.warn(e);
+            }
+    
+            if (categoryArticles.articles.length > 0) {
+                rval.categoryArticles?.push(categoryArticles);
+            }
+        });
+
+        // Change title
+        if (rval.categoryArticles && rval.categoryArticles.length > 0) {
+            rval.title = translate('popularArticles');
+        }
 
         return rval;
     }

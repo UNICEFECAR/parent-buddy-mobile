@@ -1,4 +1,4 @@
-import { ContentEntity } from "./ContentEntity";
+import { ContentViewEntity } from "./ContentViewEntity";
 
 /**
  * Category with articles used by views.
@@ -6,5 +6,5 @@ import { ContentEntity } from "./ContentEntity";
 export class CategoryArticlesViewEntity {
     categoryId: number = 0;
     categoryName: string = '';
-    articles: ContentEntity[] = [];
+    articles: ContentViewEntity[] = [];
 }

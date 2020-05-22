@@ -15,6 +15,8 @@ import { BorderlessButton, RectButton, TouchableHighlight, TouchableNativeFeedba
 import { StackActions } from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { ContentEntity } from '../../stores/ContentEntity';
+import { content } from '../../app';
+import { ContentViewEntity } from '../../stores/ContentViewEntity';
 
 export interface Props {
     data: ArticlesSectionData;
@@ -28,8 +30,8 @@ export interface State {
 
 export interface ArticlesSectionData {
     title: string;
-    featuredArticle?: ContentEntity;
-    otherFeaturedArticles?: ContentEntity[];
+    featuredArticle?: ContentViewEntity;
+    otherFeaturedArticles?: ContentViewEntity[];
     categoryArticles?: CategoryArticlesViewEntity[],
 }
 
@@ -64,9 +66,19 @@ export class ArticlesSection extends React.Component<Props, State> {
         navigation.navigate('HomeStackNavigator_CategoryArticlesScreen', params);
     }
 
-    private onArticlePress(article?: ContentEntity) {
+    private onArticlePress(article?: ContentViewEntity) {
         if (!article) return;
-        
+
+        // Text article
+        const pushAction = StackActions.push({
+            routeName: 'HomeStackNavigator_ArticleScreen',
+            params: {
+                article: article
+            },
+        });
+
+        navigation.dispatch(pushAction);
+
         // if (!article.youTubeVideoId) {
         //     // Text article
         //     const pushAction = StackActions.push({
@@ -129,7 +141,7 @@ export class ArticlesSection extends React.Component<Props, State> {
                                     >
                                         {/* Featured image */}
                                         <ImageBackground
-                                            source={{ uri: (this.props?.data?.featuredArticle?.coverImageUrl ? this.props?.data?.featuredArticle?.coverImageUrl : undefined) }}
+                                            source={{ uri: this.props?.data?.featuredArticle.coverImageFilepath }}
                                             style={[styles.image, { width: '100%', aspectRatio: 1.7 }]}
                                             resizeMode="cover"
                                         >
@@ -151,7 +163,8 @@ export class ArticlesSection extends React.Component<Props, State> {
                                         {this.props?.data?.otherFeaturedArticles.map((article, index) => (
                                             <TouchableOpacity key={index} onPress={() => { this.onArticlePress(article) }} style={{ width: scale(180), marginRight: scale(15), marginBottom: scale(10) }}>
                                                 <ImageBackground
-                                                    source={{ uri: (article.coverImageUrl ? article.coverImageUrl : undefined) }}
+                                                    // source={{ uri: (article.coverImageUrl ? article.coverImageUrl : undefined) }}
+                                                    source={{ uri: article.coverImageFilepath }}
                                                     style={[styles.image, { width: '100%', aspectRatio: 1 }]}
                                                     resizeMode="cover"
                                                 >
@@ -193,7 +206,8 @@ export class ArticlesSection extends React.Component<Props, State> {
                                                 {category?.articles.map((article, index) => (
                                                     <TouchableOpacity onPress={() => { this.onArticlePress(article) }} key={index} style={{ width: scale(180), marginRight: scale(15), marginBottom: scale(15) }}>
                                                         <ImageBackground
-                                                            source={{ uri: (article.coverImageUrl ? article.coverImageUrl : undefined) }}
+                                                            // source={{ uri: (article.coverImageUrl ? article.coverImageUrl : undefined) }}
+                                                            source={{ uri: article.coverImageFilepath }}
                                                             style={[styles.image, { width: '100%', aspectRatio: 1 }]}
                                                             resizeMode="cover"
                                                         >

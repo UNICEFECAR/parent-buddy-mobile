@@ -8,7 +8,6 @@ import { Typography, TypographyType } from '../../components/Typography';
 import { TextButton, TextButtonColor } from '../../components/TextButton';
 import { ShareButton } from '../../components/ShareButton';
 import { Tag } from '../../components/Tag';
-import { ArticleViewEntity } from '../../stores/ArticleViewEntity';
 import { Divider } from '../../components/Divider';
 import { ArticlesSection } from './ArticlesSection';
 import AutoHeightWebView from 'react-native-autoheight-webview'
@@ -16,9 +15,10 @@ import { articlesSectionRelatedArticles } from "../../dummy-data/articlesSection
 import { Dimensions, Linking } from 'react-native';
 // @ts-ignore
 import HTML from 'react-native-render-html';
+import { ContentViewEntity } from '../../stores/ContentViewEntity';
 
 export interface ArticleScreenParams {
-    article: ArticleViewEntity
+    article: ContentViewEntity
 }
 
 export interface Props {
@@ -106,7 +106,7 @@ export class ArticleScreen extends React.Component<Props, object> {
                         /> */}
 
                         <HTML
-                            html={ screenParams.article.bodyHTML }
+                            html={ screenParams.article.body }
                             baseFontStyle={ { fontSize:scale(17) } }
                             tagsStyles={ {p:{marginBottom:15}, a:{fontWeight:'bold', textDecorationLine:'none'}} }
                             imagesMaxWidth={ Dimensions.get('window').width }
@@ -124,7 +124,7 @@ export class ArticleScreen extends React.Component<Props, object> {
                         <Divider style={{marginTop:scale(30), marginBottom:scale(30)}} />
 
                         {/* RELATED ARTICLES */}
-                        <ArticlesSection data={articlesSectionRelatedArticles} hideTitleUnderline={true} />
+                        {/* <ArticlesSection data={articlesSectionRelatedArticles} hideTitleUnderline={true} /> */}
                     </View>
                 </ScrollView>
             )}
