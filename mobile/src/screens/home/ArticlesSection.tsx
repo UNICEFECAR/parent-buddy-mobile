@@ -86,6 +86,8 @@ export class ArticlesSection extends React.Component<Props, State> {
     }
 
     public render() {
+        // console.log('RENDER ArticlesSection');
+
         let getPlayIcon = (themeContext: ThemeContextValue, size:number = scale(70)) => {
             return (
                 <View style={{
@@ -127,7 +129,7 @@ export class ArticlesSection extends React.Component<Props, State> {
                                     >
                                         {/* Featured image */}
                                         <ImageBackground
-                                            source={{ uri: this.props?.data?.featuredArticle?.coverImageUrl }}
+                                            source={{ uri: (this.props?.data?.featuredArticle?.coverImageUrl ? this.props?.data?.featuredArticle?.coverImageUrl : undefined) }}
                                             style={[styles.image, { width: '100%', aspectRatio: 1.7 }]}
                                             resizeMode="cover"
                                         >
@@ -149,7 +151,7 @@ export class ArticlesSection extends React.Component<Props, State> {
                                         {this.props?.data?.otherFeaturedArticles.map((article, index) => (
                                             <TouchableOpacity key={index} onPress={() => { this.onArticlePress(article) }} style={{ width: scale(180), marginRight: scale(15), marginBottom: scale(10) }}>
                                                 <ImageBackground
-                                                    source={{ uri: article.coverImageUrl }}
+                                                    source={{ uri: (article.coverImageUrl ? article.coverImageUrl : undefined) }}
                                                     style={[styles.image, { width: '100%', aspectRatio: 1 }]}
                                                     resizeMode="cover"
                                                 >
@@ -191,7 +193,7 @@ export class ArticlesSection extends React.Component<Props, State> {
                                                 {category?.articles.map((article, index) => (
                                                     <TouchableOpacity onPress={() => { this.onArticlePress(article) }} key={index} style={{ width: scale(180), marginRight: scale(15), marginBottom: scale(15) }}>
                                                         <ImageBackground
-                                                            source={{ uri: article.coverImageUrl }}
+                                                            source={{ uri: (article.coverImageUrl ? article.coverImageUrl : undefined) }}
                                                             style={[styles.image, { width: '100%', aspectRatio: 1 }]}
                                                             resizeMode="cover"
                                                         >
