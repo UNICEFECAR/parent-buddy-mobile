@@ -73,13 +73,15 @@ export class Drawer extends React.Component<Props> {
             
                     <View style={{flexDirection:'row'}}>
                         <FancyButton type={ FancyButtonType.safety } style={{flex:1}} onPress={ ()=>{this.gotoScreen(FancyButtonType.safety)} } />
-                        <FancyButton type={ FancyButtonType.food } style={{flex:1}} onPress={ ()=>{this.gotoScreen(FancyButtonType.food)} } />
+                        <FancyButton type={ FancyButtonType.responsive } style={{flex:1}} onPress={ ()=>{this.gotoScreen(FancyButtonType.responsive)} } />
                     </View>
             
                     <View style={{flexDirection:'row'}}>
                         <FancyButton type={ FancyButtonType.parents } style={{flex:1}} onPress={ ()=>{this.gotoScreen(FancyButtonType.parents)} } />
-                        <FancyButton type={ FancyButtonType.faq } style={{flex:1}} onPress={ ()=>{this.gotoScreen(FancyButtonType.faq)} } />
+                        <FancyButton type={ FancyButtonType.food } style={{flex:1}} onPress={ ()=>{this.gotoScreen(FancyButtonType.food)} } />
                     </View>
+
+                    <FancyButton type={ FancyButtonType.faq } style={{flex:1}} onPress={ ()=>{this.gotoScreen(FancyButtonType.faq)} } />
 
                     {/* GROWTH DIARY */}
                     <Typography type={ TypographyType.headingPrimary } style={{marginTop:scale(20), marginBottom:scale(5)}}>

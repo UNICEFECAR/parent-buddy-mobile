@@ -34,6 +34,7 @@ export enum FancyButtonType {
     safety,
     games,
     parents,
+    responsive,
     faq,
 
     aboutUs,
@@ -185,14 +186,27 @@ export class FancyButton extends React.Component<Props, State> {
             state.containerStyle.paddingBottom = 15;
         }
 
-        if (this.props.type === FancyButtonType.faq) {
+        if (this.props.type === FancyButtonType.responsive) {
             state.containerStyle.backgroundColor = '#E4F8FF';
             state.textStyle.color = '#2BABEE';
+            state.text = translate('drawerButtonResponsive');
+            state.iconComponent = (
+                <IconFontAwesome5
+                    name={ 'hand-holding-heart' }
+                    style={ {fontSize:24, lineHeight:24, color:'#2BABEE', marginBottom:13,} }
+                />
+            );
+            state.containerStyle.paddingBottom = 15;
+        }
+
+        if (this.props.type === FancyButtonType.faq) {
+            // state.containerStyle.backgroundColor = '#E4F8FF';
+            // state.textStyle.color = '#2BABEE';
             state.text = translate('drawerButtonFaq');
             state.iconComponent = (
                 <IconFontAwesome5
                     name={ 'question' }
-                    style={ {fontSize:24, lineHeight:24, color:'#2BABEE', marginBottom:13,} }
+                    style={ {fontSize:24, lineHeight:24, color:'#AA40BF', marginBottom:13,} }
                 />
             );
             state.containerStyle.paddingBottom = 15;
