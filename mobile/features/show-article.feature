@@ -31,8 +31,8 @@ Scenario: Conditional ordering of articles within the category
 Scenario: Showing development content segment on the home page
   Given User has logged in
   * user has entered child birth data
-  * user has opened the home page
-  When child age approaches predefined development period to <<XX>> days
+  * child age approaches <<XX>> days prior to the development period
+  When user has opened the home page
   Then additional segment is shown on the home page above the default article collections that gives more information about child development
   # https://projects.invisionapp.com/share/GBUJ3D6CV3E#/screens/390238737
 
