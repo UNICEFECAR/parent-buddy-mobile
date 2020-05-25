@@ -21,6 +21,7 @@
     "@react-navigation/core": "3.6.1",
     "@websanova/url": "^2.6.3",
     "axios": "^0.19.2",
+    "base-64": "^0.1.0",
     "i18n-js": "3.5.1",
     "lodash": "^4.17.15",
     "lodash.memoize": "4.1.2",

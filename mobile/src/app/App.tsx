@@ -12,6 +12,12 @@ import { UserRealmProvider } from '../stores/UserRealmContext';
 import { dataRealmStore } from '../stores';
 import { utils } from './utils';
 import { localize } from './localize';
+// @ts-ignore
+import {decode as atob, encode as btoa} from 'base-64';
+
+// ADD GLOBAL POLYFILLS: atob, btoa
+if (!(global as any).btoa) (global as any).btoa = btoa;
+if (!(global as any).atob) (global as any).atob = atob;
 
 // Warnings to ignore
 YellowBox.ignoreWarnings([
