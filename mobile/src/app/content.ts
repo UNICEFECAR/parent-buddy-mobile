@@ -6,6 +6,7 @@ import { ContentViewEntity } from "../stores/ContentViewEntity";
 import { ArticlesSectionData } from "../screens/home/ArticlesSection";
 import { translate } from "../translations/translate";
 import { dataRealmStore, CategoryArticlesViewEntity } from "../stores";
+import { Platform } from "react-native";
 
 /**
  * Utility methods related to ContentEntity.
@@ -45,7 +46,7 @@ class Content {
         let coverImageData = this.getCoverImageData(content);
 
         if (coverImageData) {
-            rval = `${coverImageData.destFolder}/${coverImageData.destFilename}`;
+            rval = (Platform.OS === 'android' ? 'file://' : '') + `${coverImageData.destFolder}/${coverImageData.destFilename}`;
         }
 
         return rval;

@@ -51,6 +51,10 @@ class ApiStore {
                 responseType: 'json',
                 timeout: appConfig.apiTimeout, // milliseconds
                 maxContentLength: 100000, // bytes
+                auth: {
+                    username: appConfig.apiUsername,
+                    password: appConfig.apiPassword,
+                },
             });
 
             let rawResponseJson = axiosResponse.data;
@@ -73,7 +77,9 @@ class ApiStore {
                     };
                 });
             }
-        } catch (rejectError) { }
+        } catch (rejectError) {
+            console.log(rejectError);
+        }
 
         return response;
     }
@@ -171,6 +177,10 @@ class ApiStore {
                     responseType: 'json',
                     timeout: appConfig.apiTimeout, // milliseconds
                     maxContentLength: 100000, // bytes
+                    auth: {
+                        username: appConfig.apiUsername,
+                        password: appConfig.apiPassword,
+                    },
                 });
 
                 // Transform response
