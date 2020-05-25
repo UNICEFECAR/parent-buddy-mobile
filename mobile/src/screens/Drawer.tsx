@@ -45,9 +45,6 @@ export class Drawer extends React.Component<Props> {
         return (
             <ThemeConsumer>
             {(themeContext:ThemeContextValue) => (
-                // <View style={ [styles.container, themeContext.theme.contentContainer, this.props.style] }>
-                //     <Text>Component: Drawer</Text>
-                // </View>
                 <ScrollView contentContainerStyle={ styles.contentContainer }>
                     {/* ARTICLES */}
                     <View style={{marginBottom:scale(5), flexDirection:'row', alignItems:'center'}}>
