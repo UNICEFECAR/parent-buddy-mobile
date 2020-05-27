@@ -59,7 +59,8 @@ export class ArticlesSection extends React.Component<Props, State> {
 
     private gotoCategoryArticlesScreen(categoryData: CategoryArticlesViewEntity) {
         let params: CategoryArticlesScreenParams = {
-            data: categoryData
+            categoryId: categoryData.categoryId,
+            categoryName: categoryData.categoryName,
         };
 
         navigation.navigate('HomeStackNavigator_CategoryArticlesScreen', params);

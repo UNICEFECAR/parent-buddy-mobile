@@ -42,6 +42,8 @@ class ApiStore {
         try {
             if (appConfig.showLog) {
                 console.log(`apiStore.getContent(): numberOfItems:${urlParams.numberOfItems}, page:${urlParams.page}, type:${contentType?contentType:'all'}, updatedFromDate:${urlParams.updatedFromDate}`);
+                console.log(`apiStore.getContent(): URL = ${url}`);
+                console.log(`apiStore.getContent(): URL params = ${JSON.stringify(urlParams, null, 4)}`);
             }
 
             let axiosResponse: AxiosResponse = await axios({

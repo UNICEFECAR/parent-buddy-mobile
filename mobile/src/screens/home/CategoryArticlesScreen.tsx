@@ -16,7 +16,8 @@ import { ContentEntity, ContentEntitySchema } from '../../stores/ContentEntity';
 import { content } from '../../app';
 
 export interface CategoryArticlesScreenParams {
-    data: CategoryArticlesViewEntity;
+    categoryName: string;
+    categoryId: number;
 }
 
 export interface Props {
@@ -36,7 +37,9 @@ export class CategoryArticlesScreen extends React.Component<Props, object> {
 
     private setDefaultScreenParams() {
         let defaultScreenParams: CategoryArticlesScreenParams = {
-            data: { categoryId: 0, categoryName: 'No category', articles: [] }
+            // data: { categoryId: 0, categoryName: 'No category', articles: [] }
+            categoryId: 0,
+            categoryName: 'No category',
         };
 
         if (this.props.navigation.state.params) {
@@ -58,7 +61,7 @@ export class CategoryArticlesScreen extends React.Component<Props, object> {
         // Text article
         let params: ArticleScreenParams = {
             article: article,
-            categoryName: screenParams.data.categoryName,
+            categoryName: screenParams.categoryName,
         };
 
         this.props.navigation.navigate('HomeStackNavigator_ArticleScreen', params);
@@ -110,7 +113,7 @@ export class CategoryArticlesScreen extends React.Component<Props, object> {
 
                         {/* CATEGORY NAME */}
                         <Typography type={TypographyType.headingPrimary}>
-                            {screenParams.data.categoryName}
+                            {screenParams.categoryName}
                         </Typography>
 
                         {/* CATEGORY ARTICLES */}
@@ -118,7 +121,7 @@ export class CategoryArticlesScreen extends React.Component<Props, object> {
                             {(dataRealmContext: DataRealmContextValue) => (
                                 <Fragment>
                                     {dataRealmContext.realm?.objects<ContentEntity>(ContentEntitySchema.name)
-                                        .filtered(`category == ${screenParams.data.categoryId} AND type == 'article' SORT(id ASC)`).map(article => {
+                                        .filtered(`category == ${screenParams.categoryId} AND type == 'article' SORT(id ASC)`).map(article => {
                                             return (
                                                 <TouchableOpacity onPress={() => { this.gotoArticleScreen(article) }} key={article.id} style={{ marginBottom: scale(25) }}>
                                                     <ImageBackground
