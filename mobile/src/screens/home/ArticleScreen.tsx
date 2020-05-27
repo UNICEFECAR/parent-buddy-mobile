@@ -84,7 +84,7 @@ export class ArticleScreen extends React.Component<Props, object> {
                             ) : null}
                         </View>
 
-                        <View style={{ paddingBottom:0 }}>
+                        <View style={{ paddingBottom: 0 }}>
                             {/* ARTICLE IMAGE */}
                             <Image
                                 source={{ uri: content.getCoverImageFilepath(screenParams.article) }}
@@ -111,7 +111,7 @@ export class ArticleScreen extends React.Component<Props, object> {
                             <HTML
                                 html={screenParams.article.body}
                                 baseFontStyle={{ fontSize: scale(17) }}
-                                tagsStyles={{ p: { marginBottom: 15 }, a: { fontWeight: 'bold', textDecorationLine: 'none' } }}
+                                tagsStyles={htmlStyles}
                                 imagesMaxWidth={Dimensions.get('window').width}
                                 staticContentMaxWidth={Dimensions.get('window').width}
                                 onLinkPress={(event: any, href: string) => {
@@ -150,3 +150,9 @@ const styles = StyleSheet.create<ArticleScreenStyles>({
 
     },
 });
+
+const htmlStyles = {
+    p: { marginBottom: 15 },
+    a: { fontWeight: 'bold', textDecorationLine: 'none' },
+    blockquote: { backgroundColor:'#F0F1FF', padding:scale(15) },
+};
