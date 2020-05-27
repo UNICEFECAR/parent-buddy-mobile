@@ -10,6 +10,8 @@ import { Typography, TypographyType } from "../components/Typography";
 import { BorderlessButton } from "react-native-gesture-handler";
 import { HomeScreenParams } from './home/HomeScreen';
 import { DrawerActions } from 'react-navigation-drawer';
+import { CategoryArticlesScreenParams } from './home/CategoryArticlesScreen';
+import { dataRealmStore } from '../stores';
 
 export interface Props {
     style?: StyleProp<ViewStyle>;
@@ -25,15 +27,42 @@ export class Drawer extends React.Component<Props> {
     }
 
     private gotoScreen(fancyButtonType:FancyButtonType) {
+        // Go to HomeScreen
         if (fancyButtonType === FancyButtonType.home) {
-            let params: HomeScreenParams = {
-
-            };
-            
+            const params: HomeScreenParams = {};
             navigation.navigate('HomeStackNavigator_HomeScreen', params);
             navigation.dispatch(DrawerActions.closeDrawer());
-        } else {
-            navigation.dispatch(DrawerActions.closeDrawer());
+        }
+
+        // Go to CategoryArticlesScreen
+        if (
+            fancyButtonType === FancyButtonType.games ||
+            fancyButtonType === FancyButtonType.health ||
+            fancyButtonType === FancyButtonType.safety ||
+            fancyButtonType === FancyButtonType.responsive ||
+            fancyButtonType === FancyButtonType.parents ||
+            fancyButtonType === FancyButtonType.food
+        ) {
+            let categoryId: number|null = null;
+            let categoryName: string|null = null;
+
+            if (fancyButtonType === FancyButtonType.games) categoryId = 55;
+            if (fancyButtonType === FancyButtonType.health) categoryId = 2;
+            if (fancyButtonType === FancyButtonType.safety) categoryId = 3;
+            if (fancyButtonType === FancyButtonType.responsive) categoryId = 56;
+            if (fancyButtonType === FancyButtonType.parents) categoryId = 4;
+            if (fancyButtonType === FancyButtonType.food) categoryId = 1;
+
+            if (categoryId) categoryName = dataRealmStore.getCategoryNameFromId(categoryId);
+
+            if (categoryId && categoryName) {
+                const params: CategoryArticlesScreenParams = {
+                    categoryId: categoryId,
+                    categoryName: categoryName,
+                };
+                navigation.navigate('HomeStackNavigator_CategoryArticlesScreen', params);
+                navigation.dispatch(DrawerActions.closeDrawer());                
+            }
         }
     }
 

@@ -173,6 +173,21 @@ class DataRealmStore {
             }
         });
     }
+
+    public getCategoryNameFromId(categoryId: number): string | null {
+        const vocabulariesAndTerms = this.getVariable('vocabulariesAndTerms');
+        if (!vocabulariesAndTerms) return null;
+
+        let rval = '';
+
+        vocabulariesAndTerms.categories.forEach((categoryObject) => {
+            if (categoryObject.id === categoryId) {
+                rval = categoryObject.name;
+            }
+        });
+
+        return rval;
+    }
 }
 
 export const dataRealmStore = DataRealmStore.getInstance();
