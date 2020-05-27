@@ -34,6 +34,7 @@ class ApiStore {
         if (args.updatedFromDate !== undefined) {
             urlParams.updatedFromDate = args.updatedFromDate;
         }
+        urlParams.published = appConfig.showPublishedContent;
 
         // Get API response
         let response: ContentResponse = {total:0, data:[]};
