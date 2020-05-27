@@ -84,7 +84,7 @@ export class ArticleScreen extends React.Component<Props, object> {
                             ) : null}
                         </View>
 
-                        <View style={{ paddingBottom: scale(25) }}>
+                        <View style={{ paddingBottom:0 }}>
                             {/* ARTICLE IMAGE */}
                             <Image
                                 source={{ uri: content.getCoverImageFilepath(screenParams.article) }}
@@ -93,7 +93,7 @@ export class ArticleScreen extends React.Component<Props, object> {
                             />
 
                             {/* SHARE BUTTON */}
-                            <ShareButton style={{ position: 'absolute', bottom: scale(0), right: scale(20) }} onPress={() => { }} />
+                            {/* <ShareButton style={{ position: 'absolute', bottom: scale(0), right: scale(20) }} onPress={() => { }} /> */}
                         </View>
 
                         <View style={{ flexDirection: 'column', justifyContent: 'flex-start', padding: themeContext.theme.screenContainer?.padding }}>
@@ -120,9 +120,9 @@ export class ArticleScreen extends React.Component<Props, object> {
                             />
 
                             {/* SHARE BUTTON */}
-                            <TextButton icon="share-alt" iconStyle={{ color: '#AA40BF' }} color={TextButtonColor.purple}>
+                            {/* <TextButton icon="share-alt" iconStyle={{ color: '#AA40BF' }} color={TextButtonColor.purple}>
                                 {translate('buttonShare')}
-                            </TextButton>
+                            </TextButton> */}
 
                             <Divider style={{ marginTop: scale(30), marginBottom: scale(30) }} />
 
