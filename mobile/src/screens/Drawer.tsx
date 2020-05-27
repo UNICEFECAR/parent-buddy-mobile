@@ -12,6 +12,7 @@ import { HomeScreenParams } from './home/HomeScreen';
 import { DrawerActions } from 'react-navigation-drawer';
 import { CategoryArticlesScreenParams } from './home/CategoryArticlesScreen';
 import { dataRealmStore } from '../stores';
+import { StackActions, NavigationActions } from 'react-navigation';
 
 export interface Props {
     style?: StyleProp<ViewStyle>;
@@ -27,10 +28,11 @@ export class Drawer extends React.Component<Props> {
     }
 
     private gotoScreen(fancyButtonType:FancyButtonType) {
+        navigation.navigate('HomeStackNavigator_HomeScreen');
+
         // Go to HomeScreen
         if (fancyButtonType === FancyButtonType.home) {
-            const params: HomeScreenParams = {};
-            navigation.navigate('HomeStackNavigator_HomeScreen', params);
+            // navigation.navigate('HomeStackNavigator_HomeScreen');
             navigation.dispatch(DrawerActions.closeDrawer());
         }
 
@@ -61,8 +63,14 @@ export class Drawer extends React.Component<Props> {
                     categoryName: categoryName,
                 };
                 navigation.navigate('HomeStackNavigator_CategoryArticlesScreen', params);
-                navigation.dispatch(DrawerActions.closeDrawer());                
+                navigation.dispatch(DrawerActions.closeDrawer());
             }
+        }
+
+        // Go to FaqScreenScreen
+        if (fancyButtonType === FancyButtonType.faq) {
+            navigation.navigate('HomeStackNavigator_FaqScreenScreen');
+            navigation.dispatch(DrawerActions.closeDrawer());
         }
     }
 
