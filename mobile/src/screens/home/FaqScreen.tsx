@@ -6,10 +6,11 @@ import { translate } from '../../translations/translate';
 import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
 import { Typography, TypographyType } from '../../components/Typography';
 import { TextButton, TextButtonColor } from '../../components/TextButton';
-import { ListCard, ListCardMode } from './ListCard';
+import { ListCard, ListCardMode, ListCardItem } from './ListCard';
 import { listCardFaqYourChildDummyData, listCardFaqPerAgeDummyData, listCardFaqMamaDummyData } from '../../dummy-data/listCardDummyData';
 import { DidntFindAnswers } from './DidntFindAnswers';
 import { FaqCategoryScreenParams } from './FaqCategoryScreen';
+import { FaqScreenArticlesResponse, dataRealmStore, FaqScreenArticlesResponseItem } from '../../stores/dataRealmStore';
 
 export interface FaqScreenParams {
 
@@ -19,17 +20,30 @@ export interface Props {
     navigation: NavigationStackProp<NavigationStackState, FaqScreenParams>;
 }
 
-export class FaqScreen extends React.Component<Props, object> {
+export type State = {
+    data: FaqScreenArticlesResponse;
+};
 
-    public constructor(props:Props) {
+export class FaqScreen extends React.Component<Props, State> {
+
+    public constructor(props: Props) {
         super(props);
 
+        this.initState();
         this.setDefaultScreenParams();
+    }
+
+    private initState() {
+        const state: State = {
+            data: dataRealmStore.getFaqScreenArticles(),
+        };
+
+        this.state = state;
     }
 
     private setDefaultScreenParams() {
         let defaultScreenParams: FaqScreenParams = {
-            
+
         };
 
         if (this.props.navigation.state.params) {
@@ -43,68 +57,62 @@ export class FaqScreen extends React.Component<Props, object> {
         this.props.navigation.goBack();
     }
 
-    private gotoFaqCategoryScreen () {
+    private gotoFaqCategoryScreen(faqSection:FaqScreenArticlesResponseItem, listCardItem: ListCardItem) {
         let params: FaqCategoryScreenParams = {
-    
+
         };
-        
-        this.props.navigation.navigate('HomeStackNavigator_FaqCategoryScreen', params);
+
+        // this.props.navigation.navigate('HomeStackNavigator_FaqCategoryScreen', params);
+        console.log(faqSection);
+        console.log(listCardItem);
     }
+
+    private onTestClick = () => {
+
+    };
 
     public render() {
         return (
             <ThemeConsumer>
-            {(themeContext:ThemeContextValue) => (
-                <ScrollView
-                    style={{backgroundColor:themeContext.theme.screenContainer?.backgroundColor}}
-                    contentContainerStyle={ [[styles.container], {padding:themeContext.theme.screenContainer?.padding}] }
-                >
-                    {/* GO BACK */}
-                    <TextButton style={{padding:0}} icon="chevron-left" iconStyle={{color:'#AA40BF'}} textStyle={{fontSize:scale(16)}} color={TextButtonColor.purple} onPress={ () => {this.gotoBack()} }>
-                        {translate('buttonBack')}
-                    </TextButton>
+                {(themeContext: ThemeContextValue) => (
+                    <ScrollView
+                        style={{ backgroundColor: themeContext.theme.screenContainer?.backgroundColor }}
+                        contentContainerStyle={[[styles.container], { padding: themeContext.theme.screenContainer?.padding }]}
+                    >
+                        {/* GO BACK */}
+                        <TextButton style={{ padding: 0 }} icon="chevron-left" iconStyle={{ color: '#AA40BF' }} textStyle={{ fontSize: scale(16) }} color={TextButtonColor.purple} onPress={() => { this.gotoBack() }}>
+                            {translate('buttonBack')}
+                        </TextButton>
 
-                    <View style={{height:scale(15)}} />
+                        <View style={{ height: scale(15) }} />
 
-                    {/* TITLE */}
-                    <Typography type={TypographyType.headingPrimary}>
-                        { translate('faq') }
-                    </Typography>
+                        {/* TITLE */}
+                        <Typography type={TypographyType.headingPrimary}>
+                            {translate('faq')}
+                        </Typography>
 
-                    {/* LIST CARD: Your child */}
-                    <ListCard
-                        mode={ ListCardMode.simpleList }
-                        title={ listCardFaqYourChildDummyData.title }
-                        items={ listCardFaqYourChildDummyData.items }
-                        onItemPress={(item) => {this.gotoFaqCategoryScreen()}}
-                    />
+                        {/* TEST BUTTON */}
+                        {/* <Button title="Test" onPress={this.onTestClick}></Button> */}
 
-                    <View style={{height:scale(20)}} />
+                        {/* SECTIONS */}
+                        {this.state.data.map(faqSection => (
+                            <>
+                                <ListCard
+                                    mode={ListCardMode.simpleList}
+                                    title={faqSection.title}
+                                    items={faqSection.items}
+                                    onItemPress={(item) => { this.gotoFaqCategoryScreen(faqSection, item) }}
+                                />
+                                <View style={{ height: scale(20) }} />
+                            </>
+                        ))}
 
-                    {/* LIST CARD: Per age */}
-                    <ListCard
-                        mode={ ListCardMode.simpleList }
-                        title={ listCardFaqPerAgeDummyData.title }
-                        items={ listCardFaqPerAgeDummyData.items }
-                        onItemPress={(item) => {this.gotoFaqCategoryScreen()}}
-                    />
-
-                    <View style={{height:scale(20)}} />
-
-                    {/* LIST CARD: mama */}
-                    <ListCard
-                        mode={ ListCardMode.simpleList }
-                        title={ listCardFaqMamaDummyData.title }
-                        items={ listCardFaqMamaDummyData.items }
-                        onItemPress={(item) => {this.gotoFaqCategoryScreen()}}
-                    />
-
-                    {/* YOU DIDNT FIND ANSWER */}
-                    <View style={{height:scale(40)}} />
-                    <DidntFindAnswers />
-                    <View style={{height:scale(40)}} />
-                </ScrollView>
-            )}
+                        {/* YOU DIDNT FIND ANSWER */}
+                        <View style={{ height: scale(40) }} />
+                        <DidntFindAnswers />
+                        <View style={{ height: scale(40) }} />
+                    </ScrollView>
+                )}
             </ThemeConsumer>
         );
     }
@@ -117,6 +125,6 @@ export interface FaqScreenStyles {
 
 const styles = StyleSheet.create<FaqScreenStyles>({
     container: {
-        
+
     },
 });

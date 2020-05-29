@@ -274,7 +274,7 @@ export interface ContentResponse {
 
 type Vocabulary = 'categories' | 'keywords' | 'predefined_tags';
 
-type TermChildren = {
+export type TermChildren = {
     id: number;
     name: string;
     children: TermChildren[];

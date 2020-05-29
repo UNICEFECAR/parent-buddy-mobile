@@ -34,6 +34,10 @@ export class Debug extends React.Component {
         console.warn(`Sync finished in ${timestampDiff} s`);
     }
 
+    private doTimestamp() {
+        console.log(Math.round(Date.now()/1000));
+    }
+
     render() {
         return (
             <ScrollView contentContainerStyle={{ flex: 1, padding: 24, alignItems: 'center' }}>
@@ -53,6 +57,11 @@ export class Debug extends React.Component {
 
                 <Button mode="contained" uppercase={false} onPress={ () => {this.syncData()} } color={Colors.blue700}>
                     Sync data
+                </Button>
+                <View style={{ height: scale(10) }} />
+
+                <Button mode="contained" uppercase={false} onPress={ () => {this.doTimestamp()} } color={Colors.blue700}>
+                    Timestamp
                 </Button>
                 <View style={{ height: scale(10) }} />
             </ScrollView>
