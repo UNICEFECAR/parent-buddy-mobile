@@ -6,12 +6,12 @@ import { translate } from '../../translations/translate';
 import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
 import { Typography, TypographyType } from '../../components/Typography';
 import { TextButton, TextButtonColor } from '../../components/TextButton';
-import { ListCard, ListCardMode } from './ListCard';
-import { listCardFaqYourChildDummyData, listCardFaqPerAgeDummyData, listCardFaqMamaDummyData, listCardFaqDummyData } from '../../dummy-data/listCardDummyData';
+import { ListCard, ListCardMode, ListCardItem } from './ListCard';
 import { DidntFindAnswers } from './DidntFindAnswers';
 
 export interface FaqCategoryScreenParams {
-
+    title: string;
+    listCardItems: ListCardItem[]; 
 }
 
 export interface Props {
@@ -28,7 +28,8 @@ export class FaqCategoryScreen extends React.Component<Props, object> {
 
     private setDefaultScreenParams() {
         let defaultScreenParams: FaqCategoryScreenParams = {
-            
+            title: '',
+            listCardItems: [],
         };
 
         if (this.props.navigation.state.params) {
@@ -61,14 +62,13 @@ export class FaqCategoryScreen extends React.Component<Props, object> {
 
                     {/* TITLE */}
                     <Typography type={TypographyType.headingPrimary}>
-                        Ishrana i dojenje
+                        {screenParams.title}
                     </Typography>
 
                     {/* LIST CARD: FAQ category items */}
                     <ListCard
                         mode={ ListCardMode.accordionList }
-                        title={ listCardFaqDummyData.title }
-                        items={ listCardFaqDummyData.items }
+                        items={ screenParams.listCardItems }
                         previewNumberOfItems={30}
                     />
 

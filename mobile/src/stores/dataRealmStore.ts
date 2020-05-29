@@ -193,8 +193,8 @@ class DataRealmStore {
         return rval;
     }
 
-    public getFaqScreenArticles(): FaqScreenArticlesResponse {
-        const rval: FaqScreenArticlesResponse = [];
+    public getFaqScreenData(): FaqScreenDataResponse {
+        const rval: FaqScreenDataResponse = [];
         const vocabulariesAndTerms = this.getVariable('vocabulariesAndTerms');
 
         // Main categories
@@ -249,9 +249,51 @@ class DataRealmStore {
 
         return rval;
     }
+
+    public getFaqCategoryScreenData(tagType: TagType, tagId: number): ListCardItem[] {
+        let rval: ListCardItem[] = [];
+
+        // category
+        if (tagType === TagType.category) {
+            const allContent = this.realm?.objects<ContentEntity>(ContentEntitySchema.name);
+            const filteredRecords = allContent?.filtered(`type == 'faq' AND category == ${tagId}`);
+
+            if (filteredRecords) {
+                rval = filteredRecords.map((contentEntity): ListCardItem => {
+                    return {
+                        id: contentEntity.id,
+                        title: contentEntity.title,
+                        type: 'faq',
+                        bodyHtml: contentEntity.body,
+                    };
+                });
+            }
+        }
+
+        // predefinedTag
+        if (tagType === TagType.predefinedTag) {
+            const allContent = this.realm?.objects<ContentEntity>(ContentEntitySchema.name);
+            const filteredRecords = allContent?.filtered(`type == 'faq'`);
+
+            if (filteredRecords) {
+                rval = filteredRecords.filter((contentEntity) => {
+                    return contentEntity.predefinedTags.indexOf(tagId) !== -1;
+                }).map((contentEntity): ListCardItem => {
+                    return {
+                        id: contentEntity.id,
+                        title: contentEntity.title,
+                        type: 'faq',
+                        bodyHtml: contentEntity.body,
+                    };
+                });
+            }
+        }
+
+        return rval;
+    }
 }
 
-export type FaqScreenArticlesResponse = FaqScreenArticlesResponseItem[];
+export type FaqScreenDataResponse = FaqScreenArticlesResponseItem[];
 
 export type FaqScreenArticlesResponseItem = {
     title: string;

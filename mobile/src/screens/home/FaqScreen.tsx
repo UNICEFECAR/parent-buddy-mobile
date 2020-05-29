@@ -10,7 +10,7 @@ import { ListCard, ListCardMode, ListCardItem } from './ListCard';
 import { listCardFaqYourChildDummyData, listCardFaqPerAgeDummyData, listCardFaqMamaDummyData } from '../../dummy-data/listCardDummyData';
 import { DidntFindAnswers } from './DidntFindAnswers';
 import { FaqCategoryScreenParams } from './FaqCategoryScreen';
-import { FaqScreenArticlesResponse, dataRealmStore, FaqScreenArticlesResponseItem } from '../../stores/dataRealmStore';
+import { FaqScreenDataResponse, dataRealmStore, FaqScreenArticlesResponseItem } from '../../stores/dataRealmStore';
 
 export interface FaqScreenParams {
 
@@ -21,7 +21,7 @@ export interface Props {
 }
 
 export type State = {
-    data: FaqScreenArticlesResponse;
+    data: FaqScreenDataResponse;
 };
 
 export class FaqScreen extends React.Component<Props, State> {
@@ -35,7 +35,7 @@ export class FaqScreen extends React.Component<Props, State> {
 
     private initState() {
         const state: State = {
-            data: dataRealmStore.getFaqScreenArticles(),
+            data: dataRealmStore.getFaqScreenData(),
         };
 
         this.state = state;
@@ -59,12 +59,11 @@ export class FaqScreen extends React.Component<Props, State> {
 
     private gotoFaqCategoryScreen(faqSection:FaqScreenArticlesResponseItem, listCardItem: ListCardItem) {
         let params: FaqCategoryScreenParams = {
-
+            title: listCardItem.title,
+            listCardItems: dataRealmStore.getFaqCategoryScreenData(faqSection.tagType, listCardItem.id),
         };
 
-        // this.props.navigation.navigate('HomeStackNavigator_FaqCategoryScreen', params);
-        console.log(faqSection);
-        console.log(listCardItem);
+        this.props.navigation.navigate('HomeStackNavigator_FaqCategoryScreen', params);
     }
 
     private onTestClick = () => {
