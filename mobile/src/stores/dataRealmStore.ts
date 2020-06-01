@@ -178,6 +178,19 @@ class DataRealmStore {
         });
     }
 
+    public getContentFromId(id:number) {
+        console.log(id);
+        try {
+            const allRecords = this.realm?.objects<ContentEntity>(ContentEntitySchema.name);
+            return allRecords?.find((value) => {
+                return value.id === id;
+            });
+        } catch (e) {
+            console.log(e);
+            return undefined;
+        }
+    }
+
     public getCategoryNameFromId(categoryId: number): string | null {
         const vocabulariesAndTerms = this.getVariable('vocabulariesAndTerms');
         if (!vocabulariesAndTerms) return null;

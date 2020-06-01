@@ -240,6 +240,16 @@ const HomeStackNavigator = createStackNavigator({
                 navigation.dispatch(DrawerActions.toggleDrawer());
             }
 
+            function onSubmitEditing(value:string) {
+                navigation.state.params.searchTerm = '';
+                navigation.state.params.showSearchInput = false;
+
+                navigation.navigate('HomeStackNavigator_SearchResultsScreen', {
+                    searchTerm: value,
+                    showSearchInput: true,
+                });
+            }
+
             return {
                 // API: https://bit.ly/2koKtOw
                 headerLeft: () => (
@@ -268,11 +278,13 @@ const HomeStackNavigator = createStackNavigator({
                             {(screenParams && screenParams.showSearchInput) ? (
                                 <View style={{ width: '100%', paddingLeft: scale(15), paddingRight: scale(15) }}>
                                     <SearchInput
+                                        value={screenParams.searchTerm}
                                         placeholder={translate('enterSearchTerm')}
                                         style={{ width: '100%' }}
                                         size={SearchInputSize.small}
                                         alwaysShowClear={true}
                                         onClearPress={() => { toggleSearchInput() }}
+                                        onSubmitEditing={(value) => { onSubmitEditing(value) }}
                                     />
                                 </View>
                             ) : (

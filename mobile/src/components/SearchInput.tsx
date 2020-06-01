@@ -13,6 +13,7 @@ export interface Props {
     style?: StyleProp<ViewStyle>;
     onChange?: (value:string)=>void;
     onClearPress?: ()=>void;
+    onSubmitEditing?: (value:string)=>void;
 }
 
 export interface State {
@@ -78,6 +79,12 @@ export class SearchInput extends React.Component<Props, State> {
         });
     }
 
+    private onSubmitEditing() {
+        if (this.props.onSubmitEditing) {
+            this.props.onSubmitEditing( this.state.value );
+        }
+    }
+
     public render() {
         return (
             <ThemeConsumer>
@@ -96,7 +103,9 @@ export class SearchInput extends React.Component<Props, State> {
                         onChange={ (event) => {this.onTextChange(event)} }
                         style={ styles.textInputStyle }
                         autoCapitalize="none"
+                        autoCorrect={false}
                         placeholderTextColor="#848588"
+                        onSubmitEditing={() => { this.onSubmitEditing() }}
                     />
 
                     {/* CLEAR ICON */}

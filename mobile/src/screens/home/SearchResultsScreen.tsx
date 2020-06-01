@@ -6,12 +6,16 @@ import { translate } from '../../translations/translate';
 import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
 import { Typography, TypographyType } from '../../components/Typography';
 import { TextButton, TextButtonColor } from '../../components/TextButton';
-import { ListCard, ListCardMode } from './ListCard';
+import { ListCard, ListCardMode, ListCardItem } from './ListCard';
 import { listCardArticlesSearchResultsDummyData, listCardFaqSearchResultsDummyData } from "../../dummy-data/listCardDummyData";
 import { DidntFindAnswers } from './DidntFindAnswers';
+import { StackActions } from 'react-navigation';
+import { dataRealmStore } from '../../stores';
+import { content } from '../../app';
 
 export interface SearchResultsScreenParams {
     searchTerm?: string;
+    showSearchInput: boolean;
 }
 
 export interface Props {
@@ -32,7 +36,7 @@ export class SearchResultsScreen extends React.Component<Props, State> {
 
     private setDefaultScreenParams() {
         let defaultScreenParams: SearchResultsScreenParams = {
-            
+            showSearchInput: false,
         };
 
         if (this.props.navigation.state.params) {
@@ -42,12 +46,29 @@ export class SearchResultsScreen extends React.Component<Props, State> {
         }
     }
 
+    private gotoArticle(item: ListCardItem) {
+        const article = dataRealmStore.getContentFromId(item.id);
+        console.log(article);
+        if (!article) return;
+
+        const pushAction = StackActions.push({
+            routeName: 'HomeStackNavigator_ArticleScreen',
+            params: {
+                article: article,
+                // categoryName: content.toContentViewEntity(article, this.props.data.vocabulariesAndTermsResponse).category?.name
+            },
+        });
+
+        this.props.navigation.dispatch(pushAction);
+    }
+
     private gotoBack() {
         this.props.navigation.goBack();
     }
 
     public render() {
         const screenParams = this.props.navigation.state.params!;
+        // console.log('SEARCH RESULTS RENDER');
 
         return (
             <ThemeConsumer>
@@ -69,13 +90,18 @@ export class SearchResultsScreen extends React.Component<Props, State> {
                             { translate('searchResults') }
                         </Typography>
 
+                        {/* TODO */}
+                        <Text style={{fontSize:40, paddingBottom:20}}>
+                            {screenParams.searchTerm}
+                        </Text>
+
                         {/* LIST CARD: Articles */}
                         <ListCard
                             mode={ ListCardMode.simpleList }
                             title={ listCardArticlesSearchResultsDummyData.title }
                             subTitle={ listCardArticlesSearchResultsDummyData.subTitle }
                             items={ listCardArticlesSearchResultsDummyData.items }
-                            onItemPress={(item) => {console.warn(item.id)}}
+                            onItemPress={(item) => { this.gotoArticle(item) }}
                         />
 
                         <View style={{height:scale(20)}} />
