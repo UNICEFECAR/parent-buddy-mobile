@@ -56,8 +56,9 @@ export class HomeScreen extends React.Component<Props, object> {
                 {(themeContext: ThemeContextValue) => (
                     <ScrollView style={{ backgroundColor: themeContext.theme.screenContainer?.backgroundColor }} contentContainerStyle={[styles.container, { padding: themeContext.theme.screenContainer?.padding }]}>
 
-                        <Button onPress={() => {this.onTestButtonPress()}}>Test</Button>
-                        <View style={{height:30}} />
+                        {/* Test button */}
+                        {/* <Button onPress={() => {this.onTestButtonPress()}}>Test</Button>
+                        <View style={{height:30}} /> */}
 
                         <DataRealmConsumer>
                             {(dataRealmContext: DataRealmContextValue) => (
