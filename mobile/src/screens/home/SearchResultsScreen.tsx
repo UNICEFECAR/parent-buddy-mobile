@@ -48,7 +48,7 @@ export class SearchResultsScreen extends React.Component<Props, State> {
         }
     }
 
-    private gotoArticle(item: ListCardItem) {
+    private gotoArticle(item: ListCardItem, categoryName: string) {
         const article = dataRealmStore.getContentFromId(item.id);
         console.log(article);
         if (!article) return;
@@ -57,7 +57,7 @@ export class SearchResultsScreen extends React.Component<Props, State> {
             routeName: 'HomeStackNavigator_ArticleScreen',
             params: {
                 article: article,
-                // categoryName: content.toContentViewEntity(article, this.props.data.vocabulariesAndTermsResponse).category?.name
+                categoryName: categoryName,
             },
         });
 
@@ -87,7 +87,7 @@ export class SearchResultsScreen extends React.Component<Props, State> {
 
         // Get data
         let data: SearchResultsScreenDataResponse = {};
-        
+
         if (screenParams.searchTerm && screenParams.searchTerm !== '') {
             data = dataRealmStore.getSearchResultsScreenData(screenParams.searchTerm);
         }
@@ -123,7 +123,7 @@ export class SearchResultsScreen extends React.Component<Props, State> {
                                         mode={ListCardMode.simpleList}
                                         title={articles.categoryName}
                                         items={articles.contentItems.map((content) => this.convertContentEntityToListCardItem(content))}
-                                        onItemPress={(item) => { this.gotoArticle(item) }}
+                                        onItemPress={(item) => { this.gotoArticle(item, articles.categoryName) }}
                                     />
                                     <View style={{ height: scale(20) }} />
                                 </>
@@ -133,10 +133,17 @@ export class SearchResultsScreen extends React.Component<Props, State> {
                             {data.faqs && data.faqs.length > 0 ? (
                                 <ListCard
                                     mode={ListCardMode.accordionList}
-                                    title={'Cestaaaaa pitanjaaa'}
+                                    title={translate('searchCategoryFaq')}
                                     items={data.faqs.map((content) => this.convertContentEntityToListCardItem(content))}
                                     onItemPress={(item) => { console.warn(item.id) }}
                                 />
+                            ) : null}
+
+                            {/* NO RESULTS */}
+                            {(!data.articles && !data.faqs) || (data.articles?.length === 0 && data.faqs?.length === 0) ? (
+                                <Typography type={TypographyType.headingSecondary}>
+                                    {translate('noArticles')}
+                                </Typography>
                             ) : null}
 
                             {/* YOU DIDNT FIND ANSWER */}
