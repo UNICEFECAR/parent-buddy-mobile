@@ -4,7 +4,7 @@ import { ThemeContextValue, ThemeConsumer } from '../../themes/ThemeContext';
 import { scale, moderateScale } from 'react-native-size-matters';
 import { translate } from '../../translations/translate';
 import { themes } from "../../themes/themes";
-import { Surface, List } from "react-native-paper";
+import { Surface, List, Button } from "react-native-paper";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 // import Icon from 'react-native-vector-icons/FontAwesome';
 import { RectButton } from 'react-native-gesture-handler';
@@ -112,7 +112,7 @@ export class ListCard extends React.Component<Props, State> {
             items.push((
                 <List.Item
                     key={i}
-                    title={item.title}
+                    title={item?.title}
                     right={props => <List.Icon {...props} style={{margin:0}} color={themeContext.theme.variables?.colors?.primary} icon="chevron-right" />}
                     onPress={() => { this.onItemPress(item) }}
                     style={{ paddingVertical: scale(3) }}
@@ -135,14 +135,14 @@ export class ListCard extends React.Component<Props, State> {
                 <List.Accordion
                     id={i+1}
                     key={i+1}
-                    title={item.title}
+                    title={item?.title}
                     titleStyle={styles.item}
                     titleNumberOfLines={3}
                     style={{paddingVertical:scale(2)}}
                 >
                     <View style={{paddingHorizontal:scale(15), marginBottom:scale(20)}}>
                         <HTML
-                            html={ item.bodyHtml }
+                            html={ item?.bodyHtml }
                             baseFontStyle={ { fontSize:scale(14) } }
                             tagsStyles={ {p:{marginBottom:15}, a:{fontWeight:'bold', textDecorationLine:'none'}} }
                             imagesMaxWidth={ Dimensions.get('window').width }
@@ -154,6 +154,10 @@ export class ListCard extends React.Component<Props, State> {
         }
 
         return (<List.AccordionGroup>{items}</List.AccordionGroup>);
+    }
+
+    private onTestButtonPress() {
+        console.log(JSON.stringify(this.props.items, null, 4));
     }
 
     public render() {
@@ -171,6 +175,9 @@ export class ListCard extends React.Component<Props, State> {
                                 {this.props.title}
                             </Typography>
                         ) : null}
+
+                        {/* TEST */}
+                        {/* <Button onPress={() => {this.onTestButtonPress()}}>Test</Button> */}
 
                         {/* SUB TITLE */}
                         {this.props.subTitle ? (
