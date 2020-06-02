@@ -29,8 +29,6 @@ export interface Props {
 
 export interface State {
     showAllItems: boolean;
-    // numberOfItemsToShow: number;
-    // showShowAllButton: boolean;
 }
 
 export interface ListCardItem {
@@ -70,15 +68,8 @@ export class ListCard extends React.Component<Props, State> {
     }
 
     private initState() {
-        // let numberOfItemsToShow = Math.min(
-        //     this.props.previewNumberOfItems ? this.props.previewNumberOfItems : DEFAULT_PREVIEW_NUMBER_OF_ITEMS,
-        //     this.props.items.length ? this.props.items.length : 0,
-        // );
-
         let state: State = {
             showAllItems: false,
-            // numberOfItemsToShow: numberOfItemsToShow,
-            // showShowAllButton: this.props.items.length > (this.props.previewNumberOfItems ? this.props.previewNumberOfItems : DEFAULT_PREVIEW_NUMBER_OF_ITEMS)
         };
 
         this.state = state;
@@ -270,9 +261,6 @@ const styles = StyleSheet.create<ListCardStyles>({
         paddingVertical: scale(10),
         borderRadius: scale(7),
 
-        // shadowColor: 'black',
-        // shadowOffset: {width:0, height:0},
-        // shadowOpacity: 0.2,
         elevation: Platform.OS === 'ios' ? 4 : 10,
     },
 
