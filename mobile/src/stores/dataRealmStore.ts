@@ -304,6 +304,71 @@ class DataRealmStore {
 
         return rval;
     }
+
+    public getSearchResultsScreenData(searchTerm: string): SearchResultsScreenDataResponse {
+        const rval: SearchResultsScreenDataResponse = {
+            articles: [],
+            faqs: [],
+        };
+
+        // Get vocabulariesAndTerms
+        const vocabulariesAndTerms = this.getVariable('vocabulariesAndTerms');
+
+        // Get relevantArticles
+        const relevantArticles: ContentEntity[] = [];
+
+        try {
+            const allRecords = this.realm?.objects<ContentEntity>(ContentEntitySchema.name);
+            const filteredRecords = allRecords?.filtered(`type == 'article' AND (body CONTAINS[c] '${searchTerm}' OR title CONTAINS[c] '${searchTerm}')`);
+    
+            filteredRecords?.forEach((record, index, collection) => {
+                relevantArticles.push(record);
+            });
+        } catch (e) {
+            console.log(e);
+        }
+
+        // Set categorizedArticles
+        const categorizedArticles: SearchResultsScreenDataCategoryArticles[] = [];
+
+        vocabulariesAndTerms?.categories.forEach((category) => {
+            const currentCategorizedArticles: SearchResultsScreenDataCategoryArticles = {
+                categoryId: category.id,
+                categoryName: category.name,
+                contentItems: [],
+            };
+
+            relevantArticles.forEach((article) => {
+                if (article.category === category.id) {
+                    currentCategorizedArticles.contentItems.push(article);
+                }
+            });
+
+            if (currentCategorizedArticles.contentItems.length > 0) {
+                categorizedArticles.push(currentCategorizedArticles);
+            }
+        });
+
+        // Set faqs
+        const faqs: ContentEntity[] = [];
+
+        try {
+            const allRecords = this.realm?.objects<ContentEntity>(ContentEntitySchema.name);
+            const filteredRecords = allRecords?.filtered(`type == 'faq' AND (body CONTAINS[c] '${searchTerm}' OR title CONTAINS[c] '${searchTerm}')`);
+    
+            filteredRecords?.forEach((record, index, collection) => {
+                faqs.push(record);
+            });
+        } catch (e) {
+            console.log(e);
+        }
+
+        // Response
+        rval.articles = categorizedArticles;
+        rval.faqs = faqs;
+
+        return rval;
+    }
 }
 
 export type FaqScreenDataResponse = FaqScreenArticlesResponseItem[];
@@ -318,6 +383,13 @@ export enum TagType {
     category = 'category',
     predefinedTag = 'predefinedTag',
     keyword = 'keyword',
+};
+
+type SearchResultsScreenDataCategoryArticles = {categoryId:number, categoryName:string, contentItems:ContentEntity[]};
+
+export type SearchResultsScreenDataResponse = {
+    articles: SearchResultsScreenDataCategoryArticles [];
+    faqs: ContentEntity[];
 };
 
 export const dataRealmStore = DataRealmStore.getInstance();

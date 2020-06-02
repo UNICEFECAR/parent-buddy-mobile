@@ -241,13 +241,15 @@ const HomeStackNavigator = createStackNavigator({
             }
 
             function onSubmitEditing(value:string) {
-                navigation.state.params.searchTerm = '';
-                navigation.state.params.showSearchInput = false;
-
                 navigation.navigate('HomeStackNavigator_SearchResultsScreen', {
                     searchTerm: value,
                     showSearchInput: true,
                 });
+
+                setTimeout(() => {
+                    navigation.state.params.searchTerm = '';
+                    navigation.state.params.showSearchInput = false;
+                }, 1000);
             }
 
             return {

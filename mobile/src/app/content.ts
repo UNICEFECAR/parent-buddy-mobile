@@ -140,8 +140,9 @@ class Content {
             56, // Responsive Parenting
             4, // Parenting Corner
             1, // Nutrition and Breastfeeding
-            // TODO Doesnt have to be here?
-            5, // Growth
+            
+            // DONT SHOW THESE CATEGORIES
+            // 5, // Growth
         ];
 
         // Get artciles for each category

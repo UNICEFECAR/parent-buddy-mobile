@@ -1,6 +1,6 @@
 import React from 'react';
 import Realm from 'realm';
-import { ScrollView, StyleSheet, View, ViewStyle } from 'react-native';
+import { ScrollView, StyleSheet, View, ViewStyle, Alert } from 'react-native';
 import { Button } from 'react-native-paper';
 import { scale } from 'react-native-size-matters';
 import { NavigationStackProp, NavigationStackState } from 'react-navigation-stack';
@@ -43,6 +43,11 @@ export class HomeScreen extends React.Component<Props, object> {
         }
     }
 
+    private onTestButtonPress() {
+        const results = dataRealmStore.getSearchResultsScreenData('yes');
+        console.log(JSON.stringify(results, null, 4));
+    }
+
     public render() {
         const screenParams = this.props.navigation.state.params!;
 
@@ -50,6 +55,10 @@ export class HomeScreen extends React.Component<Props, object> {
             <ThemeConsumer>
                 {(themeContext: ThemeContextValue) => (
                     <ScrollView style={{ backgroundColor: themeContext.theme.screenContainer?.backgroundColor }} contentContainerStyle={[styles.container, { padding: themeContext.theme.screenContainer?.padding }]}>
+
+                        <Button onPress={() => {this.onTestButtonPress()}}>Test</Button>
+                        <View style={{height:30}} />
+
                         <DataRealmConsumer>
                             {(dataRealmContext: DataRealmContextValue) => (
                                 <ArticlesSection data={content.getHomeScreenArticles(dataRealmContext.realm)} />
