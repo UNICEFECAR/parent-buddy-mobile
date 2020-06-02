@@ -29,8 +29,8 @@ export interface Props {
 
 export interface State {
     showAllItems: boolean;
-    numberOfItemsToShow: number;
-    showShowAllButton: boolean;
+    // numberOfItemsToShow: number;
+    // showShowAllButton: boolean;
 }
 
 export interface ListCardItem {
@@ -53,6 +53,9 @@ export enum ListCardMode {
  * pressed will expand the answer.
  */
 export class ListCard extends React.Component<Props, State> {
+    private numberOfItemsToShow: number = 0;
+    private showShowAllButton: boolean = false;
+
     static defaultProps: Props = {
         mode: ListCardMode.simpleList,
         items: [],
@@ -63,21 +66,35 @@ export class ListCard extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.initState();
+        this.setLocalValues();
     }
 
     private initState() {
-        let numberOfItemsToShow = Math.min(
-            this.props.previewNumberOfItems ? this.props.previewNumberOfItems : DEFAULT_PREVIEW_NUMBER_OF_ITEMS,
-            this.props.items.length ? this.props.items.length : 0,
-        );
+        // let numberOfItemsToShow = Math.min(
+        //     this.props.previewNumberOfItems ? this.props.previewNumberOfItems : DEFAULT_PREVIEW_NUMBER_OF_ITEMS,
+        //     this.props.items.length ? this.props.items.length : 0,
+        // );
 
         let state: State = {
             showAllItems: false,
-            numberOfItemsToShow: numberOfItemsToShow,
-            showShowAllButton: this.props.items.length > (this.props.previewNumberOfItems ? this.props.previewNumberOfItems : DEFAULT_PREVIEW_NUMBER_OF_ITEMS)
+            // numberOfItemsToShow: numberOfItemsToShow,
+            // showShowAllButton: this.props.items.length > (this.props.previewNumberOfItems ? this.props.previewNumberOfItems : DEFAULT_PREVIEW_NUMBER_OF_ITEMS)
         };
 
         this.state = state;
+    }
+
+    private setLocalValues() {
+        this.showShowAllButton = this.props.items.length > (this.props.previewNumberOfItems ? this.props.previewNumberOfItems : DEFAULT_PREVIEW_NUMBER_OF_ITEMS);
+
+        if (this.state.showAllItems) {
+            this.numberOfItemsToShow = this.props.items.length;
+        } else {
+            this.numberOfItemsToShow = Math.min(
+                this.props.previewNumberOfItems ? this.props.previewNumberOfItems : DEFAULT_PREVIEW_NUMBER_OF_ITEMS,
+                this.props.items.length ? this.props.items.length : 0,
+            );
+        }
     }
 
     private onItemPress(item: ListCardItem) {
@@ -106,7 +123,7 @@ export class ListCard extends React.Component<Props, State> {
     private getSimpleListItems(themeContext: ThemeContextValue): JSX.Element[] {
         let items: JSX.Element[] = [];
 
-        for (let i = 0; i < this.state.numberOfItemsToShow; i++) {
+        for (let i = 0; i < this.numberOfItemsToShow; i++) {
             let item = this.props.items[i];
 
             items.push((
@@ -128,7 +145,7 @@ export class ListCard extends React.Component<Props, State> {
     private getAccordionListItems(themeContext: ThemeContextValue): JSX.Element {
         let items: JSX.Element[] = [];
 
-        for (let i = 0; i < this.state.numberOfItemsToShow; i++) {
+        for (let i = 0; i < this.numberOfItemsToShow; i++) {
             let item = this.props.items[i];
 
             items.push((
@@ -161,6 +178,8 @@ export class ListCard extends React.Component<Props, State> {
     }
 
     public render() {
+        this.setLocalValues();
+
         return (
             <ThemeConsumer>
                 {(themeContext: ThemeContextValue) => (
@@ -199,7 +218,7 @@ export class ListCard extends React.Component<Props, State> {
                         }
 
                         {/* SHOW ALL ITEMS BUTTON */}
-                        {this.state.showShowAllButton ? (
+                        {this.showShowAllButton ? (
                             <RectButton
                                 style={{ alignItems: 'center' }}
                                 onPress={() => { this.toggleShowAllItems() }}

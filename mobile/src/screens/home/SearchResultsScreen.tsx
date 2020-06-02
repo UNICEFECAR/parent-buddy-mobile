@@ -113,7 +113,7 @@ export class SearchResultsScreen extends React.Component<Props, State> {
                             </Typography>
 
                             {/* TEST */}
-                            <Button onPress={() => {this.onTestButtonPress()}}>Test</Button>
+                            {/* <Button onPress={() => {this.onTestButtonPress()}}>Test</Button> */}
 
                             {/* LIST CARD: Articles */}
                             {data.articles && data.articles.map((articles, index) => (
