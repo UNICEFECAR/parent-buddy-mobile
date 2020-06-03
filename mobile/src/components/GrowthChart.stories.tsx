@@ -25,7 +25,7 @@ const dumbData = {
 
 storiesOf('GrowthChart', module)
 
-    .add('first', () => (
+    .add('default', () => (
         <View style={{ flex: 1, padding: 24, justifyContent: 'center', alignItems: 'stretch', backgroundColor: 'white' }}>
             <GrowthChart
                 title="Tezina za visinu"

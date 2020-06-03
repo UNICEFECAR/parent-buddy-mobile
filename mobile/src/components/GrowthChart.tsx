@@ -1,8 +1,13 @@
 import React from 'react';
 import { VictoryArea, VictoryLabel, VictoryTooltip, VictoryScatter, VictoryChart, VictoryAxis, VictoryTheme, VictoryLine } from "victory-native";
+import { VictoryAxisCommonProps, VictoryStyleInterface, TickLabelProps, VictoryStyleObject } from 'victory-core';
+import { VictoryTooltipProps } from 'victory-tooltip';
+import { VictoryScatterProps} from 'victory-scatter';
+import { VictoryLineProps} from 'victory-line';
+import { VictoryAreaProps} from 'victory-area'
 import { Text, Dimensions, ViewStyle, StyleSheet, LayoutChangeEvent, View } from 'react-native';
 import Svg from 'react-native-svg';
-
+import { Typography, TypographyType } from './Typography';
 
 export interface ChartData {
     x: number,
@@ -76,7 +81,7 @@ export class GrowthChart extends React.Component<Props, State> {
 
         return (
             <View style={styles.container} onLayout={this.onLayout}>
-                <Text>{this.props.title}</Text>
+                <Typography type={TypographyType.headingSecondary}>{this.props.title}</Typography>
                 <Svg style={{ marginLeft: -10 }} >
                     <VictoryChart
                         theme={VictoryTheme.material}
@@ -129,8 +134,8 @@ export class GrowthChart extends React.Component<Props, State> {
                             data={this.props.lineChartData}
                             size={9}
                             style={victoryStyles.VictoryScatter}
-                            labelComponent={<VictoryTooltip />}
-                            labels={() => null}
+                            labelComponent={<VictoryTooltip renderInPortal={false} style={victoryStyles.VictoryTooltip.style} flyoutStyle={victoryStyles.VictoryTooltip.flyoutStyle} />}
+                            labels={(props) => props.datum.y + this.props.labelYText + ' / ' + props.datum.x + this.props.labelXText}
                             events={[{
                                 target: "data",
                                 eventHandlers: {
@@ -145,10 +150,7 @@ export class GrowthChart extends React.Component<Props, State> {
                                             },
                                             {
                                                 target: "labels",
-                                                mutation: (props) => {
-                                                    return typeof props.active === "boolean" ?
-                                                        null : { active:  true, text: props.datum.y + ' cm' + ' / ' + props.datum.x + ' kg ' };
-                                                }
+                                                mutation: (props) => typeof props.active === "boolean" ? null : { active: true }
                                             },
 
                                         ]
@@ -157,13 +159,8 @@ export class GrowthChart extends React.Component<Props, State> {
                                         return [
                                             {
                                                 target: "labels",
-                                                mutation: (props) => {
-                                                    console.log(props.active, 'active')
-                                                    return { active: props.active, text: props.datum.y + " " + this.props.labelYText + ' / ' + props.datum.x + ' ' + this.props.labelXText }
-
-                                                }
+                                                mutation: (props) => ({ active: props.active })
                                             },
-
                                         ]
                                     }
                                 }
@@ -182,12 +179,14 @@ export interface GrowtChartStyles {
 }
 
 export interface VictoryStyles {
-    VictoryAxis: object,
-    VictoryAxisVertical: object,
-    VictoryLine: object,
-    VictoryScatter: object,
-    VictoryArea: object,
-    VictoryExceptionsArea: object,
+    VictoryAxis: VictoryAxisCommonProps['style'],
+    VictoryAxisVertical: VictoryAxisCommonProps['style'],
+    VictoryLine: VictoryLineProps['style'],
+    VictoryScatter: VictoryScatterProps['style'],
+    VictoryArea: VictoryAreaProps['style'],
+    VictoryExceptionsArea: VictoryAreaProps['style'],
+    axisLabel: TickLabelProps,
+    VictoryTooltip: VictoryTooltipProps,
 }
 
 const styles = StyleSheet.create<GrowtChartStyles>({
@@ -210,23 +209,40 @@ const victoryStyles: VictoryStyles = {
     VictoryAxis: {
         grid: { stroke: 'transparent' },
         axis: { stroke: 'none' },
+        axisLabel: { fontFamily: 'SFUIDisplay-Regular', },
+        tickLabels: { fontFamily: 'SFUIDisplay-Regular' }
     },
+
     VictoryAxisVertical: {
         grid: { stroke: 'transparent' },
         axis: { stroke: 'none' },
-        axisLabel: { angle: 0, }
+        axisLabel: { angle: 0, fontFamily: 'SFUIDisplay-Regular', },
+        tickLabels: { fontFamily: 'SFUIDisplay-Regular' }
     },
     VictoryLine: {
         data: { stroke: "#0C66FF", strokeWidth: 9, strokeLinecap: "round", }
     },
     VictoryScatter: {
         data: { fill: "white", stroke: 'grey', strokeWidth: 3 },
-        labels: { fill: "red" }
+        labels: { fill: "red", fontFamily: 'SFUIDisplay-Regular' },
     },
     VictoryArea: {
         data: { fill: "silver" }
     },
     VictoryExceptionsArea: {
         data: { fill: "orange" }
-    }
+    },
+    VictoryTooltip: {
+        flyoutStyle: {
+            stroke: 'none',
+            fill: '#262626',
+            opacity: 85
+        },
+        style: {
+            padding: 15,
+            fill: 'white',
+        }
+    },
+
 }
+
