@@ -1,6 +1,7 @@
 import { Divider } from "./Divider";
 import { FancyButton } from "./FancyButton";
 import { GradientBackground } from "./GradientBackground";
+import { HomeMessages } from "./HomeMessages";
 import { PhotoPicker } from "./PhotoPicker";
 import { ProfileIcon } from "./ProfileIcon";
 import { RadioButtons } from "./RadioButtons";
@@ -31,3 +32,4 @@ export { PhotoPicker };
 export { ProfileIcon };
 export { SearchInput };
 export { Divider };
+export { HomeMessages };
