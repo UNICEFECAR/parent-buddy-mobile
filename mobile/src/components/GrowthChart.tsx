@@ -1,6 +1,6 @@
 import React from 'react';
 import { VictoryArea, VictoryLabel, VictoryTooltip, VictoryScatter, VictoryChart, VictoryAxis, VictoryTheme, VictoryLine } from "victory-native";
-import { VictoryAxisCommonProps, VictoryStyleInterface, TickLabelProps, VictoryStyleObject } from 'victory-core';
+import { VictoryAxisCommonProps, TickLabelProps } from 'victory-core';
 import { VictoryTooltipProps } from 'victory-tooltip';
 import { VictoryScatterProps} from 'victory-scatter';
 import { VictoryLineProps} from 'victory-line';
@@ -32,6 +32,8 @@ export interface State {
     width: number,
     height: number,
 }
+
+const fontFamily = 'SFUIDisplay-Regular';
 
 export class GrowthChart extends React.Component<Props, State> {
 
@@ -185,7 +187,7 @@ export interface VictoryStyles {
     VictoryScatter: VictoryScatterProps['style'],
     VictoryArea: VictoryAreaProps['style'],
     VictoryExceptionsArea: VictoryAreaProps['style'],
-    axisLabel: TickLabelProps,
+    axisLabel?: TickLabelProps,
     VictoryTooltip: VictoryTooltipProps,
 }
 
@@ -209,22 +211,22 @@ const victoryStyles: VictoryStyles = {
     VictoryAxis: {
         grid: { stroke: 'transparent' },
         axis: { stroke: 'none' },
-        axisLabel: { fontFamily: 'SFUIDisplay-Regular', },
-        tickLabels: { fontFamily: 'SFUIDisplay-Regular' }
+        axisLabel: { fontFamily: fontFamily, },
+        tickLabels: { fontFamily: fontFamily }
     },
 
     VictoryAxisVertical: {
         grid: { stroke: 'transparent' },
         axis: { stroke: 'none' },
-        axisLabel: { angle: 0, fontFamily: 'SFUIDisplay-Regular', },
-        tickLabels: { fontFamily: 'SFUIDisplay-Regular' }
+        axisLabel: { angle: 0, fontFamily: fontFamily},
+        tickLabels: { fontFamily: fontFamily }
     },
     VictoryLine: {
         data: { stroke: "#0C66FF", strokeWidth: 9, strokeLinecap: "round", }
     },
     VictoryScatter: {
         data: { fill: "white", stroke: 'grey', strokeWidth: 3 },
-        labels: { fill: "red", fontFamily: 'SFUIDisplay-Regular' },
+        labels: { fill: "red", fontFamily: fontFamily },
     },
     VictoryArea: {
         data: { fill: "silver" }
