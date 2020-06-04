@@ -3,6 +3,7 @@ import { View, StyleSheet, ViewStyle } from 'react-native';
 import { Typography, TypographyType } from '../Typography';
 import { RoundedButton, RoundedButtonType } from '../RoundedButton';
 import { Tag, TagColor } from '../Tag';
+import { translate } from '../../translations/translate';
 
 export class NoMeasurements extends Component {
     render() {
@@ -10,15 +11,19 @@ export class NoMeasurements extends Component {
             <View style={styles.container}>
                 <View style={styles.tagContainer}>
                     <Tag color={TagColor.orange}>
-                        Podaci nisu ažurirani
+                        {translate('noMeasurementsTagWarrning')}
                     </Tag>
                 </View>
                 <View style={styles.textContainer}>
                     <Typography type={TypographyType.bodyRegular}>
-                        Dodajte podatke o merama kako biste mogli da pratite detetov rast kroz vreme.
+                        {translate('noMeasurementsDescription')}
                     </Typography>
                 </View>
-                <RoundedButton type={RoundedButtonType.purple} showArrow={true} text="Unesite mere deteta" />
+                <RoundedButton
+                    type={RoundedButtonType.purple}
+                    showArrow={true}
+                    text={translate('noMeasurementsDescriptionAddMeasureBtn')} 
+                />
             </View>
         )
     }

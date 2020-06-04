@@ -33,6 +33,7 @@ import { VideoScreen } from "../screens/VideoScreen";
 import { BirthDataScreen } from "../screens/home/BirthDataScreen";
 import { ExaminationReminderScreen } from "../screens/home/ExaminationReminderScreen";
 import { ChildProfileScreen } from "../screens/home/ChildProfileScreen";
+import GrowthScreen from "../screens/home/GrowthScreen";
 
 /**
  * Use it to [navigate screens](https://reactnavigation.org/docs/en/navigating-without-navigation-prop.html)
@@ -86,13 +87,13 @@ class Navigation {
      * Unload all the screens from the stack, and open given route
      * as the first screen on the stack.
      */
-    public resetStackAndNavigate(routeName:string, params:any = undefined) {
+    public resetStackAndNavigate(routeName: string, params: any = undefined) {
         const resetAction = StackActions.reset({
             index: 0,
             actions: [NavigationActions.navigate({ routeName, params })],
         });
 
-        this.dispatch(resetAction);        
+        this.dispatch(resetAction);
     }
 
     public goBack() {
@@ -109,11 +110,11 @@ class Navigation {
 export const navigation = Navigation.getInstance();
 
 const secondaryHomeNavigationOptions = {
-    headerBackImage: function() {
+    headerBackImage: function () {
         return (
             <Icon
                 name={"chevron-left"}
-                style={{ paddingLeft: 5, fontSize: 34, color: themes.getCurrentTheme().theme.variables ?.colors ?.headerBackButton }}
+                style={{ paddingLeft: 5, fontSize: 34, color: themes.getCurrentTheme().theme.variables?.colors?.headerBackButton }}
             />
         );
     },
@@ -121,10 +122,10 @@ const secondaryHomeNavigationOptions = {
     headerLeft: undefined,
     headerTitle: undefined,
     headerStyle: {
-        backgroundColor: themes.getCurrentTheme().theme.variables ?.colors ?.headerBackground,
+        backgroundColor: themes.getCurrentTheme().theme.variables?.colors?.headerBackground,
     },
     headerTitleStyle: {
-        color: themes.getCurrentTheme().theme.variables ?.colors ?.headerTitle
+        color: themes.getCurrentTheme().theme.variables?.colors?.headerTitle
     },
     headerRight: undefined,
 };
@@ -229,91 +230,98 @@ const HomeStackNavigator = createStackNavigator({
             }
         }
     },
-}, {
-        defaultNavigationOptions: ({ navigation }: NavigationScreenConfigProps<NavigationStackProp<NavigationStackState, any>>): NavigationStackOptions => {
-            function toggleSearchInput() {
-                const screenParams = navigation.state.params!;
-                navigation.setParams({ showSearchInput: !screenParams.showSearchInput });
-            }
-
-            function onMenuIconPress() {
-                navigation.dispatch(DrawerActions.toggleDrawer());
-            }
-
-            function onSubmitEditing(value:string) {
-                navigation.navigate('HomeStackNavigator_SearchResultsScreen', {
-                    searchTerm: value,
-                    showSearchInput: true,
-                });
-
-                setTimeout(() => {
-                    navigation.state.params.searchTerm = '';
-                    navigation.state.params.showSearchInput = false;
-                }, 1000);
-            }
-
-            return {
-                // API: https://bit.ly/2koKtOw
-                headerLeft: () => (
-                    <IconButton
-                        icon="menu"
-                        color={themes.getCurrentTheme().theme.variables ?.colors ?.headerIcon}
-                        size={moderateScale(25)}
-                        onPress={() => { onMenuIconPress() }}
-                    />
-                ),
-                headerTitle: () => {
-                    const screenParams = navigation.state.params!;
-                    let headerTitle: JSX.Element | null = null;
-
-                    if (!screenParams.showSearchInput) {
-                        headerTitle = (<Text style={themes.getCurrentTheme().theme.headerTitle}>{translate('appName')}</Text>);
-                    }
-
-                    return headerTitle;
-                },
-                headerRightContainerStyle: { width: '80%' },
-                headerRight: () => {
-                    const screenParams = navigation.state.params!;
-                    return (
-                        <View style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center', paddingRight: moderateScale(10) }}>
-                            {(screenParams && screenParams.showSearchInput) ? (
-                                <View style={{ width: '100%', paddingLeft: scale(15), paddingRight: scale(15) }}>
-                                    <SearchInput
-                                        value={screenParams.searchTerm}
-                                        placeholder={translate('enterSearchTerm')}
-                                        style={{ width: '100%' }}
-                                        size={SearchInputSize.small}
-                                        alwaysShowClear={true}
-                                        onClearPress={() => { toggleSearchInput() }}
-                                        onSubmitEditing={(value) => { onSubmitEditing(value) }}
-                                    />
-                                </View>
-                            ) : (
-                                    <IconButton
-                                        icon="magnify"
-                                        color={themes.getCurrentTheme().theme.variables ?.colors ?.headerIcon}
-                                        size={moderateScale(25)}
-                                        onPress={() => { toggleSearchInput() }}
-                                    />
-                                )}
-                            <ProfileIcon />
-                        </View>
-                    );
-                },
-            };
+    HomeStackNavigator_GrowthScreen: {
+        screen: GrowthScreen,
+        navigationOptions: {
+            title: "growth"
         }
-    });
+    }
+
+}, {
+    defaultNavigationOptions: ({ navigation }: NavigationScreenConfigProps<NavigationStackProp<NavigationStackState, any>>): NavigationStackOptions => {
+        function toggleSearchInput() {
+            const screenParams = navigation.state.params!;
+            navigation.setParams({ showSearchInput: !screenParams.showSearchInput });
+        }
+
+        function onMenuIconPress() {
+            navigation.dispatch(DrawerActions.toggleDrawer());
+        }
+
+        function onSubmitEditing(value: string) {
+            navigation.navigate('HomeStackNavigator_SearchResultsScreen', {
+                searchTerm: value,
+                showSearchInput: true,
+            });
+
+            setTimeout(() => {
+                navigation.state.params.searchTerm = '';
+                navigation.state.params.showSearchInput = false;
+            }, 1000);
+        }
+
+        return {
+            // API: https://bit.ly/2koKtOw
+            headerLeft: () => (
+                <IconButton
+                    icon="menu"
+                    color={themes.getCurrentTheme().theme.variables?.colors?.headerIcon}
+                    size={moderateScale(25)}
+                    onPress={() => { onMenuIconPress() }}
+                />
+            ),
+            headerTitle: () => {
+                const screenParams = navigation.state.params!;
+                let headerTitle: JSX.Element | null = null;
+
+                if (!screenParams.showSearchInput) {
+                    headerTitle = (<Text style={themes.getCurrentTheme().theme.headerTitle}>{translate('appName')}</Text>);
+                }
+
+                return headerTitle;
+            },
+            headerRightContainerStyle: { width: '80%' },
+            headerRight: () => {
+                const screenParams = navigation.state.params!;
+                return (
+                    <View style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center', paddingRight: moderateScale(10) }}>
+                        {(screenParams && screenParams.showSearchInput) ? (
+                            <View style={{ width: '100%', paddingLeft: scale(15), paddingRight: scale(15) }}>
+                                <SearchInput
+                                    value={screenParams.searchTerm}
+                                    placeholder={translate('enterSearchTerm')}
+                                    style={{ width: '100%' }}
+                                    size={SearchInputSize.small}
+                                    alwaysShowClear={true}
+                                    onClearPress={() => { toggleSearchInput() }}
+                                    onSubmitEditing={(value) => { onSubmitEditing(value) }}
+                                />
+                            </View>
+                        ) : (
+                                <IconButton
+                                    icon="magnify"
+                                    color={themes.getCurrentTheme().theme.variables?.colors?.headerIcon}
+                                    size={moderateScale(25)}
+                                    onPress={() => { toggleSearchInput() }}
+                                />
+                            )}
+                        <ProfileIcon />
+                    </View>
+                );
+            },
+        };
+    }
+});
 
 const DrawerSwitchNavigator = createSwitchNavigator({
     HomeStackNavigator: {
         screen: HomeStackNavigator
     }
 }, {
-        navigationOptions: {
-            title: "Home"
-        }
-    });
+    navigationOptions: {
+        title: "Home"
+    }
+});
 
 const LoginStackNavigator = createStackNavigator({
     LoginStackNavigator_LoginScreen: {
@@ -329,8 +337,8 @@ const LoginStackNavigator = createStackNavigator({
         }
     }
 }, {
-        headerMode: "none"
-    });
+    headerMode: "none"
+});
 
 const WalkthroughStackNavigator = createStackNavigator({
     WalkthroughStackNavigator_WalkthroughScreen: {
@@ -346,8 +354,8 @@ const WalkthroughStackNavigator = createStackNavigator({
         }
     }
 }, {
-        headerMode: "none"
-    });
+    headerMode: "none"
+});
 
 const AccountStackNavigator = createStackNavigator({
     AccountStackNavigator_AddChildrenScreen: {
@@ -362,44 +370,44 @@ const AccountStackNavigator = createStackNavigator({
         navigationOptions: {
             title: "Title",
             headerBackTitleVisible: false,
-            headerBackImage: function(props) {
+            headerBackImage: function (props) {
                 // misha
                 return (
                     <Icon
                         name={"chevron-left"}
-                        style={{ paddingLeft: 5, fontSize: 34, color: themes.getCurrentTheme().theme.variables ?.colors ?.headerBackButton }}
+                        style={{ paddingLeft: 5, fontSize: 34, color: themes.getCurrentTheme().theme.variables?.colors?.headerBackButton }}
                     />
                 );
             },
             headerStyle: {
-                backgroundColor: themes.getCurrentTheme().theme.variables ?.colors ?.headerBackground,
+                backgroundColor: themes.getCurrentTheme().theme.variables?.colors?.headerBackground,
             },
             headerTitleStyle: {
-                color: themes.getCurrentTheme().theme.variables ?.colors ?.headerTitle
+                color: themes.getCurrentTheme().theme.variables?.colors?.headerTitle
             }
         }
     }
 }, {
-        initialRouteName: "AccountStackNavigator_AddChildrenScreen"
-    });
+    initialRouteName: "AccountStackNavigator_AddChildrenScreen"
+});
 
 const DrawerNavigator = createDrawerNavigator({
     DrawerSwitchNavigator: {
         screen: DrawerSwitchNavigator
     }
 }, {
-        // @ts-ignore
-        drawerWidth: "100%",
-        contentComponent: function(props) {
-            return (
-                <ScrollView>
-                    <SafeAreaView style={{ flex: 1 }} forceInset={{ top: 'always', horizontal: 'never' }}>
-                        <Drawer />
-                    </SafeAreaView>
-                </ScrollView>
-            );
-        }
-    });
+    // @ts-ignore
+    drawerWidth: "100%",
+    contentComponent: function (props) {
+        return (
+            <ScrollView>
+                <SafeAreaView style={{ flex: 1 }} forceInset={{ top: 'always', horizontal: 'never' }}>
+                    <Drawer />
+                </SafeAreaView>
+            </ScrollView>
+        );
+    }
+});
 
 const RootModalStackNavigator = createStackNavigator({
     LoginStackNavigator: {
@@ -439,12 +447,12 @@ const RootModalStackNavigator = createStackNavigator({
         screen: DrawerNavigator
     }
 }, {
-        navigationOptions: {
-            headerBackTitle: null
-        },
-        mode: "modal",
-        headerMode: "none",
-        initialRouteName: "LoginStackNavigator"
-    });
+    navigationOptions: {
+        headerBackTitle: null
+    },
+    mode: "modal",
+    headerMode: "none",
+    initialRouteName: "LoginStackNavigator"
+});
 
 export const AppNavigationContainer = createAppContainer(RootModalStackNavigator);
