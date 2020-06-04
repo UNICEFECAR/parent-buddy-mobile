@@ -26,6 +26,7 @@ configure(() => {
     require('../src/components/RateAChild.stories');
     require('../src/components/ProfileIcon.stories');
     require('../src/components/SearchInput.stories');
+    require('../src/components/GrowthChart.stories');
 }, module);
 
 // Refer to https://github.com/storybookjs/storybook/tree/master/app/react-native#start-command-parameters
