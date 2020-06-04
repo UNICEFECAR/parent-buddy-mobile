@@ -4,7 +4,7 @@ import { ThemeContextValue, ThemeConsumer } from '../../themes/ThemeContext';
 import { scale, moderateScale } from 'react-native-size-matters';
 import { translate } from '../../translations/translate';
 import { themes } from "../../themes/themes";
-import { Surface, List } from "react-native-paper";
+import { Surface, List, Button } from "react-native-paper";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 // import Icon from 'react-native-vector-icons/FontAwesome';
 import { RectButton } from 'react-native-gesture-handler';
@@ -29,8 +29,6 @@ export interface Props {
 
 export interface State {
     showAllItems: boolean;
-    numberOfItemsToShow: number;
-    showShowAllButton: boolean;
 }
 
 export interface ListCardItem {
@@ -53,6 +51,9 @@ export enum ListCardMode {
  * pressed will expand the answer.
  */
 export class ListCard extends React.Component<Props, State> {
+    private numberOfItemsToShow: number = 0;
+    private showShowAllButton: boolean = false;
+
     static defaultProps: Props = {
         mode: ListCardMode.simpleList,
         items: [],
@@ -63,21 +64,28 @@ export class ListCard extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.initState();
+        this.setLocalValues();
     }
 
     private initState() {
-        let numberOfItemsToShow = Math.min(
-            this.props.previewNumberOfItems ? this.props.previewNumberOfItems : DEFAULT_PREVIEW_NUMBER_OF_ITEMS,
-            this.props.items.length ? this.props.items.length : 0,
-        );
-
         let state: State = {
             showAllItems: false,
-            numberOfItemsToShow: numberOfItemsToShow,
-            showShowAllButton: this.props.items.length > (this.props.previewNumberOfItems ? this.props.previewNumberOfItems : DEFAULT_PREVIEW_NUMBER_OF_ITEMS)
         };
 
         this.state = state;
+    }
+
+    private setLocalValues() {
+        this.showShowAllButton = this.props.items.length > (this.props.previewNumberOfItems ? this.props.previewNumberOfItems : DEFAULT_PREVIEW_NUMBER_OF_ITEMS);
+
+        if (this.state.showAllItems) {
+            this.numberOfItemsToShow = this.props.items.length;
+        } else {
+            this.numberOfItemsToShow = Math.min(
+                this.props.previewNumberOfItems ? this.props.previewNumberOfItems : DEFAULT_PREVIEW_NUMBER_OF_ITEMS,
+                this.props.items.length ? this.props.items.length : 0,
+            );
+        }
     }
 
     private onItemPress(item: ListCardItem) {
@@ -106,13 +114,13 @@ export class ListCard extends React.Component<Props, State> {
     private getSimpleListItems(themeContext: ThemeContextValue): JSX.Element[] {
         let items: JSX.Element[] = [];
 
-        for (let i = 0; i < this.state.numberOfItemsToShow; i++) {
+        for (let i = 0; i < this.numberOfItemsToShow; i++) {
             let item = this.props.items[i];
 
             items.push((
                 <List.Item
                     key={i}
-                    title={item.title}
+                    title={item?.title}
                     right={props => <List.Icon {...props} style={{margin:0}} color={themeContext.theme.variables?.colors?.primary} icon="chevron-right" />}
                     onPress={() => { this.onItemPress(item) }}
                     style={{ paddingVertical: scale(3) }}
@@ -128,21 +136,21 @@ export class ListCard extends React.Component<Props, State> {
     private getAccordionListItems(themeContext: ThemeContextValue): JSX.Element {
         let items: JSX.Element[] = [];
 
-        for (let i = 0; i < this.state.numberOfItemsToShow; i++) {
+        for (let i = 0; i < this.numberOfItemsToShow; i++) {
             let item = this.props.items[i];
 
             items.push((
                 <List.Accordion
                     id={i+1}
                     key={i+1}
-                    title={item.title}
+                    title={item?.title}
                     titleStyle={styles.item}
                     titleNumberOfLines={3}
                     style={{paddingVertical:scale(2)}}
                 >
                     <View style={{paddingHorizontal:scale(15), marginBottom:scale(20)}}>
                         <HTML
-                            html={ item.bodyHtml }
+                            html={ item?.bodyHtml }
                             baseFontStyle={ { fontSize:scale(14) } }
                             tagsStyles={ {p:{marginBottom:15}, a:{fontWeight:'bold', textDecorationLine:'none'}} }
                             imagesMaxWidth={ Dimensions.get('window').width }
@@ -156,7 +164,13 @@ export class ListCard extends React.Component<Props, State> {
         return (<List.AccordionGroup>{items}</List.AccordionGroup>);
     }
 
+    private onTestButtonPress() {
+        console.log(JSON.stringify(this.props.items, null, 4));
+    }
+
     public render() {
+        this.setLocalValues();
+
         return (
             <ThemeConsumer>
                 {(themeContext: ThemeContextValue) => (
@@ -171,6 +185,9 @@ export class ListCard extends React.Component<Props, State> {
                                 {this.props.title}
                             </Typography>
                         ) : null}
+
+                        {/* TEST */}
+                        {/* <Button onPress={() => {this.onTestButtonPress()}}>Test</Button> */}
 
                         {/* SUB TITLE */}
                         {this.props.subTitle ? (
@@ -192,7 +209,7 @@ export class ListCard extends React.Component<Props, State> {
                         }
 
                         {/* SHOW ALL ITEMS BUTTON */}
-                        {this.state.showShowAllButton ? (
+                        {this.showShowAllButton ? (
                             <RectButton
                                 style={{ alignItems: 'center' }}
                                 onPress={() => { this.toggleShowAllItems() }}
@@ -244,9 +261,6 @@ const styles = StyleSheet.create<ListCardStyles>({
         paddingVertical: scale(10),
         borderRadius: scale(7),
 
-        // shadowColor: 'black',
-        // shadowOffset: {width:0, height:0},
-        // shadowOpacity: 0.2,
         elevation: Platform.OS === 'ios' ? 4 : 10,
     },
 

@@ -9,6 +9,7 @@ import './rn-addons';
 configure(() => {
     require('./components/welcome/Welcome.stories');
     require('./components/services/Services.stories');
+    require('../src/components/HomeMessages.stories');
     require('../src/components/Typography.stories');
     require('../src/components/GradientBackground.stories');
     require('../src/components/WalkthroughBackground/WalkthroughBackground.stories');

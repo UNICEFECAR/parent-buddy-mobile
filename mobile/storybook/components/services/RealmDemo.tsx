@@ -10,8 +10,6 @@ import { ContentEntity, ContentEntitySchema } from "../../../src/stores/ContentE
 import { DataRealmContext, DataRealmContextValue, DataRealmConsumer } from '../../../src/stores/DataRealmContext';
 import { dataRealmStore } from '../../../src/stores';
 
-const EXTERNAL_ID = 44444401;
-
 export class RealmDemo extends React.Component<object> {
     private realm: Realm | null;
 
@@ -45,69 +43,69 @@ export class RealmDemo extends React.Component<object> {
     }
 
     private createArticle() {
-        try {
-            this.realm?.write(() => {
-                const record = this.realm?.create<ContentEntity>(ContentEntitySchema.name, {
-                    externalId: EXTERNAL_ID,
-                    title: 'Test Article 01',
-                    bodyHTML: 'Enim ad aliquip tempor voluptate eiusmod est Lorem commodo id fugiat elit duis. Sit laborum anim pariatur fugiat reprehenderit dolore. Cillum culpa enim irure elit voluptate sit ex occaecat fugiat.',
-                    categoryId: 12,
-                    coverImageUrl: 'https://terrigen-cdn-dev.marvel.com/content/prod/1x/002irm_ons_mas_mob_01_0.jpg',
-                });
+        // try {
+        //     this.realm?.write(() => {
+        //         const record = this.realm?.create<ContentEntity>(ContentEntitySchema.name, {
+        //             externalId: EXTERNAL_ID,
+        //             title: 'Test Article 01',
+        //             bodyHTML: 'Enim ad aliquip tempor voluptate eiusmod est Lorem commodo id fugiat elit duis. Sit laborum anim pariatur fugiat reprehenderit dolore. Cillum culpa enim irure elit voluptate sit ex occaecat fugiat.',
+        //             categoryId: 12,
+        //             coverImageUrl: 'https://terrigen-cdn-dev.marvel.com/content/prod/1x/002irm_ons_mas_mob_01_0.jpg',
+        //         });
 
-                // console.warn(JSON.stringify(record, null, 4));
-            });
-        } catch (e) {
-            console.warn(e);
-        }
+        //         // console.warn(JSON.stringify(record, null, 4));
+        //     });
+        // } catch (e) {
+        //     console.warn(e);
+        // }
     }
 
     private readArticle() {
-        try {
-            let allRecords = this.realm?.objects<ContentEntity>(ContentEntitySchema.name);
-            let filteredRecords = allRecords?.filtered(`externalId = ${EXTERNAL_ID}`);
+        // try {
+        //     let allRecords = this.realm?.objects<ContentEntity>(ContentEntitySchema.name);
+        //     let filteredRecords = allRecords?.filtered(`externalId = ${EXTERNAL_ID}`);
 
-            filteredRecords?.forEach((record, index, collection) => {
-                console.warn(JSON.stringify(record, null, 4));
-            });
-        } catch (e) {
-            console.warn(e);
-        }
+        //     filteredRecords?.forEach((record, index, collection) => {
+        //         console.warn(JSON.stringify(record, null, 4));
+        //     });
+        // } catch (e) {
+        //     console.warn(e);
+        // }
     }
 
     private editArticle() {
-        try {
-            let allRecords = this.realm?.objects<ContentEntity>(ContentEntitySchema.name);
-            let filteredRecords = allRecords?.filtered(`externalId = ${EXTERNAL_ID}`);
+        // try {
+        //     let allRecords = this.realm?.objects<ContentEntity>(ContentEntitySchema.name);
+        //     let filteredRecords = allRecords?.filtered(`externalId = ${EXTERNAL_ID}`);
 
-            filteredRecords?.forEach((record, index, collection) => {
-                this.realm?.write(() => {
-                    record.title += ' EDITED';
-                });
-            });
-        } catch (e) {
-            console.warn(e);
-        }
+        //     filteredRecords?.forEach((record, index, collection) => {
+        //         this.realm?.write(() => {
+        //             record.title += ' EDITED';
+        //         });
+        //     });
+        // } catch (e) {
+        //     console.warn(e);
+        // }
     }
 
     private deleteArticle() {
-        try {
-            let allRecords = this.realm?.objects<ContentEntity>(ContentEntitySchema.name);
-            let filteredRecords = allRecords?.filtered(`externalId = ${EXTERNAL_ID}`);
+        // try {
+        //     let allRecords = this.realm?.objects<ContentEntity>(ContentEntitySchema.name);
+        //     let filteredRecords = allRecords?.filtered(`externalId = ${EXTERNAL_ID}`);
 
-            let deleteRecord: ContentEntity & Realm.Object | null = null;
-            filteredRecords?.forEach((record, index, collection) => {
-                deleteRecord = record;
-            });
+        //     let deleteRecord: ContentEntity & Realm.Object | null = null;
+        //     filteredRecords?.forEach((record, index, collection) => {
+        //         deleteRecord = record;
+        //     });
 
-            if (deleteRecord) {
-                this.realm?.write(() => {
-                    this.realm?.delete(deleteRecord);
-                });
-            }
-        } catch (e) {
-            console.warn(e);
-        }
+        //     if (deleteRecord) {
+        //         this.realm?.write(() => {
+        //             this.realm?.delete(deleteRecord);
+        //         });
+        //     }
+        // } catch (e) {
+        //     console.warn(e);
+        // }
     }
 
     render() {
@@ -149,7 +147,7 @@ export class RealmDemo extends React.Component<object> {
                 <View style={{ height: scale(10) }} /> */}
 
                 {/* SHOW REALM RECORDS */}
-                <DataRealmConsumer>
+                {/* <DataRealmConsumer>
                     {(dataRealmContext: DataRealmContextValue) => (
                         <Fragment>
                             {!dataRealmContext.realm?.isClosed && dataRealmContext.realm?.empty ? (
@@ -167,7 +165,7 @@ export class RealmDemo extends React.Component<object> {
                             }
                         </Fragment>
                     )}
-                </DataRealmConsumer>
+                </DataRealmConsumer> */}
             </ScrollView>
         );
     }

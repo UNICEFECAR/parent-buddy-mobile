@@ -388,8 +388,8 @@ export enum TagType {
 type SearchResultsScreenDataCategoryArticles = {categoryId:number, categoryName:string, contentItems:ContentEntity[]};
 
 export type SearchResultsScreenDataResponse = {
-    articles: SearchResultsScreenDataCategoryArticles [];
-    faqs: ContentEntity[];
+    articles?: SearchResultsScreenDataCategoryArticles [];
+    faqs?: ContentEntity[];
 };
 
 export const dataRealmStore = DataRealmStore.getInstance();
