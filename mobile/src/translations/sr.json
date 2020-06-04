@@ -132,7 +132,8 @@
     "noMeasurementsDescriptionAddMeasureBtn": "Unesite mere deteta",
     "lastMeasurementTitle": "Poslednje merenje",
     "lastMeasureAddMeasurementBtn": "Imamo nove mere",
-    "oneMeasurementTitle": "",
+    "newMeasureAddMeasurementBtn": "Upišite podatke sa merenja",
+    "oneMeasurementTitle": "Rođenje",
     "measurementMass": "Masa",
     "measurementLength": "Dužina"
 

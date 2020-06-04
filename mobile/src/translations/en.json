@@ -124,5 +124,16 @@
     "childProfileTitle": "Profil deteta",
     "childProfileBirthday": "Rodjendan",
     "childProfileChange": "Izmenite profil",
-    "childProfileAddSibling": "Dodajte sestru ili brata"
+    "childProfileAddSibling": "Dodajte sestru ili brata",
+
+    "growScreenTitle": "Rast deteta",
+    "noMeasurementsTagWarrning": "Podaci nisu ažurirani",
+    "noMeasurementsDescription": "Dodajte podatke o merama kako biste mogli da pratite detetov rast kroz vreme.",
+    "noMeasurementsDescriptionAddMeasureBtn": "Unesite mere deteta",
+    "lastMeasurementTitle": "Poslednje merenje",
+    "lastMeasureAddMeasurementBtn": "Imamo nove mere",
+    "newMeasureAddMeasurementBtn": "Upišite podatke sa merenja",
+    "oneMeasurementTitle": "Rođenje",
+    "measurementMass": "Masa",
+    "measurementLength": "Dužina"
 }

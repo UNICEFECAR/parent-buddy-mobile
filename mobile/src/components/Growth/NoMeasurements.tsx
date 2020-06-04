@@ -4,6 +4,7 @@ import { Typography, TypographyType } from '../Typography';
 import { RoundedButton, RoundedButtonType } from '../RoundedButton';
 import { Tag, TagColor } from '../Tag';
 import { translate } from '../../translations/translate';
+import { scale, moderateScale } from 'react-native-size-matters';
 
 export class NoMeasurements extends Component {
     render() {
@@ -31,6 +32,7 @@ export class NoMeasurements extends Component {
 
 
 export interface NoMeasurementsStyles {
+    [index: string]: ViewStyle,
     container: ViewStyle,
     tagContainer: ViewStyle,
     textContainer: ViewStyle,
@@ -43,15 +45,15 @@ const styles = StyleSheet.create<NoMeasurementsStyles>({
         elevation: 3,
         shadowOffset: { width: 2, height: 2 },
         shadowOpacity: 0.2,
-        padding: 16,
+        padding: scale(16),
     },
     textContainer: {
-        marginBottom: 30
+        marginBottom: scale(30)
     },
     tagContainer: {
-        marginTop: 8,
-        marginBottom: 16,
-        width: 180,
-        height: 30,
+        marginTop: scale(8),
+        marginBottom: scale(16),
+        width: scale(180),
+        height: scale(30),
     }
 })

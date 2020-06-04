@@ -3,8 +3,9 @@ import { View, ViewStyle, StyleSheet, TextStyle } from 'react-native'
 import { Typography, TypographyType } from '../Typography';
 import { RoundedButton, RoundedButtonType } from '../RoundedButton';
 import { translate } from '../../translations/translate';
+import Icon from "react-native-vector-icons/FontAwesome";
 import { scale, moderateScale } from 'react-native-size-matters';
-
+import { IconProps } from 'react-native-paper/lib/typescript/src/components/MaterialCommunityIcon';
 
 export interface Props {
     measureDate: string,
@@ -12,18 +13,24 @@ export interface Props {
     measureLength: string,
 }
 
-export class LastMeasurements extends Component<Props> {
+export class OneMeasurements extends Component<Props> {
     render() {
         return (
             <View style={styles.container}>
-                <View>
-               
-                    <Typography type={TypographyType.headingSecondary}>
-                        {translate('lastMeasurementTitle')}
-                    </Typography>
-                    <Typography type={TypographyType.bodyRegular} style={styles.measureDateText}>
-                        {this.props.measureDate}
-                    </Typography>
+                <View style={{ flexDirection: 'row' }}>
+                    <Icon
+                        name={"check-circle"}
+                        style={styles.iconStyle}
+                    />
+                    <View style={{ flexDirection: "column" }}>
+                        <Typography type={TypographyType.headingSecondary}>
+                            {translate('oneMeasurementTitle')}
+                        </Typography>
+                        <Typography type={TypographyType.bodyRegular} style={styles.measureDateText}>
+                            {this.props.measureDate}
+                        </Typography>
+                    </View>
+
                 </View>
                 <View style={styles.measureContainer}>
                     <View style={styles.measureDateContainer}>
@@ -43,31 +50,24 @@ export class LastMeasurements extends Component<Props> {
                         </Typography>
                     </View>
                 </View>
-                <RoundedButton
-                    style={styles.button}
-                    type={RoundedButtonType.purple}
-                    showArrow={true}
-                    text={translate('lastMeasureAddMeasurementBtn')}
-                />
             </View>
         )
     }
 }
 
 
-export interface LastMeasurementsStyles {
+export interface OneMeasurementsStyles {
     [index: string]: ViewStyle | TextStyle,
     container: ViewStyle,
     measureDateContainer: ViewStyle,
     measureContainer: ViewStyle,
     measureDateContainerText: TextStyle,
     measureDateText: TextStyle,
-    button: ViewStyle,
+    iconStyle: IconProps
 }
 
-const styles = StyleSheet.create<LastMeasurementsStyles>({
+const styles = StyleSheet.create<OneMeasurementsStyles>({
     container: {
-        width: '100%',
         backgroundColor: 'white',
         borderRadius: 8,
         elevation: 3,
@@ -78,7 +78,8 @@ const styles = StyleSheet.create<LastMeasurementsStyles>({
     measureContainer: {
         flexDirection: 'row',
         marginTop: scale(24),
-        marginBottom: scale(32),
+        marginBottom: scale(16),
+        marginLeft: scale(37),
     },
     measureDateContainer: {
         width: scale(88),
@@ -87,11 +88,15 @@ const styles = StyleSheet.create<LastMeasurementsStyles>({
     measureDateContainerText: {
         opacity: 0.5,
     },
-    button: {
-        marginBottom: scale(8),
-    },
     measureDateText: {
-        marginTop: moderateScale(-7),
+        marginTop: scale(-7),
         fontWeight: "bold",
+    },
+    iconStyle: {
+        marginRight: scale(15), 
+        marginTop: scale(3), 
+        fontSize: moderateScale(21), 
+        color: "#2CBA39", 
+        lineHeight: moderateScale(21),
     }
 })

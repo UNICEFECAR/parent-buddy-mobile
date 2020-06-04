@@ -33,7 +33,7 @@ import { VideoScreen } from "../screens/VideoScreen";
 import { BirthDataScreen } from "../screens/home/BirthDataScreen";
 import { ExaminationReminderScreen } from "../screens/home/ExaminationReminderScreen";
 import { ChildProfileScreen } from "../screens/home/ChildProfileScreen";
-import GrowthScreen from "../screens/home/GrowthScreen";
+import {GrowthScreen} from "../screens/home/GrowthScreen";
 
 /**
  * Use it to [navigate screens](https://reactnavigation.org/docs/en/navigating-without-navigation-prop.html)
