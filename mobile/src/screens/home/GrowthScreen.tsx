@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
-import { Text, View, StyleSheet, ViewStyle } from 'react-native'
+import { View, StyleSheet, ViewStyle } from 'react-native'
 import { NavigationStackProp, NavigationStackState } from 'react-navigation-stack';
 import { NoMeasurements } from '../../components/Growth/NoMeasurements';
 import { LastMeasurements } from '../../components/Growth/LastMeasurements';
 import { OneMeasurements } from '../../components/Growth/OneMeasurement';
 import { ScrollView } from 'react-native-gesture-handler';
 import { ThemeConsumer, ThemeContextValue } from '../../themes/ThemeContext';
-import { scale, moderateScale } from 'react-native-size-matters';
+import { scale } from 'react-native-size-matters';
+import { NewMeasurements } from '../../components/Growth/NewMeasurements';
 
 export interface GrowthScreenParams {
 
@@ -60,6 +61,9 @@ export class GrowthScreen extends Component<Props> {
                                 measureMass="11,4"
                                 measureLength="80"
                             />
+                        </View>
+                        <View style={{ marginBottom: 20 }} >
+                            <NewMeasurements />
                         </View>
                     </ScrollView>
                 )}
