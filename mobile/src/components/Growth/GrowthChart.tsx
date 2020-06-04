@@ -7,7 +7,7 @@ import { VictoryLineProps } from 'victory-line';
 import { VictoryAreaProps } from 'victory-area'
 import { Dimensions, ViewStyle, StyleSheet, LayoutChangeEvent, View } from 'react-native';
 import Svg from 'react-native-svg';
-import { Typography, TypographyType } from './Typography';
+import { Typography, TypographyType } from '../Typography';
 
 const areaData = {
     boy: {
