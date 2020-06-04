@@ -2,38 +2,65 @@ import React from 'react';
 import { VictoryArea, VictoryLabel, VictoryTooltip, VictoryScatter, VictoryChart, VictoryAxis, VictoryTheme, VictoryLine } from "victory-native";
 import { VictoryAxisCommonProps, TickLabelProps } from 'victory-core';
 import { VictoryTooltipProps } from 'victory-tooltip';
-import { VictoryScatterProps} from 'victory-scatter';
-import { VictoryLineProps} from 'victory-line';
-import { VictoryAreaProps} from 'victory-area'
-import { Text, Dimensions, ViewStyle, StyleSheet, LayoutChangeEvent, View } from 'react-native';
+import { VictoryScatterProps } from 'victory-scatter';
+import { VictoryLineProps } from 'victory-line';
+import { VictoryAreaProps } from 'victory-area'
+import { Dimensions, ViewStyle, StyleSheet, LayoutChangeEvent, View } from 'react-native';
 import Svg from 'react-native-svg';
 import { Typography, TypographyType } from './Typography';
 
-export interface ChartData {
-    x: number,
-    y: number,
+const areaData = {
+    boy: {
+        areaExceptionsChartData: [
+            { x: 0, y: 45, y0: 52 },
+            { x: 1, y: 46, y0: 57 },
+            { x: 2, y: 47, y0: 59 },
+            { x: 25, y: 60, y0: 85 },
+        ],
+        areaChartData: [
+            { x: 0, y: 47, y0: 49 },
+            { x: 1, y: 48, y0: 54 },
+            { x: 2, y: 49, y0: 57 },
+            { x: 25, y: 65, y0: 85 },
+        ],
+    },
+    girl: {
+        areaExceptionsChartData: [
+            { x: 0, y: 45, y0: 52 },
+            { x: 1, y: 46, y0: 57 },
+            { x: 2, y: 47, y0: 59 },
+            { x: 25, y: 60, y0: 85 },
+        ],
+        areaChartData: [
+            { x: 0, y: 47, y0: 49 },
+            { x: 1, y: 48, y0: 54 },
+            { x: 2, y: 49, y0: 57 },
+            { x: 25, y: 65, y0: 85 },
+        ],
+    }
 }
+
+const fontFamily = 'SFUIDisplay-Regular';
+
 
 export interface Props {
     labelXText: string,
     labelYText: string,
-    labelXPosition?: number,
-    labelYPosition?: number,
     title: string,
     dataX: number[],
     dataY: number[],
+    gender: childGender,
     lineChartData: ChartData[],
-    areaChartData: ChartData[],
-    areaExceptionsChartData: ChartData[],
 }
 
 export interface State {
     orientation: 'portrait' | 'landscape';
     width: number,
     height: number,
+    areaChartData: ChartData[],
+    areaExceptionsChartData: ChartData[],
 }
 
-const fontFamily = 'SFUIDisplay-Regular';
 
 export class GrowthChart extends React.Component<Props, State> {
 
@@ -46,10 +73,14 @@ export class GrowthChart extends React.Component<Props, State> {
         let windowWidth = Dimensions.get('window').width;
         let windowHeight = Dimensions.get('window').height;
 
+        let data = this.props.gender === 'boy' ? areaData.boy : areaData.girl
+
         let state: State = {
             orientation: windowWidth > windowHeight ? 'landscape' : 'portrait',
             width: windowWidth,
             height: windowHeight,
+            areaChartData: data.areaChartData,
+            areaExceptionsChartData: data.areaExceptionsChartData,
         };
 
         this.state = state;
@@ -98,14 +129,14 @@ export class GrowthChart extends React.Component<Props, State> {
                             tickFormat={this.props.dataX}
                             style={victoryStyles.VictoryAxis}
                             label={this.props.labelXText}
-                            axisLabelComponent={<VictoryLabel x={this.props.labelXPosition || this.state.width - 20} />}
+                            axisLabelComponent={<VictoryLabel x={this.state.width - 20} />}
                         />
 
                         {/* ********* AXIS VERTICAL ********* */}
                         <VictoryAxis
                             tickFormat={this.props.dataY}
                             style={victoryStyles.VictoryAxisVertical}
-                            axisLabelComponent={<VictoryLabel y={this.props.labelYPosition || 30} />}
+                            axisLabelComponent={<VictoryLabel y={30} />}
                             dependentAxis
                             label={this.props.labelYText}
                         />
@@ -114,14 +145,14 @@ export class GrowthChart extends React.Component<Props, State> {
                         <VictoryArea
                             interpolation="natural"
                             style={victoryStyles.VictoryExceptionsArea}
-                            data={this.props.areaExceptionsChartData}
+                            data={this.state.areaExceptionsChartData}
                         />
 
                         {/* ********* AREA ********* */}
                         <VictoryArea
                             interpolation="natural"
                             style={victoryStyles.VictoryArea}
-                            data={this.props.areaChartData}
+                            data={this.state.areaChartData}
                         />
 
                         {/* ********* LINE CHART ********* */}
@@ -175,6 +206,14 @@ export class GrowthChart extends React.Component<Props, State> {
     }
 }
 
+
+export interface ChartData {
+    x: number,
+    y: number,
+}
+
+export type childGender = 'boy' | 'girl';
+
 export interface GrowtChartStyles {
     container?: ViewStyle;
     contentWrapper?: ViewStyle;
@@ -218,7 +257,7 @@ const victoryStyles: VictoryStyles = {
     VictoryAxisVertical: {
         grid: { stroke: 'transparent' },
         axis: { stroke: 'none' },
-        axisLabel: { angle: 0, fontFamily: fontFamily},
+        axisLabel: { angle: 0, fontFamily: fontFamily },
         tickLabels: { fontFamily: fontFamily }
     },
     VictoryLine: {

@@ -31,11 +31,10 @@ storiesOf('GrowthChart', module)
                 title="Tezina za visinu"
                 dataX={dumbData.dataX}
                 dataY={dumbData.dataY}
-                areaChartData={dumbData.areaChartData}
-                areaExceptionsChartData={dumbData.areaExceptionsChartData}
                 lineChartData={dumbData.lineChartData}
                 labelXText='Kg'
                 labelYText="Cm"
+                gender="boy"
             />
         </View>
     ));
