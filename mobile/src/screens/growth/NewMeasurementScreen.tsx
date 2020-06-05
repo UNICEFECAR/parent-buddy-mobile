@@ -23,9 +23,8 @@ export interface State {
     weight: string,
     height: string,
     comment: string,
-    measurementPlace: string,
-    isVaccineReceived: string,
-
+    measurementPlace: string | undefined,
+    isVaccineReceived: string | undefined,
 }
 
 
@@ -50,13 +49,13 @@ export class NewMeasurementScreen extends Component<Props, State> {
         this.state = state;
     }
 
-    private setMeasurementPlace = (value: string) => {
+    private setMeasurementPlace = (value: string | undefined) => {
         this.setState({
             measurementPlace: value,
         })
     }
 
-    private setisVaccineReceived = (value: string) => {
+    private setisVaccineReceived = (value: string | undefined) => {
         this.setState({
             isVaccineReceived: value,
         })
@@ -131,6 +130,7 @@ export class NewMeasurementScreen extends Component<Props, State> {
                                     <Typography style={{ marginBottom: 16 }}>{translate("newMeasureScreenVaccineTitle")}</Typography>
                                     <RadioButtons
                                         value={this.state.isVaccineReceived}
+                                        buttonStyle={{width: 150}}
                                         buttons={[
                                             { text: translate("newMeasureScreenVaccineOptionYes"), value: 'yes' },
                                             { text: translate("newMeasureScreenVaccineOptionNo"), value: 'no' }
