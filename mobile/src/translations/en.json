@@ -134,7 +134,18 @@
     "lastMeasureAddMeasurementBtn": "Imamo nove mere",
     "newMeasureAddMeasurementBtn": "Upišite podatke sa merenja",
     "newMeasureTitle": "Novo merenje",
+    "newMeasureScreenTitle": "Novo merenje",
+    "newMeasureScreenDatePickerLabel": "Datum merenja",
+    "newMeasureScreenPlaceTitle": "Gde je dete izmereno?",
+    "newMeasureScreenPlaceOptionDoctor": "Kod doktora",
+    "newMeasureScreenPlaceOptionHome": "Kod kuće",
+    "newMeasureScreenVaccineTitle": "Da li je dete primilo vakcinu?",
+    "newMeasureScreenVaccineOptionYes": "Da",
+    "newMeasureScreenVaccineOptionNo": "Ne",
+    "newMeasureScreenCommentPlaceholder": "Komentar ili primedba lekara",
+    "newMeasureScreenSaveBtn": "Sačuvajte podatke",
     "oneMeasurementTitle": "Rođenje",
     "measurementMass": "Masa",
     "measurementLength": "Dužina"
+
 }

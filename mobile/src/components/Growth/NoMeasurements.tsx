@@ -52,8 +52,8 @@ const styles = StyleSheet.create<NoMeasurementsStyles>({
     },
     tagContainer: {
         marginTop: scale(8),
-        marginBottom: scale(16),
-        width: scale(180),
+        marginBottom: moderateScale(16),
+        width: moderateScale(200),
         height: scale(30),
     }
 })

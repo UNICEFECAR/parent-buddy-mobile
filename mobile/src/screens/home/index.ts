@@ -1,3 +1,5 @@
+import { NewMeasurementScreen } from '../growth/NewMeasurementScreen';
+import { GrowthScreen } from './GrowthScreen';
 import { AppFeedbackScreen } from "./AppFeedbackScreen";
 import { ArticleScreen } from "./ArticleScreen";
 import { ArticlesSection } from "./ArticlesSection";
@@ -27,3 +29,5 @@ export { AppFeedbackScreen };
 export { BirthDataScreen };
 export { ExaminationReminderScreen };
 export { ChildProfileScreen };
+export {GrowthScreen};
+export {NewMeasurementScreen}

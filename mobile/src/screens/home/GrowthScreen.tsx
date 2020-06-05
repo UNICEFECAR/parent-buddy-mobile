@@ -8,13 +8,15 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { ThemeConsumer, ThemeContextValue } from '../../themes/ThemeContext';
 import { scale } from 'react-native-size-matters';
 import { NewMeasurements } from '../../components/Growth/NewMeasurements';
+import { NewMeasurementScreen } from '../growth/NewMeasurementScreen';
+import { HomeScreenParams } from './HomeScreen';
 
 export interface GrowthScreenParams {
 
 }
 
 export interface Props {
-    navigation: NavigationStackProp<NavigationStackState, {}>;
+    navigation: NavigationStackProp<NavigationStackState, HomeScreenParams>;
 }
 
 export class GrowthScreen extends Component<Props> {
@@ -63,12 +65,11 @@ export class GrowthScreen extends Component<Props> {
                             />
                         </View>
                         <View style={{ marginBottom: 20 }} >
-                            <NewMeasurements />
+                            <NewMeasurements onPress={() => this.props.navigation.navigate('HomeStackNavigator_NewMeasurementScreen')}/>
                         </View>
                     </ScrollView>
                 )}
             </ThemeConsumer>
-
         )
     }
 }
