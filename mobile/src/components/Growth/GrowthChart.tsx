@@ -154,6 +154,7 @@ export class GrowthChart extends React.Component<Props, State> {
                             style={victoryStyles.VictoryArea}
                             data={this.state.areaChartData}
                         />
+                        
 
                         {/* ********* LINE CHART ********* */}
                         <VictoryLine
