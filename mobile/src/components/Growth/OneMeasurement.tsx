@@ -6,50 +6,56 @@ import { translate } from '../../translations/translate';
 import Icon from "react-native-vector-icons/FontAwesome";
 import { scale, moderateScale } from 'react-native-size-matters';
 import { IconProps } from 'react-native-paper/lib/typescript/src/components/MaterialCommunityIcon';
+import { Background } from 'victory-native';
 
 export interface Props {
     measureDate: string,
     measureMass: string,
     measureLength: string,
+    title: string,
+    isHorizontalLineVisible?: boolean
 }
 
 export class OneMeasurements extends Component<Props> {
     render() {
         return (
-            <View style={styles.container}>
-                <View style={{ flexDirection: 'row' }}>
-                    <Icon
-                        name={"check-circle"}
-                        style={styles.iconStyle}
-                    />
-                    <View style={{ flexDirection: "column" }}>
-                        <Typography type={TypographyType.headingSecondary}>
-                            {translate('oneMeasurementTitle')}
-                        </Typography>
-                        <Typography type={TypographyType.bodyRegular} style={styles.measureDateText}>
-                            {this.props.measureDate}
-                        </Typography>
-                    </View>
+            <View>
+                <View style={styles.container}>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Icon
+                            name={"check-circle"}
+                            style={styles.iconStyle}
+                        />
+                        <View style={{ flexDirection: "column" }}>
+                            <Typography type={TypographyType.headingSecondary}>
+                                {this.props.title}
+                            </Typography>
+                            <Typography type={TypographyType.bodyRegular} style={styles.measureDateText}>
+                                {this.props.measureDate}
+                            </Typography>
+                        </View>
 
-                </View>
-                <View style={styles.measureContainer}>
-                    <View style={styles.measureDateContainer}>
-                        <Typography style={styles.measureDateContainerText}>
-                            {translate('measurementMass')}
-                        </Typography>
-                        <Typography type={TypographyType.headingSecondary}>
-                            {this.props.measureMass} kg
-                        </Typography>
                     </View>
-                    <View style={styles.measureDateContainer}>
-                        <Typography style={styles.measureDateContainerText}>
-                            {translate('measurementLength')}
+                    <View style={styles.measureContainer}>
+                        <View style={styles.measureDateContainer}>
+                            <Typography style={styles.measureDateContainerText}>
+                                {translate('measurementMass')}
+                            </Typography>
+                            <Typography type={TypographyType.headingSecondary}>
+                                {this.props.measureMass} kg
                         </Typography>
-                        <Typography type={TypographyType.headingSecondary}>
-                            {this.props.measureLength} cm
+                        </View>
+                        <View style={styles.measureDateContainer}>
+                            <Typography style={styles.measureDateContainerText}>
+                                {translate('measurementLength')}
+                            </Typography>
+                            <Typography type={TypographyType.headingSecondary}>
+                                {this.props.measureLength} cm
                         </Typography>
+                        </View>
                     </View>
                 </View>
+                {this.props.isHorizontalLineVisible ? <View style={styles.horizontalLine}/> : null} 
             </View>
         )
     }
@@ -63,7 +69,8 @@ export interface OneMeasurementsStyles {
     measureContainer: ViewStyle,
     measureDateContainerText: TextStyle,
     measureDateText: TextStyle,
-    iconStyle: IconProps
+    iconStyle: IconProps,
+    horizontalLine: ViewStyle
 }
 
 const styles = StyleSheet.create<OneMeasurementsStyles>({
@@ -93,10 +100,18 @@ const styles = StyleSheet.create<OneMeasurementsStyles>({
         fontWeight: "bold",
     },
     iconStyle: {
-        marginRight: scale(15), 
-        marginTop: scale(3), 
-        fontSize: moderateScale(21), 
-        color: "#2CBA39", 
+        marginRight: scale(15),
+        marginTop: scale(3),
+        fontSize: moderateScale(21),
+        color: "#2CBA39",
         lineHeight: moderateScale(21),
+    },
+    horizontalLine:{
+        width: 3,
+        height: moderateScale(24),
+        backgroundColor: '#979797',
+        borderWidth: 1.5,
+        borderColor: '#979797',
+        marginLeft: moderateScale(24)
     }
 })

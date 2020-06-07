@@ -8,13 +8,15 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { ThemeConsumer, ThemeContextValue } from '../../themes/ThemeContext';
 import { scale } from 'react-native-size-matters';
 import { NewMeasurements } from '../../components/Growth/NewMeasurements';
+import { HomeScreenParams } from './HomeScreen';
+import { translate } from '../../translations/translate';
 
 export interface GrowthScreenParams {
 
 }
 
 export interface Props {
-    navigation: NavigationStackProp<NavigationStackState, {}>;
+    navigation: NavigationStackProp<NavigationStackState, HomeScreenParams>,
 }
 
 export class GrowthScreen extends Component<Props> {
@@ -55,20 +57,28 @@ export class GrowthScreen extends Component<Props> {
                                 measureLength="80"
                             />
                         </View>
-                        <View style={{ marginBottom: 20 }} >
+                        <View >
                             <OneMeasurements
                                 measureDate="13.9.2018."
                                 measureMass="11,4"
                                 measureLength="80"
+                                isHorizontalLineVisible={true}
+                                title={translate('oneMeasurementTitle')}
+                            />
+                            <OneMeasurements
+                                measureDate="13.9.2018."
+                                measureMass="11,4"
+                                measureLength="80"
+                                isHorizontalLineVisible={true}
+                                title="TEST"
                             />
                         </View>
-                        <View style={{ marginBottom: 20 }} >
-                            <NewMeasurements />
+                        <View >
+                            <NewMeasurements onPress={() => this.props.navigation.navigate('HomeStackNavigator_NewMeasurementScreen')} />
                         </View>
                     </ScrollView>
                 )}
             </ThemeConsumer>
-
         )
     }
 }

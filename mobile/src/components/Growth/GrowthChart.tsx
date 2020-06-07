@@ -154,6 +154,7 @@ export class GrowthChart extends React.Component<Props, State> {
                             style={victoryStyles.VictoryArea}
                             data={this.state.areaChartData}
                         />
+                        
 
                         {/* ********* LINE CHART ********* */}
                         <VictoryLine
@@ -201,6 +202,12 @@ export class GrowthChart extends React.Component<Props, State> {
                         />
                     </VictoryChart>
                 </Svg>
+                <View style={styles.chartLegend}>
+                    <View style={styles.chartLegendItem}>
+                        <View style={{width: 30, height: 30, backgroundColor: 'black'}}></View>
+                        <Typography>asdasdas</Typography>
+                    </View>
+                </View>
             </View>
         )
     }
@@ -217,6 +224,8 @@ export type childGender = 'boy' | 'girl';
 export interface GrowtChartStyles {
     container?: ViewStyle;
     contentWrapper?: ViewStyle;
+    chartLegend: ViewStyle;
+    chartLegendItem: ViewStyle;
 }
 
 export interface VictoryStyles {
@@ -242,6 +251,12 @@ const styles = StyleSheet.create<GrowtChartStyles>({
         paddingLeft: 15,
         paddingRight: 15,
     },
+    chartLegend:{
+        flexDirection: 'row',
+    },
+    chartLegendItem: {
+        flexDirection: 'row'
+    }
 
 });
 

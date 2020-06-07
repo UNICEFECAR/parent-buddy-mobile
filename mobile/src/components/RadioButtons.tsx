@@ -5,6 +5,7 @@ export interface Props {
     buttons: RadioButton[];
     value?: string;
     style?: StyleProp<ViewStyle>;
+    buttonStyle?: StyleProp<ViewStyle>,
     onChange?: (value:string|undefined)=>void,
 }
 
@@ -49,7 +50,7 @@ export class RadioButtons extends React.Component<Props, State> {
                 {this.props.buttons.map((button, index) => 
                     <TouchableOpacity
                         key={index}
-                        style={ [styles.button, (button.value === this.state.value ? styles.buttonSelected : {})] }
+                        style={ [styles.button, this.props.buttonStyle, (button.value === this.state.value ? styles.buttonSelected : {})] }
                         onPress={ () => {this.onButtonPress(button)} }
                     >
                         <Text 

@@ -7,8 +7,12 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import { scale, moderateScale } from 'react-native-size-matters';
 import { IconProps } from 'react-native-paper/lib/typescript/src/components/MaterialCommunityIcon';
 
+interface Props{
+    onPress: () => void
+}
 
-export class NewMeasurements extends Component {
+export class NewMeasurements extends Component<Props> {
+
     render() {
         return (
             <View style={styles.container}>
@@ -28,6 +32,7 @@ export class NewMeasurements extends Component {
                         type={RoundedButtonType.purple}
                         text={translate('newMeasureAddMeasurementBtn')}
                         showArrow={true}
+                        onPress={this.props.onPress}
                     />
                 </View>
             </View>
@@ -52,7 +57,7 @@ const styles = StyleSheet.create<NewMeasurementsStyles>({
         shadowOpacity: 0.2,
         padding: scale(16),
     },
-    buttonContainer:{
+    buttonContainer: {
         marginTop: scale(24),
     },
     iconStyle: {
