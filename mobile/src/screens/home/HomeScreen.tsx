@@ -12,6 +12,7 @@ import { CategoryArticlesViewEntity } from '../../stores/CategoryArticlesViewEnt
 import { dataRealmStore } from '../../stores';
 import { translate } from '../../translations/translate';
 import { content } from '../../app';
+import { Media } from '../../components';
 
 export interface HomeScreenParams {
     showSearchInput?: boolean;
@@ -59,6 +60,13 @@ export class HomeScreen extends React.Component<Props, object> {
                         {/* Test button */}
                         {/* <Button onPress={() => {this.onTestButtonPress()}}>Test</Button>
                         <View style={{height:30}} /> */}
+
+                        <Media
+                            title="Hello baby"
+                            coverImageUrl={`http:\/\/ecaroparentingapppi3xep5h4v.devcloud.acquia-sites.com\/sites\/default\/files\/styles\/crop_freeform\/public\/2020-05\/polo%C5%BEaj%20bebe%20u%20vreme%20podoja.jpg?itok=rxiQDXN5`}
+                            roundCorners={true}
+                        />
+                        <View style={{height:100}} />
 
                         <DataRealmConsumer>
                             {(dataRealmContext: DataRealmContextValue) => (

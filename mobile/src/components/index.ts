@@ -14,6 +14,7 @@ import { ShareButton } from "./ShareButton";
 import { Tag } from "./Tag";
 import { TextButton } from "./TextButton";
 import { Typography } from "./Typography";
+import { Media } from "./Media";
 import { WalkthroughBackground } from "./WalkthroughBackground";
 
 export { GradientBackground };
@@ -33,3 +34,4 @@ export { ProfileIcon };
 export { SearchInput };
 export { Divider };
 export { HomeMessages };
+export { Media };
