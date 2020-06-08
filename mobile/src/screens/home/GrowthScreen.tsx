@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import { View, StyleSheet, ViewStyle } from 'react-native'
 import { NavigationStackProp, NavigationStackState } from 'react-navigation-stack';
-import { NoMeasurements } from '../../components/Growth/NoMeasurements';
-import { LastMeasurements } from '../../components/Growth/LastMeasurements';
-import { OneMeasurements } from '../../components/Growth/OneMeasurement';
+import { NoMeasurements } from '../../components/growth/NoMeasurements';
+import { LastMeasurements } from '../../components/growth/LastMeasurements';
+import { OneMeasurements } from '../../components/growth/OneMeasurement';
 import { ScrollView } from 'react-native-gesture-handler';
 import { ThemeConsumer, ThemeContextValue } from '../../themes/ThemeContext';
 import { scale } from 'react-native-size-matters';
-import { NewMeasurements } from '../../components/Growth/NewMeasurements';
+import { NewMeasurements } from '../../components/growth/NewMeasurements';
 import { HomeScreenParams } from './HomeScreen';
 import { translate } from '../../translations/translate';
 
