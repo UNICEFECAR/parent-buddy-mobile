@@ -67,12 +67,18 @@ export class HomeScreen extends React.Component<Props, object> {
                             // image
                             // coverImageUrl={`http:\/\/ecaroparentingapppi3xep5h4v.devcloud.acquia-sites.com\/sites\/default\/files\/styles\/crop_freeform\/public\/2020-05\/polo%C5%BEaj%20bebe%20u%20vreme%20podoja.jpg?itok=rxiQDXN5`}
                             
-                            // you tube
-                            videoType="youtube"
-                            videoUrl="https://www.youtube.com/watch?v=LjkSW_j6-hA"
-                            coverImageUrl="http://ecaroparentingapppi3xep5h4v.devcloud.acquia-sites.com/sites/default/files/styles/medium/public/video_thumbnails/LjkSW_j6-hA.jpg?itok=OasX9-fq"
+                            // YouTube
+                            // videoType="youtube"
+                            // videoUrl="https://www.youtube.com/watch?v=LjkSW_j6-hA"
+                            // coverImageUrl="http://ecaroparentingapppi3xep5h4v.devcloud.acquia-sites.com/sites/default/files/styles/medium/public/video_thumbnails/LjkSW_j6-hA.jpg?itok=OasX9-fq"
                             
+                            // Vimeo
+                            videoType="vimeo"
+                            videoUrl="https://vimeo.com/277586602"
+                            coverImageUrl="http://ecaroparentingapppi3xep5h4v.devcloud.acquia-sites.com/sites/default/files/styles/medium/public/video_thumbnails/277586602.jpg?itok=kBNillFw"
+
                             roundCorners={true}
+                            onPress={()=>{console.warn('Press')}}
                             // aspectRatio={1}
                         />
                         <View style={{height:100}} />
