@@ -67,16 +67,23 @@ class ApiStore {
                 response.data = rawResponseJson.data.map((rawContent:any): ContentEntity => {
                     return {
                         id: parseInt(rawContent.id),
-                        body: rawContent.body,
                         type: rawContent.type,
                         langcode: rawContent.langcode,
                         title: rawContent.title,
+                        summary: rawContent.summary,
+                        body: rawContent.body,
                         category: parseInt(rawContent.category),
-                        predefinedTags: rawContent.predefined_tags.map((value:any) => parseInt(value)),
-                        keywords: rawContent.keywords.map((value:any) => parseInt(value)),
-                        updatedAt: new Date(),
+                        predefinedTags: rawContent.predefined_tags ? rawContent.predefined_tags.map((value:any) => parseInt(value)) : [],
+                        keywords: rawContent.keywords ? rawContent.keywords.map((value:any) => parseInt(value)) : [],
+                        referencedArticles: rawContent.referenced_articles ? rawContent.referenced_articles.map((value:any) => parseInt(value)) : [],
                         coverImageUrl: rawContent.cover_image?.url,
                         coverImageAlt: rawContent.cover_image?.alt,
+                        coverImageName: rawContent.cover_image?.name,
+                        coverVideoUrl: rawContent.cover_video?.url,
+                        coverVideoName: rawContent.cover_video?.name,
+                        coverVideoSite: rawContent.cover_video?.site,
+                        createdAt: new Date(rawContent.created_at * 1000),
+                        updatedAt: new Date(rawContent.updated_at * 1000),
                     };
                 });
             }
