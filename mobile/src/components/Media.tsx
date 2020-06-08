@@ -4,6 +4,8 @@ import { Typography, TypographyType } from './Typography';
 import { scale } from 'react-native-size-matters';
 import { themes } from '../themes';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { utils } from '../app';
+import { navigation } from '../app/Navigators';
 
 export interface Props {
     title?: string;
@@ -14,7 +16,7 @@ export interface Props {
     aspectRatio?: number;
     roundCorners?: boolean;
     style?: StyleProp<ViewStyle>;
-    onTextPress?: Function;
+    onPress?: Function;
 }
 
 export interface State {
@@ -44,6 +46,31 @@ export class Media extends React.Component<Props, State> {
         this.state = state;
     }
 
+    private onTitlePress() {
+        if (this.props.onPress) {
+            this.props.onPress();
+        }
+    }
+
+    private onCoverImagePress() {
+        // VIDEO
+        if (this.props.videoUrl) {
+            const videoId = utils.getYoutubeId(this.props.videoUrl);
+
+            // Video article
+            navigation.navigate('RootModalStackNavigator_VideoScreen', {
+                videoId: videoId
+            });
+        }
+
+        // IMAGE
+        if (!this.props.videoUrl) {
+            if (this.props.onPress) {
+                this.props.onPress();
+            }
+        }
+    }
+
     public render() {
         let getPlayIcon = () => {
             const size = this.props.videoPlayButtonSize ?? scale(60);
@@ -62,39 +89,39 @@ export class Media extends React.Component<Props, State> {
                 </View>
             );
         };
-            
-            return (
-                <View style={[styles.container, (this.props.roundCorners ? styles.roundCorner : {}), this.props.style]}>
-                    {/* COVER IMAGE */}
-                    <TouchableOpacity
-                        onPress={() => { console.log(this.props.coverImageUrl) }}
-                    >
-                        <ImageBackground
-                            source={{ uri: this.props.coverImageUrl }}
-                            style={[styles.coverImage, { width: '100%', aspectRatio:this.props.aspectRatio }]}
-                            resizeMode="cover"
-                        >
-                            {getPlayIcon()}
-                        </ImageBackground>
-                    </TouchableOpacity>
 
-                    {/* TITLE */}
-                    {this.props.title ? (
-                        <>
-                            <View style={{ height: scale(10) }} />
-                            <TouchableOpacity
-                                onPress={() => { console.warn('text clicked') }}
-                            >
-                                <Typography type={TypographyType.headingSecondary}>
-                                    {this.props.title}
-                                </Typography>
-                            </TouchableOpacity>
-                        </>
-                    ) : null}
-                </View>
-            );
-        }
+        return (
+            <View style={[styles.container, (this.props.roundCorners ? styles.roundCorner : {}), this.props.style]}>
+                {/* COVER IMAGE */}
+                <TouchableOpacity
+                    onPress={() => { this.onCoverImagePress() }}
+                >
+                    <ImageBackground
+                        source={{ uri: this.props.coverImageUrl }}
+                        style={[styles.coverImage, { width: '100%', aspectRatio: this.props.aspectRatio }]}
+                        resizeMode="cover"
+                    >
+                        {this.props.videoUrl ? getPlayIcon() : null}
+                    </ImageBackground>
+                </TouchableOpacity>
+
+                {/* TITLE */}
+                {this.props.title ? (
+                    <>
+                        <View style={{ height: scale(10) }} />
+                        <TouchableOpacity
+                            onPress={() => { this.onTitlePress() }}
+                        >
+                            <Typography type={TypographyType.headingSecondary}>
+                                {this.props.title}
+                            </Typography>
+                        </TouchableOpacity>
+                    </>
+                ) : null}
+            </View>
+        );
     }
+}
 
 export interface VideoStyles {
     [index: string]: ViewStyle | TextStyle | ImageStyle;
@@ -108,7 +135,7 @@ const styles = StyleSheet.create<VideoStyles>({
         flexDirection: 'column',
         justifyContent: 'flex-start',
         alignItems: 'stretch',
-        backgroundColor: 'orange',
+        // backgroundColor: 'orange',
         // padding: 15,
     },
 
@@ -120,7 +147,7 @@ const styles = StyleSheet.create<VideoStyles>({
     coverImage: {
         borderRadius: scale(10),
         justifyContent: 'center',
-        alignItems:'center',
+        alignItems: 'center',
         overflow: 'hidden',
     }
 });

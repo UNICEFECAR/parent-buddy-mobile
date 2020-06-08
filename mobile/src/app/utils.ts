@@ -100,6 +100,24 @@ class Utils {
       
         return arr;
     }
+
+    /**
+     * Get video ID from given url.
+     * 
+     * url = https://www.youtube.com/watch?v=LjkSW_j6-hA
+     */
+    public getYoutubeId(url: string): string {
+        let rval: string = url;
+
+        let re = new RegExp('v=([^&]+)', 'img');
+        let result = re.exec(url)
+        
+        if (result && result[1]) {
+            rval = result[1];
+        }
+
+        return rval;
+    }
 }
 
 export const utils = Utils.getInstance();
