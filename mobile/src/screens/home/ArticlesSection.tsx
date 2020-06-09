@@ -162,13 +162,13 @@ export class ArticlesSection extends React.Component<Props, State> {
                                                 key={index}
                                                 title={article?.title}
 
-                                                coverImageUrl={ content.getCoverImageFilepath(article) }
+                                                coverImageUrl={content.getCoverImageFilepath(article)}
                                                 videoType={article.coverVideoSite as VideoType}
                                                 videoUrl={article.coverVideoUrl}
 
                                                 roundCorners={true}
                                                 aspectRatio={1}
-                                                style={{ width:scale(180), marginRight:scale(15), marginBottom:scale(10) }}
+                                                style={{ width: scale(180), marginRight: scale(15), marginBottom: scale(10) }}
 
                                                 onPress={() => { this.onArticlePress(article) }}
                                             />
