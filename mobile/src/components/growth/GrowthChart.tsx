@@ -1,6 +1,6 @@
 import React from 'react';
-import { VictoryArea, VictoryLabel, VictoryTooltip, VictoryScatter, VictoryChart, VictoryAxis, VictoryTheme, VictoryLine } from "victory-native";
-import { VictoryAxisCommonProps, TickLabelProps } from 'victory-core';
+import { VictoryArea, VictoryLabel, VictoryTooltip, VictoryScatter, VictoryChart, VictoryAxis, VictoryTheme, VictoryLine, VictoryZoomContainer } from "victory-native";
+import { VictoryAxisCommonProps, TickLabelProps, Background } from 'victory-core';
 import { VictoryTooltipProps } from 'victory-tooltip';
 import { VictoryScatterProps } from 'victory-scatter';
 import { VictoryLineProps } from 'victory-line';
@@ -8,7 +8,9 @@ import { VictoryAreaProps } from 'victory-area'
 import { Dimensions, ViewStyle, StyleSheet, LayoutChangeEvent, View } from 'react-native';
 import Svg from 'react-native-svg';
 import { Typography, TypographyType } from '../Typography';
-import { ChartData } from '../../dummy-data/growthChartData';
+import { ChartData, GrowthChart0_2Type, GrowthChartHeightAgeType } from './growthChartData';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { translate } from '../../translations';
 
 const fontFamily = 'SFUIDisplay-Regular';
 
@@ -25,7 +27,7 @@ export interface chartAreaDataFormat {
 
 }
 
-export enum chartTypes{
+export enum chartTypes {
     height_length,
     length_age
 }
@@ -34,14 +36,10 @@ export enum chartTypes{
 export interface Props {
     chartType: chartTypes,
     title: string,
-    dataX: number[],
-    dataY: number[],
-    gender: childGender,
     lineChartData: ChartData[],
     childGender: "male" | "female",
-    // childBirthDate: Date,
+    childBirthDate: Date,
     showFullscreen: boolean,
-    childAge: number, // temporary 
 }
 
 export interface State {
@@ -51,9 +49,10 @@ export interface State {
     topArea: singleAreaDataFormat[],
     middleArea: singleAreaDataFormat[],
     bottomArea: singleAreaDataFormat[],
-
+    lineChart: LineChartData[]
+    labelX: "cm" | "meseci",
+    labelY: "kg" | "cm",
 }
-
 
 export class GrowthChart extends React.Component<Props, State> {
 
@@ -62,13 +61,16 @@ export class GrowthChart extends React.Component<Props, State> {
         this.initState()
     }
 
+    /* *********** GET AGE FROM BIRTH DATE *********** */
     private getChildAge = () => {
-        // izraunavanje godina deteta 
+        var diff_ms = Date.now() - this.props.childBirthDate.getTime();
+        var age_dt = new Date(diff_ms);
 
+        return (age_dt.getUTCFullYear() - 1970) * 365; // CONVERT VALUE IN DAYS FOR CALCULATION 
     }
 
-
-    private formatChartData = (data: object[]) => {
+    /* *********** FORMAT DATA FOR OUR CHART *********** */
+    private formatChartData = (data: GrowthChart0_2Type | GrowthChartHeightAgeType) => {
 
         let obj: chartAreaDataFormat;
 
@@ -76,14 +78,14 @@ export class GrowthChart extends React.Component<Props, State> {
         let middleArea: singleAreaDataFormat[] = [];
         let bottomArea: singleAreaDataFormat[] = [];
 
+        // FIX ME 
         data.map(item => {
+            let xValue: number = 0;
 
-            let xValue:number;
-
-            if(this.props.chartType === chartTypes.length_age){
-                xValue = item.Day
-            }else{
-                xValue = item.Length ? item.Length : item.Height
+            if (this.props.chartType === chartTypes.length_age) {
+                xValue = item.Day / 30; // GET ARRAY OF MONTHS
+            } else {
+                xValue = item.Height
             }
 
             topArea.push({ x: xValue, y: item.SD3, y0: item.SD4 });
@@ -106,50 +108,46 @@ export class GrowthChart extends React.Component<Props, State> {
 
 
         const { GrowthChartBoys0_2, GrowthChartBoys2_5, GrowthChartGirls0_2, GrowthChartGirls2_5, Height_age_boys0_5, Height_age_girls0_5 } = ChartData;
-        const { childGender, chartType, childAge } = this.props;
+        const { childGender, chartType } = this.props;
 
         let obj: chartAreaDataFormat;
 
         if (childGender === "male") {
             // boys
             if (chartType === chartTypes.height_length) { // tezina za visinu 
-                if (childAge < 2) {
-                    // BOYS 0 - 2
-                    // ###### tezina za visinu, decaci 0-2 ######
+                if (this.getChildAge() <= 730) {
+                    /*********** BOYS 0 - 2 ***********/
                     obj = this.formatChartData(GrowthChartBoys0_2);
-
-
                 } else {
-                    // BOYS 2 - 5
-                    // ###### tezina za visinu, decaci 2-5 ######
+                    /*********** BOYS 2 - 5 ***********/
                     obj = this.formatChartData(GrowthChartBoys2_5);
-
                 }
             } else {
-                // ###### tezina uzrast decaci 0 - 5
+                /*********** ###### tezina uzrast decaci 0 - 5 ***********/
                 obj = this.formatChartData(Height_age_boys0_5);
-
             }
         } else {
-            /// girls 
+            /*********** girls ***********/
             if (chartType === chartTypes.height_length) { // tezina za visinu 
-                if (childAge < 2) {
-                    // Girls 0 - 2
-                    // ###### tezina za visinu, devojcice 0-2 ######
+                if (this.getChildAge() <= 730) {
+                    /*********** Girls 0 - 2 ***********/
                     obj = this.formatChartData(GrowthChartGirls0_2);
-
                 } else {
-                    // Girls 2 - 5
-                    // ###### tezina za visinu, devojcice 2-5 ######
+                    /*********** Girls 2 - 5 ***********/
                     obj = this.formatChartData(GrowthChartGirls2_5);
-
                 }
             } else {
-                // ###### tezina uzrast devojcice 0 - 5
+                /***********tezina uzrast devojcice 0 - 5 ***********/
                 obj = this.formatChartData(Height_age_girls0_5);
             }
         }
 
+        const chartData: LineChartData[] = [];
+
+        /*********** CREATE LINE CHART ARRAY FOR TYPE OF CHART ***********/
+        this.props.lineChartData.map(item => {
+            chartData.push(this.props.chartType === chartTypes.height_length ? { x: item.length, y: item.height } : { x: item.measurementDay / 30, y: item.length })
+        })
 
         let state: State = {
             orientation: windowWidth > windowHeight ? 'landscape' : 'portrait',
@@ -158,6 +156,9 @@ export class GrowthChart extends React.Component<Props, State> {
             bottomArea: obj.bottomArea,
             topArea: obj.topArea,
             middleArea: obj.middleArea,
+            lineChart: chartData,
+            labelX: chartType === chartTypes.height_length ? "cm" : "meseci",
+            labelY: chartType === chartTypes.height_length ? "kg" : "cm"
         };
 
         this.state = state;
@@ -173,39 +174,36 @@ export class GrowthChart extends React.Component<Props, State> {
         })
     }
 
+
     public render() {
-
-        // SET MAX AND MIN VALUES TO CREATE RANGE FOR X and Y => (X[0] === minX, x[x.length] === max X)
-        // const sortedXdata: number[] = this.props.dataX.sort((n1: number, n2: number) => n1 - n2);
-        // const sortedYdata: number[] = this.props.dataY.sort((n1: number, n2: number) => n1 - n2);
-
-        // const minDomain = {
-        //     x: sortedXdata[0] - sortedXdata[0],
-        //     y: sortedYdata[0] - sortedXdata[0]
-        // }
-
-        // const maxDomain = {
-        //     x: sortedXdata[sortedXdata.length - 1],
-        //     y: sortedYdata[sortedYdata.length - 1],
-        // }
 
         return (
             <View style={styles.container} onLayout={this.onLayout}>
-                <Typography type={TypographyType.headingSecondary}>{this.props.title}</Typography>
+                <View style={styles.chartHeader}>
+                    <Typography type={TypographyType.headingSecondary}>{this.props.title}</Typography>
+                    {
+                        this.props.showFullscreen ?
+                            <Icon name="md-close" style={{ position: 'absolute', right: 0, fontSize: 20 }} />
+                            :
+                            <Icon name="md-resize" style={{ position: 'absolute', right: 0, fontSize: 20 }} />
+
+                    }
+                </View>
                 <Svg style={{ marginLeft: -10 }} >
                     <VictoryChart
+                        // containerComponent={<VictoryZoomContainer allowZoom={false} zoomDomain={{x: [1, 60]} }/>}  
                         theme={VictoryTheme.material}
                         // minDomain={0}
                         // maxDomain={400}
                         // domainPadding={-120}
                         width={this.state.width}
-                        height={this.state.height}
+                        height={this.state.height - 200}
                     >
                         {/* ********* AXIS HORIZONTAL ********* */}
                         <VictoryAxis
                             // tickFormat={this.state.topArea}
                             style={victoryStyles.VictoryAxis}
-                            label={this.props.chartType === chartTypes.height_length ? 'cm' : 'meseci'}
+                            label={this.state.labelX}
                             axisLabelComponent={<VictoryLabel x={this.state.width - 20} />}
                         />
 
@@ -215,22 +213,22 @@ export class GrowthChart extends React.Component<Props, State> {
                             style={victoryStyles.VictoryAxisVertical}
                             axisLabelComponent={<VictoryLabel y={30} />}
                             dependentAxis
-                            label={this.props.chartType === chartTypes.height_length ? 'kg' : 'cm'}
+                            label={this.state.labelY}
                         />
 
-                        {/* ********* AREA EXCEPTIONS ********* */}
+                        {/* ********* TOP AREA ********* */}
                         <VictoryArea
                             interpolation="natural"
                             style={victoryStyles.VictoryExceptionsArea}
                             data={this.state.topArea}
                         />
-                        {/* ********* AREA EXCEPTIONS ********* */}
+                        {/* ********* BOTTOM AREA EXCEPTIONS ********* */}
                         <VictoryArea
                             interpolation="natural"
                             style={victoryStyles.VictoryExceptionsArea}
                             data={this.state.bottomArea}
                         />
-                        {/* ********* AREA ********* */}
+                        {/* ********* MIDDLE AREA ********* */}
                         <VictoryArea
                             interpolation="natural"
                             style={victoryStyles.VictoryArea}
@@ -239,19 +237,25 @@ export class GrowthChart extends React.Component<Props, State> {
 
 
                         {/* ********* LINE CHART ********* */}
-                        {/* <VictoryLine
-                            data={this.props.lineChartData}
+                        <VictoryLine
+                            data={this.state.lineChart}
                             interpolation="natural"
                             style={victoryStyles.VictoryLine}
-                        /> */}
+                        />
 
                         {/* ********* SCATTER ********* */}
-                        {/* <VictoryScatter
-                            data={this.props.lineChartData}
+                        <VictoryScatter
+                            data={this.state.lineChart}
                             size={9}
                             style={victoryStyles.VictoryScatter}
-                            labelComponent={<VictoryTooltip renderInPortal={false} style={victoryStyles.VictoryTooltip.style} flyoutStyle={victoryStyles.VictoryTooltip.flyoutStyle} />}
-                            labels={(props) => props.datum.y + this.props.labelYText + ' / ' + props.datum.x + this.props.labelXText}
+                            labelComponent={
+                                <VictoryTooltip
+                                    renderInPortal={false}
+                                    style={victoryStyles.VictoryTooltip.style}
+                                    flyoutStyle={victoryStyles.VictoryTooltip.flyoutStyle}
+                                />
+                            }
+                            labels={(props) => props.datum.y + " " + this.state.labelY + ' / ' + (Math.round((props.datum.x + Number.EPSILON) * 100) / 100) + " " + this.state.labelX}
                             events={[{
                                 target: "data",
                                 eventHandlers: {
@@ -281,15 +285,24 @@ export class GrowthChart extends React.Component<Props, State> {
                                     }
                                 }
                             }]}
-                        /> */}
+                        />
                     </VictoryChart>
-                </Svg>
-                {/* <View style={styles.chartLegend}>
-                    <View style={styles.chartLegendItem}>
-                        <View style={{width: 30, height: 30, backgroundColor: 'black'}}></View>
-                        <Typography>asdasdas</Typography>
+                    <View style={styles.chartLegend}>
+                        <View style={styles.chartLegendItem}>
+                            <View style={{ width: 27, height: 12, backgroundColor: '#D8D8D8', margin: 10 }}></View>
+                            <Typography style={{ fontSize: 11, opacity: 0.5 }}>{translate('growthChartLegendSilverLabel')}</Typography>
+                        </View>
+                        {
+                            this.props.showFullscreen && (
+                                <View style={styles.chartLegendItem}>
+                                    <View style={{ width: 27, height: 12, backgroundColor: '#F9C49E', margin: 10 }}></View>
+                                    <Typography style={{ fontSize: 11, opacity: 0.5 }}>{translate('growthChartLegendOrangeLabel')}</Typography>
+                                </View>
+                            )
+                        }
                     </View>
-                </View> */}
+                </Svg>
+
             </View>
         )
     }
@@ -297,17 +310,22 @@ export class GrowthChart extends React.Component<Props, State> {
 
 
 export interface ChartData {
+    measurementDay: number,
+    height: number,
+    length: number,
+}
+
+export interface LineChartData {
     x: number,
     y: number,
 }
-
-export type childGender = 'boy' | 'girl';
 
 export interface GrowtChartStyles {
     container?: ViewStyle;
     contentWrapper?: ViewStyle;
     chartLegend: ViewStyle;
     chartLegendItem: ViewStyle;
+    chartHeader: ViewStyle;
 }
 
 export interface VictoryStyles {
@@ -327,17 +345,21 @@ const styles = StyleSheet.create<GrowtChartStyles>({
         flexDirection: 'column',
         justifyContent: 'flex-start',
     },
-
+    chartHeader: {
+        flexDirection: "row"
+    },
     contentWrapper: {
-        flex: 1,
         paddingLeft: 15,
         paddingRight: 15,
     },
     chartLegend: {
         flexDirection: 'row',
+        width: '100%',
+        justifyContent: 'center',
     },
     chartLegendItem: {
-        flexDirection: 'row'
+        flexDirection: 'row',
+        alignItems: 'center'
     }
 
 });
@@ -354,6 +376,7 @@ const victoryStyles: VictoryStyles = {
     VictoryAxisVertical: {
         grid: { stroke: 'transparent' },
         axis: { stroke: 'none' },
+        // @ts-ignore
         axisLabel: { angle: 0, fontFamily: fontFamily },
         tickLabels: { fontFamily: fontFamily }
     },
@@ -365,10 +388,10 @@ const victoryStyles: VictoryStyles = {
         labels: { fill: "red", fontFamily: fontFamily },
     },
     VictoryArea: {
-        data: { fill: "silver" }
+        data: { fill: "#D8D8D8" }
     },
     VictoryExceptionsArea: {
-        data: { fill: "orange" }
+        data: { fill: "#F9C49E" }
     },
     VictoryTooltip: {
         flyoutStyle: {

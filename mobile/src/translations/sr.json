@@ -146,6 +146,8 @@
     "newMeasureScreenSaveBtn": "Sačuvajte podatke",
     "oneMeasurementTitle": "Rođenje",
     "measurementMass": "Masa",
-    "measurementLength": "Dužina"
+    "measurementLength": "Dužina",
 
+    "growthChartLegendSilverLabel": " - Uobičajene vrednosti za uzrast",
+    "growthChartLegendOrangeLabel": " - Odstupajuće vrednosti za uzrast"
 }
