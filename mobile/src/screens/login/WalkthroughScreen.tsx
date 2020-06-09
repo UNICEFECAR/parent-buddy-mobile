@@ -10,6 +10,7 @@ import { themes } from '../../themes/themes';
 import { translate } from '../../translations/translate';
 import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
 import { dataRealmStore } from '../../stores';
+import Orientation from 'react-native-orientation-locker';
 
 export interface WalkthroughScreenParams {
     /**
@@ -35,6 +36,10 @@ export class WalkthroughScreen extends React.Component<Props, State> {
 
         this.setDefaultScreenParams();
         this.initState();
+    }
+
+    public componentDidMount() {
+        Orientation.lockToPortrait();
     }
 
     private setDefaultScreenParams() {

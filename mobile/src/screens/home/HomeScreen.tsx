@@ -13,6 +13,7 @@ import { dataRealmStore } from '../../stores';
 import { translate } from '../../translations/translate';
 import { content } from '../../app';
 import { Media } from '../../components';
+import Orientation from 'react-native-orientation-locker';
 
 export interface HomeScreenParams {
     showSearchInput?: boolean;
@@ -30,6 +31,10 @@ export class HomeScreen extends React.Component<Props, object> {
     public constructor(props: Props) {
         super(props);
         this.setDefaultScreenParams();
+    }
+
+    public componentDidMount() {
+        Orientation.lockToPortrait();
     }
 
     private setDefaultScreenParams() {
@@ -68,14 +73,14 @@ export class HomeScreen extends React.Component<Props, object> {
                             // coverImageUrl={`http:\/\/ecaroparentingapppi3xep5h4v.devcloud.acquia-sites.com\/sites\/default\/files\/styles\/crop_freeform\/public\/2020-05\/polo%C5%BEaj%20bebe%20u%20vreme%20podoja.jpg?itok=rxiQDXN5`}
                             
                             // YouTube
-                            videoType="youtube"
-                            videoUrl="https://www.youtube.com/watch?v=LjkSW_j6-hA"
-                            coverImageUrl="http://ecaroparentingapppi3xep5h4v.devcloud.acquia-sites.com/sites/default/files/styles/medium/public/video_thumbnails/LjkSW_j6-hA.jpg?itok=OasX9-fq"
+                            // videoType="youtube"
+                            // videoUrl="https://www.youtube.com/watch?v=LjkSW_j6-hA"
+                            // coverImageUrl="http://ecaroparentingapppi3xep5h4v.devcloud.acquia-sites.com/sites/default/files/styles/medium/public/video_thumbnails/LjkSW_j6-hA.jpg?itok=OasX9-fq"
                             
                             // Vimeo
-                            // videoType="vimeo"
-                            // videoUrl="https://vimeo.com/277586602"
-                            // coverImageUrl="http://ecaroparentingapppi3xep5h4v.devcloud.acquia-sites.com/sites/default/files/styles/medium/public/video_thumbnails/277586602.jpg?itok=kBNillFw"
+                            videoType="vimeo"
+                            videoUrl="https://vimeo.com/277586602"
+                            coverImageUrl="http://ecaroparentingapppi3xep5h4v.devcloud.acquia-sites.com/sites/default/files/styles/medium/public/video_thumbnails/277586602.jpg?itok=kBNillFw"
 
                             roundCorners={true}
                             onPress={()=>{console.warn('Press')}}

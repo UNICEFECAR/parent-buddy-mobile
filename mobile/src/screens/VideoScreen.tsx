@@ -9,6 +9,7 @@ import { Dimensions } from 'react-native';
 import YoutubePlayer, { getYoutubeMeta } from 'react-native-youtube-iframe';
 import { VideoType } from '../components/Media';
 import { WebView } from 'react-native-webview';
+import Orientation from 'react-native-orientation-locker';
 
 export interface VideoScreenParams {
     videoId: string;
@@ -33,6 +34,14 @@ export class VideoScreen extends React.Component<Props, State> {
 
         this.setDefaultScreenParams();
         this.initState();
+    }
+
+    public componentDidMount() {
+        Orientation.lockToLandscape();
+    }
+
+    public componentWillUnmount() {
+        Orientation.lockToPortrait();
     }
 
     private setDefaultScreenParams() {

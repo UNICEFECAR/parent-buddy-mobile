@@ -18,6 +18,7 @@ import { dataRealmStore, userRealmStore } from '../../stores';
 import { ChildEntity, ChildEntitySchema, ChildGender } from '../../stores/ChildEntity';
 import { UserRealmConsumer, UserRealmContextValue } from '../../stores/UserRealmContext';
 import { translate } from '../../translations/translate';
+import Orientation from 'react-native-orientation-locker';
 
 export interface Props {
     navigation: NavigationStackProp<NavigationStackState>;
@@ -37,6 +38,10 @@ export class AddChildrenScreen extends React.Component<Props, State> {
         this.scrollView = createRef<KeyboardAwareScrollView>();
         this.initState();
         this.addFirstChild();
+    }
+
+    public componentDidMount() {
+        Orientation.lockToPortrait();
     }
 
     private initState() {
