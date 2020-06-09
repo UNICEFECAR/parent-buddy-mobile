@@ -7,7 +7,18 @@ import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
 import android.content.Intent; // <-- include if not already there
 import com.tkporter.sendsms.SendSMSPackage;
 
+import android.content.Intent;
+import android.content.res.Configuration;
+
 public class MainActivity extends ReactActivity {
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        Intent intent = new Intent("onConfigurationChanged");
+        intent.putExtra("newConfig", newConfig);
+        this.sendBroadcast(intent);
+    }
 
     @Override
     protected ReactActivityDelegate createReactActivityDelegate() {
