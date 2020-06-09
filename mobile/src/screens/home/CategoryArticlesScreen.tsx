@@ -14,6 +14,8 @@ import { ContentViewEntity } from '../../stores/ContentViewEntity';
 import { DataRealmConsumer, DataRealmContextValue } from '../../stores/DataRealmContext';
 import { ContentEntity, ContentEntitySchema } from '../../stores/ContentEntity';
 import { content } from '../../app';
+import { Media } from '../../components';
+import { VideoType } from '../../components/Media';
 
 export interface CategoryArticlesScreenParams {
     categoryName: string;
@@ -123,19 +125,20 @@ export class CategoryArticlesScreen extends React.Component<Props, object> {
                                     {dataRealmContext.realm?.objects<ContentEntity>(ContentEntitySchema.name)
                                         .filtered(`category == ${screenParams.categoryId} AND type == 'article' SORT(id ASC)`).map(article => {
                                             return (
-                                                <TouchableOpacity onPress={() => { this.gotoArticleScreen(article) }} key={article.id} style={{ marginBottom: scale(25) }}>
-                                                    <ImageBackground
-                                                        source={{ uri: content.getCoverImageFilepath(article) }}
-                                                        style={[styles.image, { width: '100%', aspectRatio: 1.8 }]}
-                                                        resizeMode="cover"
-                                                    >
-                                                        {/* {article.youTubeVideoId ? getPlayIcon(themeContext) : null} */}
-                                                    </ImageBackground>
+                                                <Media
+                                                    key={article.id}
+                                                    title={ article.title }
 
-                                                    <Typography style={{ marginTop: scale(10), marginBottom: 0 }} type={TypographyType.headingSecondary}>
-                                                        {article.title}
-                                                    </Typography>
-                                                </TouchableOpacity>
+                                                    coverImageUrl={ content.getCoverImageFilepath(article) }
+                                                    videoType={article.coverVideoSite as VideoType}
+                                                    videoUrl={article.coverVideoUrl}
+
+                                                    roundCorners={true}
+                                                    aspectRatio={1.8}
+                                                    style={{ width: '100%', marginBottom:scale(25) }}
+
+                                                    onPress={() => { this.gotoArticleScreen(article) }}
+                                                />
                                             );
                                         })
                                     }

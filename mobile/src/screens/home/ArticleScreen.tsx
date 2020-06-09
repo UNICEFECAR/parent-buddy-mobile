@@ -17,6 +17,8 @@ import HTML from 'react-native-render-html';
 import { ContentEntity } from '../../stores/ContentEntity';
 import { content } from '../../app';
 import { DataRealmContext, DataRealmContextValue, DataRealmConsumer } from '../../stores/DataRealmContext';
+import { Media } from '../../components';
+import { VideoType } from '../../components/Media';
 
 export interface ArticleScreenParams {
     article: ContentEntity;
@@ -86,10 +88,14 @@ export class ArticleScreen extends React.Component<Props, object> {
 
                         <View style={{ paddingBottom: 0 }}>
                             {/* ARTICLE IMAGE */}
-                            <Image
-                                source={{ uri: content.getCoverImageFilepath(screenParams.article) }}
-                                style={[{ width: '100%', aspectRatio: 1.4 }]}
-                                resizeMode="cover"
+                            <Media
+                                coverImageUrl={ content.getCoverImageFilepath(screenParams.article) }
+                                videoType={screenParams.article.coverVideoSite as VideoType}
+                                videoUrl={screenParams.article.coverVideoUrl}
+
+                                roundCorners={false}
+                                aspectRatio={1.4}
+                                style={{ width:'100%' }}
                             />
 
                             {/* SHARE BUTTON */}
@@ -154,5 +160,5 @@ const styles = StyleSheet.create<ArticleScreenStyles>({
 const htmlStyles = {
     p: { marginBottom: 15 },
     a: { fontWeight: 'bold', textDecorationLine: 'none' },
-    blockquote: { backgroundColor:'#F0F1FF', padding:scale(15) },
+    blockquote: { backgroundColor: '#F0F1FF', padding: scale(15) },
 };
