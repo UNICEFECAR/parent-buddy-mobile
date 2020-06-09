@@ -15,6 +15,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { ContentEntity } from '../../stores/ContentEntity';
 import { content } from '../../app';
 import { VocabulariesAndTermsResponse } from '../../stores/apiStore';
+import { Media } from '../../components';
+import { VideoType } from '../../components/Media';
 
 export interface Props {
     data: ArticlesSectionData;
@@ -39,7 +41,7 @@ export interface ArticlesSectionData {
  */
 export class ArticlesSection extends React.Component<Props, State> {
     static defaultProps: Props = {
-        data: {title:'No articles'},
+        data: { title: 'No articles' },
         // data: articlesSectionAllData,
         hideTitleUnderline: false,
     };
@@ -101,17 +103,17 @@ export class ArticlesSection extends React.Component<Props, State> {
     public render() {
         // console.log('RENDER ArticlesSection');
 
-        let getPlayIcon = (themeContext: ThemeContextValue, size:number = scale(70)) => {
+        let getPlayIcon = (themeContext: ThemeContextValue, size: number = scale(70)) => {
             return (
                 <View style={{
-                    justifyContent:'center', alignItems:'center',
-                    backgroundColor:'rgba(255,255,255,0.4)',
-                    width:size, height:size,
+                    justifyContent: 'center', alignItems: 'center',
+                    backgroundColor: 'rgba(255,255,255,0.4)',
+                    width: size, height: size,
                     borderRadius: themeContext.percentageToDP('20%')
                 }}>
                     <Icon
-                        name={ "play" }
-                        style={{ color:'white', marginLeft:size/10, fontSize:size/2 }}
+                        name={"play"}
+                        style={{ color: 'white', marginLeft: size / 10, fontSize: size / 2 }}
                     />
                 </View>
             );
@@ -205,22 +207,46 @@ export class ArticlesSection extends React.Component<Props, State> {
                                         {category?.articles && category?.articles.length > 0 ? (
                                             <ScrollView horizontal={true}>
                                                 {category?.articles.map((article, index) => (
-                                                    <TouchableOpacity onPress={() => { this.onArticlePress(article) }} key={index} style={{ width: scale(180), marginRight: scale(15), marginBottom: scale(15) }}>
-                                                        <ImageBackground
-                                                            // source={{ uri: (article.coverImageUrl ? article.coverImageUrl : undefined) }}
-                                                            source={{ uri: content.getCoverImageFilepath(article) }}
-                                                            style={[styles.image, { width: '100%', aspectRatio: 1 }]}
-                                                            resizeMode="cover"
-                                                        >
-                                                            {/* {article.youTubeVideoId ? getPlayIcon(themeContext, scale(60)) : null} */}
-                                                        </ImageBackground>
+                                                    <Media
+                                                        key={index}
+                                                        title={article?.title}
 
-                                                        <View style={{ height: scale(10) }} />
+                                                        coverImageUrl={ content.getCoverImageFilepath(article) }
 
-                                                        <Typography type={TypographyType.headingSecondary} style={{ marginBottom: 0 }}>
-                                                            {article?.title}
-                                                        </Typography>
-                                                    </TouchableOpacity>
+                                                        videoType={ article.coverVideoSite as VideoType }
+                                                        videoUrl={ article.coverVideoUrl }
+
+                                                        // YouTube
+                                                        // videoType="youtube"
+                                                        // videoUrl="https://www.youtube.com/watch?v=LjkSW_j6-hA"
+                                                        // coverImageUrl="http://ecaroparentingapppi3xep5h4v.devcloud.acquia-sites.com/sites/default/files/styles/medium/public/video_thumbnails/LjkSW_j6-hA.jpg?itok=OasX9-fq"
+
+                                                        // Vimeo
+                                                        // videoType="vimeo"
+                                                        // videoUrl="https://vimeo.com/277586602"
+                                                        // coverImageUrl="http://ecaroparentingapppi3xep5h4v.devcloud.acquia-sites.com/sites/default/files/styles/medium/public/video_thumbnails/277586602.jpg?itok=kBNillFw"
+
+                                                        roundCorners={true}
+                                                        style={{ width: scale(180), marginRight: scale(15), marginBottom: scale(15) }}
+                                                        aspectRatio={1}
+                                                        onPress={() => { this.onArticlePress(article) }}
+                                                    />
+                                                    // <TouchableOpacity onPress={() => { this.onArticlePress(article) }} key={index} style={{ width: scale(180), marginRight: scale(15), marginBottom: scale(15) }}>
+                                                    //     <ImageBackground
+                                                    //         // source={{ uri: (article.coverImageUrl ? article.coverImageUrl : undefined) }}
+                                                    //         source={{ uri: content.getCoverImageFilepath(article) }}
+                                                    //         style={[styles.image, { width: '100%', aspectRatio: 1 }]}
+                                                    //         resizeMode="cover"
+                                                    //     >
+                                                    //         {/* {article.youTubeVideoId ? getPlayIcon(themeContext, scale(60)) : null} */}
+                                                    //     </ImageBackground>
+
+                                                    //     <View style={{ height: scale(10) }} />
+
+                                                    //     <Typography type={TypographyType.headingSecondary} style={{ marginBottom: 0 }}>
+                                                    //         {article?.title}
+                                                    //     </Typography>
+                                                    // </TouchableOpacity>
                                                 ))}
                                             </ScrollView>
                                         ) : null}
@@ -262,7 +288,7 @@ const styles = StyleSheet.create<ArticlesSectionStyles>({
     image: {
         borderRadius: scale(10),
         justifyContent: 'center',
-        alignItems:'center',
+        alignItems: 'center',
         overflow: 'hidden',
     }
 });
