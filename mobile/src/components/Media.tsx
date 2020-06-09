@@ -66,11 +66,12 @@ export class Media extends React.Component<Props, State> {
 
         // VIDEO
         if (this.props.videoUrl) {
-            const videoId = utils.getYoutubeId(this.props.videoUrl);
+            const videoId = this.props.videoType === 'youtube' ? utils.getYoutubeId(this.props.videoUrl) : utils.getVimeoId(this.props.videoUrl);
 
             // Video article
             navigation.navigate('RootModalStackNavigator_VideoScreen', {
-                videoId: videoId
+                videoId: videoId,
+                videoType: this.props.videoType,
             });
         }
 
@@ -142,9 +143,6 @@ export class Media extends React.Component<Props, State> {
                                 style={{width:'100%', height:'100%'}}
                                 originWhitelist={['*']}
                                 source={{ html: this.getVimeoHtml() }}
-                                onMessage={event => {
-                                    console.warn(event.nativeEvent.data);
-                                }}
                             />
 
                             <ImageBackground
