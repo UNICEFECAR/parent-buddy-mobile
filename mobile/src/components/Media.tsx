@@ -129,7 +129,7 @@ export class Media extends React.Component<Props, State> {
         };
 
         return (
-            <View style={[styles.container, (this.props.roundCorners ? styles.roundCorner : {}), this.props.style]}>
+            <View style={[styles.container, this.props.style]}>
                 {/* COVER IMAGE */}
                 <TouchableOpacity
                     style={{ width:'100%', aspectRatio: this.props.aspectRatio }}
@@ -147,7 +147,7 @@ export class Media extends React.Component<Props, State> {
 
                             <ImageBackground
                                 source={{ uri: this.props.coverImageUrl }}
-                                style={[styles.coverImage, { position:'absolute', width:'100%', height:'100%' }]}
+                                style={[styles.coverImage, (this.props.roundCorners ? styles.roundCorner : {}), { position:'absolute', width:'100%', height:'100%' }]}
                                 resizeMode="cover"
                             >
                                 {this.props.videoUrl ? getPlayIcon() : null}
@@ -157,7 +157,7 @@ export class Media extends React.Component<Props, State> {
                         // OTHER
                         <ImageBackground
                             source={{ uri: this.props.coverImageUrl }}
-                            style={[styles.coverImage, { width: '100%', aspectRatio: this.props.aspectRatio }]}
+                            style={[styles.coverImage, (this.props.roundCorners ? styles.roundCorner : {}), { width: '100%', aspectRatio: this.props.aspectRatio }]}
                             resizeMode="cover"
                         >
                             {this.props.videoUrl ? getPlayIcon() : null}
@@ -205,7 +205,7 @@ const styles = StyleSheet.create<VideoStyles>({
     },
 
     coverImage: {
-        borderRadius: scale(10),
+        // borderRadius: scale(10),
         justifyContent: 'center',
         alignItems: 'center',
         overflow: 'hidden',

@@ -15,6 +15,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { ContentEntity } from '../../stores/ContentEntity';
 import { content } from '../../app';
 import { VocabulariesAndTermsResponse } from '../../stores/apiStore';
+import { Media } from '../../components';
+import { VideoType } from '../../components/Media';
 
 export interface Props {
     data: ArticlesSectionData;
@@ -39,7 +41,7 @@ export interface ArticlesSectionData {
  */
 export class ArticlesSection extends React.Component<Props, State> {
     static defaultProps: Props = {
-        data: {title:'No articles'},
+        data: { title: 'No articles' },
         // data: articlesSectionAllData,
         hideTitleUnderline: false,
     };
@@ -101,17 +103,17 @@ export class ArticlesSection extends React.Component<Props, State> {
     public render() {
         // console.log('RENDER ArticlesSection');
 
-        let getPlayIcon = (themeContext: ThemeContextValue, size:number = scale(70)) => {
+        let getPlayIcon = (themeContext: ThemeContextValue, size: number = scale(70)) => {
             return (
                 <View style={{
-                    justifyContent:'center', alignItems:'center',
-                    backgroundColor:'rgba(255,255,255,0.4)',
-                    width:size, height:size,
+                    justifyContent: 'center', alignItems: 'center',
+                    backgroundColor: 'rgba(255,255,255,0.4)',
+                    width: size, height: size,
                     borderRadius: themeContext.percentageToDP('20%')
                 }}>
                     <Icon
-                        name={ "play" }
-                        style={{ color:'white', marginLeft:size/10, fontSize:size/2 }}
+                        name={"play"}
+                        style={{ color: 'white', marginLeft: size / 10, fontSize: size / 2 }}
                     />
                 </View>
             );
@@ -137,47 +139,39 @@ export class ArticlesSection extends React.Component<Props, State> {
                         {this.props?.data?.featuredArticle || this.props?.data?.otherFeaturedArticles ? (
                             <View style={{ marginBottom: scale(20) }}>
                                 {this.props?.data?.featuredArticle ? (
-                                    <TouchableOpacity
+                                    <Media
+                                        title={this.props?.data?.featuredArticle?.title}
+
+                                        coverImageUrl={content.getCoverImageFilepath(this.props?.data?.featuredArticle)}
+                                        videoType={this.props?.data?.featuredArticle.coverVideoSite as VideoType}
+                                        videoUrl={this.props?.data?.featuredArticle.coverVideoUrl}
+
+                                        roundCorners={true}
+                                        aspectRatio={1.7}
+                                        style={{ width: '100%' }}
+
                                         onPress={() => { this.onArticlePress(this.props?.data?.featuredArticle) }}
-                                    >
-                                        {/* Featured image */}
-                                        <ImageBackground
-                                            source={{ uri: content.getCoverImageFilepath(this.props?.data?.featuredArticle) }}
-                                            style={[styles.image, { width: '100%', aspectRatio: 1.7 }]}
-                                            resizeMode="cover"
-                                        >
-                                            {/* {this.props?.data?.featuredArticle.youTubeVideoId ? getPlayIcon(themeContext) : null} */}
-                                        </ImageBackground>
-
-                                        <View style={{ height: scale(10) }} />
-
-                                        {/* Featured title */}
-                                        <Typography type={TypographyType.headingSecondary}>
-                                            {this.props?.data?.featuredArticle?.title}
-                                        </Typography>
-                                    </TouchableOpacity>
+                                    />
                                 ) : null}
 
                                 {/* Featured articles */}
                                 {this.props?.data?.otherFeaturedArticles && this.props?.data?.otherFeaturedArticles.length > 0 ? (
                                     <ScrollView horizontal={true}>
                                         {this.props?.data?.otherFeaturedArticles.map((article, index) => (
-                                            <TouchableOpacity key={index} onPress={() => { this.onArticlePress(article) }} style={{ width: scale(180), marginRight: scale(15), marginBottom: scale(10) }}>
-                                                <ImageBackground
-                                                    // source={{ uri: (article.coverImageUrl ? article.coverImageUrl : undefined) }}
-                                                    source={{ uri: content.getCoverImageFilepath(article) }}
-                                                    style={[styles.image, { width: '100%', aspectRatio: 1 }]}
-                                                    resizeMode="cover"
-                                                >
-                                                    {/* {article.youTubeVideoId ? getPlayIcon(themeContext, scale(60)) : null} */}
-                                                </ImageBackground>
+                                            <Media
+                                                key={index}
+                                                title={article?.title}
 
-                                                <View style={{ height: scale(10) }} />
+                                                coverImageUrl={content.getCoverImageFilepath(article)}
+                                                videoType={article.coverVideoSite as VideoType}
+                                                videoUrl={article.coverVideoUrl}
 
-                                                <Typography type={TypographyType.headingSecondary} style={{ marginBottom: 0 }}>
-                                                    {article?.title}
-                                                </Typography>
-                                            </TouchableOpacity>
+                                                roundCorners={true}
+                                                aspectRatio={1}
+                                                style={{ width: scale(180), marginRight: scale(15), marginBottom: scale(10) }}
+
+                                                onPress={() => { this.onArticlePress(article) }}
+                                            />
                                         ))}
                                     </ScrollView>
                                 ) : null}
@@ -205,22 +199,20 @@ export class ArticlesSection extends React.Component<Props, State> {
                                         {category?.articles && category?.articles.length > 0 ? (
                                             <ScrollView horizontal={true}>
                                                 {category?.articles.map((article, index) => (
-                                                    <TouchableOpacity onPress={() => { this.onArticlePress(article) }} key={index} style={{ width: scale(180), marginRight: scale(15), marginBottom: scale(15) }}>
-                                                        <ImageBackground
-                                                            // source={{ uri: (article.coverImageUrl ? article.coverImageUrl : undefined) }}
-                                                            source={{ uri: content.getCoverImageFilepath(article) }}
-                                                            style={[styles.image, { width: '100%', aspectRatio: 1 }]}
-                                                            resizeMode="cover"
-                                                        >
-                                                            {/* {article.youTubeVideoId ? getPlayIcon(themeContext, scale(60)) : null} */}
-                                                        </ImageBackground>
+                                                    <Media
+                                                        key={index}
+                                                        title={article?.title}
 
-                                                        <View style={{ height: scale(10) }} />
+                                                        coverImageUrl={content.getCoverImageFilepath(article)}
+                                                        videoType={article.coverVideoSite as VideoType}
+                                                        videoUrl={article.coverVideoUrl}
 
-                                                        <Typography type={TypographyType.headingSecondary} style={{ marginBottom: 0 }}>
-                                                            {article?.title}
-                                                        </Typography>
-                                                    </TouchableOpacity>
+                                                        roundCorners={true}
+                                                        aspectRatio={1}
+                                                        style={{ width: scale(180), marginRight: scale(15), marginBottom: scale(15) }}
+
+                                                        onPress={() => { this.onArticlePress(article) }}
+                                                    />
                                                 ))}
                                             </ScrollView>
                                         ) : null}
@@ -262,7 +254,7 @@ const styles = StyleSheet.create<ArticlesSectionStyles>({
     image: {
         borderRadius: scale(10),
         justifyContent: 'center',
-        alignItems:'center',
+        alignItems: 'center',
         overflow: 'hidden',
     }
 });
