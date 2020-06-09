@@ -65,9 +65,14 @@ class ApiStore {
             if (rawResponseJson) {
                 response.total = parseInt(rawResponseJson.total);
                 response.data = rawResponseJson.data.map((rawContent:any): ContentEntity => {
+                    let contentType = rawContent.type;
+                    if (contentType === 'video_article') {
+                        contentType = 'article';
+                    }
+
                     return {
                         id: parseInt(rawContent.id),
-                        type: rawContent.type,
+                        type: contentType,
                         langcode: rawContent.langcode,
                         title: rawContent.title,
                         summary: rawContent.summary,
