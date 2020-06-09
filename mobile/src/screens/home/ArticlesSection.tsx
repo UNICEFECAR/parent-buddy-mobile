@@ -139,47 +139,39 @@ export class ArticlesSection extends React.Component<Props, State> {
                         {this.props?.data?.featuredArticle || this.props?.data?.otherFeaturedArticles ? (
                             <View style={{ marginBottom: scale(20) }}>
                                 {this.props?.data?.featuredArticle ? (
-                                    <TouchableOpacity
+                                    <Media
+                                        title={this.props?.data?.featuredArticle?.title}
+
+                                        coverImageUrl={content.getCoverImageFilepath(this.props?.data?.featuredArticle)}
+                                        videoType={this.props?.data?.featuredArticle.coverVideoSite as VideoType}
+                                        videoUrl={this.props?.data?.featuredArticle.coverVideoUrl}
+
+                                        roundCorners={true}
+                                        aspectRatio={1.7}
+                                        style={{ width: '100%' }}
+
                                         onPress={() => { this.onArticlePress(this.props?.data?.featuredArticle) }}
-                                    >
-                                        {/* Featured image */}
-                                        <ImageBackground
-                                            source={{ uri: content.getCoverImageFilepath(this.props?.data?.featuredArticle) }}
-                                            style={[styles.image, { width: '100%', aspectRatio: 1.7 }]}
-                                            resizeMode="cover"
-                                        >
-                                            {/* {this.props?.data?.featuredArticle.youTubeVideoId ? getPlayIcon(themeContext) : null} */}
-                                        </ImageBackground>
-
-                                        <View style={{ height: scale(10) }} />
-
-                                        {/* Featured title */}
-                                        <Typography type={TypographyType.headingSecondary}>
-                                            {this.props?.data?.featuredArticle?.title}
-                                        </Typography>
-                                    </TouchableOpacity>
+                                    />
                                 ) : null}
 
                                 {/* Featured articles */}
                                 {this.props?.data?.otherFeaturedArticles && this.props?.data?.otherFeaturedArticles.length > 0 ? (
                                     <ScrollView horizontal={true}>
                                         {this.props?.data?.otherFeaturedArticles.map((article, index) => (
-                                            <TouchableOpacity key={index} onPress={() => { this.onArticlePress(article) }} style={{ width: scale(180), marginRight: scale(15), marginBottom: scale(10) }}>
-                                                <ImageBackground
-                                                    // source={{ uri: (article.coverImageUrl ? article.coverImageUrl : undefined) }}
-                                                    source={{ uri: content.getCoverImageFilepath(article) }}
-                                                    style={[styles.image, { width: '100%', aspectRatio: 1 }]}
-                                                    resizeMode="cover"
-                                                >
-                                                    {/* {article.youTubeVideoId ? getPlayIcon(themeContext, scale(60)) : null} */}
-                                                </ImageBackground>
+                                            <Media
+                                                key={index}
+                                                title={article?.title}
 
-                                                <View style={{ height: scale(10) }} />
+                                                coverImageUrl={ content.getCoverImageFilepath(article) }
+                                                videoType={article.coverVideoSite as VideoType}
+                                                videoUrl={article.coverVideoUrl}
 
-                                                <Typography type={TypographyType.headingSecondary} style={{ marginBottom: 0 }}>
-                                                    {article?.title}
-                                                </Typography>
-                                            </TouchableOpacity>
+                                                roundCorners={true}
+                                                aspectRatio={1}
+                                                style={{ width:scale(180), marginRight:scale(15), marginBottom:scale(10) }}
+
+                                                onPress={() => { this.onArticlePress(article) }}
+                                            />
                                         ))}
                                     </ScrollView>
                                 ) : null}
@@ -211,42 +203,16 @@ export class ArticlesSection extends React.Component<Props, State> {
                                                         key={index}
                                                         title={article?.title}
 
-                                                        coverImageUrl={ content.getCoverImageFilepath(article) }
-
-                                                        videoType={ article.coverVideoSite as VideoType }
-                                                        videoUrl={ article.coverVideoUrl }
-
-                                                        // YouTube
-                                                        // videoType="youtube"
-                                                        // videoUrl="https://www.youtube.com/watch?v=LjkSW_j6-hA"
-                                                        // coverImageUrl="http://ecaroparentingapppi3xep5h4v.devcloud.acquia-sites.com/sites/default/files/styles/medium/public/video_thumbnails/LjkSW_j6-hA.jpg?itok=OasX9-fq"
-
-                                                        // Vimeo
-                                                        // videoType="vimeo"
-                                                        // videoUrl="https://vimeo.com/277586602"
-                                                        // coverImageUrl="http://ecaroparentingapppi3xep5h4v.devcloud.acquia-sites.com/sites/default/files/styles/medium/public/video_thumbnails/277586602.jpg?itok=kBNillFw"
+                                                        coverImageUrl={content.getCoverImageFilepath(article)}
+                                                        videoType={article.coverVideoSite as VideoType}
+                                                        videoUrl={article.coverVideoUrl}
 
                                                         roundCorners={true}
-                                                        style={{ width: scale(180), marginRight: scale(15), marginBottom: scale(15) }}
                                                         aspectRatio={1}
+                                                        style={{ width: scale(180), marginRight: scale(15), marginBottom: scale(15) }}
+
                                                         onPress={() => { this.onArticlePress(article) }}
                                                     />
-                                                    // <TouchableOpacity onPress={() => { this.onArticlePress(article) }} key={index} style={{ width: scale(180), marginRight: scale(15), marginBottom: scale(15) }}>
-                                                    //     <ImageBackground
-                                                    //         // source={{ uri: (article.coverImageUrl ? article.coverImageUrl : undefined) }}
-                                                    //         source={{ uri: content.getCoverImageFilepath(article) }}
-                                                    //         style={[styles.image, { width: '100%', aspectRatio: 1 }]}
-                                                    //         resizeMode="cover"
-                                                    //     >
-                                                    //         {/* {article.youTubeVideoId ? getPlayIcon(themeContext, scale(60)) : null} */}
-                                                    //     </ImageBackground>
-
-                                                    //     <View style={{ height: scale(10) }} />
-
-                                                    //     <Typography type={TypographyType.headingSecondary} style={{ marginBottom: 0 }}>
-                                                    //         {article?.title}
-                                                    //     </Typography>
-                                                    // </TouchableOpacity>
                                                 ))}
                                             </ScrollView>
                                         ) : null}
