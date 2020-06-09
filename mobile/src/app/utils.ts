@@ -103,17 +103,28 @@ class Utils {
 
     /**
      * Get YouTube video ID from given url.
-     * 
-     * url = https://www.youtube.com/watch?v=LjkSW_j6-hA
      */
     public getYoutubeId(url: string): string {
         let rval: string = url;
 
-        let re = new RegExp('v=([^&]+)', 'img');
-        let result = re.exec(url)
-        
-        if (result && result[1]) {
-            rval = result[1];
+        // https://www.youtube.com/watch?v=LjkSW_j6-hA
+        if (url.indexOf('youtu.be') === -1) {
+            let re = new RegExp('v=([^&]+)', 'img');
+            let result = re.exec(url)
+            
+            if (result && result[1]) {
+                rval = result[1];
+            }
+        }
+
+        // https://youtu.be/uMcgJR8ESRc
+        if (url.indexOf('youtu.be') !== -1) {
+            let re = new RegExp('youtu.be/([^?]+)', 'img');
+            let result = re.exec(url)
+            
+            if (result && result[1]) {
+                rval = result[1];
+            }
         }
 
         return rval;
