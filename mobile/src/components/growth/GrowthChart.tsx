@@ -12,11 +12,12 @@ import { Typography, TypographyType } from '../Typography';
 import { ChartData, GrowthChart0_2Type, GrowthChartHeightAgeType } from './growthChartData';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { translate } from '../../translations';
+import Orientation from 'react-native-orientation-locker';
 
 const fontFamily = 'SFUIDisplay-Regular';
-
+const dayLimit = 730;
 export interface singleAreaDataFormat {
-    x: number | null,
+    x?: number | null,
     y: number | null,
     y0: number | null,
 }
@@ -25,7 +26,6 @@ export interface chartAreaDataFormat {
     topArea: singleAreaDataFormat[],
     middleArea: singleAreaDataFormat[],
     bottomArea: singleAreaDataFormat[],
-
 }
 
 export enum chartTypes {
@@ -62,6 +62,18 @@ export class GrowthChart extends React.Component<Props, State> {
         this.initState()
     }
 
+    public componentDidMount(){
+        if(this.props.showFullscreen){
+            Orientation.lockToLandscape()
+        }else{
+            Orientation.lockToPortrait()
+        }
+    }
+    
+    public componentWillUnmount() {
+        Orientation.lockToPortrait();
+    }
+
     /* *********** GET AGE FROM BIRTH DATE *********** */
     private getChildAge = () => {
         var diff_ms = Date.now() - this.props.childBirthDate.getTime();
@@ -84,14 +96,23 @@ export class GrowthChart extends React.Component<Props, State> {
             let xValue: number = 0;
 
             if (this.props.chartType === chartTypes.length_age) {
-                xValue = item.Day / 30; // GET ARRAY OF MONTHS
+                topArea.push({ x: item.Day / 30, y: item.SD3, y0: item.SD4 });
+                middleArea.push({ x: item.Day / 30, y: item.SD3neg, y0: item.SD3 });
+                bottomArea.push({ x: item.Day / 30, y: item.SD3neg, y0: item.SD4neg });
             } else {
                 xValue = item.Height
-            }
+                    if (item.Height >= 45 && item.Height <= 87) {
+                        topArea.push({ x: item.Height, y: item.SD3, y0: item.SD4 });
+                        middleArea.push({ x: item.Height, y: item.SD3neg, y0: item.SD3 });
+                        bottomArea.push({ x: item.Height, y: item.SD3neg, y0: item.SD4neg });
+                    }
 
-            topArea.push({ x: xValue, y: item.SD3, y0: item.SD4 });
-            middleArea.push({ x: xValue, y: item.SD3neg, y0: item.SD3 });
-            bottomArea.push({ x: xValue, y: item.SD3neg, y0: item.SD4neg });
+                    if (item.Height > 87.0) {
+                        topArea.push({ x: item.Height, y: item.SD3, y0: item.SD4 });
+                        middleArea.push({ x: item.Height, y: item.SD3neg, y0: item.SD3 });
+                        bottomArea.push({ x: item.Height, y: item.SD3neg, y0: item.SD4neg });
+                    }
+            }
         })
 
         obj = {
@@ -116,7 +137,7 @@ export class GrowthChart extends React.Component<Props, State> {
         if (childGender === "male") {
             // boys
             if (chartType === chartTypes.height_length) { // tezina za visinu 
-                if (this.getChildAge() <= 730) {
+                if (this.getChildAge() <= dayLimit) {
                     /*********** BOYS 0 - 2 ***********/
                     obj = this.formatChartData(GrowthChartBoys0_2);
                 } else {
@@ -130,7 +151,7 @@ export class GrowthChart extends React.Component<Props, State> {
         } else {
             /*********** girls ***********/
             if (chartType === chartTypes.height_length) { // tezina za visinu 
-                if (this.getChildAge() <= 730) {
+                if (this.getChildAge() <= dayLimit) {
                     /*********** Girls 0 - 2 ***********/
                     obj = this.formatChartData(GrowthChartGirls0_2);
                 } else {
@@ -171,7 +192,7 @@ export class GrowthChart extends React.Component<Props, State> {
 
         this.setState({
             width: layout.width,
-            height: layout.height,
+            height: this.props.showFullscreen ? layout.height - 50:  layout.height - 200,
         })
     }
 
@@ -184,7 +205,7 @@ export class GrowthChart extends React.Component<Props, State> {
                 // maxDomain={400}
                 // domainPadding={-120}
                 width={this.state.width}
-                height={this.state.height - 200}
+                height={this.state.height}
             >
                 {/* ********* AXIS HORIZONTAL ********* */}
                 <VictoryAxis
@@ -206,13 +227,13 @@ export class GrowthChart extends React.Component<Props, State> {
                 {/* ********* TOP AREA ********* */}
                 <VictoryArea
                     interpolation="natural"
-                    style={victoryStyles.VictoryExceptionsArea}
+                    style={{data: this.props.showFullscreen ? { fill: "#F9C49E" } : {fill: "#D8D8D8"}}}
                     data={this.state.topArea}
                 />
-                {/* ********* BOTTOM AREA EXCEPTIONS ********* */}
+                {/* ********* BOTTOM AREA ********* */}
                 <VictoryArea
                     interpolation="natural"
-                    style={victoryStyles.VictoryExceptionsArea}
+                    style={{data: this.props.showFullscreen ? { fill: "#F9C49E" } : {fill: "#D8D8D8"}}}
                     data={this.state.bottomArea}
                 />
                 {/* ********* MIDDLE AREA ********* */}
@@ -314,7 +335,7 @@ export class GrowthChart extends React.Component<Props, State> {
                                                 : null
                                         },
                                     },
-                                ]
+                                ]   
                             }
                         }
                     }]}
@@ -448,9 +469,7 @@ const victoryStyles: VictoryStyles = {
     VictoryArea: {
         data: { fill: "#D8D8D8" }
     },
-    VictoryExceptionsArea: {
-        data: { fill: "#F9C49E" }
-    },
+
     VictoryTooltip: {
         flyoutStyle: {
             stroke: 'none',
