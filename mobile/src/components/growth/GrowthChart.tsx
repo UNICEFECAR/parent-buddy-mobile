@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
+import { Platform } from 'react-native';
 import { VictoryArea, VictoryLabel, VictoryTooltip, VictoryScatter, VictoryChart, VictoryAxis, VictoryTheme, VictoryLine, VictoryZoomContainer } from "victory-native";
 import { VictoryAxisCommonProps, TickLabelProps, Background } from 'victory-core';
 import { VictoryTooltipProps } from 'victory-tooltip';
@@ -174,6 +175,167 @@ export class GrowthChart extends React.Component<Props, State> {
         })
     }
 
+    private renderChart = (): ReactNode => (
+        <>
+            <VictoryChart
+                // containerComponent={<VictoryZoomContainer allowZoom={false} zoomDomain={{x: [1, 60]} }/>}  
+                theme={VictoryTheme.material}
+                // minDomain={0}
+                // maxDomain={400}
+                // domainPadding={-120}
+                width={this.state.width}
+                height={this.state.height - 200}
+            >
+                {/* ********* AXIS HORIZONTAL ********* */}
+                <VictoryAxis
+                    // tickFormat={this.state.topArea}
+                    style={victoryStyles.VictoryAxis}
+                    label={this.state.labelX}
+                    axisLabelComponent={<VictoryLabel x={this.state.width - 20} />}
+                />
+
+                {/* ********* AXIS VERTICAL ********* */}
+                <VictoryAxis
+                    // tickFormat={this.props.dataY}
+                    style={victoryStyles.VictoryAxisVertical}
+                    axisLabelComponent={<VictoryLabel y={30} />}
+                    dependentAxis
+                    label={this.state.labelY}
+                />
+
+                {/* ********* TOP AREA ********* */}
+                <VictoryArea
+                    interpolation="natural"
+                    style={victoryStyles.VictoryExceptionsArea}
+                    data={this.state.topArea}
+                />
+                {/* ********* BOTTOM AREA EXCEPTIONS ********* */}
+                <VictoryArea
+                    interpolation="natural"
+                    style={victoryStyles.VictoryExceptionsArea}
+                    data={this.state.bottomArea}
+                />
+                {/* ********* MIDDLE AREA ********* */}
+                <VictoryArea
+                    interpolation="natural"
+                    style={victoryStyles.VictoryArea}
+                    data={this.state.middleArea}
+                />
+
+
+                {/* ********* LINE CHART ********* */}
+                <VictoryLine
+                    data={this.state.lineChart}
+                    interpolation="natural"
+                    style={victoryStyles.VictoryLine}
+                />
+
+                {/* ********* SCATTER ********* */}
+                <VictoryScatter
+                    data={this.state.lineChart}
+                    size={9}
+                    style={victoryStyles.VictoryScatter}
+                    labelComponent={
+                        <VictoryTooltip
+                            renderInPortal={false}
+                            style={victoryStyles.VictoryTooltip.style}
+                            flyoutStyle={victoryStyles.VictoryTooltip.flyoutStyle}
+                        />
+                    }
+                    labels={(props) => props.datum.y + " " + this.state.labelY + ' / ' + (Math.round((props.datum.x + Number.EPSILON) * 100) / 100) + " " + this.state.labelX}
+                    events={[{
+                        target: "data",
+                        eventHandlers: {
+                            onPressIn: (evt, pressedProps) => {
+                                const selectedDataIndex = pressedProps.index
+                                console.log(selectedDataIndex, 'data index')
+                                return [
+                                    {
+                                        eventKey: 'all',
+                                        target: 'labels',
+                                        mutation: props => {
+                                            let activeState = true
+                                            if (props.active === true) {
+                                                activeState = null
+                                            }
+                                            return props.index ===
+                                                selectedDataIndex
+                                                ? { active: activeState }
+                                                : { active: false }
+                                        },
+                                    },
+                                    {
+                                        eventKey: 'all',
+                                        target: "data",
+                                        mutation: (props) => {
+                                            const stroke = props.style && props.style.stroke;
+                                            let st;
+                                            let activeState = true
+                                            if (props.active === true) {
+                                                activeState = null
+                                            }
+                                            if (stroke === "orange") {
+                                                st = '#ACACAC';
+                                            } else {
+                                                st = 'orange';
+
+                                            }
+
+                                            return props.index === selectedDataIndex
+                                                ? { style: { stroke: st, strokeWidth: 3, fill: 'white' } }
+                                                : null
+                                        }
+                                    },
+                                ]
+                            },
+                            onPressOut: (evt, pressedProps) => {
+                                const selectedDataIndex = pressedProps.index
+                                return [
+                                    {
+                                        eventKey: "all",
+                                        target: "labels",
+                                        mutation: (props) => {
+                                            console.log(props.index, 'props index in onPressOut');
+                                            console.log(selectedDataIndex, 'selected data index in onPressOut');
+
+                                            return props.index === selectedDataIndex
+                                                ? { active: props.active }
+                                                : null
+                                        }
+                                    },
+                                    {
+                                        eventKey: 'all',
+                                        target: "data",
+                                        mutation: (props) => {
+                                            const stroke = props.style && props.style.stroke;
+                                            // return stroke === "orange" ? null : { style: { stroke: "orange", strokeWidth: 4, fill: 'white' } };
+                                            return props.index === selectedDataIndex
+                                                ? { style: { fill: 'white', stroke: props.style.stroke, strokeWidth: 3 } }
+                                                : null
+                                        },
+                                    },
+                                ]
+                            }
+                        }
+                    }]}
+                />
+            </VictoryChart>
+            <View style={styles.chartLegend}>
+                <View style={styles.chartLegendItem}>
+                    <View style={{ width: 27, height: 12, backgroundColor: '#D8D8D8', margin: 10 }}></View>
+                    <Typography style={{ fontSize: 11, opacity: 0.5 }}>{translate('growthChartLegendSilverLabel')}</Typography>
+                </View>
+                {
+                    this.props.showFullscreen && (
+                        <View style={styles.chartLegendItem}>
+                            <View style={{ width: 27, height: 12, backgroundColor: '#F9C49E', margin: 10 }}></View>
+                            <Typography style={{ fontSize: 11, opacity: 0.5 }}>{translate('growthChartLegendOrangeLabel')}</Typography>
+                        </View>
+                    )
+                }
+            </View>
+        </>
+    )
 
     public render() {
 
@@ -189,119 +351,15 @@ export class GrowthChart extends React.Component<Props, State> {
 
                     }
                 </View>
-                <Svg style={{ marginLeft: -10 }} >
-                    <VictoryChart
-                        // containerComponent={<VictoryZoomContainer allowZoom={false} zoomDomain={{x: [1, 60]} }/>}  
-                        theme={VictoryTheme.material}
-                        // minDomain={0}
-                        // maxDomain={400}
-                        // domainPadding={-120}
-                        width={this.state.width}
-                        height={this.state.height - 200}
-                    >
-                        {/* ********* AXIS HORIZONTAL ********* */}
-                        <VictoryAxis
-                            // tickFormat={this.state.topArea}
-                            style={victoryStyles.VictoryAxis}
-                            label={this.state.labelX}
-                            axisLabelComponent={<VictoryLabel x={this.state.width - 20} />}
-                        />
+                {
+                    Platform.OS === 'ios' ?
+                        this.renderChart()
+                        :
+                        <Svg style={{ marginLeft: -10 }} >
+                            {this.renderChart()}
+                        </Svg>
+                }
 
-                        {/* ********* AXIS VERTICAL ********* */}
-                        <VictoryAxis
-                            // tickFormat={this.props.dataY}
-                            style={victoryStyles.VictoryAxisVertical}
-                            axisLabelComponent={<VictoryLabel y={30} />}
-                            dependentAxis
-                            label={this.state.labelY}
-                        />
-
-                        {/* ********* TOP AREA ********* */}
-                        <VictoryArea
-                            interpolation="natural"
-                            style={victoryStyles.VictoryExceptionsArea}
-                            data={this.state.topArea}
-                        />
-                        {/* ********* BOTTOM AREA EXCEPTIONS ********* */}
-                        <VictoryArea
-                            interpolation="natural"
-                            style={victoryStyles.VictoryExceptionsArea}
-                            data={this.state.bottomArea}
-                        />
-                        {/* ********* MIDDLE AREA ********* */}
-                        <VictoryArea
-                            interpolation="natural"
-                            style={victoryStyles.VictoryArea}
-                            data={this.state.middleArea}
-                        />
-
-
-                        {/* ********* LINE CHART ********* */}
-                        <VictoryLine
-                            data={this.state.lineChart}
-                            interpolation="natural"
-                            style={victoryStyles.VictoryLine}
-                        />
-
-                        {/* ********* SCATTER ********* */}
-                        <VictoryScatter
-                            data={this.state.lineChart}
-                            size={9}
-                            style={victoryStyles.VictoryScatter}
-                            labelComponent={
-                                <VictoryTooltip
-                                    renderInPortal={false}
-                                    style={victoryStyles.VictoryTooltip.style}
-                                    flyoutStyle={victoryStyles.VictoryTooltip.flyoutStyle}
-                                />
-                            }
-                            labels={(props) => props.datum.y + " " + this.state.labelY + ' / ' + (Math.round((props.datum.x + Number.EPSILON) * 100) / 100) + " " + this.state.labelX}
-                            events={[{
-                                target: "data",
-                                eventHandlers: {
-                                    onPressIn: () => {
-                                        return [
-                                            {
-                                                target: "data",
-                                                mutation: (props) => {
-                                                    const stroke = props.style && props.style.stroke;
-                                                    return stroke === "orange" ? null : { style: { stroke: "orange", strokeWidth: 4, fill: 'white' } };
-                                                }
-                                            },
-                                            {
-                                                target: "labels",
-                                                mutation: (props) => typeof props.active === "boolean" ? null : { active: true }
-                                            },
-
-                                        ]
-                                    },
-                                    onPressOut: () => {
-                                        return [
-                                            {
-                                                target: "labels",
-                                                mutation: (props) => ({ active: props.active })
-                                            },
-                                        ]
-                                    }
-                                }
-                            }]}
-                        />
-                    </VictoryChart>
-                    <View style={styles.chartLegend}>
-                        <View style={styles.chartLegendItem}>
-                            <View style={{ width: 27, height: 12, backgroundColor: '#D8D8D8', margin: 10 }}></View>
-                            <Typography style={{ fontSize: 11, opacity: 0.5 }}>{translate('growthChartLegendSilverLabel')}</Typography>
-                        </View>
-                        {
-                            this.props.showFullscreen && (
-                                <View style={styles.chartLegendItem}>
-                                    <View style={{ width: 27, height: 12, backgroundColor: '#F9C49E', margin: 10 }}></View>
-                                    <Typography style={{ fontSize: 11, opacity: 0.5 }}>{translate('growthChartLegendOrangeLabel')}</Typography>
-                                </View>
-                            )
-                        }
-                    </View>
-                </Svg>
 
             </View>
         )
@@ -384,7 +442,7 @@ const victoryStyles: VictoryStyles = {
         data: { stroke: "#0C66FF", strokeWidth: 9, strokeLinecap: "round", }
     },
     VictoryScatter: {
-        data: { fill: "white", stroke: 'grey', strokeWidth: 3 },
+        data: { fill: "white", stroke: '#ACACAC', strokeWidth: 3 },
         labels: { fill: "red", fontFamily: fontFamily },
     },
     VictoryArea: {
