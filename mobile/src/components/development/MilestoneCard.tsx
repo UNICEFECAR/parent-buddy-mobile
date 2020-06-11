@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { View, ViewStyle, StyleSheet, TextStyle, Dimensions } from 'react-native'
 import { Typography, TypographyType } from '../Typography';
 import { RoundedButton, RoundedButtonType } from '../RoundedButton';
-import { scale } from 'react-native-size-matters';
+import { scale, moderateScale } from 'react-native-size-matters';
 import { ContentEntity } from '../../stores';
 import { TextButton } from '..';
 import { TextButtonColor } from '../TextButton';
@@ -18,13 +18,30 @@ export interface Props {
     articles?: ContentEntity[]
 }
 
-export class MilestoneCard extends Component<Props> {
+export interface State {
+    articles?: ContentEntity[],
+}
+
+export class MilestoneCard extends Component<Props, State> {
+    constructor(props: Props) {
+        super(props);
+        this.initState();
+    }
+
+    initState = () => {
+        if (this.props.articles) {
+            this.setState({
+                articles: this.props.articles
+            })
+        }
+    }
+
     render() {
         return (
             <View style={styles.container}>
 
                 {this.props.title && (<Typography type={TypographyType.headingPrimary} style={styles.headerStyle}>{this.props.title}</Typography>)}
-                {this.props.subTitle && (<Typography type={TypographyType.headingSecondary}>{this.props.subTitle}</Typography>)}
+                {this.props.subTitle && (<Typography type={TypographyType.headingSecondary} style={styles.subHeaderStyle}>{this.props.subTitle}</Typography>)}
 
                 {this.props.html && (
                     <View style={styles.contentStyle}>
@@ -34,7 +51,7 @@ export class MilestoneCard extends Component<Props> {
                             tagsStyles={htmlStyles}
                             imagesMaxWidth={Dimensions.get('window').width}
                             staticContentMaxWidth={Dimensions.get('window').width}
-                        />                    
+                        />
                     </View>
                 )}
                 {
@@ -86,6 +103,10 @@ const styles = StyleSheet.create<MilestoneCardStyles>({
     },
     headerStyle: {
         marginBottom: 0,
+        fontSize: moderateScale(22)
+    },
+    subHeaderStyle: {
+        fontSize: moderateScale(17)
     },
     contentStyle: {
         marginTop: scale(15)
