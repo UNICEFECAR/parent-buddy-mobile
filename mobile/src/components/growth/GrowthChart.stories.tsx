@@ -66,7 +66,7 @@ storiesOf('GrowthChart', module)
         <View style={{ flex: 1, padding: 24, justifyContent: 'center', alignItems: 'stretch', backgroundColor: 'white' }}>
             <GrowthChart
                 title="Tezina za visinu"
-                lineChartData={dumbData.lineChartData}
+                lineChartData={dumbData.lineChartData2}
                 childGender="male"
                 showFullscreen={false}
                 chartType={chartTypes.height_length}

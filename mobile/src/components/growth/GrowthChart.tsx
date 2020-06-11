@@ -16,24 +16,21 @@ import Orientation from 'react-native-orientation-locker';
 
 const fontFamily = 'SFUIDisplay-Regular';
 const dayLimit = 730;
+
 export interface singleAreaDataFormat {
     x?: number | null,
     y: number | null,
     y0: number | null,
 }
-
 export interface chartAreaDataFormat {
     topArea: singleAreaDataFormat[],
     middleArea: singleAreaDataFormat[],
     bottomArea: singleAreaDataFormat[],
 }
-
 export enum chartTypes {
     height_length,
     length_age
 }
-
-
 export interface Props {
     chartType: chartTypes,
     title: string,
@@ -42,7 +39,6 @@ export interface Props {
     childBirthDate: Date,
     showFullscreen: boolean,
 }
-
 export interface State {
     orientation: 'portrait' | 'landscape';
     width: number,
@@ -114,7 +110,6 @@ export class GrowthChart extends React.Component<Props, State> {
                     }
             }
         })
-
         obj = {
             topArea: topArea,
             middleArea: middleArea,
