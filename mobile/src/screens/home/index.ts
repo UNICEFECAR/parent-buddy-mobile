@@ -1,5 +1,5 @@
 import { NewMeasurementScreen } from '../growth/NewMeasurementScreen';
-import { GrowthScreen } from './GrowthScreen';
+import { GrowthScreen } from '../growth/GrowthScreen';
 import { AppFeedbackScreen } from "./AppFeedbackScreen";
 import { ArticleScreen } from "./ArticleScreen";
 import { ArticlesSection } from "./ArticlesSection";
