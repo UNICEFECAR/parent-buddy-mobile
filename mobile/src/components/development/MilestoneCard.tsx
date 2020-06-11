@@ -9,6 +9,8 @@ import { TextButtonColor } from '../TextButton';
 // @ts-ignore
 import HTML from 'react-native-render-html';
 
+
+
 export interface Props {
     title?: string
     subTitle?: string
@@ -18,24 +20,7 @@ export interface Props {
     articles?: ContentEntity[]
 }
 
-export interface State {
-    articles?: ContentEntity[],
-}
-
-export class MilestoneCard extends Component<Props, State> {
-    constructor(props: Props) {
-        super(props);
-        this.initState();
-    }
-
-    initState = () => {
-        if (this.props.articles) {
-            this.setState({
-                articles: this.props.articles
-            })
-        }
-    }
-
+export class MilestoneCard extends Component<Props> {
     render() {
         return (
             <View style={styles.container}>
@@ -76,6 +61,17 @@ export class MilestoneCard extends Component<Props, State> {
                         </TextButton>
                     )
                 }
+                {
+                    this.props.articles ? 
+                     this.props.articles.map(item => (
+                        <TextButton
+                            color={TextButtonColor.purple}
+                            style={styles.articleLinkStyle}
+                        >
+                            {item.title}
+                        </TextButton>
+                    )) : null 
+                }
             </View>
         )
     }
@@ -88,7 +84,8 @@ export interface MilestoneCardStyles {
     headerStyle: TextStyle,
     buttonStyle: ViewStyle,
     textButtonStyle: ViewStyle,
-    contentStyle: ViewStyle
+    contentStyle: ViewStyle,
+    articleLinkStyle: ViewStyle,
 }
 
 const styles = StyleSheet.create<MilestoneCardStyles>({
@@ -117,8 +114,12 @@ const styles = StyleSheet.create<MilestoneCardStyles>({
     textButtonStyle: {
         justifyContent: "center",
         marginTop: scale(20)
+    },
+    articleLinkStyle: {
+        marginTop: scale(10)
     }
 })
+
 
 const htmlStyles = {
     p: { marginBottom: 15 },
