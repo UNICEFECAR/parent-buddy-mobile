@@ -9,7 +9,6 @@ import { ScrollView } from 'react-native-gesture-handler';
 // @ts-ignore
 import HTML from 'react-native-render-html';
 
-
 export interface MilestoneItem {
     checked: boolean;
     title: string;

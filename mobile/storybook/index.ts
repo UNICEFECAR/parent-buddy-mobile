@@ -29,6 +29,7 @@ configure(() => {
     require('../src/components/growth/GrowthChart.stories');
     require('../src/components/development/MilestoneCard.stories');
     require('../src/components/development/MilestoneForm.stories');
+    require('../src/components/development/DevelopmentInfo.stories');
 }, module);
 
 // Refer to https://github.com/storybookjs/storybook/tree/master/app/react-native#start-command-parameters

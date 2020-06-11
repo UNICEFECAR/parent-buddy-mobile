@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
-import { View, ViewStyle, StyleSheet, TextStyle } from 'react-native'
+import { View, ViewStyle, StyleSheet, TextStyle, Dimensions } from 'react-native'
 import { Typography, TypographyType } from '../Typography';
 import { RoundedButton, RoundedButtonType } from '../RoundedButton';
-import { translate } from '../../translations/translate';
-import { scale, moderateScale } from 'react-native-size-matters';
+import { scale } from 'react-native-size-matters';
 import { ContentEntity } from '../../stores';
 import { TextButton } from '..';
 import { TextButtonColor } from '../TextButton';
-
+// @ts-ignore
+import HTML from 'react-native-render-html';
 
 export interface Props {
     title?: string
@@ -23,22 +23,40 @@ export class MilestoneCard extends Component<Props> {
         return (
             <View style={styles.container}>
 
-                {this.props.title && (<Typography type={TypographyType.headingPrimary} style={{ marginBottom: 0 }}>{this.props.title}</Typography>)}
+                {this.props.title && (<Typography type={TypographyType.headingPrimary} style={styles.headerStyle}>{this.props.title}</Typography>)}
                 {this.props.subTitle && (<Typography type={TypographyType.headingSecondary}>{this.props.subTitle}</Typography>)}
 
                 {this.props.html && (
-                    <Typography type={TypographyType.bodyRegularLargeSpacing} style={{ marginTop: 15 }}>
-                        {this.props.html}
-                    </Typography>
+                    <View style={styles.contentStyle}>
+                        <HTML
+                            html={this.props.html}
+                            baseFontStyle={{ fontSize: scale(17) }}
+                            tagsStyles={htmlStyles}
+                            imagesMaxWidth={Dimensions.get('window').width}
+                            staticContentMaxWidth={Dimensions.get('window').width}
+                        />                    
+                    </View>
                 )}
                 {
                     this.props.roundedButton && (
-                        <RoundedButton text="Popunite upitnik" type={RoundedButtonType.purple} showArrow={true} style={{ marginTop: 20 }} />
+                        <RoundedButton
+                            text={this.props.roundedButton.title}
+                            type={RoundedButtonType.purple}
+                            showArrow={true}
+                            style={styles.buttonStyle}
+                            onPress={this.props.roundedButton.onPress}
+                        />
                     )
                 }
                 {
                     this.props.textButton && (
-                        <TextButton color={TextButtonColor.purple} style={{ justifyContent: "center", marginTop: 20 }} >Više o razvoju u ovom periodu</TextButton>
+                        <TextButton
+                            color={TextButtonColor.purple}
+                            style={styles.textButtonStyle}
+                            onPress={this.props.textButton.onPress}
+                        >
+                            {this.props.textButton.title}
+                        </TextButton>
                     )
                 }
             </View>
@@ -50,11 +68,10 @@ export class MilestoneCard extends Component<Props> {
 export interface MilestoneCardStyles {
     [index: string]: ViewStyle | TextStyle,
     container: ViewStyle,
-    measureDateContainer: ViewStyle,
-    measureContainer: ViewStyle,
-    measureDateContainerText: TextStyle,
-    measureDateText: TextStyle,
-    button: ViewStyle,
+    headerStyle: TextStyle,
+    buttonStyle: ViewStyle,
+    textButtonStyle: ViewStyle,
+    contentStyle: ViewStyle
 }
 
 const styles = StyleSheet.create<MilestoneCardStyles>({
@@ -67,23 +84,23 @@ const styles = StyleSheet.create<MilestoneCardStyles>({
         shadowOpacity: 0.2,
         padding: scale(16),
     },
-    measureContainer: {
-        flexDirection: 'row',
-        marginTop: scale(24),
-        marginBottom: scale(32),
+    headerStyle: {
+        marginBottom: 0,
     },
-    measureDateContainer: {
-        width: scale(88),
-        marginRight: scale(42)
+    contentStyle: {
+        marginTop: scale(15)
     },
-    measureDateContainerText: {
-        opacity: 0.5,
+    buttonStyle: {
+        marginTop: scale(20)
     },
-    button: {
-        marginBottom: scale(8),
-    },
-    measureDateText: {
-        marginTop: moderateScale(-7),
-        fontWeight: "bold",
+    textButtonStyle: {
+        justifyContent: "center",
+        marginTop: scale(20)
     }
 })
+
+const htmlStyles = {
+    p: { marginBottom: 15 },
+    a: { fontWeight: 'bold', textDecorationLine: 'none' },
+    blockquote: { backgroundColor: '#F0F1FF', padding: scale(15) },
+};
