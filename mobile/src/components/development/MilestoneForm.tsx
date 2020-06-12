@@ -19,42 +19,54 @@ export interface MilestoneItem {
 export interface Props {
     title?: string
     items: MilestoneItem[];
+    onCheckboxPressed: Function
     roundedButton?: { title: string, onPress: Function }
 }
 
-
-
 export class MilestoneForm extends Component<Props> {
+
+    private change = (id: number) => {
+        if(this.props.onCheckboxPressed){
+                this.props.onCheckboxPressed(id)
+
+        }
+    }
+
     render() {
         return (
             <ScrollView>
                 <Typography type={TypographyType.headingSecondary} style={styles.headerStyle}>{this.props.title}</Typography>
                 <List.AccordionGroup>
                     {
-                        this.props.items.map((item, key) => (
-                            <View >
-                                <View style={{ width: 30, marginTop: 5, alignItems: 'center', justifyContent: 'center', position: 'absolute', zIndex: 1, }}>
-                                    <Checkbox.Android status={item.checked ? 'checked' : 'unchecked'} color="#2BABEE" style={{width: 2}} />
+                        this.props.items.map((item, key) => {
+                            console.log(item.checked, 'checked')
+                            return (
+                                <View>
+                                    <View style={{ width: 30, marginTop: 5, alignItems: 'center', justifyContent: 'center', position: 'absolute', zIndex: 1, }}>
+                                        <Checkbox.Android status={item.checked ? 'checked' : 'unchecked'} color="#2BABEE" style={{ width: 2 }} onPress={() => this.change(item.id)} />
+                                    </View>
+                                    <List.Accordion
+                                        id={key + 1}
+                                        key={key + 1}
+                                        title={item?.title}
+                                        onPress={() => { console.log('press') }}
+                                        expanded={false}
+                                        titleNumberOfLines={2}
+                                        titleStyle={{fontSize: 15}}
+                                        style={styles.listStyle}
+                                    >
+                                        <HTML
+                                            html={item.html}
+                                            baseFontStyle={{ fontSize: scale(15) }}
+                                            tagsStyles={htmlStyles}
+                                            imagesMaxWidth={Dimensions.get('window').width}
+                                            staticContentMaxWidth={Dimensions.get('window').width}
+                                        />
+                                    </List.Accordion>
                                 </View>
-                                <List.Accordion
-                                    id={key + 1}
-                                    key={key + 1}
-                                    title={item?.title}
-                                    onPress={() => { console.log('press') }}
-                                    expanded={false}
-                                    titleNumberOfLines={3}
-                                    style={styles.listStyle}
-                                >
-                                    <HTML
-                                        html={item.html}
-                                        baseFontStyle={{ fontSize: scale(17) }}
-                                        tagsStyles={htmlStyles}
-                                        imagesMaxWidth={Dimensions.get('window').width}
-                                        staticContentMaxWidth={Dimensions.get('window').width}
-                                    />
-                                </List.Accordion>
-                            </View>
-                        ))
+                            )
+
+                        })
                     }
                 </List.AccordionGroup>
                 {
@@ -67,6 +79,7 @@ export class MilestoneForm extends Component<Props> {
                             style={styles.buttonStyle} />
                     )
                 }
+
             </ScrollView>
         )
     }
@@ -95,7 +108,8 @@ const styles = StyleSheet.create<MilestoneFormStyles>({
         paddingVertical: scale(2),
         paddingLeft: 30,
         borderBottomColor: 'rgba(0,0,0,0.06)',
-        borderBottomWidth: 1
+        borderBottomWidth: 1,
+
     },
     buttonStyle: {
         marginTop: scale(20),
@@ -108,7 +122,7 @@ const styles = StyleSheet.create<MilestoneFormStyles>({
 })
 
 const htmlStyles = {
-    p: { marginBottom: 15 },
+    p: { marginTop: 15, marginBottom: 15},
     a: { fontWeight: 'bold', textDecorationLine: 'none' },
     blockquote: { backgroundColor: '#F0F1FF', padding: scale(15) },
 };

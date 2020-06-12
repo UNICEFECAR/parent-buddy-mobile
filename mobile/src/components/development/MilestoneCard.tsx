@@ -9,8 +9,6 @@ import { TextButtonColor } from '../TextButton';
 // @ts-ignore
 import HTML from 'react-native-render-html';
 
-
-
 export interface Props {
     title?: string
     subTitle?: string

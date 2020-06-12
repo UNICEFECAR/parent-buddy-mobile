@@ -44,67 +44,6 @@ export class GrowthChart extends React.Component<Props, State> {
         this.initState()
     }
 
-    public componentDidMount(){
-        if(this.props.showFullscreen){
-            Orientation.lockToLandscape()
-        }else{
-            Orientation.lockToPortrait()
-        }
-    }
-    
-    public componentWillUnmount() {
-        Orientation.lockToPortrait();
-    }
-
-    /* *********** GET AGE FROM BIRTH DATE *********** */
-    private getChildAge = () => {
-        var diff_ms = Date.now() - this.props.childBirthDate.getTime();
-        var age_dt = new Date(diff_ms);
-
-        return (age_dt.getUTCFullYear() - 1970) * 365; // CONVERT VALUE IN DAYS FOR CALCULATION 
-    }
-
-    /* *********** FORMAT DATA FOR OUR CHART *********** */
-    private formatChartData = (data: GrowthChart0_2Type | GrowthChartHeightAgeType) => {
-
-        let obj: chartAreaDataFormat;
-
-        let topArea: singleAreaDataFormat[] = [];
-        let middleArea: singleAreaDataFormat[] = [];
-        let bottomArea: singleAreaDataFormat[] = [];
-
-        // FIX ME 
-        data.map(item => {
-            let xValue: number = 0;
-
-            if (this.props.chartType === chartTypes.length_age) {
-                topArea.push({ x: item.Day / 30, y: item.SD3, y0: item.SD4 });
-                middleArea.push({ x: item.Day / 30, y: item.SD3neg, y0: item.SD3 });
-                bottomArea.push({ x: item.Day / 30, y: item.SD3neg, y0: item.SD4neg });
-            } else {
-                xValue = item.Height
-                    if (item.Height >= 45 && item.Height <= 87) {
-                        topArea.push({ x: item.Height, y: item.SD3, y0: item.SD4 });
-                        middleArea.push({ x: item.Height, y: item.SD3neg, y0: item.SD3 });
-                        bottomArea.push({ x: item.Height, y: item.SD3neg, y0: item.SD4neg });
-                    }
-
-                    if (item.Height > 87.0) {
-                        topArea.push({ x: item.Height, y: item.SD3, y0: item.SD4 });
-                        middleArea.push({ x: item.Height, y: item.SD3neg, y0: item.SD3 });
-                        bottomArea.push({ x: item.Height, y: item.SD3neg, y0: item.SD4neg });
-                    }
-            }
-        })
-        obj = {
-            topArea: topArea,
-            middleArea: middleArea,
-            bottomArea: bottomArea,
-        }
-
-        return obj;
-    }
-
     private initState() {
         let windowWidth = Dimensions.get('window').width;
         let windowHeight = Dimensions.get('window').height;
@@ -117,31 +56,25 @@ export class GrowthChart extends React.Component<Props, State> {
 
         if (childGender === "male") {
             // boys
-            if (chartType === chartTypes.height_length) { 
+            if (chartType === chartTypes.heightLength) {
                 if (this.getChildAge() <= dayLimit) {
-                    /*********** BOYS 0 - 2 ***********/
-                    obj = this.formatChartData(GrowthChartBoys0_2);
+                    obj = this.formatHeightData(GrowthChartBoys0_2);
                 } else {
-                    /*********** BOYS 2 - 5 ***********/
-                    obj = this.formatChartData(GrowthChartBoys2_5);
+                    obj = this.formatHeightData(GrowthChartBoys2_5);
                 }
             } else {
-                /*********** ###### tezina uzrast decaci 0 - 5 ***********/
-                obj = this.formatChartData(Height_age_boys0_5);
+                obj = this.formatDaysData(Height_age_boys0_5);
             }
         } else {
-            /*********** girls ***********/
-            if (chartType === chartTypes.height_length) {
+            // girls
+            if (chartType === chartTypes.heightLength) {
                 if (this.getChildAge() <= dayLimit) {
-                    /*********** Girls 0 - 2 ***********/
-                    obj = this.formatChartData(GrowthChartGirls0_2);
+                    obj = this.formatHeightData(GrowthChartGirls0_2);
                 } else {
-                    /*********** Girls 2 - 5 ***********/
-                    obj = this.formatChartData(GrowthChartGirls2_5);
+                    obj = this.formatHeightData(GrowthChartGirls2_5);
                 }
             } else {
-                /***********tezina uzrast devojcice 0 - 5 ***********/
-                obj = this.formatChartData(Height_age_girls0_5);
+                obj = this.formatDaysData(Height_age_girls0_5);
             }
         }
 
@@ -149,7 +82,7 @@ export class GrowthChart extends React.Component<Props, State> {
 
         /* Create line chart array for type chart */
         this.props.lineChartData.map(item => {
-            chartData.push(this.props.chartType === chartTypes.height_length ? { x: item.length, y: item.height } : { x: item.measurementDay / 30, y: item.length })
+            chartData.push(this.props.chartType === chartTypes.heightLength ? { x: item.length, y: item.height } : { x: item.measurementDay / 30, y: item.length })
         })
 
         let state: State = {
@@ -160,20 +93,91 @@ export class GrowthChart extends React.Component<Props, State> {
             topArea: obj.topArea,
             middleArea: obj.middleArea,
             lineChart: chartData,
-            labelX: chartType === chartTypes.height_length ? "cm" : "meseci",
-            labelY: chartType === chartTypes.height_length ? "kg" : "cm"
+            labelX: chartType === chartTypes.heightLength ? "cm" : "meseci",
+            labelY: chartType === chartTypes.heightLength ? "kg" : "cm"
         };
 
         this.state = state;
     }
 
+    public componentDidMount() {
+        if (this.props.showFullscreen) {
+            Orientation.lockToLandscape()
+        } else {
+            Orientation.lockToPortrait()
+        }
+    }
+
+    public componentWillUnmount() {
+        Orientation.lockToPortrait();
+    }
+
+    private getChildAge = () => {
+        var diffMs = Date.now() - this.props.childBirthDate.getTime();
+        var ageDt = new Date(diffMs);
+
+        return (ageDt.getUTCFullYear() - 1970) * 365; // Convert value in days 
+    }
+
+
+    private formatDaysData = (data: GrowthChartHeightAgeType) => {
+        let obj: chartAreaDataFormat;
+
+        let topArea: singleAreaDataFormat[] = [];
+        let middleArea: singleAreaDataFormat[] = [];
+        let bottomArea: singleAreaDataFormat[] = [];
+
+        data.map(item => {
+            topArea.push({ x: item.Day / 30, y: item.SD3, y0: item.SD4 });
+            middleArea.push({ x: item.Day / 30, y: item.SD3neg, y0: item.SD3 });
+            bottomArea.push({ x: item.Day / 30, y: item.SD3neg, y0: item.SD4neg });
+        })
+
+        obj = {
+            topArea: topArea,
+            middleArea: middleArea,
+            bottomArea: bottomArea,
+        }
+
+        return obj;
+    }
+
+    private formatHeightData = (data: GrowthChart0_2Type) => {
+        let obj: chartAreaDataFormat;
+
+        let topArea: singleAreaDataFormat[] = [];
+        let middleArea: singleAreaDataFormat[] = [];
+        let bottomArea: singleAreaDataFormat[] = [];
+
+        data.map(item => {
+            if (item.Height >= 45 && item.Height <= 87) {
+                topArea.push({ x: item.Height, y: item.SD3, y0: item.SD4 });
+                middleArea.push({ x: item.Height, y: item.SD3neg, y0: item.SD3 });
+                bottomArea.push({ x: item.Height, y: item.SD3neg, y0: item.SD4neg });
+            }
+
+            if (item.Height > 87.0) {
+                topArea.push({ x: item.Height, y: item.SD3, y0: item.SD4 });
+                middleArea.push({ x: item.Height, y: item.SD3neg, y0: item.SD3 });
+                bottomArea.push({ x: item.Height, y: item.SD3neg, y0: item.SD4neg });
+            }
+        })
+
+        obj = {
+            topArea: topArea,
+            middleArea: middleArea,
+            bottomArea: bottomArea,
+        }
+
+        return obj;
+    }
 
     private onLayout = (event: LayoutChangeEvent) => {
         let layout = event.nativeEvent.layout;
 
         this.setState({
             width: layout.width,
-            height: this.props.showFullscreen ? layout.height - 50:  layout.height - 200,
+            height: this.props.showFullscreen ? layout.height - 50 : layout.height - 200,
         })
     }
 
@@ -186,7 +190,6 @@ export class GrowthChart extends React.Component<Props, State> {
             >
                 {/* ********* AXIS HORIZONTAL ********* */}
                 <VictoryAxis
-                    // tickFormat={this.state.topArea}
                     style={victoryStyles.VictoryAxis}
                     label={this.state.labelX}
                     axisLabelComponent={<VictoryLabel x={this.state.width - 20} />}
@@ -194,7 +197,6 @@ export class GrowthChart extends React.Component<Props, State> {
 
                 {/* ********* AXIS VERTICAL ********* */}
                 <VictoryAxis
-                    // tickFormat={this.props.dataY}
                     style={victoryStyles.VictoryAxisVertical}
                     axisLabelComponent={<VictoryLabel y={30} />}
                     dependentAxis
@@ -204,13 +206,13 @@ export class GrowthChart extends React.Component<Props, State> {
                 {/* ********* TOP AREA ********* */}
                 <VictoryArea
                     interpolation="natural"
-                    style={{data: this.props.showFullscreen ? { fill: "#F9C49E" } : {fill: "#D8D8D8"}}}
+                    style={{ data: this.props.showFullscreen ? { fill: "#F9C49E" } : { fill: "#D8D8D8" } }}
                     data={this.state.topArea}
                 />
                 {/* ********* BOTTOM AREA ********* */}
                 <VictoryArea
                     interpolation="natural"
-                    style={{data: this.props.showFullscreen ? { fill: "#F9C49E" } : {fill: "#D8D8D8"}}}
+                    style={{ data: this.props.showFullscreen ? { fill: "#F9C49E" } : { fill: "#D8D8D8" } }}
                     data={this.state.bottomArea}
                 />
                 {/* ********* MIDDLE AREA ********* */}
@@ -312,7 +314,7 @@ export class GrowthChart extends React.Component<Props, State> {
                                                 : null
                                         },
                                     },
-                                ]   
+                                ]
                             }
                         }
                     }]}
@@ -440,8 +442,8 @@ export interface chartAreaDataFormat {
     bottomArea: singleAreaDataFormat[],
 }
 export enum chartTypes {
-    height_length,
-    length_age
+    heightLength,
+    lengthAge
 }
 
 export interface ChartData {
