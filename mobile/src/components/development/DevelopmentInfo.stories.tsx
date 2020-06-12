@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { storiesOf } from '@storybook/react-native';
 import {DevelopmentInfo} from './DevelopmentInfo';
 
-const dumyHtml = `
+const dummyHtml = `
     <p>Obavestite pedijatra ako primetite da dete:</p>
     <ul>
         <li>Ne reguje na glasne zvuke</li>
@@ -16,9 +16,9 @@ const dumyHtml = `
 
 storiesOf('Development info', module)
     .add('default', () => (
-        <View style={{ flex: 1, padding: 24, justifyContent: 'center', alignItems: 'stretch', backgroundColor: 'white' }}>
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'stretch', backgroundColor: 'white' }}>
             <DevelopmentInfo 
-                html={dumyHtml}
+                html={dummyHtml}
             />
         </View>
     ));

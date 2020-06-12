@@ -30,22 +30,24 @@ export class MilestoneForm extends Component<Props> {
                 <List.AccordionGroup>
                     {
                         this.props.items.map((item, key) => (
-                            <List.Accordion
-                                id={key + 1}
-                                key={key + 1}
-                                left={props => <Checkbox status={item.checked ? 'checked' : 'unchecked'} color="#2BABEE" onPress={() => { }} />}
-                                title={item?.title}
-                                titleNumberOfLines={3}
-                                style={styles.listStyle}
-                            >
-                                <HTML
-                                    html={item.html}
-                                    baseFontStyle={{ fontSize: scale(17) }}
-                                    tagsStyles={htmlStyles}
-                                    imagesMaxWidth={Dimensions.get('window').width}
-                                    staticContentMaxWidth={Dimensions.get('window').width}
-                                />
-                            </List.Accordion>
+                                <List.Accordion
+                                    id={key + 1}
+                                    key={key + 1}
+                                    left={props => <Checkbox.Android status={item.checked ? 'checked' : 'unchecked'} color="#2BABEE" onPress={() => { console.log('click') }} />}
+                                    title={item?.title}
+                                    onPress={() => { console.log('press') }}
+                                    expanded={false}
+                                    titleNumberOfLines={3}
+                                    style={styles.listStyle}
+                                >
+                                    <HTML
+                                        html={item.html}
+                                        baseFontStyle={{ fontSize: scale(17) }}
+                                        tagsStyles={htmlStyles}
+                                        imagesMaxWidth={Dimensions.get('window').width}
+                                        staticContentMaxWidth={Dimensions.get('window').width}
+                                    />
+                                </List.Accordion>
                         ))
                     }
                 </List.AccordionGroup>
@@ -89,11 +91,11 @@ const styles = StyleSheet.create<MilestoneFormStyles>({
         borderBottomColor: 'rgba(0,0,0,0.06)',
         borderBottomWidth: 1
     },
-    buttonStyle:{
-        marginTop: scale(20), 
+    buttonStyle: {
+        marginTop: scale(20),
         marginBottom: scale(32)
     },
-    headerStyle:{
+    headerStyle: {
         textAlign: 'center'
     }
 
