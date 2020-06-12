@@ -17,20 +17,6 @@ import Orientation from 'react-native-orientation-locker';
 const fontFamily = 'SFUIDisplay-Regular';
 const dayLimit = 730;
 
-export interface singleAreaDataFormat {
-    x?: number | null,
-    y: number | null,
-    y0: number | null,
-}
-export interface chartAreaDataFormat {
-    topArea: singleAreaDataFormat[],
-    middleArea: singleAreaDataFormat[],
-    bottomArea: singleAreaDataFormat[],
-}
-export enum chartTypes {
-    height_length,
-    length_age
-}
 export interface Props {
     chartType: chartTypes,
     title: string,
@@ -131,7 +117,7 @@ export class GrowthChart extends React.Component<Props, State> {
 
         if (childGender === "male") {
             // boys
-            if (chartType === chartTypes.height_length) { // tezina za visinu 
+            if (chartType === chartTypes.height_length) { 
                 if (this.getChildAge() <= dayLimit) {
                     /*********** BOYS 0 - 2 ***********/
                     obj = this.formatChartData(GrowthChartBoys0_2);
@@ -145,7 +131,7 @@ export class GrowthChart extends React.Component<Props, State> {
             }
         } else {
             /*********** girls ***********/
-            if (chartType === chartTypes.height_length) { // tezina za visinu 
+            if (chartType === chartTypes.height_length) {
                 if (this.getChildAge() <= dayLimit) {
                     /*********** Girls 0 - 2 ***********/
                     obj = this.formatChartData(GrowthChartGirls0_2);
@@ -161,7 +147,7 @@ export class GrowthChart extends React.Component<Props, State> {
 
         const chartData: LineChartData[] = [];
 
-        /*********** CREATE LINE CHART ARRAY FOR TYPE OF CHART ***********/
+        /* Create line chart array for type chart */
         this.props.lineChartData.map(item => {
             chartData.push(this.props.chartType === chartTypes.height_length ? { x: item.length, y: item.height } : { x: item.measurementDay / 30, y: item.length })
         })
@@ -194,11 +180,7 @@ export class GrowthChart extends React.Component<Props, State> {
     private renderChart = (): ReactNode => (
         <>
             <VictoryChart
-                // containerComponent={<VictoryZoomContainer allowZoom={false} zoomDomain={{x: [1, 60]} }/>}  
                 theme={VictoryTheme.material}
-                // minDomain={0}
-                // maxDomain={400}
-                // domainPadding={-120}
                 width={this.state.width}
                 height={this.state.height}
             >
@@ -383,36 +365,6 @@ export class GrowthChart extends React.Component<Props, State> {
 }
 
 
-export interface ChartData {
-    measurementDay: number,
-    height: number,
-    length: number,
-}
-
-export interface LineChartData {
-    x: number,
-    y: number,
-}
-
-export interface GrowtChartStyles {
-    container?: ViewStyle;
-    contentWrapper?: ViewStyle;
-    chartLegend: ViewStyle;
-    chartLegendItem: ViewStyle;
-    chartHeader: ViewStyle;
-}
-
-export interface VictoryStyles {
-    VictoryAxis: VictoryAxisCommonProps['style'],
-    VictoryAxisVertical: VictoryAxisCommonProps['style'],
-    VictoryLine: VictoryLineProps['style'],
-    VictoryScatter: VictoryScatterProps['style'],
-    VictoryArea: VictoryAreaProps['style'],
-    VictoryExceptionsArea: VictoryAreaProps['style'],
-    axisLabel?: TickLabelProps,
-    VictoryTooltip: VictoryTooltipProps,
-}
-
 const styles = StyleSheet.create<GrowtChartStyles>({
     container: {
         flex: 1,
@@ -446,7 +398,6 @@ const victoryStyles: VictoryStyles = {
         axisLabel: { fontFamily: fontFamily, },
         tickLabels: { fontFamily: fontFamily }
     },
-
     VictoryAxisVertical: {
         grid: { stroke: 'transparent' },
         axis: { stroke: 'none' },
@@ -476,6 +427,49 @@ const victoryStyles: VictoryStyles = {
             fill: 'white',
         }
     },
-
 }
 
+export interface singleAreaDataFormat {
+    x?: number | null,
+    y: number | null,
+    y0: number | null,
+}
+export interface chartAreaDataFormat {
+    topArea: singleAreaDataFormat[],
+    middleArea: singleAreaDataFormat[],
+    bottomArea: singleAreaDataFormat[],
+}
+export enum chartTypes {
+    height_length,
+    length_age
+}
+
+export interface ChartData {
+    measurementDay: number,
+    height: number,
+    length: number,
+}
+
+export interface LineChartData {
+    x: number,
+    y: number,
+}
+
+export interface GrowtChartStyles {
+    container?: ViewStyle;
+    contentWrapper?: ViewStyle;
+    chartLegend: ViewStyle;
+    chartLegendItem: ViewStyle;
+    chartHeader: ViewStyle;
+}
+
+export interface VictoryStyles {
+    VictoryAxis: VictoryAxisCommonProps['style'],
+    VictoryAxisVertical: VictoryAxisCommonProps['style'],
+    VictoryLine: VictoryLineProps['style'],
+    VictoryScatter: VictoryScatterProps['style'],
+    VictoryArea: VictoryAreaProps['style'],
+    VictoryExceptionsArea: VictoryAreaProps['style'],
+    axisLabel?: TickLabelProps,
+    VictoryTooltip: VictoryTooltipProps,
+}

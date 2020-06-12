@@ -1,5 +1,5 @@
 import React, { Component, Children } from 'react'
-import { ViewStyle, StyleSheet, TextStyle, Dimensions } from 'react-native'
+import { ViewStyle, StyleSheet, TextStyle, Dimensions, View } from 'react-native'
 import { Typography, TypographyType } from '../Typography';
 import { RoundedButton, RoundedButtonType } from '../RoundedButton';
 import { scale } from 'react-native-size-matters';
@@ -12,6 +12,7 @@ import HTML from 'react-native-render-html';
 export interface MilestoneItem {
     checked: boolean;
     title: string;
+    id: number,
     html: string;
 }
 
@@ -22,6 +23,7 @@ export interface Props {
 }
 
 
+
 export class MilestoneForm extends Component<Props> {
     render() {
         return (
@@ -30,10 +32,13 @@ export class MilestoneForm extends Component<Props> {
                 <List.AccordionGroup>
                     {
                         this.props.items.map((item, key) => (
+                            <View >
+                                <View style={{ width: 30, marginTop: 5, alignItems: 'center', justifyContent: 'center', position: 'absolute', zIndex: 1, }}>
+                                    <Checkbox.Android status={item.checked ? 'checked' : 'unchecked'} color="#2BABEE" style={{width: 2}} />
+                                </View>
                                 <List.Accordion
                                     id={key + 1}
                                     key={key + 1}
-                                    left={props => <Checkbox.Android status={item.checked ? 'checked' : 'unchecked'} color="#2BABEE" onPress={() => { console.log('click') }} />}
                                     title={item?.title}
                                     onPress={() => { console.log('press') }}
                                     expanded={false}
@@ -48,6 +53,7 @@ export class MilestoneForm extends Component<Props> {
                                         staticContentMaxWidth={Dimensions.get('window').width}
                                     />
                                 </List.Accordion>
+                            </View>
                         ))
                     }
                 </List.AccordionGroup>
@@ -87,7 +93,7 @@ const styles = StyleSheet.create<MilestoneFormStyles>({
     },
     listStyle: {
         paddingVertical: scale(2),
-        paddingLeft: 0,
+        paddingLeft: 30,
         borderBottomColor: 'rgba(0,0,0,0.06)',
         borderBottomWidth: 1
     },

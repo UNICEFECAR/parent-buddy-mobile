@@ -4,7 +4,7 @@ import { storiesOf } from '@storybook/react-native';
 import { action } from '@storybook/addon-actions';
 import { GrowthChart, chartTypes } from './GrowthChart';
 
-const dumbData = {
+const dummyData = {
     /* ******* 0-2 ******* */
     lineChartData: [{ measurementDay: 269, height: 2, length: 45 }, { measurementDay: 330, height: 4.5, length: 55  }, { measurementDay: 400, height: 7, length: 70 }, { measurementDay: 1000, height: 8, length: 80 }, { measurementDay: 1000, height: 12, length: 87 }], 
     childBirthDate: new Date("06/09/2018"),   
@@ -23,80 +23,80 @@ const dumbData = {
 
 
 storiesOf('GrowthChart', module)
-    .add('Tezina za visinu devojcice 0-2 godine', () => (
+    .add('weight/height girls 0-2y', () => (
         <View style={{ flex: 1, padding: 24, justifyContent: 'center', alignItems: 'stretch', backgroundColor: 'white' }}>
             <GrowthChart
                 title="Tezina za visinu"
-                lineChartData={dumbData.lineChartData}
+                lineChartData={dummyData.lineChartData}
                 childGender="female"
                 showFullscreen={false}
                 chartType={chartTypes.height_length}
-                childBirthDate={dumbData.childBirthDate}
+                childBirthDate={dummyData.childBirthDate}
 
             />
         </View>
     ))
-    .add('Tezina za visinu devojcice 2-5 godine', () => (
+    .add('weight/height girls 2-5y', () => (
         <View style={{ flex: 1, padding: 24, justifyContent: 'center', alignItems: 'stretch', backgroundColor: 'white' }}>
             <GrowthChart
                 title="Tezina za visinu"
-                lineChartData={dumbData.lineChartData2}
+                lineChartData={dummyData.lineChartData2}
                 childGender="female"
                 showFullscreen={true}
                 chartType={chartTypes.height_length}
-                childBirthDate={dumbData.childBirthDate2}
+                childBirthDate={dummyData.childBirthDate2}
 
             />
         </View>
     ))
-    .add('Tezina za visinu decaci 0-2 godine', () => (
+    .add('weight/height boys 0-2y', () => (
         <View style={{ flex: 1, padding: 24, justifyContent: 'center', alignItems: 'stretch', backgroundColor: 'white' }}>
             <GrowthChart
                 title="Tezina za visinu"
-                lineChartData={dumbData.lineChartData}
+                lineChartData={dummyData.lineChartData}
                 childGender="female"
                 showFullscreen={false}
                 chartType={chartTypes.height_length}
-                childBirthDate={dumbData.childBirthDate}
+                childBirthDate={dummyData.childBirthDate}
 
             />
         </View>
     ))
-    .add('Tezina za visinu decaci 2-5 godine', () => (
+    .add('weight/height boys 2-5y', () => (
         <View style={{ flex: 1, padding: 24, justifyContent: 'center', alignItems: 'stretch', backgroundColor: 'white' }}>
             <GrowthChart
                 title="Tezina za visinu"
-                lineChartData={dumbData.lineChartData2}
+                lineChartData={dummyData.lineChartData2}
                 childGender="male"
                 showFullscreen={false}
                 chartType={chartTypes.height_length}
-                childBirthDate={dumbData.childBirthDate2}
+                childBirthDate={dummyData.childBirthDate2}
 
             />
         </View>
     ))
-    .add('Visina za uzrast devojcice 0 - 5 g', () => (
+    .add('height/age girls 0-5y', () => (
         <View style={{ flex: 1, padding: 24, justifyContent: 'center', alignItems: 'stretch', backgroundColor: 'white' }}>
             <GrowthChart
                 title="Visina za uzrast"
-                lineChartData={dumbData.lineChartData}
+                lineChartData={dummyData.lineChartData}
                 childGender="female"
                 showFullscreen={false}
                 chartType={chartTypes.length_age}
-                childBirthDate={dumbData.childBirthDate}
+                childBirthDate={dummyData.childBirthDate}
 
             />
         </View>
     ))
-    .add('Visina za uzrast decaci 0 - 5 g', () => (
+    .add('height/age boys 0-5y', () => (
         <View style={{ flex: 1, padding: 24, justifyContent: 'center', alignItems: 'stretch', backgroundColor: 'white' }}>
             <GrowthChart
                 title="Visina za uzrast"
-                lineChartData={dumbData.lineChartData}
+                lineChartData={dummyData.lineChartData}
                 childGender="male"
                 showFullscreen={false}
                 chartType={chartTypes.length_age}
-                childBirthDate={dumbData.childBirthDate}
+                childBirthDate={dummyData.childBirthDate}
             />
         </View>
     ));
