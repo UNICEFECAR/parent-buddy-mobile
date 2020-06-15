@@ -15,25 +15,31 @@ Scenario: Showing personalized list of articles on home page
   Then categorized list of articles is shown on home page
   # https://projects.invisionapp.com/share/GBUJ3D6CV3E#/screens/390238736
 
-Scenario: Default ordering of articles within the category
+Scenario: Ordering of articles within the category on home page
   Given User has logged in
   When user has opened the home page
-  Then articles in the list from the certain category appear ordered by date added
+  Then articles in the list from the certain category appear ordered by growth tag 
+  * articles appear starting from the current child's age 
+  * articles appear continuing with upcoming growth tag
+  * articles appear in the collection of five randomized articles per each category
 
-Scenario: Conditional ordering of articles within the category
+Scenario: Ordering of articles on the category page
   Given User has logged in
   When user has opened the home page
-  * use has opened one or more articles from the certain category
-  Then articles in the list from the certain category appear ordered by date opened and date added
-  # (opened articles are moved at the end of the list, similar like Instagram stories)
-
+  Then articles in the list appear ordered by growth tag 
+  * articles appear starting from the current child's age 
+  * articles appear continuing with upcoming growth tag
 
 Scenario: Showing development content segment on the home page
   Given User has logged in
   * user has entered child birth data
-  * child age approaches <<XX>> days prior to the development period
+  * child age approaches 10 days prior to the development period or child age is into development period no more than 10 days
   When user has opened the home page
   Then additional segment is shown on the home page above the default article collections that gives more information about child development
+  * articles in the list from the certain category appear ordered by growth tag 
+  * articles appear starting from the current child's age 
+  * articles appear continuing with upcoming growth tag
+  * articles appear in the collection of five randomized articles per each category  
   # https://projects.invisionapp.com/share/GBUJ3D6CV3E#/screens/390238737
 
 Scenario: Showing related articles on article page
