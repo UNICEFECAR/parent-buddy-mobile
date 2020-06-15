@@ -20,6 +20,7 @@ export interface Props {
     title: string,
     isHorizontalLineVisible?: boolean,
     vaccineList: VaccinationDate[]
+    onPress: Function,
 }
 
 export interface State {
@@ -109,7 +110,6 @@ export class OneVaccinations extends Component<Props, State> {
                                                     </>
                                                 )
                                             }
-
                                         </View>
                                     </View>
                                 ))
@@ -127,6 +127,7 @@ export class OneVaccinations extends Component<Props, State> {
                                     style={{ paddingLeft: moderateScale(20) }} 
                                     type={RoundedButtonType.purple} text={translate('AddDataAboutVaccination')} 
                                     showArrow={true} 
+                                    onPress={() => this.props.onPress()}
                                 />
                                 <RoundedButton 
                                     type={RoundedButtonType.hollowPurple} 

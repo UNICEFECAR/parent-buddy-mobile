@@ -36,6 +36,7 @@ import { ChildProfileScreen } from "../screens/home/ChildProfileScreen";
 import {GrowthScreen} from "../screens/home/GrowthScreen";
 import { NewMeasurementScreen } from "../screens/growth/NewMeasurementScreen";
 import { VaccinationScreen } from "../screens/home";
+import { NewDoctorVisitScreen } from "../screens/vaccination/NewDoctorVisitScreen";
 
 /**
  * Use it to [navigate screens](https://reactnavigation.org/docs/en/navigating-without-navigation-prop.html)
@@ -253,7 +254,17 @@ const HomeStackNavigator = createStackNavigator({
         navigationOptions:{
             title: 'aaa'
         }
-    }
+    },
+
+    HomeStackNavigator_NewDoctorVisitScreen: {
+        screen: NewDoctorVisitScreen,
+        navigationOptions: ({ navigation }: NavigationScreenConfigProps<NavigationStackProp<NavigationStackState, any>>): NavigationStackOptions => {
+            return {
+                title: translate('NewDoctorVisitScreenTitle'),
+                ...secondaryHomeNavigationOptions
+            }
+        }
+    },
 
 }, {
     defaultNavigationOptions: ({ navigation }: NavigationScreenConfigProps<NavigationStackProp<NavigationStackState, any>>): NavigationStackOptions => {

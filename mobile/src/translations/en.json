@@ -155,6 +155,10 @@
     "moreAboutVaccineBtn": "Pročitajte više o vakcini",
     "moreAboutDisease": "Pročitajte više o bolesti",
     "AddDataAboutVaccination": "Upišite podatke sa vakcinacije",
-    "AddVaccinationReminder" : "Dodajte podsetnik za vakcinaciju"
+    "AddVaccinationReminder" : "Dodajte podsetnik za vakcinaciju",
+    "NewDoctorVisitMeasurementTitle": "Da li je dete izmereno?",
+    "childMeasuredError": "Molimo Vas da odaberete jedan od ova dva odgovora.",
+    "NewDoctorVisitScreenDatePickerLabel": "Datum posete",
+    "NewDoctorVisitScreenTitle": "Nova poseta doktoru"
 
 }
