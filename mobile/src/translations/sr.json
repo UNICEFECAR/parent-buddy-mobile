@@ -149,5 +149,12 @@
     "measurementLength": "Dužina",
 
     "growthChartLegendSilverLabel": " - Uobičajene vrednosti za uzrast",
-    "growthChartLegendOrangeLabel": " - Odstupajuće vrednosti za uzrast"
+    "growthChartLegendOrangeLabel": " - Odstupajuće vrednosti za uzrast",
+
+    "vaccinationTitleQuestion": "Da li je dete vakcinisano?",
+    "moreAboutVaccineBtn": "Pročitajte više o vakcini",
+    "moreAboutDisease": "Pročitajte više o bolesti",
+    "AddDataAboutVaccination": "Upišite podatke sa vakcinacije",
+    "AddVaccinationReminder" : "Dodajte podsetnik za vakcinaciju"
+
 }
