@@ -9,8 +9,6 @@ import { TextButtonColor } from '../TextButton';
 // @ts-ignore
 import HTML from 'react-native-render-html';
 
-
-
 export interface Props {
     title?: string
     subTitle?: string
@@ -100,20 +98,22 @@ const styles = StyleSheet.create<MilestoneCardStyles>({
     },
     headerStyle: {
         marginBottom: 0,
-        fontSize: moderateScale(22)
+        fontSize: moderateScale(22),
+        lineHeight: moderateScale(31)
     },
     subHeaderStyle: {
         fontSize: moderateScale(17)
     },
     contentStyle: {
-        marginTop: scale(15)
+        marginTop: scale(10)
     },
     buttonStyle: {
-        marginTop: scale(20)
+        marginTop: scale(10),
+        marginBottom: scale(20)
     },
     textButtonStyle: {
         justifyContent: "center",
-        marginTop: scale(20)
+        marginBottom: scale(20)
     },
     articleLinkStyle: {
         marginTop: scale(10)

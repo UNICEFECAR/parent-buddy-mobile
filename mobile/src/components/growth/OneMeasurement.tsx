@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { View, ViewStyle, StyleSheet, TextStyle } from 'react-native'
 import { Typography, TypographyType } from '../Typography';
-import { RoundedButton, RoundedButtonType } from '../RoundedButton';
 import { translate } from '../../translations/translate';
 import Icon from "react-native-vector-icons/FontAwesome";
 import { scale, moderateScale } from 'react-native-size-matters';
