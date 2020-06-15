@@ -81,7 +81,6 @@ export class OneVaccinations extends Component<Props, State> {
                                 )
                             }
                         </View>
-
                     </View>
 
                     <View style={styles.vaccineContainer}>

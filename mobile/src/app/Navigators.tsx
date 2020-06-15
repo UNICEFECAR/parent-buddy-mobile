@@ -35,6 +35,7 @@ import { ExaminationReminderScreen } from "../screens/home/ExaminationReminderSc
 import { ChildProfileScreen } from "../screens/home/ChildProfileScreen";
 import {GrowthScreen} from "../screens/home/GrowthScreen";
 import { NewMeasurementScreen } from "../screens/growth/NewMeasurementScreen";
+import { VaccinationScreen } from "../screens/home";
 
 /**
  * Use it to [navigate screens](https://reactnavigation.org/docs/en/navigating-without-navigation-prop.html)
@@ -246,6 +247,13 @@ const HomeStackNavigator = createStackNavigator({
             }
         }
     },
+
+    HomeStackNavigator_VaccinationScreen: {
+        screen: VaccinationScreen,
+        navigationOptions:{
+            title: 'aaa'
+        }
+    }
 
 }, {
     defaultNavigationOptions: ({ navigation }: NavigationScreenConfigProps<NavigationStackProp<NavigationStackState, any>>): NavigationStackOptions => {

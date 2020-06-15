@@ -1,3 +1,4 @@
+import { VaccinationScreen } from './../vaccination/VaccinationScreen';
 import { NewMeasurementScreen } from '../growth/NewMeasurementScreen';
 import { GrowthScreen } from './GrowthScreen';
 import { AppFeedbackScreen } from "./AppFeedbackScreen";
@@ -31,3 +32,4 @@ export { ExaminationReminderScreen };
 export { ChildProfileScreen };
 export {GrowthScreen};
 export {NewMeasurementScreen}
+export {VaccinationScreen}
