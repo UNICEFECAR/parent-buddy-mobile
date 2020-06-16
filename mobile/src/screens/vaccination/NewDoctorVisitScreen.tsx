@@ -104,7 +104,7 @@ export class NewDoctorVisitScreen extends Component<Props, State> {
                                 buttonStyle={{ width: 150 }}
                                 buttons={[
                                     { text: translate("newMeasureScreenVaccineOptionYes"), value: "yes" },
-                                    { text: translate("newMeasureScreenVaccineOptionNo"), value: 'no' }
+                                    { text: translate("newMeasureScreenVaccineOptionNo"), value: "no" }
                                 ]}
                             />
                         </View>
@@ -144,7 +144,6 @@ export class NewDoctorVisitScreen extends Component<Props, State> {
                                         style={{ width: 150, marginTop: 8 }}
                                         value={this.state.height}
                                         onChange={value => this.measureChange(value, 'height')}
-
                                     />
                                 </View>
                             )

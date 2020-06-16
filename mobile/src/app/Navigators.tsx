@@ -35,7 +35,7 @@ import { ExaminationReminderScreen } from "../screens/home/ExaminationReminderSc
 import { ChildProfileScreen } from "../screens/home/ChildProfileScreen";
 import {GrowthScreen} from "../screens/growth/GrowthScreen";
 import { NewMeasurementScreen } from "../screens/growth/NewMeasurementScreen";
-import { VaccinationScreen } from "../screens/home";
+import { VaccinationScreen, VaccinationDataScreen } from "../screens/home";
 import { NewDoctorVisitScreen } from "../screens/vaccination/NewDoctorVisitScreen";
 
 /**
@@ -261,6 +261,15 @@ const HomeStackNavigator = createStackNavigator({
         navigationOptions: ({ navigation }: NavigationScreenConfigProps<NavigationStackProp<NavigationStackState, any>>): NavigationStackOptions => {
             return {
                 title: translate('NewDoctorVisitScreenTitle'),
+                ...secondaryHomeNavigationOptions
+            }
+        }
+    },
+    HomeStackNavigator_VaccinationDataScreen: {
+        screen: VaccinationDataScreen,
+        navigationOptions: ({ navigation }: NavigationScreenConfigProps<NavigationStackProp<NavigationStackState, any>>): NavigationStackOptions => {
+            return {
+                title: "Podaci sa vakcinacije 3.mesec",
                 ...secondaryHomeNavigationOptions
             }
         }

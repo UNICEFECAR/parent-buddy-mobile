@@ -51,6 +51,8 @@ export class VaccinationScreen extends Component<Props> {
                                 { complete: true, title: "Protiv zarazne žutice B", },
                             ]}
                             onPress={() => this.props.navigation.navigate('HomeStackNavigator_NewDoctorVisitScreen')}
+                            onPress2={() => this.props.navigation.navigate('HomeStackNavigator_VaccinationDataScreen')}
+
                         />
                         <OneVaccinations
                             vaccinationDate="21.7.2019."
@@ -63,6 +65,8 @@ export class VaccinationScreen extends Component<Props> {
                             title="5. Mesec"
                             isHorizontalLineVisible={true}
                             onPress={() => this.props.navigation.navigate('HomeStackNavigator_NewDoctorVisitScreen')}
+                            onPress2={() => this.props.navigation.navigate('HomeStackNavigator_VaccinationDataScreen')}
+
                         />
                         <OneVaccinations
                             vaccinationDate="17. - 24. mesec"
@@ -71,6 +75,7 @@ export class VaccinationScreen extends Component<Props> {
                                 { complete: false, title: "Protiv zarazne žutice B", description: "Kombinovana vakcina koja sadrži toksoide difterije i tetanusa i inaktivisanu korpuskulu Bordetella pertusis" }
                             ]}
                             onPress={() => this.props.navigation.navigate('HomeStackNavigator_NewDoctorVisitScreen')}
+                            onPress2={() => this.props.navigation.navigate('HomeStackNavigator_VaccinationDataScreen')}
                         />
 
                     </ScrollView>

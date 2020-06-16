@@ -21,6 +21,7 @@ export interface Props {
     isHorizontalLineVisible?: boolean,
     vaccineList: VaccinationDate[]
     onPress: Function,
+    onPress2: Function,
 }
 
 export interface State {
@@ -133,6 +134,7 @@ export class OneVaccinations extends Component<Props, State> {
                                     type={RoundedButtonType.hollowPurple} 
                                     text={translate('AddVaccinationReminder')} 
                                     showArrow={true} style={styles.reminderBtn} 
+                                    onPress={() => this.props.onPress2()}
                                 />
                             </View>
                             : null
