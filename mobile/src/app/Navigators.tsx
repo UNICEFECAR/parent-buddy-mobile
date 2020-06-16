@@ -33,8 +33,10 @@ import { VideoScreen } from "../screens/VideoScreen";
 import { BirthDataScreen } from "../screens/home/BirthDataScreen";
 import { ExaminationReminderScreen } from "../screens/home/ExaminationReminderScreen";
 import { ChildProfileScreen } from "../screens/home/ChildProfileScreen";
-import {GrowthScreen} from "../screens/home/GrowthScreen";
+import {GrowthScreen} from "../screens/growth/GrowthScreen";
 import { NewMeasurementScreen } from "../screens/growth/NewMeasurementScreen";
+import { VaccinationScreen, VaccinationDataScreen } from "../screens/home";
+import { NewDoctorVisitScreen } from "../screens/vaccination/NewDoctorVisitScreen";
 
 /**
  * Use it to [navigate screens](https://reactnavigation.org/docs/en/navigating-without-navigation-prop.html)
@@ -242,6 +244,32 @@ const HomeStackNavigator = createStackNavigator({
         navigationOptions: ({ navigation }: NavigationScreenConfigProps<NavigationStackProp<NavigationStackState, any>>): NavigationStackOptions => {
             return {
                 title: translate('newMeasureScreenTitle'),
+                ...secondaryHomeNavigationOptions
+            }
+        }
+    },
+
+    HomeStackNavigator_VaccinationScreen: {
+        screen: VaccinationScreen,
+        navigationOptions:{
+            title: 'aaa'
+        }
+    },
+
+    HomeStackNavigator_NewDoctorVisitScreen: {
+        screen: NewDoctorVisitScreen,
+        navigationOptions: ({ navigation }: NavigationScreenConfigProps<NavigationStackProp<NavigationStackState, any>>): NavigationStackOptions => {
+            return {
+                title: translate('NewDoctorVisitScreenTitle'),
+                ...secondaryHomeNavigationOptions
+            }
+        }
+    },
+    HomeStackNavigator_VaccinationDataScreen: {
+        screen: VaccinationDataScreen,
+        navigationOptions: ({ navigation }: NavigationScreenConfigProps<NavigationStackProp<NavigationStackState, any>>): NavigationStackOptions => {
+            return {
+                title: "Podaci sa vakcinacije 3.mesec",
                 ...secondaryHomeNavigationOptions
             }
         }

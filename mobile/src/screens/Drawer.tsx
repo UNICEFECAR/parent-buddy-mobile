@@ -77,6 +77,11 @@ export class Drawer extends React.Component<Props> {
             navigation.navigate('HomeStackNavigator_GrowthScreen');
             navigation.dispatch(DrawerActions.closeDrawer());
         }
+
+        if (fancyButtonType === FancyButtonType.vaccination) {
+            navigation.navigate('HomeStackNavigator_VaccinationScreen');
+            navigation.dispatch(DrawerActions.closeDrawer());
+        }
     }
 
     private onClosePress() {
