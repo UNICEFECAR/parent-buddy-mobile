@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, View, Text, Button, StyleSheet, ViewStyle, ScrollView } from 'react-native';
+import { SafeAreaView, View, Text, Button, StyleSheet, ViewStyle, ScrollView, Alert } from 'react-native';
 import { NavigationStackProp, NavigationStackState, NavigationStackOptions } from 'react-navigation-stack';
 import { ThemeContextValue, ThemeConsumer } from '../../themes/ThemeContext';
 import { translate } from '../../translations/translate';
@@ -12,6 +12,8 @@ import { RateAChild } from '../../components/RateAChild';
 import { RoundedTextInput } from '../../components/RoundedTextInput';
 import { RoundedTextArea } from '../../components/RoundedTextArea';
 import { RoundedButton, RoundedButtonType } from '../../components/RoundedButton';
+import { userRealmStore } from '../../stores';
+import { ChildEntitySchema, ChildEntity } from '../../stores/ChildEntity';
 
 export interface BirthDataScreenParams {
 
@@ -22,7 +24,12 @@ export interface Props {
 }
 
 export interface State {
-
+    plannedTermDate: Date | undefined,
+    birthDate: Date | undefined,
+    babyRate: number | undefined,
+    height: String,
+    weight: String, 
+    comment: String,
 }
 
 export class BirthDataScreen extends React.Component<Props, State> {
@@ -31,6 +38,7 @@ export class BirthDataScreen extends React.Component<Props, State> {
         super(props);
 
         this.setDefaultScreenParams();
+        this.initState();
     }
 
     private setDefaultScreenParams() {
@@ -45,8 +53,75 @@ export class BirthDataScreen extends React.Component<Props, State> {
         }
     }
 
+    private initState = () => {
+        let state: State = {
+            babyRate: undefined,
+            birthDate: undefined,
+            comment: "",
+            height: "",
+            plannedTermDate: undefined,
+            weight: "",
+        } 
+
+        this.state = state;
+    }
+
     private gotoBack() {
         this.props.navigation.goBack();
+    }
+
+    private submit = () => {
+
+        const {comment, weight, height, babyRate, plannedTermDate, birthDate} = this.state;
+
+        const  allRecords = userRealmStore.realm?.objects<ChildEntity>(ChildEntitySchema.name);        
+        allRecords?.forEach((record, index, collection) => { 
+              userRealmStore.realm?.write(() => {
+                record.height = height;
+                record.weight = weight;
+                record.comment = comment;
+                record.babyRate = babyRate;
+                record.plannedTermDate = plannedTermDate,
+                record.birthDate = birthDate;
+            })
+  
+        })
+    }
+
+    private setPlannedTerm = (date: Date) => {
+        this.setState({
+            plannedTermDate: date
+        })
+    }
+
+    private setBirthDate = (date: Date) => {
+        this.setState({
+            birthDate: date
+        })
+    }
+
+    private setChildWeight = (value: string) => {
+        this.setState({
+            weight: value
+        })
+    }
+
+    private setChildLength = (value: string) => {
+        this.setState({
+            height: value
+        })
+    }
+
+    private setChildRaiting = (value: number) => {
+        this.setState({
+            babyRate: value
+        })
+    }
+
+    private setComment = (value: string) => {
+        this.setState({
+            comment: value
+        })
     }
 
     public render() {
@@ -73,7 +148,7 @@ export class BirthDataScreen extends React.Component<Props, State> {
                         <DateTimePicker
                             label={translate('fieldLabelPlannedTerm')} type={ DateTimePickerType.date }
                             style={{alignSelf:'stretch'}}
-                            onChange={ () => {} }
+                            onChange={ (date) => this.setPlannedTerm(date) }
                         />
 
                         <View style={{height:themeContext.theme.variables?.sizes.verticalPaddingNormal}} />
@@ -82,7 +157,7 @@ export class BirthDataScreen extends React.Component<Props, State> {
                         <DateTimePicker
                             label={translate('fieldLabelBirthDate')} type={ DateTimePickerType.date }
                             style={{alignSelf:'stretch'}}
-                            onChange={ () => {} }
+                            onChange={ (date) => this.setBirthDate(date) }
                         />
 
                         <View style={{height:themeContext.theme.variables?.sizes.verticalPaddingLarge}} />
@@ -92,7 +167,7 @@ export class BirthDataScreen extends React.Component<Props, State> {
                             {translate('fieldLabelBabyRatingOnBirth')}
                         </Typography>
 
-                        <RateAChild />
+                        <RateAChild onChange={(value) => this.setChildRaiting(value)}/>
                         <View style={{height:themeContext.theme.variables?.sizes.verticalPaddingLarge}} />
 
                         {/* BABY MEASUREMENTS */}
@@ -105,7 +180,7 @@ export class BirthDataScreen extends React.Component<Props, State> {
                             suffix="g"
                             icon="weight"
                             style={{width:scale(150)}}
-                            onChange={ () => {} }
+                            onChange={ (value) => this.setChildWeight(value) }
                         />
 
                         <View style={{height:themeContext.theme.variables?.sizes.verticalPaddingNormal}} />
@@ -115,14 +190,15 @@ export class BirthDataScreen extends React.Component<Props, State> {
                             suffix="cm"
                             icon="weight"
                             style={{width:scale(150)}}
-                            onChange={ () => {} }
+                            onChange={ (value) => this.setChildLength(value) }
+
                         />
 
                         <View style={{height:themeContext.theme.variables?.sizes.verticalPaddingLarge}} />
 
                         {/* DOCTOR COMMENTS */}
                         <RoundedTextArea
-                            label={translate('fieldLabelCommentFromDoctor')} onChange={ () => {} }
+                            label={translate('fieldLabelCommentFromDoctor')} onChange={ (value) => this.setComment(value) }
                             style={{alignSelf:'stretch'}}
                         />
 
@@ -132,7 +208,7 @@ export class BirthDataScreen extends React.Component<Props, State> {
                         <RoundedButton
                             text = {translate('buttonSaveData')}
                             type = { RoundedButtonType.purple }
-                            onPress={() => {}}
+                            onPress={() => this.submit()}
                         />
 
                         <View style={{height:themeContext.theme.variables?.sizes.verticalPaddingLarge}} />
