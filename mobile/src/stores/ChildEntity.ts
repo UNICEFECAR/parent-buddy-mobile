@@ -10,9 +10,9 @@ export type ChildEntity = {
     plannedTermDate?: Date;
     birthDate?: Date;
     babyRate?: number;
-    height?: String;
-    weight?: String; 
-    comment?: String;
+    height?: number;
+    weight?: number; 
+    comment?: string;
 };
 
 /**

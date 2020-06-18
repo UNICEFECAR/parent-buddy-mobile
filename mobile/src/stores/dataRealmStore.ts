@@ -191,6 +191,66 @@ class DataRealmStore {
         }
     }
 
+    public getChildAgeTag = (birthday: Date | null, returnNext:boolean = false): {id:number, name:string} | null => {
+        let id: number | null = 0;
+        let obj: {id: number, name: string} | null = {
+            id: 0,
+            name: ""
+        }
+        let now = new Date();
+
+        if (birthday === null) {
+            obj = null;
+        } else {
+            // calculate months and get id
+            let months = (now.getFullYear() - birthday.getFullYear()) * 12;
+            months -= birthday.getMonth();
+            months += now.getMonth();
+
+            if (months === 1) {
+                obj = {id: 43, name: "1st month"}
+            }
+            if (months === 2) {
+                obj = {id: 44, name: "2nd months"}
+            }
+            if (months === 3 || months === 4) {
+                obj = {id: 45, name: "3-4 months"}
+            }
+            if (months === 5 || months === 6) {
+                obj = {id: 46, name: "5-6 months"}
+            }
+            if (months >= 7 && months <= 9) {
+                obj = {id: 47, name: "7-9 months"}
+            }
+            if (months >= 10 && months <= 12) {
+                obj = {id: 48, name: "10-12 months"}
+            }
+            if (months >= 13 && months <= 18) {
+                obj = {id: 48, name: "13-18 months"}
+            }
+            if (months >= 19 && months <= 24) {
+                obj = {id: 50, name: "19-24 months"}
+            }
+            if (months >= 25 && months <= 36) {
+                obj = {id: 51, name: "25-36 months"}
+            }
+            if (months >= 37 && months <= 48) {
+                obj = {id: 52, name: "37-48 months"}
+            }
+            if (months >= 15 && months <= 26) {
+                obj = {id: 53, name: "15-26 months"}
+            }
+            if (months >= 49 && months <= 60) {
+                obj = {id: 57, name: "49-60 months"}
+            }
+            if (months >= 61 && months <= 72) {
+                obj = {id: 58, name: "61-72 months"}
+            }
+        }
+    
+        return obj 
+    } 
+
     public getCategoryNameFromId(categoryId: number): string | null {
         const vocabulariesAndTerms = this.getVariable('vocabulariesAndTerms');
         if (!vocabulariesAndTerms) return null;

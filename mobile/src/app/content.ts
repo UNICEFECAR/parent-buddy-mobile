@@ -120,63 +120,22 @@ class Content {
         return contentViewEntity;
     }
 
-    private getChildAge = (): number => {
+    private getChildAge = (): number | null => {
         const childContent = userRealmStore.realm?.objects<ChildEntity>(ChildEntitySchema.name);
-        var id: number = 0;
+        var id: number | null = 0;
 
         childContent?.forEach((record, index, collection) => {
-            let months;
-            let now = new Date()
-            let birthDate = record.birthDate ? record.birthDate : null;
+            const birthDate = record.birthDate ? record.birthDate : null;
+            const tag = dataRealmStore.getChildAgeTag(birthDate);
             
-            // Chekc is child birthDate seted  
-            if (birthDate === null) {
-                id = 0;
-            } else {
-                // calculate months and get id
-                months = (now.getFullYear() - birthDate.getFullYear()) * 12;
-                months -= birthDate.getMonth();
-                months += now.getMonth();
+            if(tag === null){
+                id = null
+            }else{
+                id = tag.id
+            }            
+        });
 
-                if (months === 1) {
-                    id = 43;
-                }
-                if (months === 2) {
-                    id = 44
-                }
-                if (months === 3 || months === 4) {
-                    id = 45
-                }
-                if (months === 5 || months === 6) {
-                    id = 46
-                }
-                if (months >= 10 && months <= 12) {
-                    id = 47
-                }
-                if (months >= 13 && months <= 18) {
-                    id = 49
-                }
-                if (months >= 19 && months <= 24) {
-                    id = 50
-                }
-                if (months >= 25 && months <= 36) {
-                    id = 51
-                }
-                if (months >= 37 && months <= 48) {
-                    id = 52
-                }
-                if (months >= 15 && months <= 26) {
-                    id = 53
-                }
-                if (months >= 49 && months <= 60) {
-                    id = 57
-                }
-                if (months >= 61 && months <= 72) {
-                    id = 58
-                }
-            }
-        })
-        return id // return id 
+        return id            
     }
 
     public getHomeScreenArticles(realm: Realm | null): ArticlesSectionData {
@@ -192,11 +151,9 @@ class Content {
         }
 
         const categories = vocabulariesAndTermsResponse.categories;
-        const age = vocabulariesAndTermsResponse.predefined_tags;
-
+        let title: string = "";
         // Set categoryIds
         const categoryIds = [
-            // Health and Wellbeing
             55, // Play and Learning
             56, // Responsive Parenting
             2, // Health and Wellbeing
@@ -230,11 +187,13 @@ class Content {
             try {
                 const allContent = realm?.objects<ContentEntity>(ContentEntitySchema.name);
                 const filteredRecords = allContent?.filtered(`category == ${categoryId} AND type == 'article' SORT(id ASC) LIMIT(5)`);
+                const childAge = this.getChildAge();
 
-                if (this.getChildAge() !== 0) {
+                if (childAge !== null) {
+                    title = translate('todayArticles')
                     filteredRecords?.forEach((record, index, collection) => {
                         record.predefinedTags.forEach(item => {
-                            if (item === this.getChildAge()) {
+                            if (item === childAge) {
                                 categoryArticles.articles.push(
                                     record
                                 );
@@ -242,6 +201,7 @@ class Content {
                         })
                     });
                 } else {
+                    title = translate("popularArticles")
                     filteredRecords?.forEach((record, index, collection) => {
                         categoryArticles.articles.push(
                             record
@@ -255,6 +215,12 @@ class Content {
                 console.warn(e);
             }
 
+
+            for(let item in categoryArticles){
+                categoryArticles.articles = utils.randomizeArray(categoryArticles.articles)
+            }
+
+
             if (categoryArticles.articles.length > 0) {
                 rval.categoryArticles?.push(categoryArticles);
             }
@@ -262,7 +228,7 @@ class Content {
 
         // Change title
         if (rval.categoryArticles && rval.categoryArticles.length > 0) {
-            rval.title = translate('popularArticles');
+            rval.title = title;
             rval.vocabulariesAndTermsResponse = vocabulariesAndTermsResponse;
         }
 
