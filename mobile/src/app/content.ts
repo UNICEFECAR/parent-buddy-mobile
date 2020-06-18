@@ -5,8 +5,11 @@ import { utils } from "./utils";
 import { ContentViewEntity } from "../stores/ContentViewEntity";
 import { ArticlesSectionData } from "../screens/home/ArticlesSection";
 import { translate } from "../translations/translate";
-import { dataRealmStore, CategoryArticlesViewEntity } from "../stores";
+import { dataRealmStore, CategoryArticlesViewEntity, ChildEntity, userRealmStore } from "../stores";
 import { Platform } from "react-native";
+import { ChildEntitySchema } from "../stores/ChildEntity";
+import { Collection } from "realm";
+import { identity } from "lodash";
 
 /**
  * Utility methods related to ContentEntity.
@@ -14,7 +17,7 @@ import { Platform } from "react-native";
 class Content {
     private static instance: Content;
 
-    private constructor() {}
+    private constructor() { }
 
     static getInstance(): Content {
         if (!Content.instance) {
@@ -52,7 +55,7 @@ class Content {
         return rval;
     }
 
-    public toContentViewEntity(contentEntity: ContentEntity, vocabulariesAndTermsResponse?:VocabulariesAndTermsResponse): ContentViewEntity {
+    public toContentViewEntity(contentEntity: ContentEntity, vocabulariesAndTermsResponse?: VocabulariesAndTermsResponse): ContentViewEntity {
         const contentViewEntity: ContentViewEntity = {
             id: contentEntity.id,
             type: contentEntity.type,
@@ -63,9 +66,9 @@ class Content {
             coverImageAlt: contentEntity.coverImageAlt,
             updatedAt: contentEntity.updatedAt,
 
-            category: {id:0, name:''},
-            predefinedTags: [{id:0, name:''}],
-            keywords: [{id:0, name:''}],
+            category: { id: 0, name: '' },
+            predefinedTags: [{ id: 0, name: '' }],
+            keywords: [{ id: 0, name: '' }],
             coverImageFilepath: '',
         };
 
@@ -75,7 +78,7 @@ class Content {
 
         // category
         let categoryName: string | null = null;
-        
+
         vocabulariesAndTermsResponse.categories.forEach((value) => {
             if (value.id === contentEntity.category) {
                 categoryName = value.name;
@@ -109,7 +112,7 @@ class Content {
 
         // coverImageFilepath
         const coverImageFilepath = this.getCoverImageFilepath(contentEntity);
-        
+
         if (coverImageFilepath) {
             contentViewEntity.coverImageFilepath = coverImageFilepath;
         }
@@ -117,12 +120,70 @@ class Content {
         return contentViewEntity;
     }
 
+    private getChildAge = (): number => {
+        const childContent = userRealmStore.realm?.objects<ChildEntity>(ChildEntitySchema.name);
+        var id: number = 0;
+
+        childContent?.forEach((record, index, collection) => {
+            let months;
+            let now = new Date()
+            let birthDate = record.birthDate ? record.birthDate : null;
+            
+            // Chekc is child birthDate seted  
+            if (birthDate === null) {
+                id = 0;
+            } else {
+                // calculate months and get id
+                months = (now.getFullYear() - birthDate.getFullYear()) * 12;
+                months -= birthDate.getMonth();
+                months += now.getMonth();
+
+                if (months === 1) {
+                    id = 43;
+                }
+                if (months === 2) {
+                    id = 44
+                }
+                if (months === 3 || months === 4) {
+                    id = 45
+                }
+                if (months === 5 || months === 6) {
+                    id = 46
+                }
+                if (months >= 10 && months <= 12) {
+                    id = 47
+                }
+                if (months >= 13 && months <= 18) {
+                    id = 49
+                }
+                if (months >= 19 && months <= 24) {
+                    id = 50
+                }
+                if (months >= 25 && months <= 36) {
+                    id = 51
+                }
+                if (months >= 37 && months <= 48) {
+                    id = 52
+                }
+                if (months >= 15 && months <= 26) {
+                    id = 53
+                }
+                if (months >= 49 && months <= 60) {
+                    id = 57
+                }
+                if (months >= 61 && months <= 72) {
+                    id = 58
+                }
+            }
+        })
+        return id // return id 
+    }
+
     public getHomeScreenArticles(realm: Realm | null): ArticlesSectionData {
         const rval: ArticlesSectionData = {
             title: translate('noArticles'),
             categoryArticles: [],
         };
-
         // Set categories
         const vocabulariesAndTermsResponse = dataRealmStore.getVariable('vocabulariesAndTerms');
 
@@ -131,16 +192,18 @@ class Content {
         }
 
         const categories = vocabulariesAndTermsResponse.categories;
+        const age = vocabulariesAndTermsResponse.predefined_tags;
 
         // Set categoryIds
         const categoryIds = [
+            // Health and Wellbeing
             55, // Play and Learning
-            2, // Health and Wellbeing
-            3, // Safety and Protection
             56, // Responsive Parenting
-            4, // Parenting Corner
+            2, // Health and Wellbeing
             1, // Nutrition and Breastfeeding
-            
+            3, // Safety and Protection
+            4, // Parenting Corner
+
             // DONT SHOW THESE CATEGORIES
             // 5, // Growth
         ];
@@ -156,7 +219,7 @@ class Content {
             if (thisCategoryArray && thisCategoryArray.length > 0) {
                 categoryName = thisCategoryArray[0].name;
             }
-            
+
             // Set categoryArticles
             const categoryArticles: CategoryArticlesViewEntity = {
                 categoryId: categoryId,
@@ -167,16 +230,31 @@ class Content {
             try {
                 const allContent = realm?.objects<ContentEntity>(ContentEntitySchema.name);
                 const filteredRecords = allContent?.filtered(`category == ${categoryId} AND type == 'article' SORT(id ASC) LIMIT(5)`);
-        
-                filteredRecords?.forEach((record, index, collection) => {
-                    categoryArticles.articles.push(
-                        record
-                    );
-                });
+
+                if (this.getChildAge() !== 0) {
+                    filteredRecords?.forEach((record, index, collection) => {
+                        record.predefinedTags.forEach(item => {
+                            if (item === this.getChildAge()) {
+                                categoryArticles.articles.push(
+                                    record
+                                );
+                            }
+                        })
+                    });
+                } else {
+                    filteredRecords?.forEach((record, index, collection) => {
+                        categoryArticles.articles.push(
+                            record
+                        );
+                    });
+                }
+
+
+
             } catch (e) {
                 console.warn(e);
             }
-    
+
             if (categoryArticles.articles.length > 0) {
                 rval.categoryArticles?.push(categoryArticles);
             }
@@ -198,12 +276,12 @@ class Content {
         };
 
         // Get all articles from contentEntity category except contentEntity
-        let allArticles: ContentEntity[] = []; 
-        
+        let allArticles: ContentEntity[] = [];
+
         try {
             const allContent = realm?.objects<ContentEntity>(ContentEntitySchema.name);
             const filteredRecords = allContent?.filtered(`category == ${contentEntity.category} AND type == 'article' AND id <> ${contentEntity.id}`);
-    
+
             filteredRecords?.forEach((record, index, collection) => {
                 allArticles.push(record);
             });
@@ -220,3 +298,5 @@ class Content {
 }
 
 export const content = Content.getInstance();
+
+

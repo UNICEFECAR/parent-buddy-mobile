@@ -196,7 +196,6 @@ class DataRealmStore {
         if (!vocabulariesAndTerms) return null;
 
         let rval = '';
-
         vocabulariesAndTerms.categories.forEach((categoryObject) => {
             if (categoryObject.id === categoryId) {
                 rval = categoryObject.name;
