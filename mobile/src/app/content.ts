@@ -120,19 +120,19 @@ class Content {
         return contentViewEntity;
     }
 
-    private getChildAge = (): number | null => {
+    private getChildAge = (categoryId: number): number | null => {
         const childContent = userRealmStore.realm?.objects<ChildEntity>(ChildEntitySchema.name);
         var id: number | null = 0;
 
         childContent?.forEach((record, index, collection) => {
             const birthDate = record.birthDate ? record.birthDate : null;
-            const tag = dataRealmStore.getChildAgeTag(birthDate);
+            const tag = dataRealmStore.getChildAgeTag(birthDate, categoryId, true);
             
-            if(tag === null){
-                id = null
-            }else{
-                id = tag.id
-            }            
+            console.log(tag?.id , "TAG ID KOJI SAM DOBIO")
+            console.log(tag?.name, "NAME ZA TAJ TAG")
+            
+            id = tag === null ? null : tag.id
+          
         });
 
         return id            
@@ -186,8 +186,10 @@ class Content {
 
             try {
                 const allContent = realm?.objects<ContentEntity>(ContentEntitySchema.name);
-                const filteredRecords = allContent?.filtered(`category == ${categoryId} AND type == 'article' SORT(id ASC) LIMIT(5)`);
-                const childAge = this.getChildAge();
+                const filteredRecords = allContent?.filtered(`category == ${categoryId} AND type == 'article' SORT(id ASC) LIMIT(5)`)
+                                            
+                const childAge = this.getChildAge(categoryId);
+                // const childAge = 57
 
                 if (childAge !== null) {
                     title = translate('todayArticles')
@@ -264,5 +266,7 @@ class Content {
 }
 
 export const content = Content.getInstance();
+
+
 
 

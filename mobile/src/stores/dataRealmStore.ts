@@ -7,6 +7,7 @@ import { ListCardItem } from '../screens/home/ListCard';
 import { ContentEntity } from '.';
 import { ContentEntitySchema } from './ContentEntity';
 import { translate } from '../translations/translate';
+import { GraphRequest } from 'react-native-fbsdk';
 
 type Variables = {
     'userEmail': string;
@@ -178,7 +179,7 @@ class DataRealmStore {
         });
     }
 
-    public getContentFromId(id:number) {
+    public getContentFromId(id: number) {
         console.log(id);
         try {
             const allRecords = this.realm?.objects<ContentEntity>(ContentEntitySchema.name);
@@ -191,9 +192,59 @@ class DataRealmStore {
         }
     }
 
-    public getChildAgeTag = (birthday: Date | null, returnNext:boolean = false): {id:number, name:string} | null => {
-        let id: number | null = 0;
-        let obj: {id: number, name: string} | null = {
+
+    
+    private getTagFromAge = (months: number): {id: number, name: string } => {
+        let obj: {id: number, name: string} = {
+            id: 0,
+            name: ""
+        };
+
+        if (months === 1 || months === 0) {
+            obj = {id: 43, name: "1st month"}
+        }
+        if (months === 2) {
+            obj = {id: 44, name: "2nd months"}
+        }
+        if (months === 3 || months === 4) {
+            obj = {id: 45, name: '3-4 months'}
+        }
+        if (months === 5 || months === 6) {
+            obj = {id: 46, name: "5-6 months"}
+        }
+        if (months >= 7 && months <= 9) {
+            obj = {id: 47, name: "7-9 months"}
+        }
+        if (months >= 10 && months <= 12) {
+            obj = {id: 48, name: "10-12 months"}
+        }
+        if (months >= 13 && months <= 18) {
+            obj = {id: 49, name: "13-18 months"}
+        }
+        if (months >= 19 && months <= 24) {
+            obj = {id: 50, name: "19-24 months"}
+        }
+        if (months >= 25 && months <= 36) {
+            obj = {id: 51, name: "25-36 months"}
+        }
+        if (months >= 37 && months <= 48) {
+            obj = {id: 52, name: "37-48 months"}
+        }
+        if (months >= 15 && months <= 26) {
+            obj = {id: 53, name: "15-26 months"}
+        }
+        if (months >= 49 && months <= 60) {
+            obj = {id: 57, name: "49-60 months"}
+        }
+        if (months >= 61 && months <= 72) {
+            obj = {id: 58, name: "61-72 months"}
+        }
+
+        return obj;
+    }
+
+    public getChildAgeTag = (birthday: Date | null, categoryId: number | null = null, returnNext: boolean = false): { id: number, name: string } | null => {
+        let obj: { id: number, name: string } | null = {
             id: 0,
             name: ""
         }
@@ -207,49 +258,59 @@ class DataRealmStore {
             months -= birthday.getMonth();
             months += now.getMonth();
 
-            if (months === 1) {
-                obj = {id: 43, name: "1st month"}
+            let data = this.getTagFromAge(months)
+            
+            let id = data?.id;
+            let name = data?.name;
+
+            if (returnNext) {
+                const allContent = this.realm?.objects<ContentEntity>(ContentEntitySchema.name);
+                const filteredRecords = allContent?.filtered(`category == ${categoryId} AND type == 'article' SORT(id ASC) LIMIT(5)`);
+                const vocabulariesAndTermsResponse = this.getVariable('vocabulariesAndTerms');
+                
+                let arrayBefore: {id: number, name: string}[] = [];
+                let arrayAfter: {id: number, name: string}[] = [];
+
+                // get all tags from our main tag and sort 
+                vocabulariesAndTermsResponse?.predefined_tags.forEach(item => {
+                    item.children.forEach(i => {
+                        if (i.id <= 58) {
+                            if (i.id < id) {
+                                arrayAfter.push({id: i.id, name: i.name})
+                            } else {
+                                arrayBefore.push({id: i.id, name: i.name})
+                            }
+                        }
+                    })
+                })
+
+                arrayBefore = arrayBefore.sort((a, b) => a.id - b.id);
+                arrayAfter = arrayAfter.sort((a, b) => b.id - a.id);
+
+                let mergedArray = arrayBefore.concat(arrayAfter)
+                
+                for (let i = 0; i < mergedArray.length; i++) {
+                    let check = false;
+                    filteredRecords?.forEach((record, index, collection) => {
+                        record.predefinedTags.forEach(tag => {
+                            if(tag === mergedArray[i].id && record.predefinedTags.length !== 0){
+                                obj = {id: tag, name: mergedArray[i].name}
+                                check = true;
+                            }
+                        })
+                    })
+                    if(check){
+                        break;
+                    }
+                }
+
+            } else {
+                obj = { id: id, name:  name}
             }
-            if (months === 2) {
-                obj = {id: 44, name: "2nd months"}
-            }
-            if (months === 3 || months === 4) {
-                obj = {id: 45, name: "3-4 months"}
-            }
-            if (months === 5 || months === 6) {
-                obj = {id: 46, name: "5-6 months"}
-            }
-            if (months >= 7 && months <= 9) {
-                obj = {id: 47, name: "7-9 months"}
-            }
-            if (months >= 10 && months <= 12) {
-                obj = {id: 48, name: "10-12 months"}
-            }
-            if (months >= 13 && months <= 18) {
-                obj = {id: 48, name: "13-18 months"}
-            }
-            if (months >= 19 && months <= 24) {
-                obj = {id: 50, name: "19-24 months"}
-            }
-            if (months >= 25 && months <= 36) {
-                obj = {id: 51, name: "25-36 months"}
-            }
-            if (months >= 37 && months <= 48) {
-                obj = {id: 52, name: "37-48 months"}
-            }
-            if (months >= 15 && months <= 26) {
-                obj = {id: 53, name: "15-26 months"}
-            }
-            if (months >= 49 && months <= 60) {
-                obj = {id: 57, name: "49-60 months"}
-            }
-            if (months >= 61 && months <= 72) {
-                obj = {id: 58, name: "61-72 months"}
-            }
+
         }
-    
-        return obj 
-    } 
+        return obj
+    }
 
     public getCategoryNameFromId(categoryId: number): string | null {
         const vocabulariesAndTerms = this.getVariable('vocabulariesAndTerms');
@@ -297,7 +358,7 @@ class DataRealmStore {
                     // Remove "All ages": 446
                     childAgeTags = childAgeTags.filter((value) => {
                         if (value.id === 446) return false;
-                            else return true;
+                        else return true;
                     });
                 }
             });
@@ -379,7 +440,7 @@ class DataRealmStore {
         try {
             const allRecords = this.realm?.objects<ContentEntity>(ContentEntitySchema.name);
             const filteredRecords = allRecords?.filtered(`type == 'article' AND (body CONTAINS[c] '${searchTerm}' OR title CONTAINS[c] '${searchTerm}')`);
-    
+
             filteredRecords?.forEach((record, index, collection) => {
                 relevantArticles.push(record);
             });
@@ -414,7 +475,7 @@ class DataRealmStore {
         try {
             const allRecords = this.realm?.objects<ContentEntity>(ContentEntitySchema.name);
             const filteredRecords = allRecords?.filtered(`type == 'faq' AND (body CONTAINS[c] '${searchTerm}' OR title CONTAINS[c] '${searchTerm}')`);
-    
+
             filteredRecords?.forEach((record, index, collection) => {
                 faqs.push(record);
             });
@@ -444,10 +505,10 @@ export enum TagType {
     keyword = 'keyword',
 };
 
-type SearchResultsScreenDataCategoryArticles = {categoryId:number, categoryName:string, contentItems:ContentEntity[]};
+type SearchResultsScreenDataCategoryArticles = { categoryId: number, categoryName: string, contentItems: ContentEntity[] };
 
 export type SearchResultsScreenDataResponse = {
-    articles?: SearchResultsScreenDataCategoryArticles [];
+    articles?: SearchResultsScreenDataCategoryArticles[];
     faqs?: ContentEntity[];
 };
 
