@@ -16,6 +16,7 @@ import { ContentEntity, ContentEntitySchema } from '../../stores/ContentEntity';
 import { content } from '../../app';
 import { Media } from '../../components';
 import { VideoType } from '../../components/Media';
+import { dataRealmStore } from '../../stores';
 
 const DIVIDER_HEIGHT = StyleSheet.hairlineWidth * 2;
 
@@ -43,8 +44,8 @@ export class CategoryArticlesScreen extends React.Component<Props, State> {
         super(props);
 
         this.list = React.createRef();
-        this.state = { listData: [] };
         this.setDefaultScreenParams();
+        this.initState();
     }
 
     private setDefaultScreenParams() {
@@ -59,6 +60,23 @@ export class CategoryArticlesScreen extends React.Component<Props, State> {
         } else {
             this.props.navigation.state.params = defaultScreenParams;
         }
+    }
+
+    private initState() {
+        let listData = this.getListData();
+
+        this.state = {
+            listData: listData ? listData : []
+        };
+    }
+
+    private getListData() {
+        if (!dataRealmStore.realm) return;
+        const screenParams = this.props.navigation.state.params!;
+
+        return dataRealmStore.realm.objects<ContentEntity>(ContentEntitySchema.name)
+            .filtered(`category == ${screenParams.categoryId} AND type == 'article' SORT(id ASC)`)
+            .map(article => article);
     }
 
     private gotoBack() {
