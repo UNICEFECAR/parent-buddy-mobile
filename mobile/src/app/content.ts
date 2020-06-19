@@ -10,6 +10,7 @@ import { Platform } from "react-native";
 import { ChildEntitySchema } from "../stores/ChildEntity";
 import { Collection } from "realm";
 import { identity } from "lodash";
+import { translateData } from "../translationsData/translateData";
 
 /**
  * Utility methods related to ContentEntity.
@@ -120,25 +121,8 @@ class Content {
         return contentViewEntity;
     }
 
-    private getChildAge = (categoryId: number): number | null => {
-        const childContent = userRealmStore.realm?.objects<ChildEntity>(ChildEntitySchema.name);
-        var id: number | null = 0;
-
-        childContent?.forEach((record, index, collection) => {
-            const birthDate = record.birthDate ? record.birthDate : null;
-            const tag = dataRealmStore.getChildAgeTag(birthDate, categoryId, true);
-            
-            console.log(tag?.id , "TAG ID KOJI SAM DOBIO")
-            console.log(tag?.name, "NAME ZA TAJ TAG")
-            
-            id = tag === null ? null : tag.id
-          
-        });
-
-        return id            
-    }
-
     public getHomeScreenArticles(realm: Realm | null): ArticlesSectionData {
+
         const rval: ArticlesSectionData = {
             title: translate('noArticles'),
             categoryArticles: [],
@@ -175,7 +159,7 @@ class Content {
             let categoryName = '';
             if (thisCategoryArray && thisCategoryArray.length > 0) {
                 categoryName = thisCategoryArray[0].name;
-            }
+            };
 
             // Set categoryArticles
             const categoryArticles: CategoryArticlesViewEntity = {
@@ -186,21 +170,20 @@ class Content {
 
             try {
                 const allContent = realm?.objects<ContentEntity>(ContentEntitySchema.name);
-                const filteredRecords = allContent?.filtered(`category == ${categoryId} AND type == 'article' SORT(id ASC) LIMIT(5)`)
+                const filteredRecords = allContent?.filtered(`category == ${categoryId} AND type == 'article' SORT(id ASC) LIMIT(5)`);
                                             
-                const childAge = this.getChildAge(categoryId);
-                // const childAge = 57
+                const childAgeTagId = dataRealmStore.getChildAgeTagWithArticles(categoryId)?.id;
 
-                if (childAge !== null) {
+                if (childAgeTagId !== null && childAgeTagId !== undefined) {
                     title = translate('todayArticles')
                     filteredRecords?.forEach((record, index, collection) => {
                         record.predefinedTags.forEach(item => {
-                            if (item === childAge) {
+                            if (item === childAgeTagId) {
                                 categoryArticles.articles.push(
                                     record
                                 );
-                            }
-                        })
+                            };
+                        });
                     });
                 } else {
                     title = translate("popularArticles")
@@ -209,30 +192,29 @@ class Content {
                             record
                         );
                     });
-                }
+                };
 
-
-
+                
             } catch (e) {
                 console.warn(e);
-            }
+            };
 
 
             for(let item in categoryArticles){
                 categoryArticles.articles = utils.randomizeArray(categoryArticles.articles)
-            }
+            };
 
 
             if (categoryArticles.articles.length > 0) {
                 rval.categoryArticles?.push(categoryArticles);
-            }
+            };
         });
 
         // Change title
         if (rval.categoryArticles && rval.categoryArticles.length > 0) {
             rval.title = title;
             rval.vocabulariesAndTermsResponse = vocabulariesAndTermsResponse;
-        }
+        };
 
         return rval;
     }

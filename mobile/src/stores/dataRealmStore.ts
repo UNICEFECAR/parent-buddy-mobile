@@ -8,6 +8,8 @@ import { ContentEntity } from '.';
 import { ContentEntitySchema } from './ContentEntity';
 import { translate } from '../translations/translate';
 import { GraphRequest } from 'react-native-fbsdk';
+import { DateTime } from "luxon";
+import { userRealmStore } from './userRealmStore';
 
 type Variables = {
     'userEmail': string;
@@ -193,73 +195,78 @@ class DataRealmStore {
     }
 
 
-    
-    private getTagFromAge = (months: number): {id: number, name: string } => {
-        let obj: {id: number, name: string} = {
+
+    private getTagIdFromChildAge = (months: number): { id: number, name: string } => {
+        let obj: { id: number, name: string } = {
             id: 0,
             name: ""
         };
-
         if (months === 1 || months === 0) {
-            obj = {id: 43, name: "1st month"}
+            obj = { id: 43, name: "1st month" }
         }
         if (months === 2) {
-            obj = {id: 44, name: "2nd months"}
+            obj = { id: 44, name: "2nd months" }
         }
         if (months === 3 || months === 4) {
-            obj = {id: 45, name: '3-4 months'}
+            obj = { id: 45, name: '3-4 months' }
         }
         if (months === 5 || months === 6) {
-            obj = {id: 46, name: "5-6 months"}
+            obj = { id: 46, name: "5-6 months" }
         }
         if (months >= 7 && months <= 9) {
-            obj = {id: 47, name: "7-9 months"}
+            obj = { id: 47, name: "7-9 months" }
         }
         if (months >= 10 && months <= 12) {
-            obj = {id: 48, name: "10-12 months"}
+            obj = { id: 48, name: "10-12 months" }
         }
         if (months >= 13 && months <= 18) {
-            obj = {id: 49, name: "13-18 months"}
+            obj = { id: 49, name: "13-18 months" }
         }
         if (months >= 19 && months <= 24) {
-            obj = {id: 50, name: "19-24 months"}
+            obj = { id: 50, name: "19-24 months" }
         }
         if (months >= 25 && months <= 36) {
-            obj = {id: 51, name: "25-36 months"}
+            obj = { id: 51, name: "25-36 months" }
         }
         if (months >= 37 && months <= 48) {
-            obj = {id: 52, name: "37-48 months"}
+            obj = { id: 52, name: "37-48 months" }
         }
         if (months >= 15 && months <= 26) {
-            obj = {id: 53, name: "15-26 months"}
+            obj = { id: 53, name: "15-26 months" }
         }
         if (months >= 49 && months <= 60) {
-            obj = {id: 57, name: "49-60 months"}
+            obj = { id: 57, name: "49-60 months" }
         }
         if (months >= 61 && months <= 72) {
-            obj = {id: 58, name: "61-72 months"}
+            obj = { id: 58, name: "61-72 months" }
         }
 
         return obj;
     }
 
-    public getChildAgeTag = (birthday: Date | null, categoryId: number | null = null, returnNext: boolean = false): { id: number, name: string } | null => {
+    public getChildAgeTagWithArticles = (categoryId: number | null = null, returnNext: boolean = false): { id: number, name: string } | null => {
         let obj: { id: number, name: string } | null = {
             id: 0,
             name: ""
-        }
-        let now = new Date();
+        };
 
-        if (birthday === null) {
+        const birthday = userRealmStore.getCurrentChild()?.birthDate;
+        const timeNow = DateTime.local();
+
+        if (birthday === null || birthday === undefined) {
             obj = null;
         } else {
             // calculate months and get id
-            let months = (now.getFullYear() - birthday.getFullYear()) * 12;
-            months -= birthday.getMonth();
-            months += now.getMonth();
-
-            let data = this.getTagFromAge(months)
+            let date = DateTime.fromJSDate(birthday);
+            let monthsDiff = timeNow.diff(date, "month").toObject();
+            let months: number = 0;
             
+            if (monthsDiff.months) {
+                months = Math.round(monthsDiff.months);
+            };
+
+            let data = this.getTagIdFromChildAge(months);
+
             let id = data?.id;
             let name = data?.name;
 
@@ -267,49 +274,48 @@ class DataRealmStore {
                 const allContent = this.realm?.objects<ContentEntity>(ContentEntitySchema.name);
                 const filteredRecords = allContent?.filtered(`category == ${categoryId} AND type == 'article' SORT(id ASC) LIMIT(5)`);
                 const vocabulariesAndTermsResponse = this.getVariable('vocabulariesAndTerms');
-                
-                let arrayBefore: {id: number, name: string}[] = [];
-                let arrayAfter: {id: number, name: string}[] = [];
+
+                let tagsBefore: { id: number, name: string }[] = [];
+                let tagsAfter: { id: number, name: string }[] = [];
 
                 // get all tags from our main tag and sort 
                 vocabulariesAndTermsResponse?.predefined_tags.forEach(item => {
                     item.children.forEach(i => {
                         if (i.id <= 58) {
                             if (i.id < id) {
-                                arrayAfter.push({id: i.id, name: i.name})
+                                tagsBefore.push({ id: i.id, name: i.name });
                             } else {
-                                arrayBefore.push({id: i.id, name: i.name})
-                            }
-                        }
-                    })
-                })
+                                tagsAfter.push({ id: i.id, name: i.name });
+                            };
+                        };
+                    });
+                });
 
-                arrayBefore = arrayBefore.sort((a, b) => a.id - b.id);
-                arrayAfter = arrayAfter.sort((a, b) => b.id - a.id);
+                tagsBefore = tagsBefore.sort((a, b) => a.id - b.id);
+                tagsAfter = tagsAfter.sort((a, b) => b.id - a.id);
 
-                let mergedArray = arrayBefore.concat(arrayAfter)
-                
-                for (let i = 0; i < mergedArray.length; i++) {
+                let mergedTags = tagsBefore.concat(tagsAfter);
+
+                for (let i = 0; i < mergedTags.length; i++) {
                     let check = false;
                     filteredRecords?.forEach((record, index, collection) => {
                         record.predefinedTags.forEach(tag => {
-                            if(tag === mergedArray[i].id && record.predefinedTags.length !== 0){
-                                obj = {id: tag, name: mergedArray[i].name}
+                            if (tag === mergedTags[i].id && record.predefinedTags.length !== 0) {
+                                obj = { id: tag, name: mergedTags[i].name }
                                 check = true;
-                            }
-                        })
-                    })
-                    if(check){
+                            };
+                        });
+                    });
+                    if (check) {
                         break;
-                    }
-                }
-
+                    };
+                };
             } else {
-                obj = { id: id, name:  name}
-            }
+                obj = { id: id, name: name };
+            };
+        };
 
-        }
-        return obj
+        return obj;
     }
 
     public getCategoryNameFromId(categoryId: number): string | null {
