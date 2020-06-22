@@ -7,7 +7,8 @@ import { ArticlesSectionData } from "../screens/home/ArticlesSection";
 import { translate } from "../translations/translate";
 import { dataRealmStore, CategoryArticlesViewEntity, userRealmStore } from "../stores";
 import { Platform } from "react-native";
-
+import { translateData } from "../translationsData/translateData";
+import { DateTime } from "luxon";
 
 /**
  * Utility methods related to ContentEntity.
@@ -119,11 +120,12 @@ class Content {
     }
 
     // public getHomeScreenDevelopmentArticles(realm: Realm | null): ArticlesSectionData {
-    //     let isChildInDevelopment = false; 
+    //     let isChildInDevelopment = false;
 
     //     const rval: ArticlesSectionData = {
     //         title: translate('noArticles'),
     //         categoryArticles: [],
+    //         featuredArticle: {},
     //     };
     //     // Set categories
     //     const vocabulariesAndTermsResponse = dataRealmStore.getVariable('vocabulariesAndTerms');
@@ -135,126 +137,130 @@ class Content {
     //     const childBirthDay = userRealmStore.getCurrentChild()?.birthDate;
     //     let monts;
 
-    //     if(childBirthDay === undefined || childBirthDay === null){
-    //         return rval 
-    //     }else{
+    //     if (childBirthDay === undefined || childBirthDay === null) {
+    //         return rval
+    //     } else {
     //         const dateNow = DateTime.local();
     //         const diff = dateNow.diff(DateTime.fromJSDate(childBirthDay), ["month", "day"],).toObject();
-            
-    //         if(diff.days){
+
+    //         if (diff.days) {
     //             // TREBA PROVERITI KAKO DA SE URADI ROUND 
     //             const diffDay = Math.round(diff.days);
 
-    //             if(diff.days >= 0 && diff.days<= 11){
-    //                 isChildInDevelopment = true 
-    //             }else if(diff.days >= 20 && diff.days <= 31){
-    //                 isChildInDevelopment = true 
-    //             }else{
-    //                 isChildInDevelopment = false 
+    //             if (diff.days >= 0 && diff.days <= 11) {
+    //                 isChildInDevelopment = true
+    //             } else if (diff.days >= 20 && diff.days <= 31) {
+    //                 isChildInDevelopment = true
+    //             } else {
+    //                 isChildInDevelopment = false
     //             }
     //         }
 
-    //         if(!isChildInDevelopment){
+    //         if (!isChildInDevelopment) {
     //             return rval;
-    //         }else{
+    //         } else {
+                
     //             let id = dataRealmStore.getChildAgeTagWithArticles()?.id;
+    //             let childGender = userRealmStore.getChildGender();
 
-    //             const featuredArticle = translateData('developmentPeriods');
+    //             const featuredArticles = translateData('developmentPeriods');
 
-    //             featuredArticle?.forEach(item => {
-    //                 if(item.predefinedTagId === id){
+    //             let featuredArticleTagId: number = 0;
+    //             let featuredGenderTagId: number = 0;
+
+    //             featuredArticles?.forEach(item => {
+    //                 if (item.predefinedTagId === id) {
     //                     /// logika za to 
+    //                     featuredArticleTagId = item.predefinedTagId
+    //                     featuredGenderTagId = childGender === "girl" ? item.moreAboutPeriodArticleIdFemale : item.moreAboutPeriodArticleIdMale;
     //                 }
-    //             })
+    //             });
+
+    //             const categories = vocabulariesAndTermsResponse.categories;
+    //             let title: string = "";
+    //             // Set categoryIds
+    //             const categoryIds = [
+    //                 55, // Play and Learning
+    //                 56, // Responsive Parenting
+    //                 2, // Health and Wellbeing
+    //                 1, // Nutrition and Breastfeeding
+
+    //                 // DONT SHOW THESE CATEGORIES
+    //                 // 5, // Growth
+    //             ];
+
+    //             categoryIds.forEach((categoryId) => {
+    //                 // Set categoryName
+    //                 let thisCategoryArray = categories.filter((category) => {
+    //                     return category.id === categoryId;
+    //                 });
+
+    //                 let categoryName = '';
+    //                 if (thisCategoryArray && thisCategoryArray.length > 0) {
+    //                     categoryName = thisCategoryArray[0].name;
+    //                 };
+
+    //                 // Set categoryArticles
+    //                 const categoryArticles: CategoryArticlesViewEntity = {
+    //                     categoryId: categoryId,
+    //                     categoryName: categoryName,
+    //                     articles: []
+    //                 };
+
+    //                 let featuredArticle = {};
+
+    //                 try {
+    //                     const allContent = realm?.objects<ContentEntity>(ContentEntitySchema.name);
+    //                     const filteredRecords = allContent?.filtered(`category == ${categoryId} AND type == 'article'`);
+
+    //                     const childAgeTagId = dataRealmStore.getChildAgeTagWithArticles(categoryId, true)?.id;
+    //                     // console.log(featuredArticleTagId, 'tag')
+    //                     filteredRecords?.forEach((record, index, collection) => {
+    //                         console.log(record.predefinedTags, 'predefined tags')
+    //                         record.predefinedTags.forEach(item => {
+    //                             record.keywords.forEach(keyword => {
+    //                                 // console.log('ovde je usao', keyword)
+    //                                 // console.log(featuredGenderTagId, 'grender')
+    //                                 // console.log(keyword, 'keywoard')
+    //                                 if(keyword === featuredGenderTagId){
+    //                                     console.log("TU JE ")
+    //                                     featuredArticle = record
+    //                                 }
+    //                             })
+    //                             if (item === id ) {
+    //                                 categoryArticles.articles.push(
+    //                                     record
+    //                                 );
+    //                             };
+    //                         });
+    //                     });
+
+    //                 } catch (e) {
+    //                     console.warn(e);
+    //                 };
+
+
+    //                 for (let item in categoryArticles) {
+    //                     categoryArticles.articles = utils.randomizeArray(categoryArticles.articles)
+    //                 };
+
+
+    //                 if (categoryArticles.articles.length > 0) {
+    //                     rval.categoryArticles?.push(categoryArticles);
+    //                 };
+
+    //                 // rval.featuredArticle = featuredArticle
+    //             });
+
+    //             // Change title
+    //             if (rval.categoryArticles && rval.categoryArticles.length > 0) {
+    //                 rval.title = title;
+    //                 rval.vocabulariesAndTermsResponse = vocabulariesAndTermsResponse;
+    //             };
     //         }
 
     //     }
-
-
-    //     const categories = vocabulariesAndTermsResponse.categories;
-    //     let title: string = "";
-    //     // Set categoryIds
-    //     const categoryIds = [
-    //         55, // Play and Learning
-    //         56, // Responsive Parenting
-    //         2, // Health and Wellbeing
-    //         1, // Nutrition and Breastfeeding
-
-    //         // DONT SHOW THESE CATEGORIES
-    //         // 5, // Growth
-    //     ];
-
-
-    //     const featuredArticles = translateData('developmentPeriods')
-
-
-    //     // Get artciles for each category
-    //     categoryIds.forEach((categoryId) => {
-    //         // Set categoryName
-    //         let thisCategoryArray = categories.filter((category) => {
-    //             return category.id === categoryId;
-    //         });
-
-    //         let categoryName = '';
-    //         if (thisCategoryArray && thisCategoryArray.length > 0) {
-    //             categoryName = thisCategoryArray[0].name;
-    //         };
-
-    //         // Set categoryArticles
-    //         const categoryArticles: CategoryArticlesViewEntity = {
-    //             categoryId: categoryId,
-    //             categoryName: categoryName,
-    //             articles: []
-    //         };
-
-    //         try {
-    //             const allContent = realm?.objects<ContentEntity>(ContentEntitySchema.name);
-    //             const filteredRecords = allContent?.filtered(`category == ${categoryId} AND type == 'article' SORT(id ASC) LIMIT(5)`);
-                                            
-    //             const childAgeTagId = dataRealmStore.getChildAgeTagWithArticles(categoryId, true)?.id;
-
-    //             if (childAgeTagId !== null && childAgeTagId !== undefined) {
-    //                 title = translate('todayArticles')
-    //                 filteredRecords?.forEach((record, index, collection) => {
-    //                     record.predefinedTags.forEach(item => {
-    //                         if (item === childAgeTagId) {
-    //                             categoryArticles.articles.push(
-    //                                 record
-    //                             );
-    //                         };
-    //                     });
-    //                 });
-    //             } else {
-    //                 title = translate("popularArticles")
-    //                 filteredRecords?.forEach((record, index, collection) => {
-    //                     categoryArticles.articles.push(
-    //                         record
-    //                     );
-    //                 });
-    //             };
-
-                
-    //         } catch (e) {
-    //             console.warn(e);
-    //         };
-
-
-    //         for(let item in categoryArticles){
-    //             categoryArticles.articles = utils.randomizeArray(categoryArticles.articles)
-    //         };
-
-
-    //         if (categoryArticles.articles.length > 0) {
-    //             rval.categoryArticles?.push(categoryArticles);
-    //         };
-    //     });
-
-    //     // Change title
-    //     if (rval.categoryArticles && rval.categoryArticles.length > 0) {
-    //         rval.title = title;
-    //         rval.vocabulariesAndTermsResponse = vocabulariesAndTermsResponse;
-    //     };
-
+    //     console.log(JSON.stringify(rval.featuredArticle, null, 4))
     //     return rval;
     // }
 
@@ -306,8 +312,9 @@ class Content {
 
             try {
                 const allContent = realm?.objects<ContentEntity>(ContentEntitySchema.name);
-                const filteredRecords = allContent?.filtered(`category == ${categoryId} AND type == 'article' SORT(id ASC) LIMIT(5)`);
-                
+                const filteredRecords = 
+                    allContent?.filtered(`category == ${categoryId} AND type == 'article'`);
+
                 const childAgeTagId = dataRealmStore.getChildAgeTagWithArticles(categoryId, true)?.id;
 
                 if (childAgeTagId !== null && childAgeTagId !== undefined) {
@@ -336,8 +343,8 @@ class Content {
             };
 
 
-            for(let item in categoryArticles){
-                categoryArticles.articles = utils.randomizeArray(categoryArticles.articles)
+            for (let item in categoryArticles) {
+                categoryArticles.articles = utils.randomizeArray(categoryArticles.articles).slice(0,5)
             };
 
 

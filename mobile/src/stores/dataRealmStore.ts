@@ -268,12 +268,10 @@ class DataRealmStore {
 
             if (returnNext) {
                 const allContent = this.realm?.objects<ContentEntity>(ContentEntitySchema.name);
-                const filteredRecords = allContent?.filtered(`category == ${categoryId} AND type == 'article' SORT(id ASC) LIMIT(5)`);
+                const filteredRecords = allContent?.filtered(`category == ${categoryId} AND type == 'article'`);
 
                 let tagsBefore: { id: number, name: string }[] = [];
                 let tagsAfter: { id: number, name: string }[] = [];
-
-                const name2 = vocabulariesAndTermsResponse?.predefined_tags.filter(item => item.id === id);
 
                 // get all tags from our main tag and sort 
                 vocabulariesAndTermsResponse?.predefined_tags.forEach(item => {
