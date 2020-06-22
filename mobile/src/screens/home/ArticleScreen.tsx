@@ -87,15 +87,16 @@ export class ArticleScreen extends React.Component<Props, object> {
                         </View>
 
                         <View style={{ paddingBottom: 0 }}>
-                            {/* ARTICLE IMAGE */}
+                            {/* ARTICLE COVER */}
                             <Media
-                                coverImageUrl={ content.getCoverImageFilepath(screenParams.article) }
+                                coverImageUrl={content.getCoverImageFilepath(screenParams.article)}
                                 videoType={screenParams.article.coverVideoSite as VideoType}
                                 videoUrl={screenParams.article.coverVideoUrl}
+                                playVideoDirectly={true}
 
                                 roundCorners={false}
                                 aspectRatio={1.4}
-                                style={{ width:'100%' }}
+                                style={{ width: '100%' }}
                             />
 
                             {/* SHARE BUTTON */}
@@ -114,16 +115,19 @@ export class ArticleScreen extends React.Component<Props, object> {
                             // onSizeUpdated={ size => console.warn(size.height) }
                         /> */}
 
-                            <HTML
-                                html={screenParams.article.body}
-                                baseFontStyle={{ fontSize: scale(17) }}
-                                tagsStyles={htmlStyles}
-                                imagesMaxWidth={Dimensions.get('window').width}
-                                staticContentMaxWidth={Dimensions.get('window').width}
-                                onLinkPress={(event: any, href: string) => {
-                                    Linking.openURL(href);
-                                }}
-                            />
+                            {screenParams.article.body ? (
+                                <HTML
+                                    html={screenParams.article.body}
+                                    baseFontStyle={{ fontSize: scale(17) }}
+                                    tagsStyles={htmlStyles}
+                                    imagesMaxWidth={Dimensions.get('window').width}
+                                    staticContentMaxWidth={Dimensions.get('window').width}
+                                    onLinkPress={(event: any, href: string) => {
+                                        Linking.openURL(href);
+                                    }}
+                                />
+
+                            ) : null}
 
                             {/* SHARE BUTTON */}
                             {/* <TextButton icon="share-alt" iconStyle={{ color: '#AA40BF' }} color={TextButtonColor.purple}>

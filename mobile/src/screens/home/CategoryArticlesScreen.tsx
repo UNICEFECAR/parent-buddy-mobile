@@ -110,8 +110,9 @@ export class CategoryArticlesScreen extends React.Component<Props, State> {
                 coverImageUrl={content.getCoverImageFilepath(item)}
                 videoType={item.coverVideoSite as VideoType}
                 videoUrl={item.coverVideoUrl}
+                playVideoDirectly={false}
 
-                roundCorners={true}
+                roundCorners={false}
                 aspectRatio={1.8}
                 style={{ width: '100%', marginBottom: scale(25) }}
 
@@ -156,7 +157,9 @@ export class CategoryArticlesScreen extends React.Component<Props, State> {
         const screenParams = this.props.navigation.state.params!;
 
         return (
-            <View style={{ borderWidth: 2, borderColor: 'blue' }} >
+            <View
+                // style={{ borderWidth: 2, borderColor: 'blue' }}
+            >
                 {/* GO BACK */}
                 <TextButton style={{ padding: 0 }} icon="chevron-left" iconStyle={{ color: '#AA40BF' }} textStyle={{ fontSize: scale(16) }} color={TextButtonColor.purple} onPress={() => { this.gotoBack() }}>
                     {translate('buttonBack')}
@@ -178,12 +181,13 @@ export class CategoryArticlesScreen extends React.Component<Props, State> {
         return (
             <ThemeConsumer>
                 {(themeContext: ThemeContextValue) => (
-                    <View style={[styles.container, { backgroundColor: themeContext.theme.screenContainer?.backgroundColor, padding: themeContext.theme.screenContainer?.padding }]}>
+                    <View style={[styles.container, { backgroundColor: themeContext.theme.screenContainer?.backgroundColor }]}>
                         <FlatList
                             ref={this.list}
                             data={this.state.listData}
                             keyExtractor={this.listKeyExtractor}
-                            style={{ borderWidth: 2, borderColor: 'green' }}
+                            // style={{ borderWidth: 2, borderColor: 'green' }}
+                            style={{padding: themeContext.theme.screenContainer?.padding}}
 
                             // Sub components
                             renderItem={this.getListRenderItem}
@@ -214,8 +218,8 @@ export interface CategoryArticlesScreenStyles {
 const styles = StyleSheet.create<CategoryArticlesScreenStyles>({
     container: {
         flex: 1,
-        borderWidth: 2,
-        borderColor: 'red',
+        // borderWidth: 2,
+        // borderColor: 'red',
     },
 
     image: {
