@@ -165,6 +165,11 @@ class Content {
                 let childGender = userRealmStore.getChildGender();
 
                 const featuredArticles = translateData('developmentPeriods');
+
+                if(childAgeTagid && childAgeTagid > 51){
+                    childAgeTagid = 51
+                }
+                
                 const featuredData = featuredArticles?.find(item => item.predefinedTagId === childAgeTagid);
                 
                 const featuredPredefinedTagId = featuredData?.predefinedTagId;
@@ -182,7 +187,7 @@ class Content {
                 const allContent = realm?.objects<ContentEntity>(ContentEntitySchema.name);
                 const featuredRecord = allContent?.filtered(`id == ${featuredArticleId}`).find(record => record);
 
-                if(featuredRecord){
+                if(featuredRecord !== undefined){
                     rval.featuredArticle = featuredRecord;
                 }
 

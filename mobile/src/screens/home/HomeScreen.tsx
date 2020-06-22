@@ -69,7 +69,7 @@ export class HomeScreen extends React.Component<Props, object> {
                         <DataRealmConsumer>
                             {(dataRealmContext: DataRealmContextValue) => (
                                 <>
-                                {   
+                                {  
                                     content.getHomeScreenDevelopmentArticles(dataRealmContext.realm).categoryArticles?.length !== 0 ?
                                     <ArticlesSection data={content.getHomeScreenDevelopmentArticles(dataRealmContext.realm)} />
                                     : null

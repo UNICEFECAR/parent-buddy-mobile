@@ -197,7 +197,7 @@ class DataRealmStore {
 
 
     private getTagIdFromChildAge = (months: number): number => {
-        let id = 0;
+        let id = 58;
         if (months === 1 || months === 0) {
             id = 43;
         }
@@ -234,7 +234,7 @@ class DataRealmStore {
         if (months >= 49 && months <= 60) {
             id = 57;
         }
-        if (months >= 61 && months <= 72) {
+        if (months >= 61) {
             id = 58;
         }
 
