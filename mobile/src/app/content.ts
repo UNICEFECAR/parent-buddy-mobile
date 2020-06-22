@@ -9,6 +9,9 @@ import { dataRealmStore, CategoryArticlesViewEntity, userRealmStore } from "../s
 import { Platform } from "react-native";
 import { translateData } from "../translationsData/translateData";
 import { DateTime } from "luxon";
+import { isArray, indexOf } from "lodash";
+import { Collection } from "realm";
+import { JsonFormatter } from "cucumber";
 
 /**
  * Utility methods related to ContentEntity.
@@ -119,150 +122,129 @@ class Content {
         return contentViewEntity;
     }
 
-    // public getHomeScreenDevelopmentArticles(realm: Realm | null): ArticlesSectionData {
-    //     let isChildInDevelopment = false;
+    public getHomeScreenDevelopmentArticles(realm: Realm | null): ArticlesSectionData {
+        let isChildInDevelopmentPeriod = false;
 
-    //     const rval: ArticlesSectionData = {
-    //         title: translate('noArticles'),
-    //         categoryArticles: [],
-    //         featuredArticle: {},
-    //     };
-    //     // Set categories
-    //     const vocabulariesAndTermsResponse = dataRealmStore.getVariable('vocabulariesAndTerms');
+        const rval: ArticlesSectionData = {
+            title: translate('developmentArticles'),
+            categoryArticles: [],
+            featuredArticle: undefined,
+        };
+        // Set categories
+        const vocabulariesAndTermsResponse = dataRealmStore.getVariable('vocabulariesAndTerms');
 
-    //     if (!vocabulariesAndTermsResponse || !vocabulariesAndTermsResponse.categories || !Array.isArray(vocabulariesAndTermsResponse.categories)) {
-    //         return rval;
-    //     }
+        if (!vocabulariesAndTermsResponse || 
+            !vocabulariesAndTermsResponse.categories || 
+            !Array.isArray(vocabulariesAndTermsResponse.categories)) {
+            return rval;
+        }
 
-    //     const childBirthDay = userRealmStore.getCurrentChild()?.birthDate;
-    //     let monts;
+        const childBirthDay = userRealmStore.getCurrentChild()?.birthDate;
 
-    //     if (childBirthDay === undefined || childBirthDay === null) {
-    //         return rval
-    //     } else {
-    //         const dateNow = DateTime.local();
-    //         const diff = dateNow.diff(DateTime.fromJSDate(childBirthDay), ["month", "day"],).toObject();
+        if (childBirthDay === undefined || childBirthDay === null) {
+            return rval
+        } else {
+            const dateNow = DateTime.local();
+            const diff = dateNow.diff(DateTime.fromJSDate(childBirthDay), ["month", "day"],).toObject();
+            // get info is child in development period 
+            if (diff.days) {
+                if (diff.days >= 0 && diff.days <= 11) {
+                    isChildInDevelopmentPeriod = true
+                } else if (diff.days >= 20 && diff.days <= 31) {
+                    isChildInDevelopmentPeriod = true
+                } else {
+                    isChildInDevelopmentPeriod = false
+                }
+            }
 
-    //         if (diff.days) {
-    //             // TREBA PROVERITI KAKO DA SE URADI ROUND 
-    //             const diffDay = Math.round(diff.days);
+            if (!isChildInDevelopmentPeriod) {
+                return rval;
+            } else {
 
-    //             if (diff.days >= 0 && diff.days <= 11) {
-    //                 isChildInDevelopment = true
-    //             } else if (diff.days >= 20 && diff.days <= 31) {
-    //                 isChildInDevelopment = true
-    //             } else {
-    //                 isChildInDevelopment = false
-    //             }
-    //         }
+                let childAgeTagid = dataRealmStore.getChildAgeTagWithArticles()?.id;
+                let childGender = userRealmStore.getChildGender();
 
-    //         if (!isChildInDevelopment) {
-    //             return rval;
-    //         } else {
+                const featuredArticles = translateData('developmentPeriods');
+                const featuredData = featuredArticles?.find(item => item.predefinedTagId === childAgeTagid);
                 
-    //             let id = dataRealmStore.getChildAgeTagWithArticles()?.id;
-    //             let childGender = userRealmStore.getChildGender();
+                const featuredPredefinedTagId = featuredData?.predefinedTagId;
+                const featuredArticleId  = childGender === "girl" ? featuredData?.moreAboutPeriodArticleIdFemale : featuredData?.moreAboutPeriodArticleIdMale;
+    
+                const categories = vocabulariesAndTermsResponse.categories;
+                // Set categoryIds
+                const categoryIds = [
+                    6, // child development
+                    5, // child growth
+                    8, // vaccination
+                    7, // Health Check-ups
+                ];
 
-    //             const featuredArticles = translateData('developmentPeriods');
+                const allContent = realm?.objects<ContentEntity>(ContentEntitySchema.name);
+                const featuredRecord = allContent?.filtered(`id == ${featuredArticleId}`).find(record => record);
 
-    //             let featuredArticleTagId: number = 0;
-    //             let featuredGenderTagId: number = 0;
+                if(featuredRecord){
+                    rval.featuredArticle = featuredRecord;
+                }
 
-    //             featuredArticles?.forEach(item => {
-    //                 if (item.predefinedTagId === id) {
-    //                     /// logika za to 
-    //                     featuredArticleTagId = item.predefinedTagId
-    //                     featuredGenderTagId = childGender === "girl" ? item.moreAboutPeriodArticleIdFemale : item.moreAboutPeriodArticleIdMale;
-    //                 }
-    //             });
+                categoryIds.forEach((categoryId) => {
+                    // Set categoryName
+                    let thisCategoryArray = categories.filter((category) => {
+                        return category.id === categoryId;
+                    });
 
-    //             const categories = vocabulariesAndTermsResponse.categories;
-    //             let title: string = "";
-    //             // Set categoryIds
-    //             const categoryIds = [
-    //                 55, // Play and Learning
-    //                 56, // Responsive Parenting
-    //                 2, // Health and Wellbeing
-    //                 1, // Nutrition and Breastfeeding
+                    let categoryName = '';
+                    if (thisCategoryArray && thisCategoryArray.length > 0) {
+                        categoryName = thisCategoryArray[0].name;
+                    };
 
-    //                 // DONT SHOW THESE CATEGORIES
-    //                 // 5, // Growth
-    //             ];
-
-    //             categoryIds.forEach((categoryId) => {
-    //                 // Set categoryName
-    //                 let thisCategoryArray = categories.filter((category) => {
-    //                     return category.id === categoryId;
-    //                 });
-
-    //                 let categoryName = '';
-    //                 if (thisCategoryArray && thisCategoryArray.length > 0) {
-    //                     categoryName = thisCategoryArray[0].name;
-    //                 };
-
-    //                 // Set categoryArticles
-    //                 const categoryArticles: CategoryArticlesViewEntity = {
-    //                     categoryId: categoryId,
-    //                     categoryName: categoryName,
-    //                     articles: []
-    //                 };
-
-    //                 let featuredArticle = {};
-
-    //                 try {
-    //                     const allContent = realm?.objects<ContentEntity>(ContentEntitySchema.name);
-    //                     const filteredRecords = allContent?.filtered(`category == ${categoryId} AND type == 'article'`);
-
-    //                     const childAgeTagId = dataRealmStore.getChildAgeTagWithArticles(categoryId, true)?.id;
-    //                     // console.log(featuredArticleTagId, 'tag')
-    //                     filteredRecords?.forEach((record, index, collection) => {
-    //                         console.log(record.predefinedTags, 'predefined tags')
-    //                         record.predefinedTags.forEach(item => {
-    //                             record.keywords.forEach(keyword => {
-    //                                 // console.log('ovde je usao', keyword)
-    //                                 // console.log(featuredGenderTagId, 'grender')
-    //                                 // console.log(keyword, 'keywoard')
-    //                                 if(keyword === featuredGenderTagId){
-    //                                     console.log("TU JE ")
-    //                                     featuredArticle = record
-    //                                 }
-    //                             })
-    //                             if (item === id ) {
-    //                                 categoryArticles.articles.push(
-    //                                     record
-    //                                 );
-    //                             };
-    //                         });
-    //                     });
-
-    //                 } catch (e) {
-    //                     console.warn(e);
-    //                 };
+                    // Set categoryArticles
+                    const categoryArticles: CategoryArticlesViewEntity = {
+                        categoryId: categoryId,
+                        categoryName: categoryName,
+                        articles: []
+                    };
 
 
-    //                 for (let item in categoryArticles) {
-    //                     categoryArticles.articles = utils.randomizeArray(categoryArticles.articles)
-    //                 };
+                    try {
+                        const childAgeTagId = dataRealmStore.getChildAgeTagWithArticles(categoryId, true)?.id;
+                        
+                        if(childAgeTagId !== undefined){
+                            const filteredRecords = allContent?.
+                                filtered(`category == ${categoryId} AND type == 'article'`)
+                                .filter(item => item.predefinedTags.indexOf(childAgeTagId) !== -1)
+                            
+
+                            filteredRecords?.forEach((record, index, collection) => {
+                                categoryArticles.articles.push(
+                                    record
+                                );
+                            });
+                        }
+
+                    } catch (e) {
+                        console.warn(e);
+                    };
 
 
-    //                 if (categoryArticles.articles.length > 0) {
-    //                     rval.categoryArticles?.push(categoryArticles);
-    //                 };
+                    for (let item in categoryArticles) {
+                        categoryArticles.articles = utils.randomizeArray(categoryArticles.articles).slice(0,5)
+                    };
 
-    //                 // rval.featuredArticle = featuredArticle
-    //             });
 
-    //             // Change title
-    //             if (rval.categoryArticles && rval.categoryArticles.length > 0) {
-    //                 rval.title = title;
-    //                 rval.vocabulariesAndTermsResponse = vocabulariesAndTermsResponse;
-    //             };
-    //         }
+                    if (categoryArticles.articles.length > 0) {
+                        rval.categoryArticles?.push(categoryArticles);
+                    };
 
-    //     }
-    //     console.log(JSON.stringify(rval.featuredArticle, null, 4))
-    //     return rval;
-    // }
+                });
+
+                if (rval.categoryArticles && rval.categoryArticles.length > 0) {
+                    rval.vocabulariesAndTermsResponse = vocabulariesAndTermsResponse;
+                };
+            }
+
+        }
+        return rval;
+    }
 
 
     public getHomeScreenArticles(realm: Realm | null): ArticlesSectionData {
@@ -309,39 +291,33 @@ class Content {
                 categoryName: categoryName,
                 articles: []
             };
-
             try {
-                const allContent = realm?.objects<ContentEntity>(ContentEntitySchema.name);
-                const filteredRecords = 
-                    allContent?.filtered(`category == ${categoryId} AND type == 'article'`);
-
                 const childAgeTagId = dataRealmStore.getChildAgeTagWithArticles(categoryId, true)?.id;
+                const allContent = realm?.objects<ContentEntity>(ContentEntitySchema.name);
 
                 if (childAgeTagId !== null && childAgeTagId !== undefined) {
-                    title = translate('todayArticles')
-                    filteredRecords?.forEach((record, index, collection) => {
-                        record.predefinedTags.forEach(item => {
-                            if (item === childAgeTagId) {
-                                categoryArticles.articles.push(
-                                    record
-                                );
-                            };
-                        });
-                    });
+                    title = translate("todayArticles")
+
+                    const filteredRecordsWithAge = allContent?.
+                        filtered(`category == ${categoryId} AND type == 'article'`)
+                        .filter(item => item.predefinedTags.indexOf(childAgeTagId) !== -1)
+                        
+                    filteredRecordsWithAge?.forEach((record, index, collection) => {
+                        categoryArticles.articles.push(record)
+                    })
                 } else {
-                    title = translate("popularArticles")
+                    title = translate("popularArticles");
+                    const filteredRecords = allContent?.filtered(`category == ${categoryId} AND type == 'article'`);
                     filteredRecords?.forEach((record, index, collection) => {
                         categoryArticles.articles.push(
                             record
                         );
                     });
-                };
-
+                }
 
             } catch (e) {
                 console.warn(e);
             };
-
 
             for (let item in categoryArticles) {
                 categoryArticles.articles = utils.randomizeArray(categoryArticles.articles).slice(0,5)

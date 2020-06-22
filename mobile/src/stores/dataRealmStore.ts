@@ -276,11 +276,11 @@ class DataRealmStore {
                 // get all tags from our main tag and sort 
                 vocabulariesAndTermsResponse?.predefined_tags.forEach(item => {
                     item.children.forEach(i => {
-                        if (i.id <= 58) {
+                        if (i.id <= 58 && i.id >= 43) {
                             if (i.id < id) {
-                                tagsBefore.push({ id: i.id, name: i.name });
-                            } else {
                                 tagsAfter.push({ id: i.id, name: i.name });
+                            } else {
+                                tagsBefore.push({ id: i.id, name: i.name });
                             };
                         };
                     });
@@ -293,6 +293,7 @@ class DataRealmStore {
 
                 for (let i = 0; i < mergedTags.length; i++) {
                     let check = false;
+     
                     filteredRecords?.forEach((record, index, collection) => {
                         record.predefinedTags.forEach(tag => {
                             if (tag === mergedTags[i].id && record.predefinedTags.length !== 0) {
@@ -301,6 +302,7 @@ class DataRealmStore {
                             };
                         });
                     });
+
                     if (check) {
                         break;
                     };
