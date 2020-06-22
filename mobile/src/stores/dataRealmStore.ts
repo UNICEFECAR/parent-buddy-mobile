@@ -196,52 +196,49 @@ class DataRealmStore {
 
 
 
-    private getTagIdFromChildAge = (months: number): { id: number, name: string } => {
-        let obj: { id: number, name: string } = {
-            id: 0,
-            name: ""
-        };
+    private getTagIdFromChildAge = (months: number): number => {
+        let id = 0;
         if (months === 1 || months === 0) {
-            obj = { id: 43, name: "1st month" }
+            id = 43;
         }
         if (months === 2) {
-            obj = { id: 44, name: "2nd months" }
+            id = 44;
         }
         if (months === 3 || months === 4) {
-            obj = { id: 45, name: '3-4 months' }
+            id = 45;
         }
         if (months === 5 || months === 6) {
-            obj = { id: 46, name: "5-6 months" }
+            id = 46;
         }
         if (months >= 7 && months <= 9) {
-            obj = { id: 47, name: "7-9 months" }
+            id = 47;
         }
         if (months >= 10 && months <= 12) {
-            obj = { id: 48, name: "10-12 months" }
+            id = 48;
         }
         if (months >= 13 && months <= 18) {
-            obj = { id: 49, name: "13-18 months" }
+            id = 49;
         }
         if (months >= 19 && months <= 24) {
-            obj = { id: 50, name: "19-24 months" }
+            id = 50;
         }
         if (months >= 25 && months <= 36) {
-            obj = { id: 51, name: "25-36 months" }
+            id = 51;
         }
         if (months >= 37 && months <= 48) {
-            obj = { id: 52, name: "37-48 months" }
+            id = 52;
         }
         if (months >= 15 && months <= 26) {
-            obj = { id: 53, name: "15-26 months" }
+            id = 53;
         }
         if (months >= 49 && months <= 60) {
-            obj = { id: 57, name: "49-60 months" }
+            id = 57;
         }
         if (months >= 61 && months <= 72) {
-            obj = { id: 58, name: "61-72 months" }
+            id = 58;
         }
 
-        return obj;
+        return id
     }
 
     public getChildAgeTagWithArticles = (categoryId: number | null = null, returnNext: boolean = false): { id: number, name: string } | null => {
@@ -253,6 +250,7 @@ class DataRealmStore {
         const birthday = userRealmStore.getCurrentChild()?.birthDate;
         const timeNow = DateTime.local();
 
+
         if (birthday === null || birthday === undefined) {
             obj = null;
         } else {
@@ -260,23 +258,22 @@ class DataRealmStore {
             let date = DateTime.fromJSDate(birthday);
             let monthsDiff = timeNow.diff(date, "month").toObject();
             let months: number = 0;
-            
+
             if (monthsDiff.months) {
                 months = Math.round(monthsDiff.months);
             };
 
-            let data = this.getTagIdFromChildAge(months);
-
-            let id = data?.id;
-            let name = data?.name;
+            let id = this.getTagIdFromChildAge(months);
+            const vocabulariesAndTermsResponse = this.getVariable('vocabulariesAndTerms');
 
             if (returnNext) {
                 const allContent = this.realm?.objects<ContentEntity>(ContentEntitySchema.name);
                 const filteredRecords = allContent?.filtered(`category == ${categoryId} AND type == 'article' SORT(id ASC) LIMIT(5)`);
-                const vocabulariesAndTermsResponse = this.getVariable('vocabulariesAndTerms');
 
                 let tagsBefore: { id: number, name: string }[] = [];
                 let tagsAfter: { id: number, name: string }[] = [];
+
+                const name2 = vocabulariesAndTermsResponse?.predefined_tags.filter(item => item.id === id);
 
                 // get all tags from our main tag and sort 
                 vocabulariesAndTermsResponse?.predefined_tags.forEach(item => {
@@ -311,6 +308,15 @@ class DataRealmStore {
                     };
                 };
             } else {
+                let name = "";
+                vocabulariesAndTermsResponse?.predefined_tags.forEach(item => {
+                    item.children.forEach(i => {
+                        if (i.id === id) {
+                            name = i.name
+                        }
+                    })
+                })
+
                 obj = { id: id, name: name };
             };
         };

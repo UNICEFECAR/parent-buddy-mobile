@@ -1,12 +1,11 @@
 import React from 'react';
-import { SafeAreaView, View, Text, Button, StyleSheet, ViewStyle, ScrollView, Alert } from 'react-native';
-import { NavigationStackProp, NavigationStackState, NavigationStackOptions } from 'react-navigation-stack';
+import {View, StyleSheet, ViewStyle, } from 'react-native';
+import { NavigationStackProp, NavigationStackState } from 'react-navigation-stack';
 import { ThemeContextValue, ThemeConsumer } from '../../themes/ThemeContext';
 import { translate } from '../../translations/translate';
-import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
+import { scale } from 'react-native-size-matters';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { Typography, TypographyType } from '../../components/Typography';
-import { TextButton, TextButtonColor } from '../../components/TextButton';
 import { DateTimePicker, DateTimePickerType } from '../../components/DateTimePicker';
 import { RateAChild } from '../../components/RateAChild';
 import { RoundedTextInput } from '../../components/RoundedTextInput';
@@ -26,7 +25,7 @@ export interface Props {
 export interface State {
     plannedTermDate: Date | undefined,
     birthDate: Date | undefined,
-    babyRate: number | undefined,
+    babyRating: number | undefined,
     height: number | undefined,
     weight: number | undefined,
     comment: string | undefined,
@@ -59,7 +58,7 @@ export class BirthDataScreen extends React.Component<Props, State> {
         const allRecords = userRealmStore.realm?.objects<ChildEntity>(ChildEntitySchema.name);
         allRecords?.forEach((record, index, collection) => {
             state = {
-                babyRate: record.babyRate,
+                babyRating: record.babyRating,
                 birthDate: record.birthDate,
                 comment: record.comment,
                 height: record.height,
@@ -77,7 +76,7 @@ export class BirthDataScreen extends React.Component<Props, State> {
 
     private submit = () => {
 
-        const { comment, weight, height, babyRate, plannedTermDate, birthDate } = this.state;
+        const { comment, weight, height, babyRating, plannedTermDate, birthDate } = this.state;
 
         const allRecords = userRealmStore.realm?.objects<ChildEntity>(ChildEntitySchema.name);
         allRecords?.forEach((record, index, collection) => {
@@ -85,7 +84,7 @@ export class BirthDataScreen extends React.Component<Props, State> {
                 record.height = height;
                 record.weight = weight;
                 record.comment = comment;
-                record.babyRate = babyRate;
+                record.babyRating = babyRating;
                 record.plannedTermDate = plannedTermDate,
                     record.birthDate = birthDate;
             })
@@ -119,7 +118,7 @@ export class BirthDataScreen extends React.Component<Props, State> {
 
     private setChildRaiting = (value: number) => {
         this.setState({
-            babyRate: value
+            babyRating: value
         })
     }
 
@@ -174,7 +173,7 @@ export class BirthDataScreen extends React.Component<Props, State> {
                                 {translate('fieldLabelBabyRatingOnBirth')}
                             </Typography>
 
-                            <RateAChild onChange={(value) => this.setChildRaiting(value)} value={this.state.babyRate}/>
+                            <RateAChild onChange={(value) => this.setChildRaiting(value)} value={this.state.babyRating}/>
                             <View style={{ height: themeContext.theme.variables?.sizes.verticalPaddingLarge }} />
 
                             {/* BABY MEASUREMENTS */}

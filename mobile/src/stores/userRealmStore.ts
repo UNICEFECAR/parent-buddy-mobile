@@ -1,4 +1,4 @@
-import Realm, { ObjectSchema } from 'realm';
+import Realm, { ObjectSchema, Collection } from 'realm';
 import { userRealmConfig } from "./userRealmConfig";
 import { VariableEntity, VariableEntitySchema } from './VariableEntity';
 import { appConfig } from '../app/appConfig';
@@ -51,8 +51,7 @@ class UserRealmStore {
     }
 
     public getCurrentChild = () => {
-        const currentChild = this.realm?.objects<ChildEntity>(ChildEntitySchema.name);
-        return currentChild?.find((record, index, colection) => index === 0);
+        return this.realm?.objects<ChildEntity>(ChildEntitySchema.name).find((record, index, collection) => index === 0);
     }
 
     public async setVariable<T extends VariableKey>(key: T, value: Variables[T] | null): Promise<boolean> {

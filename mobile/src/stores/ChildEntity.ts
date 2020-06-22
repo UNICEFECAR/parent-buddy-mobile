@@ -9,7 +9,7 @@ export type ChildEntity = {
     updatedAt: Date;
     plannedTermDate?: Date;
     birthDate?: Date;
-    babyRate?: number;
+    babyRating?: number;
     height?: number;
     weight?: number; 
     comment?: string;
@@ -32,9 +32,9 @@ export const ChildEntitySchema: ObjectSchema = {
         updatedAt: {type:'date'},
         plannedTermDate: {type: 'date', optional: true},
         birthDate: {type: 'date', optional: true},
-        babyRate: {type: 'int', optional: true},
-        height: {type: 'string', optional: true},
-        weight: {type: 'string', optional: true}, 
+        babyRating: {type: 'int', optional: true},
+        height: {type: 'double', optional: true},
+        weight: {type: 'double', optional: true}, 
         comment: {type: 'string', optional: true},
     }
 };
