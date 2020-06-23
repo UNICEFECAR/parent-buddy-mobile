@@ -116,6 +116,7 @@ export class CategoryArticlesScreen extends React.Component<Props, State> {
                 borderRadius={5}
                 aspectRatio={1.8}
                 style={{ width: '100%' }}
+                titleStyle={{paddingLeft:scale(15)}}
 
                 onPress={() => { this.gotoArticleScreen(item) }}
             />

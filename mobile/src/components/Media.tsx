@@ -8,6 +8,7 @@ import { utils } from '../app';
 import { navigation } from '../app/Navigators';
 import { WebView } from 'react-native-webview';
 import FastImage from 'react-native-fast-image';
+import RNFS from 'react-native-fs';
 
 export interface Props {
     title?: string;
@@ -20,6 +21,7 @@ export interface Props {
     roundCorners?: boolean;
     borderRadius?: number;
     style?: StyleProp<ViewStyle>;
+    titleStyle?: StyleProp<TextStyle>;
     onPress?: Function;
 }
 
@@ -39,12 +41,20 @@ export class Media extends React.Component<Props, State> {
         aspectRatio: 1.7,
         roundCorners: false,
         borderRadius: 10,
+        titleStyle: {},
     };
 
     constructor(props: Props) {
         super(props);
         this.vimeoWebViewRef = React.createRef<WebView>();
         this.initState();
+
+        if (this.props.coverImageUrl.indexOf('cover_image_331') !== -1) {
+            // console.log(this.props.coverImageUrl, );
+            RNFS.exists(this.props.coverImageUrl).then((value) => {
+                console.log('exists: ' + value);
+            });
+        }
     }
 
     private initState() {
@@ -194,7 +204,7 @@ export class Media extends React.Component<Props, State> {
                         <TouchableOpacity
                             onPress={() => { this.onTitlePress() }}
                         >
-                            <Typography style={{marginLeft:scale(15)}} type={TypographyType.headingSecondary}>
+                            <Typography style={ this.props.titleStyle } type={TypographyType.headingSecondary}>
                                 {this.props.title}
                             </Typography>
                         </TouchableOpacity>
