@@ -1,7 +1,9 @@
-import Realm, { ObjectSchema } from 'realm';
+import Realm, { ObjectSchema, Collection } from 'realm';
 import { userRealmConfig } from "./userRealmConfig";
 import { VariableEntity, VariableEntitySchema } from './VariableEntity';
 import { appConfig } from '../app/appConfig';
+import { ChildEntity } from '.';
+import { ChildEntitySchema } from './ChildEntity';
 
 type Variables = {
     'userChildren': any;
@@ -46,6 +48,15 @@ class UserRealmStore {
                 });
             }
         });
+    }
+
+    public getCurrentChild = () => {
+        return this.realm?.objects<ChildEntity>(ChildEntitySchema.name).find((record, index, collection) => index === 0);
+    }
+
+    public getChildGender = () => {
+        let child = this.getCurrentChild()
+        return child?.gender
     }
 
     public async setVariable<T extends VariableKey>(key: T, value: Variables[T] | null): Promise<boolean> {

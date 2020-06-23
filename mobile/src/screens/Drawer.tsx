@@ -56,7 +56,6 @@ export class Drawer extends React.Component<Props> {
             if (fancyButtonType === FancyButtonType.food) categoryId = 1;
 
             if (categoryId) categoryName = dataRealmStore.getCategoryNameFromId(categoryId);
-
             if (categoryId && categoryName) {
                 const params: CategoryArticlesScreenParams = {
                     categoryId: categoryId,
@@ -81,6 +80,12 @@ export class Drawer extends React.Component<Props> {
         if (fancyButtonType === FancyButtonType.vaccination) {
             navigation.navigate('HomeStackNavigator_VaccinationScreen');
             navigation.dispatch(DrawerActions.closeDrawer());
+        }
+
+        // temporary 
+        if(fancyButtonType === FancyButtonType.development){
+            navigation.navigate('HomeStackNavigator_BirthDataScreen');
+            navigation.dispatch(DrawerActions.closeDrawer())
         }
     }
 

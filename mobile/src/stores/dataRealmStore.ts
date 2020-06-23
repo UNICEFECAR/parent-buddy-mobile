@@ -7,6 +7,9 @@ import { ListCardItem } from '../screens/home/ListCard';
 import { ContentEntity } from '.';
 import { ContentEntitySchema } from './ContentEntity';
 import { translate } from '../translations/translate';
+import { GraphRequest } from 'react-native-fbsdk';
+import { DateTime } from "luxon";
+import { userRealmStore } from './userRealmStore';
 
 type Variables = {
     'userEmail': string;
@@ -178,7 +181,7 @@ class DataRealmStore {
         });
     }
 
-    public getContentFromId(id:number) {
+    public getContentFromId(id: number) {
         console.log(id);
         try {
             const allRecords = this.realm?.objects<ContentEntity>(ContentEntitySchema.name);
@@ -191,12 +194,141 @@ class DataRealmStore {
         }
     }
 
+
+
+    private getTagIdFromChildAge = (months: number): number => {
+        let id = 58;
+        if (months === 1 || months === 0) {
+            id = 43;
+        }
+        if (months === 2) {
+            id = 44;
+        }
+        if (months === 3 || months === 4) {
+            id = 45;
+        }
+        if (months === 5 || months === 6) {
+            id = 46;
+        }
+        if (months >= 7 && months <= 9) {
+            id = 47;
+        }
+        if (months >= 10 && months <= 12) {
+            id = 48;
+        }
+        if (months >= 13 && months <= 18) {
+            id = 49;
+        }
+        if (months >= 19 && months <= 24) {
+            id = 50;
+        }
+        if (months >= 25 && months <= 36) {
+            id = 51;
+        }
+        if (months >= 37 && months <= 48) {
+            id = 52;
+        }
+        if (months >= 15 && months <= 26) {
+            id = 53;
+        }
+        if (months >= 49 && months <= 60) {
+            id = 57;
+        }
+        if (months >= 61) {
+            id = 58;
+        }
+
+        return id
+    }
+
+    public getChildAgeTagWithArticles = (categoryId: number | null = null, returnNext: boolean = false): { id: number, name: string } | null => {
+        let obj: { id: number, name: string } | null = {
+            id: 0,
+            name: ""
+        };
+
+        const birthday = userRealmStore.getCurrentChild()?.birthDate;
+        const timeNow = DateTime.local();
+
+
+        if (birthday === null || birthday === undefined) {
+            obj = null;
+        } else {
+            // calculate months and get id
+            let date = DateTime.fromJSDate(birthday);
+            let monthsDiff = timeNow.diff(date, "month").toObject();
+            let months: number = 0;
+
+            if (monthsDiff.months) {
+                months = Math.round(monthsDiff.months);
+            };
+
+            let id = this.getTagIdFromChildAge(months);
+            const vocabulariesAndTermsResponse = this.getVariable('vocabulariesAndTerms');
+
+            if (returnNext) {
+                const allContent = this.realm?.objects<ContentEntity>(ContentEntitySchema.name);
+                const filteredRecords = allContent?.filtered(`category == ${categoryId} AND type == 'article'`);
+
+                let tagsBefore: { id: number, name: string }[] = [];
+                let tagsAfter: { id: number, name: string }[] = [];
+
+                // get all tags from our main tag and sort 
+                vocabulariesAndTermsResponse?.predefined_tags.forEach(item => {
+                    item.children.forEach(i => {
+                        if (i.id <= 58 && i.id >= 43) {
+                            if (i.id < id) {
+                                tagsAfter.push({ id: i.id, name: i.name });
+                            } else {
+                                tagsBefore.push({ id: i.id, name: i.name });
+                            };
+                        };
+                    });
+                });
+
+                tagsBefore = tagsBefore.sort((a, b) => a.id - b.id);
+                tagsAfter = tagsAfter.sort((a, b) => b.id - a.id);
+
+                let mergedTags = tagsBefore.concat(tagsAfter);
+
+                for (let i = 0; i < mergedTags.length; i++) {
+                    let check = false;
+     
+                    filteredRecords?.forEach((record, index, collection) => {
+                        record.predefinedTags.forEach(tag => {
+                            if (tag === mergedTags[i].id && record.predefinedTags.length !== 0) {
+                                obj = { id: tag, name: mergedTags[i].name }
+                                check = true;
+                            };
+                        });
+                    });
+
+                    if (check) {
+                        break;
+                    };
+                };
+            } else {
+                let name = "";
+                vocabulariesAndTermsResponse?.predefined_tags.forEach(item => {
+                    item.children.forEach(i => {
+                        if (i.id === id) {
+                            name = i.name
+                        }
+                    })
+                })
+
+                obj = { id: id, name: name };
+            };
+        };
+
+        return obj;
+    }
+
     public getCategoryNameFromId(categoryId: number): string | null {
         const vocabulariesAndTerms = this.getVariable('vocabulariesAndTerms');
         if (!vocabulariesAndTerms) return null;
 
         let rval = '';
-
         vocabulariesAndTerms.categories.forEach((categoryObject) => {
             if (categoryObject.id === categoryId) {
                 rval = categoryObject.name;
@@ -238,7 +370,7 @@ class DataRealmStore {
                     // Remove "All ages": 446
                     childAgeTags = childAgeTags.filter((value) => {
                         if (value.id === 446) return false;
-                            else return true;
+                        else return true;
                     });
                 }
             });
@@ -320,7 +452,7 @@ class DataRealmStore {
         try {
             const allRecords = this.realm?.objects<ContentEntity>(ContentEntitySchema.name);
             const filteredRecords = allRecords?.filtered(`type == 'article' AND (body CONTAINS[c] '${searchTerm}' OR title CONTAINS[c] '${searchTerm}')`);
-    
+
             filteredRecords?.forEach((record, index, collection) => {
                 relevantArticles.push(record);
             });
@@ -355,7 +487,7 @@ class DataRealmStore {
         try {
             const allRecords = this.realm?.objects<ContentEntity>(ContentEntitySchema.name);
             const filteredRecords = allRecords?.filtered(`type == 'faq' AND (body CONTAINS[c] '${searchTerm}' OR title CONTAINS[c] '${searchTerm}')`);
-    
+
             filteredRecords?.forEach((record, index, collection) => {
                 faqs.push(record);
             });
@@ -385,10 +517,10 @@ export enum TagType {
     keyword = 'keyword',
 };
 
-type SearchResultsScreenDataCategoryArticles = {categoryId:number, categoryName:string, contentItems:ContentEntity[]};
+type SearchResultsScreenDataCategoryArticles = { categoryId: number, categoryName: string, contentItems: ContentEntity[] };
 
 export type SearchResultsScreenDataResponse = {
-    articles?: SearchResultsScreenDataCategoryArticles [];
+    articles?: SearchResultsScreenDataCategoryArticles[];
     faqs?: ContentEntity[];
 };
 

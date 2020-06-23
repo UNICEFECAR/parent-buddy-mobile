@@ -7,6 +7,12 @@ export type ChildEntity = {
     photoUri?: string;
     createdAt: Date;
     updatedAt: Date;
+    plannedTermDate?: Date;
+    birthDate?: Date;
+    babyRating?: number;
+    height?: number;
+    weight?: number; 
+    comment?: string;
 };
 
 /**
@@ -24,6 +30,12 @@ export const ChildEntitySchema: ObjectSchema = {
         photoUri: {type:'string', optional:true},
         createdAt: {type:'date'},
         updatedAt: {type:'date'},
+        plannedTermDate: {type: 'date', optional: true},
+        birthDate: {type: 'date', optional: true},
+        babyRating: {type: 'int', optional: true},
+        height: {type: 'double', optional: true},
+        weight: {type: 'double', optional: true}, 
+        comment: {type: 'string', optional: true},
     }
 };
 
