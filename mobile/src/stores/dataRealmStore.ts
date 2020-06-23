@@ -14,6 +14,7 @@ import { userRealmStore } from './userRealmStore';
 type Variables = {
     'userEmail': string;
     'userName': string;
+    "loginMethod": "facebook" | "google" | "cms";
     'userIsLoggedIn': boolean;
     'userIsOnboarded': boolean;
     'userEnteredChildData': boolean;

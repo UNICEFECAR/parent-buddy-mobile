@@ -7,102 +7,217 @@ import { GradientBackground } from '../../components/GradientBackground';
 import { RoundedTextInput } from '../../components/RoundedTextInput';
 import { RoundedButton, RoundedButtonType } from '../../components/RoundedButton';
 import { TextButton, TextButtonSize } from '../../components/TextButton';
+import { apiStore, } from '../../stores';
+import { DrupalRegisterRespone, DrupalRegisterArgs, } from '../../stores/apiStore';
+import { Snackbar } from 'react-native-paper';
+import { themes } from '../../themes';
+import { utils } from '../../app';
 
 export interface Props {
     navigation: NavigationSwitchProp<NavigationState>;
 }
 
+export interface State {
+    firstName: string,
+    lastName: string,
+    mail: string,
+    password: string,
+    passwordRepeat: string,
+    snackBarMessage: string,
+    isSnackBarVisible: boolean,
+}
+
 /**
  * User can register new account with our server here.
  */
-export class RegisterScreen extends React.Component<Props, object> {
+export class RegisterScreen extends React.Component<Props, State> {
 
-    public constructor(props:Props) {
+    public constructor(props: Props) {
         super(props);
+        this.initState()
+    }
+
+    private initState() {
+        const state: State = {
+            firstName: "",
+            lastName: "",
+            mail: "",
+            password: "",
+            passwordRepeat: "",
+            snackBarMessage: "",
+            isSnackBarVisible: false,
+        }
+
+        this.state = state;
     }
 
     private gotoLoginScreen() {
         this.props.navigation.navigate('LoginStackNavigator_LoginScreen');
     };
 
-    private createAccount() {
-        this.gotoRegisterCreatedScreen();
+    private dataValidation(): boolean {
+        let isValid = true;
+
+        const { firstName, lastName, mail, passwordRepeat, password } = this.state;
+
+        if (firstName === "" || lastName === "" || mail === "" || password === "" || passwordRepeat === "") {
+            this.setState({
+                snackBarMessage: translate('allFieldsMustBeFilled'),
+                isSnackBarVisible: true,
+            })
+            return false
+        }
+
+        if (!utils.emailValidator(mail)) {
+            this.setState({
+                snackBarMessage: translate('notValidEmail'),
+                isSnackBarVisible: true,
+            })
+            return false
+        }
+
+        if (password.length < 6) {
+            this.setState({
+                snackBarMessage: translate('passwordToShort'),
+                isSnackBarVisible: true,
+            });
+            return false
+        }
+
+        if (password.length >= 6 && password !== passwordRepeat) {
+            this.setState({
+                snackBarMessage: translate('passwordDosntMatch'),
+                isSnackBarVisible: true,
+            });
+            return false
+        }
+
+
+        return isValid;
     }
 
-    private gotoRegisterCreatedScreen() {
-        this.props.navigation.navigate('RootModalStackNavigator_RegisterCreatedScreen');
+    private async createAccount() {
+        const { firstName, lastName, mail, password } = this.state;
+
+        let userRegisterResponse: DrupalRegisterRespone = { registrationSuccess: false }
+
+        if (this.dataValidation()) {
+            const body: DrupalRegisterArgs = {
+                field_first_name: firstName,
+                field_last_name: lastName,
+                mail: mail,
+                password: password,
+                name: mail,
+            }
+
+            try {
+                userRegisterResponse = await apiStore.drupalRegister(body)
+            } catch (rejectError) { }
+
+            if (userRegisterResponse.registrationSuccess) {
+                this.gotoRegisterCreatedScreen(mail, password);
+            }else{
+                this.setState({
+                    snackBarMessage: translate('userAlreadyExist'),
+                    isSnackBarVisible: true,
+                })
+            }
+        }
+    }
+
+    private gotoRegisterCreatedScreen(email: string, password: string) {
+        this.props.navigation.navigate('RootModalStackNavigator_RegisterCreatedScreen', {email: email, password: password});
     };
 
     public render() {
+
+        const snackbarErrorStyle = themes.getCurrentTheme().theme.snackbarError;
+
         return (
             <GradientBackground>
                 <StatusBar
                     barStyle="light-content"
                 />
-                <SafeAreaView style={ [styles.container] }>
+                <SafeAreaView style={[styles.container]}>
                     <KeyboardAwareScrollView
                         style={{ borderWidth: 0, borderColor: 'red' }} contentContainerStyle={{ borderWidth: 0, borderColor: 'green', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center', margin: 30 }}
                     >
                         {/* INPUT: name */}
                         <RoundedTextInput
-                            label={ translate('fieldLabelName') }
+                            label={translate('fieldLabelName')}
                             icon="account-outline"
-                            onChange={() => { }}
-                            onFocus={() => {  }}
+                            onChange={(value) => { this.setState({ firstName: value }) }}
+                            onFocus={() => { }}
                             style={{ marginBottom: 15 }}
                         />
 
                         {/* INPUT: surname */}
                         <RoundedTextInput
-                            label={ translate('fieldLabelSurname') }
+                            label={translate('fieldLabelSurname')}
                             icon="account-outline"
-                            onChange={() => { }}
-                            onFocus={() => {  }}
+                            onChange={(value) => { this.setState({ lastName: value }) }}
+                            onFocus={() => { }}
                             style={{ marginBottom: 15 }}
                         />
 
                         {/* INPUT: email */}
                         <RoundedTextInput
-                            label={ translate('fieldLabelEmail') }
+                            label={translate('fieldLabelEmail')}
                             icon="email-outline"
-                            onChange={() => { }}
-                            onFocus={() => {  }}
+                            onChange={(value) => { this.setState({ mail: value }) }}
+                            onFocus={() => { }}
                             style={{ marginBottom: 15 }}
                         />
 
                         {/* INPUT: password */}
                         <RoundedTextInput
-                            label={ translate('fieldLabelPassword') }
+                            label={translate('fieldLabelPassword')}
                             icon="lock-outline"
-                            onChange={() => { }}
-                            onFocus={() => {  }}
+                            onChange={(value) => { this.setState({ password: value }) }}
+                            onFocus={() => { }}
                             style={{ marginBottom: 15 }}
                         />
 
                         {/* INPUT: repeatPassword */}
                         <RoundedTextInput
-                            label={ translate('fieldLabelRepeatPassword') }
+                            label={translate('fieldLabelRepeatPassword')}
                             icon="lock-outline"
-                            onChange={() => { }}
-                            onFocus={() => {  }}
+                            onChange={(value) => { this.setState({ passwordRepeat: value }) }}
+                            onFocus={() => { }}
                             style={{ marginBottom: 15 }}
                         />
 
                         {/* BUTTON: createAccount */}
                         <RoundedButton
-                            text={ translate('createAccount') }
+                            text={translate('createAccount')}
                             type={RoundedButtonType.purple}
                             onPress={() => { this.createAccount() }}
-                            style={{ marginTop:15, marginBottom: 25 }}
+                            style={{ marginTop: 15, marginBottom: 25 }}
                         />
 
                         {/* BUTTON: alreadyHaveAccount */}
                         <TextButton size={TextButtonSize.normal} textStyle={{ color: 'white', textAlign: 'center' }} onPress={() => { this.gotoLoginScreen() }}>
-                            { translate('alreadyHaveAccount') }
+                            {translate('alreadyHaveAccount')}
                         </TextButton>
 
-                        <View style={{height:40}}></View>
+                        <View style={{ height: 40 }}></View>
                     </KeyboardAwareScrollView>
+                    <Snackbar
+                        visible={this.state.isSnackBarVisible}
+                        duration={Snackbar.DURATION_SHORT}
+                        onDismiss={() => { this.setState({ isSnackBarVisible: false }) }}
+                        theme={{ colors: { onSurface: snackbarErrorStyle?.backgroundColor, accent: snackbarErrorStyle?.actionButtonColor } }}
+                        action={{
+                            label: 'Ok',
+                            onPress: () => {
+                                this.setState({ isSnackBarVisible: false });
+                            },
+                        }}
+                    >
+                        <Text style={{ fontSize: snackbarErrorStyle?.fontSize }}>
+                            {this.state.snackBarMessage}
+                        </Text>
+                    </Snackbar>
                 </SafeAreaView>
             </GradientBackground>
         );
