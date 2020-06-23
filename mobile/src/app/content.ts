@@ -147,10 +147,11 @@ class Content {
             const dateNow = DateTime.local();
             const diff = dateNow.diff(DateTime.fromJSDate(childBirthDay), ["month", "day"],).toObject();
             // get info is child in development period 
+            console.log(diff.days, 'dif days')
             if (diff.days) {
-                if (diff.days >= 0 && diff.days <= 11) {
+                if (diff.days >= 0 && diff.days <= 10.9) {
                     isChildInDevelopmentPeriod = true
-                } else if (diff.days >= 20 && diff.days <= 31) {
+                } else if (diff.days >= 20 && diff.days <= 30.9) {
                     isChildInDevelopmentPeriod = true
                 } else {
                     isChildInDevelopmentPeriod = false
