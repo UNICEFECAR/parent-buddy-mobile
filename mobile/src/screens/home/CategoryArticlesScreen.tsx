@@ -18,7 +18,7 @@ import { Media } from '../../components';
 import { VideoType } from '../../components/Media';
 import { dataRealmStore } from '../../stores';
 
-const DIVIDER_HEIGHT = StyleSheet.hairlineWidth * 2;
+const DIVIDER_HEIGHT = scale(25);
 
 export interface CategoryArticlesScreenParams {
     categoryName: string;
@@ -112,9 +112,10 @@ export class CategoryArticlesScreen extends React.Component<Props, State> {
                 videoUrl={item.coverVideoUrl}
                 playVideoDirectly={false}
 
-                roundCorners={false}
+                roundCorners={true}
+                borderRadius={5}
                 aspectRatio={1.8}
-                style={{ width: '100%', marginBottom: scale(25) }}
+                style={{ width: '100%' }}
 
                 onPress={() => { this.gotoArticleScreen(item) }}
             />
@@ -123,7 +124,7 @@ export class CategoryArticlesScreen extends React.Component<Props, State> {
 
     private getListItemSeparatorComponent = (props: any) => {
         return (
-            <View style={{ height: DIVIDER_HEIGHT, backgroundColor: '#d7d7d7' }} />
+            <View style={{ height: DIVIDER_HEIGHT }} />
         );
     };
 
@@ -186,8 +187,8 @@ export class CategoryArticlesScreen extends React.Component<Props, State> {
                             ref={this.list}
                             data={this.state.listData}
                             keyExtractor={this.listKeyExtractor}
-                            // style={{ borderWidth: 2, borderColor: 'green' }}
                             style={{padding: themeContext.theme.screenContainer?.padding}}
+                            contentContainerStyle={{paddingBottom:scale(40)}}
 
                             // Sub components
                             renderItem={this.getListRenderItem}
@@ -196,11 +197,11 @@ export class CategoryArticlesScreen extends React.Component<Props, State> {
                             ListHeaderComponent={this.getListHeaderComponent}
 
                             // Performance related
-                            getItemLayout={this.getListItemLayout}
+                            // getItemLayout={this.getListItemLayout}
                             // removeClippedSubviews={true} /* Default: false */
-                            initialNumToRender={15} /* Default: 10 */
+                            initialNumToRender={5} /* Default: 10 */
                             maxToRenderPerBatch={10} /* Default: 10 */
-                            windowSize={51}  /* Default: 21 */
+                            windowSize={21}  /* Default: 21 */
                         />
                     </View>
                 )}

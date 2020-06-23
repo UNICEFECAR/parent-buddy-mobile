@@ -18,6 +18,7 @@ export interface Props {
     coverImageUrl: string;
     aspectRatio?: number;
     roundCorners?: boolean;
+    borderRadius?: number;
     style?: StyleProp<ViewStyle>;
     onPress?: Function;
 }
@@ -37,6 +38,7 @@ export class Media extends React.Component<Props, State> {
         coverImageUrl: '',
         aspectRatio: 1.7,
         roundCorners: false,
+        borderRadius: 10,
     };
 
     constructor(props: Props) {
@@ -152,13 +154,13 @@ export class Media extends React.Component<Props, State> {
                         <>
                             <WebView
                                 ref={this.vimeoWebViewRef}
-                                style={[{ width: '100%', height: '100%' }, (this.props.roundCorners ? styles.roundCorner : {})]}
+                                style={[{ width: '100%', height: '100%' }, (this.props.roundCorners ? {overflow:'hidden', borderRadius:this.props.borderRadius} : {})]}
                                 originWhitelist={['*']}
                                 source={{ html: this.getVimeoHtml() }}
                             />
 
                             <View
-                                style={[styles.coverImage, (this.props.roundCorners ? styles.roundCorner : {}), { position:'absolute', width: '100%', height:'100%' }]}
+                                style={[styles.coverImage, (this.props.roundCorners ? {overflow:'hidden', borderRadius:this.props.borderRadius} : {}), { position:'absolute', width: '100%', height:'100%' }]}
                             >
                                 <FastImage
                                     source={{ uri: this.props.coverImageUrl }}
@@ -172,7 +174,7 @@ export class Media extends React.Component<Props, State> {
                     ) : (
                             // OTHER
                             <View
-                                style={[styles.coverImage, (this.props.roundCorners ? styles.roundCorner : {}), { width: '100%', aspectRatio: this.props.aspectRatio }]}
+                                style={[styles.coverImage, (this.props.roundCorners ? {overflow:'hidden', borderRadius:this.props.borderRadius} : {}), { width: '100%', aspectRatio: this.props.aspectRatio }]}
                             >
                                 <FastImage
                                     source={{ uri: this.props.coverImageUrl }}
@@ -192,7 +194,7 @@ export class Media extends React.Component<Props, State> {
                         <TouchableOpacity
                             onPress={() => { this.onTitlePress() }}
                         >
-                            <Typography type={TypographyType.headingSecondary}>
+                            <Typography style={{marginLeft:scale(15)}} type={TypographyType.headingSecondary}>
                                 {this.props.title}
                             </Typography>
                         </TouchableOpacity>
@@ -206,7 +208,7 @@ export class Media extends React.Component<Props, State> {
 export interface VideoStyles {
     [index: string]: ViewStyle | TextStyle | ImageStyle;
     container: ViewStyle;
-    roundCorner: ViewStyle;
+    // roundCorner: ViewStyle;
     coverImage: ViewStyle;
 }
 
@@ -219,10 +221,10 @@ const styles = StyleSheet.create<VideoStyles>({
         // padding: 15,
     },
 
-    roundCorner: {
-        borderRadius: 10,
-        overflow: 'hidden',
-    },
+    // roundCorner: {
+    //     borderRadius: 10,
+    //     overflow: 'hidden',
+    // },
 
     coverImage: {
         // borderRadius: scale(10),

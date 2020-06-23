@@ -25,6 +25,10 @@ YellowBox.ignoreWarnings([
     'Require cycle',
     'Sending `onAnimatedValueUpdate` with no listeners registered',
     'Unable to find module for UIManager',
+
+    // WebView with Vimeo: https://bit.ly/2YqNaR0
+    'startLoadWithResult invoked',
+    'Did not receive response to shouldStartLoad',
 ]);
 
 // Turn on layout animations on Android
