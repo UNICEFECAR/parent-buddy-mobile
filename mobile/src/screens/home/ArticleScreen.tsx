@@ -19,6 +19,8 @@ import { content } from '../../app';
 import { DataRealmContext, DataRealmContextValue, DataRealmConsumer } from '../../stores/DataRealmContext';
 import { Media } from '../../components';
 import { VideoType } from '../../components/Media';
+import RNFS from 'react-native-fs';
+import { valuesIn } from 'lodash';
 
 export interface ArticleScreenParams {
     article: ContentEntity;
@@ -36,6 +38,17 @@ export class ArticleScreen extends React.Component<Props, object> {
 
     public constructor(props: Props) {
         super(props);
+
+        // DEBUG
+        const screenParams = this.props.navigation.state.params!;
+        // console.log( JSON.stringify(screenParams.article, null, 4) );
+        // console.log(content.getCoverImageFilepath(screenParams.article));
+
+        // file:///data/user/0/com.halo.beba/files/content/cover_image_2231.jpg
+        // RNFS.exists('file:///data/user/0/com.halo.beba/files/content/cover_image_2231.jpg').then((value) => {
+        //     console.log(value);
+        // })
+        // DEBUG END
 
         this.setDefaultScreenParams();
     }
