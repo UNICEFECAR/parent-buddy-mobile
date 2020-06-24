@@ -218,7 +218,7 @@ class Content {
                             const filteredRecords = allContent?.
                                 filtered(`category == ${categoryId} AND type == 'article'`)
                                 .filter(item => item.predefinedTags.indexOf(childAgeTagId) !== -1)
-                                .filter(item => item.predefinedTags.indexOf(4756) === -1)
+                                // .filter(item => item.predefinedTags.indexOf(4756) === -1)
                             
                             filteredRecords?.forEach((record, index, collection) => {
                                 categoryArticles.articles.push(
@@ -307,7 +307,7 @@ class Content {
                     const filteredRecordsWithAge = allContent?.
                         filtered(`category == ${categoryId} AND type == 'article'`)
                         .filter(item => item.predefinedTags.indexOf(childAgeTagId) !== -1)
-                        .filter(item => item.predefinedTags.indexOf(4756) === -1)
+                        // .filter(item => item.predefinedTags.indexOf(4756) === -1)
                         
                     filteredRecordsWithAge?.forEach((record, index, collection) => {
                         categoryArticles.articles.push(record)
@@ -315,7 +315,7 @@ class Content {
                 } else {
                     title = translate("popularArticles");
                     const filteredRecords = allContent?.filtered(`category == ${categoryId} AND type == 'article'`)
-                                            .filter(item => item.predefinedTags.indexOf(4756) === -1);
+                                            // .filter(item => item.predefinedTags.indexOf(4756) === -1);
                     filteredRecords?.forEach((record, index, collection) => {
                         categoryArticles.articles.push(
                             record
