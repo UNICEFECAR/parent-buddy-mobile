@@ -7,6 +7,9 @@ import { GradientBackground } from '../../components/GradientBackground';
 import { RoundedButton, RoundedButtonType } from '../../components/RoundedButton';
 import { TextButton, TextButtonSize, TextButtonColor } from '../../components/TextButton';
 import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
+import { DrupalLoginArgs, DrupalLoginResponse, apiStore } from '../../stores/apiStore';
+import { dataRealmStore } from '../../stores';
+import { utils } from '../../app';
 
 export interface Props {
     navigation: NavigationSwitchProp<NavigationState>;
@@ -19,6 +22,34 @@ export class RegisterCreatedScreen extends React.Component<Props, object> {
 
     public constructor(props:Props) {
         super(props);
+    }
+
+    private async goToHomeScreen() {
+        let userLoginResponse: DrupalLoginResponse = { isUserExist: false }
+
+        let email = "";
+        let password = "";
+
+        if(this.props.navigation.state.params){
+            email = this.props.navigation.state.params?.email
+            password = this.props.navigation.state.params?.password
+        }
+
+        let args: DrupalLoginArgs = {
+            username: this.props.navigation.state.params?.email,
+            password: this.props.navigation.state.params?.password
+        }
+
+        try {
+            userLoginResponse = await apiStore.drupalLogin(args)
+        } catch (rejectError) { }
+
+        if (userLoginResponse.isUserExist) {
+            dataRealmStore.setVariable('userEmail', email);
+            dataRealmStore.setVariable('userIsLoggedIn', true);
+            dataRealmStore.setVariable('loginMethod', 'cms');
+            utils.gotoNextScreenOnAppOpen();
+        }
     }
 
     private gotoLoginScreen() {
@@ -44,22 +75,22 @@ export class RegisterCreatedScreen extends React.Component<Props, object> {
                     </Typography>
 
                     {/* CHECK EMAIL */}
-                    <Typography type={TypographyType.bodyRegular} style={{ width:'70%', textAlign: 'center', color: 'white', marginBottom:scale(60) }}>
+                    {/* <Typography type={TypographyType.bodyRegular} style={{ width:'70%', textAlign: 'center', color: 'white', marginBottom:scale(60) }}>
                         { translate('checkEmail') }
-                    </Typography>
+                    </Typography> */}
 
                     {/* GOTO HOME */}
                     <RoundedButton
                         text = { translate('buttonGotoHome') }
                         type = { RoundedButtonType.hollowPurple }
-                        onPress={() => {this.gotoLoginScreen()}}
+                        onPress={() => {this.goToHomeScreen()}}
                         style={{width:'80%', marginBottom:scale(60)}}
                     />
 
                     {/* SEND REGISTER EMAIL AGAIN */}
-                    <TextButton color={TextButtonColor.white} textStyle={{textDecorationLine:'underline', textAlign:'center'}} onPress={ () => {} }>
+                    {/* <TextButton color={TextButtonColor.white} textStyle={{textDecorationLine:'underline', textAlign:'center'}} onPress={ () => {} }>
                         { translate('sendRegisterEmailAgain') }
-                    </TextButton>
+                    </TextButton> */}
 
                     <View style={{flex:1}} />
 

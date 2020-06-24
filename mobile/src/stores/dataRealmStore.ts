@@ -11,9 +11,10 @@ import { GraphRequest } from 'react-native-fbsdk';
 import { DateTime } from "luxon";
 import { userRealmStore } from './userRealmStore';
 
-type Variables = {
+export type Variables = {
     'userEmail': string;
     'userName': string;
+    "loginMethod": "facebook" | "google" | "cms";
     'userIsLoggedIn': boolean;
     'userIsOnboarded': boolean;
     'userEnteredChildData': boolean;
@@ -21,6 +22,8 @@ type Variables = {
     'followGrowth': boolean;
     'followDevelopment': boolean;
     'followDoctorVisits': boolean;
+    'notificationsApp': boolean;
+    'notificationsEmail': boolean;
     'allowAnonymousUsage': boolean;
     'languageCode': string;
     'countryCode': string;
@@ -138,7 +141,7 @@ class DataRealmStore {
             try {
                 const allVariables = this.realm.objects<VariableEntity>(VariableEntitySchema.name);
                 const variablesWithKey = allVariables.filtered(`key == "${key}"`);
-
+                console.log(variablesWithKey, 'varaibles with key')
                 if (variablesWithKey && variablesWithKey.length > 0) {
                     const record = variablesWithKey.find(obj => obj.key === key);
 

@@ -20,6 +20,85 @@ class ApiStore {
         return ApiStore.instance;
     }
 
+    public async drupalRegister(args: DrupalRegisterArgs): Promise<DrupalRegisterRespone>{
+
+        const DrupalRegisterApiUrl = appConfig.apiUrl.substring(0, appConfig.apiUrl.length -3)
+
+        let url = `${DrupalRegisterApiUrl}entity/user`
+        const language = localize.getLanguage();
+        
+        let bodyParams = {
+            "field_first_name": [{"value": args?.field_first_name}],
+            "field_last_name": [{"value": args?.field_last_name}],
+            "name": [{"value": args?.name}],
+            "mail": [{"value": args?.mail}],
+            "pass": [{"value": args?.password}],
+            "preferred_langcode": [{"value": language}],
+            "preferred_admin_langcode": [{"value": "en"}], 
+            "status": [{"value": "1"}],
+            "roles": [{"target_id": "application_user"}]
+        }
+
+        let response: DrupalRegisterRespone = {registrationSuccess: false}
+
+        try {
+            let axiosResponse: AxiosResponse = await axios({
+                url: url,
+                method: 'POST',
+                responseType: 'json',
+                headers:{"Content-type": "application/json"},
+                timeout: appConfig.apiTimeout,
+                auth: {
+                    username: appConfig.apiAuthUsername,
+                    password: appConfig.apiAuthPassword,
+                },
+                data: bodyParams
+            })
+
+            let rawResponseJson = axiosResponse.data;
+
+            if(rawResponseJson){
+                response.registrationSuccess = rawResponseJson.status
+            }
+        }catch (rejectError) {
+            if(appConfig.showLog){
+                console.log(rejectError, "reject error");
+            }
+        }
+        return response
+    }   
+
+    public async drupalLogin(args: DrupalLoginArgs): Promise<DrupalLoginResponse>{
+
+        let url = `${appConfig.apiUrl}/user/validate?username=${args.username}&password=${args.password}`
+        let response: DrupalLoginResponse = {isUserExist: false}
+        
+        try {
+            let axiosResponse: AxiosResponse = await axios({
+                url: url,
+                method: 'GET',
+                responseType: 'json',
+                timeout: appConfig.apiTimeout,
+                auth: {
+                    username: appConfig.apiAuthUsername,
+                    password: appConfig.apiAuthPassword,
+                },
+            })
+
+            let rawResponseJson = axiosResponse.data;
+
+            if(rawResponseJson){
+                response.isUserExist = rawResponseJson
+            }
+        }catch (rejectError) {
+            if(appConfig.showLog){
+                console.log(rejectError, "REJECT ERROR");
+            }
+        }
+
+        return response
+    }
+
     public async getContent(args: GetContentArgs): Promise<ContentResponse> {
         // URL
         const language = localize.getLanguage();
@@ -275,6 +354,28 @@ class ApiStore {
             };
         });
     }
+}
+
+export interface DrupalRegisterArgs{
+    field_first_name: string,
+    field_last_name: string,
+    name: string,
+    mail: string,
+    password: string,
+}
+
+
+export interface DrupalRegisterRespone {
+    registrationSuccess: boolean
+}
+
+export interface DrupalLoginArgs{
+    username: string,
+    password: string,
+}
+
+export interface DrupalLoginResponse {
+    isUserExist: boolean,
 }
 
 interface GetContentArgs {

@@ -87,6 +87,11 @@ export class Drawer extends React.Component<Props> {
             navigation.navigate('HomeStackNavigator_BirthDataScreen');
             navigation.dispatch(DrawerActions.closeDrawer())
         }
+
+        if(fancyButtonType === FancyButtonType.settings){
+            navigation.navigate('HomeStackNavigator_SettingsScreen');
+            navigation.dispatch(DrawerActions.closeDrawer());
+        }
     }
 
     private onClosePress() {
