@@ -304,8 +304,8 @@ class ApiStore {
             let {jobId, promise:downloadPromise} = RNFS.downloadFile({
                 fromUrl: args.srcUrl,
                 toFile: args.destFolder + `/${args.destFilename}`,
-                connectionTimeout: 100 * 1000, // milliseconds
-                readTimeout: 100 * 1000, // milliseconds
+                connectionTimeout: 150 * 1000, // milliseconds
+                readTimeout: 150 * 1000, // milliseconds
             });
 
             let downloadResult = await downloadPromise;
