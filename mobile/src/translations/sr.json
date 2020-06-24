@@ -13,6 +13,12 @@
     "youCreatedAccount": "Napravili ste nalog!",
     "checkEmail": "Proverite svoju Email poštu i kliknite na link u emailu da biste završili registraciju.",
     "sendRegisterEmailAgain": "Nije mi stigao link, pošaljite email ponovo",
+    "userAlreadyExist": "Korisnik sa ovim mejlom već postoji.",
+    "userNoExist": "Ne postoji korisnik sa ovim nalogom",
+    "allFieldsMustBeFilled": "Sva polja moraju biti popunjena",
+    "notValidEmail": "E-mail nije validan.",
+    "passwordToShort": "Lozinka mora imati najmanje 6 karaktera.",
+    "passwordDosntMatch": "Lozinke se ne podudaraju.",
 
     "accountTitle": "Upoznajmo Vaše dete",
     "accountGirl": "Devojčica",
@@ -56,7 +62,7 @@
     "fieldLabelSurname": "Prezime",
     "fieldLabelComment": "Komentar",
 
-    "buttonGotoHome": "Nazad na početni ekran",
+    "buttonGotoHome": "Idi na početni ekran",
     "buttonNext": "Dalje",
     "buttonBack": "Nazad",
     "buttonShare": "Podelite članak",

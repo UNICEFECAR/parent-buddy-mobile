@@ -17,6 +17,7 @@ import { utils } from '../../app/utils';
 import { Button, Snackbar, Colors } from 'react-native-paper';
 import { moderateScale } from 'react-native-size-matters';
 import { themes } from '../../themes/themes';
+import { DrupalLoginResponse, apiStore, DrupalLoginArgs } from '../../stores/apiStore';
 
 export interface Props {
     navigation: NavigationSwitchProp<NavigationState>;
@@ -25,6 +26,8 @@ export interface Props {
 export interface State {
     isSnackbarVisible: boolean;
     snackbarMessage: string;
+    email: string,
+    password: string
 }
 
 interface Animations {
@@ -58,14 +61,60 @@ export class LoginScreen extends React.Component<Props, State & AnimationsState>
 
         let state: State & AnimationsState = {
             isSnackbarVisible: false,
-            snackbarMessage: '',
+            snackbarMessage: "",
+            email: "",
+            password: "",
             ...animationsState
         };
 
         this.state = state;
     }
 
-    private onLoginClick() {
+    private inputValidation(): boolean{
+        let isValidate = true;
+
+        const {password, email } = this.state;
+
+        if(password === "" || email === ""){
+            this.setState({
+                snackbarMessage: translate('allFieldsMustBeFilled'),
+                isSnackbarVisible: true
+            });
+            return false; 
+        }
+
+        return isValidate;
+    }
+
+    private async onLoginClick() {
+        const {email, password} = this.state;
+        
+        let userLoginResponse: DrupalLoginResponse = {isUserExist: false}
+
+        if(this.inputValidation()){
+
+            let args: DrupalLoginArgs = {
+                username: email,
+                password: password
+            }
+
+            try{
+                userLoginResponse = await apiStore.drupalLogin(args)
+            }catch(rejectError){}
+
+            if(userLoginResponse.isUserExist){
+                dataRealmStore.setVariable('userEmail', email);
+                dataRealmStore.setVariable('userIsLoggedIn', true);
+                dataRealmStore.setVariable('loginMethod', 'cms');
+                utils.gotoNextScreenOnAppOpen();
+            } else {
+                this.setState({
+                    isSnackbarVisible: true,
+                    snackbarMessage: translate('userNoExist')
+                });
+            }
+        }
+
         Keyboard.dismiss();
     }
 
@@ -145,6 +194,7 @@ export class LoginScreen extends React.Component<Props, State & AnimationsState>
         if (response?.user?.email) {
             dataRealmStore.setVariable('userEmail', response.user.email);
             dataRealmStore.setVariable('userIsLoggedIn', true);
+            dataRealmStore.setVariable('loginMethod', 'google');
             utils.gotoNextScreenOnAppOpen();
         } else {
             this.setState({
@@ -163,6 +213,7 @@ export class LoginScreen extends React.Component<Props, State & AnimationsState>
             if (facebookUser && facebookUser.email) {
                 dataRealmStore.setVariable('userEmail', facebookUser.email);
                 dataRealmStore.setVariable('userIsLoggedIn', true);
+                dataRealmStore.setVariable('loginMethod', 'facebook');
                 utils.gotoNextScreenOnAppOpen();
             } else {
                 this.setState({
@@ -230,7 +281,7 @@ export class LoginScreen extends React.Component<Props, State & AnimationsState>
                         <RoundedTextInput
                             label={translate('fieldLabelEmail')}
                             icon="email-outline"
-                            onChange={() => { }}
+                            onChange={(value) => { this.setState({email: value})}}
                             onFocus={() => { this.onInputFocus() }}
                             style={{ marginBottom: 15 }}
                         />
@@ -239,7 +290,7 @@ export class LoginScreen extends React.Component<Props, State & AnimationsState>
                         <RoundedTextInput
                             label={translate('fieldLabelPassword')}
                             icon="lock-outline"
-                            onChange={() => { }}
+                            onChange={(value) => { this.setState({password: value}) }}
                             onFocus={() => { this.onInputFocus() }}
                             style={{ marginBottom: 15 }}
                         />

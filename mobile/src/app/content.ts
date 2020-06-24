@@ -146,8 +146,8 @@ class Content {
         } else {
             const dateNow = DateTime.local();
             const diff = dateNow.diff(DateTime.fromJSDate(childBirthDay), ["month", "day"],).toObject();
+            
             // get info is child in development period 
-            console.log(diff.days, 'dif days')
             if (diff.days) {
                 if (diff.days >= 0 && diff.days <= 10.9) {
                     isChildInDevelopmentPeriod = true
@@ -218,8 +218,8 @@ class Content {
                             const filteredRecords = allContent?.
                                 filtered(`category == ${categoryId} AND type == 'article'`)
                                 .filter(item => item.predefinedTags.indexOf(childAgeTagId) !== -1)
+                                // .filter(item => item.predefinedTags.indexOf(4756) === -1)
                             
-
                             filteredRecords?.forEach((record, index, collection) => {
                                 categoryArticles.articles.push(
                                     record
@@ -307,13 +307,15 @@ class Content {
                     const filteredRecordsWithAge = allContent?.
                         filtered(`category == ${categoryId} AND type == 'article'`)
                         .filter(item => item.predefinedTags.indexOf(childAgeTagId) !== -1)
+                        // .filter(item => item.predefinedTags.indexOf(4756) === -1)
                         
                     filteredRecordsWithAge?.forEach((record, index, collection) => {
                         categoryArticles.articles.push(record)
                     })
                 } else {
                     title = translate("popularArticles");
-                    const filteredRecords = allContent?.filtered(`category == ${categoryId} AND type == 'article'`);
+                    const filteredRecords = allContent?.filtered(`category == ${categoryId} AND type == 'article'`)
+                                            // .filter(item => item.predefinedTags.indexOf(4756) === -1);
                     filteredRecords?.forEach((record, index, collection) => {
                         categoryArticles.articles.push(
                             record
