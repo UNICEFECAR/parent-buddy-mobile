@@ -74,9 +74,7 @@ export class CategoryArticlesScreen extends React.Component<Props, State> {
         if (!dataRealmStore.realm) return;
         const screenParams = this.props.navigation.state.params!;
 
-        return dataRealmStore.realm.objects<ContentEntity>(ContentEntitySchema.name)
-            .filtered(`category == ${screenParams.categoryId} AND type == 'article' SORT(id ASC)`)
-            .map(article => article);
+        return content.getCategoryScreenArticles(dataRealmStore.realm, screenParams.categoryId);
     }
 
     private gotoBack() {
@@ -171,7 +169,7 @@ export class CategoryArticlesScreen extends React.Component<Props, State> {
 
                 {/* CATEGORY NAME */}
                 <Typography type={TypographyType.headingPrimary}>
-                    {screenParams.categoryName}
+                    {screenParams.categoryName} ({this.state.listData?.length})
                 </Typography>
             </View>
         );

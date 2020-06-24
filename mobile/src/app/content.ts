@@ -1,5 +1,5 @@
 import { ContentEntity, ContentEntitySchema } from "../stores/ContentEntity";
-import { ApiImageData, VocabulariesAndTermsResponse } from "../stores/apiStore";
+import { ApiImageData, VocabulariesAndTermsResponse, TermChildren } from "../stores/apiStore";
 import RNFS from 'react-native-fs';
 import { utils } from "./utils";
 import { ContentViewEntity } from "../stores/ContentViewEntity";
@@ -133,8 +133,8 @@ class Content {
         // Set categories
         const vocabulariesAndTermsResponse = dataRealmStore.getVariable('vocabulariesAndTerms');
 
-        if (!vocabulariesAndTermsResponse || 
-            !vocabulariesAndTermsResponse.categories || 
+        if (!vocabulariesAndTermsResponse ||
+            !vocabulariesAndTermsResponse.categories ||
             !Array.isArray(vocabulariesAndTermsResponse.categories)) {
             return rval;
         }
@@ -167,15 +167,15 @@ class Content {
 
                 const featuredArticles = translateData('developmentPeriods');
 
-                if(childAgeTagid && childAgeTagid > 51){
+                if (childAgeTagid && childAgeTagid > 51) {
                     childAgeTagid = 51
                 }
-                
+
                 const featuredData = featuredArticles?.find(item => item.predefinedTagId === childAgeTagid);
-                
+
                 const featuredPredefinedTagId = featuredData?.predefinedTagId;
-                const featuredArticleId  = childGender === "girl" ? featuredData?.moreAboutPeriodArticleIdFemale : featuredData?.moreAboutPeriodArticleIdMale;
-    
+                const featuredArticleId = childGender === "girl" ? featuredData?.moreAboutPeriodArticleIdFemale : featuredData?.moreAboutPeriodArticleIdMale;
+
                 const categories = vocabulariesAndTermsResponse.categories;
                 // Set categoryIds
                 const categoryIds = [
@@ -188,7 +188,7 @@ class Content {
                 const allContent = realm?.objects<ContentEntity>(ContentEntitySchema.name);
                 const featuredRecord = allContent?.filtered(`id == ${featuredArticleId}`).find(record => record);
 
-                if(featuredRecord !== undefined){
+                if (featuredRecord !== undefined) {
                     rval.featuredArticle = featuredRecord;
                 }
 
@@ -213,12 +213,12 @@ class Content {
 
                     try {
                         const childAgeTagId = dataRealmStore.getChildAgeTagWithArticles(categoryId, true)?.id;
-                        
-                        if(childAgeTagId !== undefined){
+
+                        if (childAgeTagId !== undefined) {
                             const filteredRecords = allContent?.
                                 filtered(`category == ${categoryId} AND type == 'article'`)
                                 .filter(item => item.predefinedTags.indexOf(childAgeTagId) !== -1)
-                            
+
 
                             filteredRecords?.forEach((record, index, collection) => {
                                 categoryArticles.articles.push(
@@ -233,7 +233,7 @@ class Content {
 
 
                     for (let item in categoryArticles) {
-                        categoryArticles.articles = utils.randomizeArray(categoryArticles.articles).slice(0,5)
+                        categoryArticles.articles = utils.randomizeArray(categoryArticles.articles).slice(0, 5)
                     };
 
 
@@ -307,7 +307,7 @@ class Content {
                     const filteredRecordsWithAge = allContent?.
                         filtered(`category == ${categoryId} AND type == 'article'`)
                         .filter(item => item.predefinedTags.indexOf(childAgeTagId) !== -1)
-                        
+
                     filteredRecordsWithAge?.forEach((record, index, collection) => {
                         categoryArticles.articles.push(record)
                     })
@@ -326,7 +326,7 @@ class Content {
             };
 
             for (let item in categoryArticles) {
-                categoryArticles.articles = utils.randomizeArray(categoryArticles.articles).slice(0,5)
+                categoryArticles.articles = utils.randomizeArray(categoryArticles.articles).slice(0, 5)
             };
 
 
@@ -340,6 +340,84 @@ class Content {
             rval.title = title;
             rval.vocabulariesAndTermsResponse = vocabulariesAndTermsResponse;
         };
+
+        return rval;
+    }
+
+    public getCategoryScreenArticles(realm: Realm | null, categoryId: number): ContentEntity[] {
+        let rval: ContentEntity[] = [];
+
+        // Get childAgeTagWithArticles
+        const childAgeTagWithArticles = dataRealmStore.getChildAgeTagWithArticles(categoryId, true);
+
+        // Get childAgeTags
+        let childAgeTags: TermChildren[] = dataRealmStore.getChildAgeTags(true);
+
+        // Reorder childAgeTags
+        if (childAgeTagWithArticles) {
+            let indexOfTag = 0;
+
+            childAgeTags.forEach((value, index) => {
+                if (value.id === childAgeTagWithArticles.id) {
+                    indexOfTag = index;
+                }
+            });
+
+            if (indexOfTag !== 0) {
+                let deletedElements = childAgeTags.splice(indexOfTag);
+                childAgeTags = deletedElements.concat(childAgeTags);
+            }
+        }
+
+        // Query
+        const query = `category == ${categoryId} AND type == 'article' SORT(id ASC)`;
+
+        // Get articles for childAgeTags
+        childAgeTags.forEach((childAgeTag) => {
+            const articlesForChildAgeTag = realm?.objects<ContentEntity>(ContentEntitySchema.name)
+                .filtered(query)
+
+                // Filter articles with this child age tag
+                .filter((article) => {
+                    return article.predefinedTags.indexOf(childAgeTag.id) !== -1;
+                })
+
+                // Filter no show articles
+                // .filter((article) => {
+                //     return article.predefinedTags.indexOf(4756) === -1;
+                // })
+
+                .map(article => article);
+
+            // Add child age articles to rval. If not already there
+            articlesForChildAgeTag?.forEach((article) => {
+                let articleAlreadyAdded = false;
+                rval.forEach((finalArticle) => {
+                    if (finalArticle.id === article.id) articleAlreadyAdded = true;
+                });
+                if (!articleAlreadyAdded) rval.push(article);
+            });
+        });
+
+        // Get other articles
+        const articlesOther = realm?.objects<ContentEntity>(ContentEntitySchema.name)
+            .filtered(query)
+
+            // Filter no show articles
+            // .filter((article) => {
+            //     return article.predefinedTags.indexOf(4756) === -1;
+            // })
+
+            .map(article => article);
+
+        // Add other articles to rval. If not already there
+        articlesOther?.forEach((article) => {
+            let articleAlreadyAdded = false;
+            rval.forEach((finalArticle) => {
+                if (finalArticle.id === article.id) articleAlreadyAdded = true;
+            });
+            if (!articleAlreadyAdded) rval.push(article);
+        });
 
         return rval;
     }

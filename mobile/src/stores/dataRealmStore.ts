@@ -324,6 +324,26 @@ class DataRealmStore {
         return obj;
     }
 
+    public getChildAgeTags(removeAllAgesTag: boolean = false) {
+        let childAgeTags: TermChildren[] = [];
+        
+        const vocabulariesAndTerms = dataRealmStore.getVariable('vocabulariesAndTerms');
+        const childAgeTagsGroup = vocabulariesAndTerms?.predefined_tags.find((value) => {
+            return value.id === 42;
+        });
+        if (childAgeTagsGroup && childAgeTagsGroup.children && Array.isArray(childAgeTagsGroup.children)) {
+            childAgeTags = childAgeTagsGroup.children;
+        }
+
+        if (removeAllAgesTag) {
+            childAgeTags = childAgeTags.filter((value) => {
+                return value.id !== 446;
+            });
+        }
+
+        return childAgeTags;
+    }
+
     public getCategoryNameFromId(categoryId: number): string | null {
         const vocabulariesAndTerms = this.getVariable('vocabulariesAndTerms');
         if (!vocabulariesAndTerms) return null;
