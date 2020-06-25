@@ -12,6 +12,7 @@ import { DateTime } from "luxon";
 import { isArray, indexOf } from "lodash";
 import { Collection } from "realm";
 import { JsonFormatter } from "cucumber";
+import { ChildGender } from "../stores/ChildEntity";
 
 /**
  * Utility methods related to ContentEntity.
@@ -146,7 +147,7 @@ class Content {
         } else {
             const dateNow = DateTime.local();
             const diff = dateNow.diff(DateTime.fromJSDate(childBirthDay), ["month", "day"],).toObject();
-            
+
             // get info is child in development period 
             if (diff.days) {
                 if (diff.days >= 0 && diff.days <= 10.9) {
@@ -313,7 +314,7 @@ class Content {
                 } else {
                     title = translate("popularArticles");
                     const filteredRecords = allContent?.filtered(`category == ${categoryId} AND type == 'article'`)
-                                            // .filter(item => item.predefinedTags.indexOf(4756) === -1);
+                    // .filter(item => item.predefinedTags.indexOf(4756) === -1);
                     filteredRecords?.forEach((record, index, collection) => {
                         categoryArticles.articles.push(
                             record
@@ -346,6 +347,16 @@ class Content {
 
     public getCategoryScreenArticles(realm: Realm | null, categoryId: number): ContentEntity[] {
         let rval: ContentEntity[] = [];
+
+        // Get childGender, oppositeChildGender, oppositeChildGenderTagId
+        const childGender: ChildGender | undefined = userRealmStore.getChildGender();
+        let oppositeChildGender: ChildGender | undefined = undefined;
+        if (childGender) oppositeChildGender = childGender === 'boy' ? 'girl' : 'boy';
+
+        let oppositeChildGenderTagId: number | undefined = undefined;
+        if (oppositeChildGender) {
+            oppositeChildGenderTagId = oppositeChildGender === 'boy' ? 40 : 41;
+        }
 
         // Get childAgeTagWithArticles
         const childAgeTagWithArticles = dataRealmStore.getChildAgeTagWithArticles(categoryId, true);
@@ -382,10 +393,11 @@ class Content {
                     return article.predefinedTags.indexOf(childAgeTag.id) !== -1;
                 })
 
-                // Filter no show articles
-                // .filter((article) => {
-                //     return article.predefinedTags.indexOf(4756) === -1;
-                // })
+                // Remove opposite gender
+                .filter((article) => {
+                    if (!childGender || !oppositeChildGenderTagId) return true;
+                    return article.predefinedTags.indexOf(oppositeChildGenderTagId) === -1;
+                })
 
                 .map(article => article);
 
@@ -403,10 +415,11 @@ class Content {
         const articlesOther = realm?.objects<ContentEntity>(ContentEntitySchema.name)
             .filtered(query)
 
-            // Filter no show articles
-            // .filter((article) => {
-            //     return article.predefinedTags.indexOf(4756) === -1;
-            // })
+            // Remove opposite gender
+            .filter((article) => {
+                if (!childGender || !oppositeChildGenderTagId) return true;
+                return article.predefinedTags.indexOf(oppositeChildGenderTagId) === -1;
+            })
 
             .map(article => article);
 
