@@ -490,7 +490,7 @@ const RootModalStackNavigator = createStackNavigator({
     },
     mode: "modal",
     headerMode: "none",
-    initialRouteName: "LoginStackNavigator"
+    initialRouteName: "RootModalStackNavigator_SyncingScreen"
 });
 
 export const AppNavigationContainer = createAppContainer(RootModalStackNavigator);

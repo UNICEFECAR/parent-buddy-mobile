@@ -19,6 +19,8 @@ import { content } from '../../app';
 import { DataRealmContext, DataRealmContextValue, DataRealmConsumer } from '../../stores/DataRealmContext';
 import { Media } from '../../components';
 import { VideoType } from '../../components/Media';
+import RNFS from 'react-native-fs';
+import { valuesIn } from 'lodash';
 
 export interface ArticleScreenParams {
     article: ContentEntity;
@@ -36,6 +38,16 @@ export class ArticleScreen extends React.Component<Props, object> {
 
     public constructor(props: Props) {
         super(props);
+
+        // DEBUG
+        const screenParams = this.props.navigation.state.params!;
+        // console.log( JSON.stringify(screenParams.article, null, 4) );
+        // console.log(content.getCoverImageFilepath(screenParams.article));
+
+        // RNFS.exists('file:///data/user/0/com.halo.beba/files/content/cover_image_31.jpg').then((value) => {
+        //     console.log(value);
+        // })
+        // DEBUG END
 
         this.setDefaultScreenParams();
     }
@@ -87,15 +99,16 @@ export class ArticleScreen extends React.Component<Props, object> {
                         </View>
 
                         <View style={{ paddingBottom: 0 }}>
-                            {/* ARTICLE IMAGE */}
+                            {/* ARTICLE COVER */}
                             <Media
-                                coverImageUrl={ content.getCoverImageFilepath(screenParams.article) }
+                                coverImageUrl={content.getCoverImageFilepath(screenParams.article)}
                                 videoType={screenParams.article.coverVideoSite as VideoType}
                                 videoUrl={screenParams.article.coverVideoUrl}
+                                playVideoDirectly={true}
 
                                 roundCorners={false}
                                 aspectRatio={1.4}
-                                style={{ width:'100%' }}
+                                style={{ width: '100%' }}
                             />
 
                             {/* SHARE BUTTON */}
@@ -114,16 +127,19 @@ export class ArticleScreen extends React.Component<Props, object> {
                             // onSizeUpdated={ size => console.warn(size.height) }
                         /> */}
 
-                            <HTML
-                                html={screenParams.article.body}
-                                baseFontStyle={{ fontSize: scale(17) }}
-                                tagsStyles={htmlStyles}
-                                imagesMaxWidth={Dimensions.get('window').width}
-                                staticContentMaxWidth={Dimensions.get('window').width}
-                                onLinkPress={(event: any, href: string) => {
-                                    Linking.openURL(href);
-                                }}
-                            />
+                            {screenParams.article.body ? (
+                                <HTML
+                                    html={screenParams.article.body}
+                                    baseFontStyle={{ fontSize: scale(17) }}
+                                    tagsStyles={htmlStyles}
+                                    imagesMaxWidth={Dimensions.get('window').width}
+                                    staticContentMaxWidth={Dimensions.get('window').width}
+                                    onLinkPress={(event: any, href: string) => {
+                                        Linking.openURL(href);
+                                    }}
+                                />
+
+                            ) : null}
 
                             {/* SHARE BUTTON */}
                             {/* <TextButton icon="share-alt" iconStyle={{ color: '#AA40BF' }} color={TextButtonColor.purple}>

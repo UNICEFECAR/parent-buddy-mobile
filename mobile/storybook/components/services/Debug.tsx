@@ -34,8 +34,14 @@ export class Debug extends React.Component {
         console.warn(`Sync finished in ${timestampDiff} s`);
     }
 
-    private doTimestamp() {
-        console.log(Math.round(Date.now()/1000));
+    private async deleteLastSyncTimestamp() {
+        await dataRealmStore.deleteVariable('lastSyncTimestamp');
+        console.log('Deleted');
+    }
+
+    private getLastSyncTimestamp() {
+        const lastSyncTimestamp = dataRealmStore.getVariable('lastSyncTimestamp');
+        console.warn(lastSyncTimestamp);
     }
 
     render() {
@@ -60,8 +66,13 @@ export class Debug extends React.Component {
                 </Button>
                 <View style={{ height: scale(10) }} />
 
-                <Button mode="contained" uppercase={false} onPress={ () => {this.doTimestamp()} } color={Colors.blue700}>
-                    Timestamp
+                <Button mode="contained" uppercase={false} onPress={ () => {this.deleteLastSyncTimestamp()} } color={Colors.blue700}>
+                    Delete last sync timestamp
+                </Button>
+                <View style={{ height: scale(10) }} />
+
+                <Button mode="contained" uppercase={false} onPress={ () => {this.getLastSyncTimestamp()} } color={Colors.blue700}>
+                    Get last sync timestamp
                 </Button>
                 <View style={{ height: scale(10) }} />
             </ScrollView>

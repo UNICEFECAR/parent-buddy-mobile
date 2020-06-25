@@ -304,6 +304,8 @@ class ApiStore {
             let {jobId, promise:downloadPromise} = RNFS.downloadFile({
                 fromUrl: args.srcUrl,
                 toFile: args.destFolder + `/${args.destFilename}`,
+                connectionTimeout: 150 * 1000, // milliseconds
+                readTimeout: 150 * 1000, // milliseconds
             });
 
             let downloadResult = await downloadPromise;
@@ -316,15 +318,25 @@ class ApiStore {
                 // if (appConfig.showLog) {
                 //     console.log(`apiStore.downloadImage(): ${parsedUrl.pathname}`, );
                 // }
+            } else {
+                // if (appConfig.showLog) {
+                //     console.log(`IMAGE DOWNLOAD FAILED: url = ${args.srcUrl}, statusCode: ${downloadResult.statusCode}`);
+                // }
             }
-        } catch(rejectError) {}
+        } catch(rejectError) {
+            if (appConfig.showLog) {
+                console.log('IMAGE DOWNLOAD ERROR', rejectError);
+                console.log(JSON.stringify(args, null, 4));
+            }
+        }
 
         return rval;
     }
 
-    public async downloadImages(args: ApiImageData[]): Promise<boolean[]> {
+    public async downloadImages(args: ApiImageData[]): Promise<{success:boolean, args:ApiImageData}[]> {
         const promises: Promise<boolean>[] = [];
 
+        // FIRST ATTEMPT
         args.forEach((downloadImageArgs) => {
             promises.push( this.downloadImage(downloadImageArgs) );
         });
@@ -332,10 +344,15 @@ class ApiStore {
         let allResponses = await Promise.all<boolean>(promises);
 
         if (appConfig.showLog) {
-            console.log(`apiStore.downloadImages(): Downloaded ${args.length} images`, );
+            console.log(`apiStore.downloadImages() first attempt: Downloaded ${args.length} images`, );
         }
 
-        return allResponses;
+        return allResponses.map((value, index) => {
+            return {
+                success: value,
+                args: args[index],
+            };
+        });
     }
 }
 

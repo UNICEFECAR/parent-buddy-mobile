@@ -1,5 +1,5 @@
-import React, { Fragment } from 'react';
-import { SafeAreaView, View, Text, Button, StyleSheet, ViewStyle, ScrollView, Image, ImageStyle, ImageBackground } from 'react-native';
+import React, { Fragment, RefObject } from 'react';
+import { SafeAreaView, FlatList, View, Text, Button, StyleSheet, ViewStyle, ScrollView, Image, ImageStyle, ImageBackground, ActivityIndicator } from 'react-native';
 import { NavigationStackProp, NavigationStackState, NavigationStackOptions } from 'react-navigation-stack';
 import { ThemeContextValue, ThemeConsumer } from '../../themes/ThemeContext';
 import { translate } from '../../translations/translate';
@@ -16,6 +16,9 @@ import { ContentEntity, ContentEntitySchema } from '../../stores/ContentEntity';
 import { content } from '../../app';
 import { Media } from '../../components';
 import { VideoType } from '../../components/Media';
+import { dataRealmStore } from '../../stores';
+
+const DIVIDER_HEIGHT = scale(25);
 
 export interface CategoryArticlesScreenParams {
     categoryName: string;
@@ -26,15 +29,23 @@ export interface Props {
     navigation: NavigationStackProp<NavigationStackState, CategoryArticlesScreenParams>;
 }
 
+export interface State {
+    listData?: ContentEntity[];
+}
+
 /**
  * Shows articles of some specific category.
  */
-export class CategoryArticlesScreen extends React.Component<Props, object> {
+export class CategoryArticlesScreen extends React.Component<Props, State> {
+
+    private readonly list: RefObject<FlatList<ContentEntity>>;
 
     public constructor(props: Props) {
         super(props);
 
+        this.list = React.createRef();
         this.setDefaultScreenParams();
+        this.initState();
     }
 
     private setDefaultScreenParams() {
@@ -49,6 +60,21 @@ export class CategoryArticlesScreen extends React.Component<Props, object> {
         } else {
             this.props.navigation.state.params = defaultScreenParams;
         }
+    }
+
+    private initState() {
+        let listData = this.getListData();
+
+        this.state = {
+            listData: listData ? listData : []
+        };
+    }
+
+    private getListData() {
+        if (!dataRealmStore.realm) return;
+        const screenParams = this.props.navigation.state.params!;
+
+        return content.getCategoryScreenArticles(dataRealmStore.realm, screenParams.categoryId);
     }
 
     private gotoBack() {
@@ -67,85 +93,116 @@ export class CategoryArticlesScreen extends React.Component<Props, object> {
         };
 
         this.props.navigation.navigate('HomeStackNavigator_ArticleScreen', params);
-
-        // if (!article.youTubeVideoId) {
-        //     // Text article
-        //     let params: ArticleScreenParams = {
-        //         article: article
-        //     };
-
-        //     this.props.navigation.navigate('HomeStackNavigator_ArticleScreen', params);
-        // } else {
-        //     // Video article
-        //     this.props.navigation.navigate('RootModalStackNavigator_VideoScreen', {
-        //         videoId: article?.youTubeVideoId
-        //     });
-        // }
     }
+
+    private listKeyExtractor = (item: ContentEntity, index: number): string => {
+        return item.id + '';
+    };
+
+    private getListRenderItem = ({ item, index }: { item: ContentEntity, index: number }) => {
+        return (
+            <Media
+                key={item.id}
+                title={item.title}
+
+                coverImageUrl={content.getCoverImageFilepath(item)}
+                videoType={item.coverVideoSite as VideoType}
+                videoUrl={item.coverVideoUrl}
+                playVideoDirectly={false}
+
+                roundCorners={true}
+                borderRadius={5}
+                aspectRatio={1.8}
+                style={{ width: '100%' }}
+                titleStyle={{paddingLeft:scale(15)}}
+
+                onPress={() => { this.gotoArticleScreen(item) }}
+            />
+        );
+    };
+
+    private getListItemSeparatorComponent = (props: any) => {
+        return (
+            <View style={{ height: DIVIDER_HEIGHT }} />
+        );
+    };
+
+    private getListEmptyComponent = (props: any) => {
+        let emptyComponent: JSX.Element;
+
+        if (this.state.listData === undefined) {
+            // Show activity indicator when data array is undefined
+            emptyComponent = <ActivityIndicator animating={true} style={{ height: scale(70) }} />;
+        } else {
+            // Show NO_ITEMS_TEXT when data array is empty array
+            emptyComponent = (
+                <View style={{ height: scale(70), flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', paddingHorizontal: scale(15) }}>
+                    <Text
+                        numberOfLines={1}
+                        style={{ flex: 1, color: '#212121', fontSize: 17, textAlign: 'center', lineHeight: moderateScale(20) }}
+                    >No items</Text>
+                </View>
+            )
+        }
+
+        return emptyComponent;
+    };
+
+    private getListItemLayout = (data: ContentEntity[] | null | undefined, index: number) => {
+        let itemHeight = scale(300) + DIVIDER_HEIGHT;
+        return { length: itemHeight, offset: itemHeight * index, index };
+    };
+
+    private getListHeaderComponent = (props: any) => {
+        const screenParams = this.props.navigation.state.params!;
+
+        return (
+            <View
+                // style={{ borderWidth: 2, borderColor: 'blue' }}
+            >
+                {/* GO BACK */}
+                <TextButton style={{ padding: 0 }} icon="chevron-left" iconStyle={{ color: '#AA40BF' }} textStyle={{ fontSize: scale(16) }} color={TextButtonColor.purple} onPress={() => { this.gotoBack() }}>
+                    {translate('buttonBack')}
+                </TextButton>
+
+                <View style={{ marginBottom: scale(15) }} />
+
+                {/* CATEGORY NAME */}
+                <Typography type={TypographyType.headingPrimary}>
+                    {screenParams.categoryName} ({this.state.listData?.length})
+                </Typography>
+            </View>
+        );
+    };
 
     public render() {
         const screenParams = this.props.navigation.state.params!;
 
-        let getPlayIcon = (themeContext: ThemeContextValue, size: number = scale(70)) => {
-            return (
-                <View style={{
-                    justifyContent: 'center', alignItems: 'center',
-                    backgroundColor: 'rgba(255,255,255,0.4)',
-                    width: size, height: size,
-                    borderRadius: themeContext.percentageToDP('20%')
-                }}>
-                    <Icon
-                        name={"play"}
-                        style={{ color: 'white', marginLeft: size / 10, fontSize: size / 2 }}
-                    />
-                </View>
-            );
-        }
-
         return (
             <ThemeConsumer>
                 {(themeContext: ThemeContextValue) => (
-                    <ScrollView style={{ backgroundColor: themeContext.theme.screenContainer?.backgroundColor }} contentContainerStyle={[styles.container, { padding: themeContext.theme.screenContainer?.padding }]}>
-                        {/* GO BACK */}
-                        <TextButton style={{ padding: 0 }} icon="chevron-left" iconStyle={{ color: '#AA40BF' }} textStyle={{ fontSize: scale(16) }} color={TextButtonColor.purple} onPress={() => { this.gotoBack() }}>
-                            {translate('buttonBack')}
-                        </TextButton>
+                    <View style={[styles.container, { backgroundColor: themeContext.theme.screenContainer?.backgroundColor }]}>
+                        <FlatList
+                            ref={this.list}
+                            data={this.state.listData}
+                            keyExtractor={this.listKeyExtractor}
+                            style={{padding: themeContext.theme.screenContainer?.padding}}
+                            contentContainerStyle={{paddingBottom:scale(40)}}
 
-                        <View style={{ marginBottom: scale(15) }} />
+                            // Sub components
+                            renderItem={this.getListRenderItem}
+                            ItemSeparatorComponent={this.getListItemSeparatorComponent}
+                            ListEmptyComponent={this.getListEmptyComponent}
+                            ListHeaderComponent={this.getListHeaderComponent}
 
-                        {/* CATEGORY NAME */}
-                        <Typography type={TypographyType.headingPrimary}>
-                            {screenParams.categoryName}
-                        </Typography>
-
-                        {/* CATEGORY ARTICLES */}
-                        <DataRealmConsumer>
-                            {(dataRealmContext: DataRealmContextValue) => (
-                                <Fragment>
-                                    {dataRealmContext.realm?.objects<ContentEntity>(ContentEntitySchema.name)
-                                        .filtered(`category == ${screenParams.categoryId} AND type == 'article' SORT(id ASC)`).map(article => {
-                                            return (
-                                                <Media
-                                                    key={article.id}
-                                                    title={ article.title }
-
-                                                    coverImageUrl={ content.getCoverImageFilepath(article) }
-                                                    videoType={article.coverVideoSite as VideoType}
-                                                    videoUrl={article.coverVideoUrl}
-
-                                                    roundCorners={true}
-                                                    aspectRatio={1.8}
-                                                    style={{ width: '100%', marginBottom:scale(25) }}
-
-                                                    onPress={() => { this.gotoArticleScreen(article) }}
-                                                />
-                                            );
-                                        })
-                                    }
-                                </Fragment>
-                            )}
-                        </DataRealmConsumer>
-                    </ScrollView>
+                            // Performance related
+                            // getItemLayout={this.getListItemLayout}
+                            // removeClippedSubviews={true} /* Default: false */
+                            initialNumToRender={5} /* Default: 10 */
+                            maxToRenderPerBatch={10} /* Default: 10 */
+                            windowSize={21}  /* Default: 21 */
+                        />
+                    </View>
                 )}
             </ThemeConsumer>
         );
@@ -160,7 +217,9 @@ export interface CategoryArticlesScreenStyles {
 
 const styles = StyleSheet.create<CategoryArticlesScreenStyles>({
     container: {
-
+        flex: 1,
+        // borderWidth: 2,
+        // borderColor: 'red',
     },
 
     image: {

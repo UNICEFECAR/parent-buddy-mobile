@@ -1,15 +1,12 @@
 import React from 'react';
 import { navigation, AppNavigationContainer } from './Navigators';
-import { NavigationContainerComponent, StackActions, NavigationActions } from 'react-navigation';
-import { YellowBox, View, Text, Platform, UIManager } from 'react-native';
+import { NavigationContainerComponent } from 'react-navigation';
+import { YellowBox, Platform, UIManager } from 'react-native';
 import { Provider as PaperProvider } from 'react-native-paper';
-import Storybook from '../../storybook';
 import { ThemeProvider } from '../themes/ThemeContext';
-import { GoogleSignin } from '@react-native-community/google-signin';
 import { googleAuth } from './googleAuth';
 import { DataRealmProvider } from '../stores/DataRealmContext';
 import { UserRealmProvider } from '../stores/UserRealmContext';
-import { dataRealmStore } from '../stores';
 import { utils } from './utils';
 import { localize } from './localize';
 // @ts-ignore
@@ -25,6 +22,13 @@ YellowBox.ignoreWarnings([
     'Require cycle',
     'Sending `onAnimatedValueUpdate` with no listeners registered',
     'Unable to find module for UIManager',
+
+    // WebView with Vimeo: https://bit.ly/2YqNaR0
+    'startLoadWithResult invoked',
+    'Did not receive response to shouldStartLoad',
+
+    // Lottie
+    'ReactNative.NativeModules.LottieAnimationView',
 ]);
 
 // Turn on layout animations on Android
@@ -46,7 +50,6 @@ export class App extends React.Component<object> {
         this.addItemsToDevMenu();
         googleAuth.configure();
         localize.setLocalesIfNotSet();
-        utils.gotoNextScreenOnAppOpen();
     }
 
     private addItemsToDevMenu() {
@@ -66,7 +69,6 @@ export class App extends React.Component<object> {
                 <PaperProvider>
                     <DataRealmProvider>
                         <UserRealmProvider>
-                            {/* <Storybook /> */}
                             <AppNavigationContainer
                                 ref={(navigatorRef: NavigationContainerComponent) => {
                                     return navigation.setTopLevelNavigator(navigatorRef);

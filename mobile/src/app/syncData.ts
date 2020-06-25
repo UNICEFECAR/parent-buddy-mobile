@@ -75,7 +75,12 @@ class SyncData {
                 }
             });
 
-            await apiStore.downloadImages(apiImagesData);
+            const imagesDownloadResult = await apiStore.downloadImages(apiImagesData);
+
+            if (appConfig.showLog) {
+                // console.log('Images download results');
+                // console.log( JSON.stringify(imagesDownloadResult, null, 4) );
+            }
         }
 
         // UPDATE lastSyncTimestamp

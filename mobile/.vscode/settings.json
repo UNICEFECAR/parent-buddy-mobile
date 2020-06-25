@@ -12,4 +12,5 @@
     "typescript.tsserver.experimental.enableProjectDiagnostics": false,
     "javascript.preferences.importModuleSpecifier": "relative",
     "typescript.preferences.importModuleSpecifier": "relative",
+    "cSpell.enabled": false,
 }
