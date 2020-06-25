@@ -332,7 +332,7 @@ class DataRealmStore {
 
     public getChildAgeTags(removeAllAgesTag: boolean = false) {
         let childAgeTags: TermChildren[] = [];
-        
+
         const vocabulariesAndTerms = dataRealmStore.getVariable('vocabulariesAndTerms');
         const childAgeTagsGroup = vocabulariesAndTerms?.predefined_tags.find((value) => {
             return value.id === 42;
@@ -470,7 +470,7 @@ class DataRealmStore {
         }
 
         return isInclude;
-    }
+    };
 
     public getSearchResultsScreenData(searchTerm: string): SearchResultsScreenDataResponse {
         const rval: SearchResultsScreenDataResponse = {
@@ -480,7 +480,6 @@ class DataRealmStore {
 
         // Get vocabulariesAndTerms
         const vocabulariesAndTerms = this.getVariable('vocabulariesAndTerms');
-        // console.log(JSON.stringify(vocabulariesAndTerms?.keywords, null, 4), "ITEMS")
 
         // Get relevantArticles
         let relevantArticles: ContentEntity[] = [];
@@ -495,72 +494,75 @@ class DataRealmStore {
         let oppositeChildGenderTagId: number | undefined = undefined;
         if (oppositeChildGender) {
             oppositeChildGenderTagId = oppositeChildGender === 'boy' ? 40 : 41;
-        }
+        };
 
         try {
             const allRecords = this.realm?.objects<ContentEntity>(ContentEntitySchema.name);
+            // filter records for childGender 
             const filteredGenderRecords = allRecords?.filtered(`type == 'article'`).filter(
                 (record) => {
                     if (!childGender || !oppositeChildGenderTagId) return true;
                     return record.predefinedTags.indexOf(oppositeChildGenderTagId) === -1;
                 }
-            )
+            );
+
+            // filter records for body and title 
             const filteredRecords = allRecords?.
                 filtered(`(body CONTAINS[c] '${searchTerm}' OR title CONTAINS[c] '${searchTerm}')`)
                 .filter((record) => {
                     if (!childGender || !oppositeChildGenderTagId) return true;
                     return record.predefinedTags.indexOf(oppositeChildGenderTagId) === -1;
-                })
+                });
 
             filteredRecords?.forEach((record, index, collection) => {
                 relevantArticles.push(record);
             });
 
+
+            // Search all relevant records in predefined tags
             let searchedPredefinedItem: ContentEntity[] & Object | undefined = [];
             vocabulariesAndTerms?.predefined_tags.forEach(item => {
                 if (this.findSearchedKeywords(item.name, searchTerm)) {
                     searchedPredefinedItem = filteredGenderRecords?.
-                        filter(record => record.predefinedTags.indexOf(item.id) !== -1)
-                }
-            })
+                        filter(record => record.predefinedTags.indexOf(item.id) !== -1);
+                };
+            });
+            // check for duplicate 
             if (searchedPredefinedItem !== undefined) {
                 searchedPredefinedItem.forEach(record => {
                     if (!relevantArticles.some(item => item.id === record?.id)) {
                         relevantPredefinedTagArticles.push(record);
-                    }
-                })
-            }
+                    };
+                });
+            };
 
             relevantArticles.concat(relevantPredefinedTagArticles);
-
+           
+            // Search all relevant records in keywords 
             let serachedKeywordsItem: ContentEntity[] & Object | undefined = [];
             vocabulariesAndTerms?.keywords.forEach(item => {
                 if (this.findSearchedKeywords(item.name, searchTerm)) {
                     serachedKeywordsItem = filteredGenderRecords?.
-                        filter(record => record.keywords.indexOf(item.id) !== -1)
+                        filter(record => record.keywords.indexOf(item.id) !== -1);
                 };
-            })
+            });
 
             if (serachedKeywordsItem) {
                 serachedKeywordsItem.forEach(record => {
                     if (!relevantArticles.some(item => item.id === record?.id)) {
-                        // console.log(record.title, 'title')
-                        // console.log(record.id, "ID")
-                        // console.log(relevantArticles.length, 'relevant length before')
                         relevantKeywordsArticles.push(record);
                     }
                 })
             };
 
-            relevantArticles = relevantArticles.concat(relevantKeywordsArticles)
-            // console.log(relevantArticles.length, 'relevant length after')
-
+            relevantArticles = relevantArticles.concat(relevantKeywordsArticles);
         } catch (e) {
             console.log(e);
         }
 
         // Set categorizedArticles
         const categorizedArticles: SearchResultsScreenDataCategoryArticles[] = [];
+        
         vocabulariesAndTerms?.categories.forEach((category) => {
             const currentCategorizedArticles: SearchResultsScreenDataCategoryArticles = {
                 categoryId: category.id,
@@ -568,79 +570,69 @@ class DataRealmStore {
                 contentItems: [],
             };
 
-            const childAge = this.getChildAgeTagWithArticles(category.id)?.id
-            const childAgeNext = this.getChildAgeTagWithArticles(category.id, true)?.id
+            const childAge = this.getChildAgeTagWithArticles(category.id)?.id; // get current child age tag
 
             let mergedSortedArticles: ContentEntity[] = [];
 
-            if (childAge && childAgeNext) {
+            // sorting data by child age 
+            if (childAge) {
                 let relevantArticlesCurrentAge = relevantArticles.filter(item => item.predefinedTags.indexOf(childAge) !== -1);
-                
+
                 let ageAfter: ContentEntity[] = [];
                 let ageBefore: ContentEntity[] = [];
-                let relevantArticlesNextAge: ContentEntity[] = []
+                let relevantArticlesNextAge: ContentEntity[] = [];
+                let relevantArticlesNoAge: ContentEntity[] = [];
+                let childAgeTags: TermChildren[] = this.getChildAgeTags(true);
 
-                console.log(JSON.stringify(vocabulariesAndTerms.predefined_tags, null, 4), "ASDASDA")
+                // sorting data for next child age 
+                childAgeTags.forEach(i => {
+                    if (i.id > childAge) {
+                        ageAfter.concat(relevantArticles.filter(ageFilter => ageFilter.predefinedTags.indexOf(i.id) !== -1));
+                    };
 
-                vocabulariesAndTerms.predefined_tags.map(item => {
-                    if(item.id === 42){
-                        console.log('uso')
-                        item.children.map(i => {
-                            if (item.id > childAge && item.id < 58) {
-                                ageAfter = relevantArticles.filter(item => {
-                                    return (
-                                        item.predefinedTags.indexOf(item.id) !== -1 &&
-                                        item.predefinedTags.indexOf(childAge) === -1
-                                    )
-                                })
-                            }
-                            if (item.id < childAge && item.id > 43) {
-                                ageBefore = relevantArticles.filter(item => {
-                                    return (
-                                        item.predefinedTags.indexOf(item.id) !== -1 &&
-                                        item.predefinedTags.indexOf(childAge) === -1
-                                    );
-                                });
-                            };
-                        })
+                    if (i.id < childAge) {
+                        ageBefore.concat(relevantArticles.filter(ageFilter => ageFilter.predefinedTags.indexOf(i.id) !== -1));
+                    };
+                })
+
+                relevantArticlesNextAge = relevantArticlesNextAge.concat(ageAfter).concat(ageBefore);
+
+                relevantArticles.map(item => {
+                    let check = false;
+                    item.predefinedTags.map(tag => {
+                        if(tag >= 43 && tag <= 58){
+                            check = true 
+                        }
+                    })
+
+                    if(!check){
+                        relevantArticlesNoAge.push(item)
                     }
                 })
 
-                 relevantArticlesNextAge = relevantArticlesNextAge.concat().concat(ageBefore)
-                console.log(ageAfter, "NEXT AGE")
+                relevantArticlesCurrentAge = relevantArticlesCurrentAge.sort((a, b) => b.id - a.id);
+                relevantArticlesNextAge = relevantArticlesNextAge.sort((a, b) => a.id - b.id);
+                relevantArticlesNoAge = relevantArticlesNoAge.sort((a, b) => b.id - a.id);
 
-                let relevantArticlesNoAge = relevantArticles.filter(item => {
-                    return (
-                        item.predefinedTags.indexOf(childAgeNext) === -1 &&
-                        item.predefinedTags.indexOf(childAge) === -1
-                    )
-                }
-
-                );
-
-                relevantArticlesCurrentAge.sort((a, b) => b.id - a.id)
-                relevantArticlesNextAge.sort((a, b) => b.id - a.id)
-                relevantArticlesNoAge.sort((a, b) => b.id - a.id)
-
+                // merge all data with sort 
                 mergedSortedArticles = mergedSortedArticles.concat(relevantArticlesCurrentAge)
-                mergedSortedArticles = mergedSortedArticles.concat(relevantArticlesNextAge);
-                mergedSortedArticles = mergedSortedArticles.concat(relevantArticlesNoAge);
+                    .concat(relevantArticlesNextAge)
+                    .concat(relevantArticlesNoAge);
 
             } else {
                 mergedSortedArticles = relevantArticles;
-            }
+            };
 
             mergedSortedArticles.forEach((article) => {
                 if (article.category === category.id) {
-                    // console.log(article.predefinedTags, "pt")
                     currentCategorizedArticles.contentItems.push(article);
-                }
+                };
 
             });
 
             if (currentCategorizedArticles.contentItems.length > 0) {
                 categorizedArticles.push(currentCategorizedArticles);
-            }
+            };
 
         });
 

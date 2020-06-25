@@ -164,8 +164,17 @@ class Content {
             } else {
 
                 let childAgeTagid = dataRealmStore.getChildAgeTagWithArticles()?.id;
-                let childGender = userRealmStore.getChildGender();
+                let childGender: ChildGender | undefined = userRealmStore.getChildGender();
+                let oppositeChildGender: ChildGender | undefined = undefined;
+
+                if (childGender) oppositeChildGender = childGender === 'boy' ? 'girl' : 'boy';
                 
+                let oppositeChildGenderTagId: number | undefined = undefined;
+                
+                if (oppositeChildGender) {
+                    oppositeChildGenderTagId = oppositeChildGender === 'boy' ? 40 : 41;
+                };
+
                 const featuredArticles = translateData('developmentPeriods');
 
                 if (childAgeTagid && childAgeTagid > 51) {
@@ -176,6 +185,7 @@ class Content {
 
                 const featuredPredefinedTagId = featuredData?.predefinedTagId;
                 const featuredArticleId = childGender === "girl" ? featuredData?.moreAboutPeriodArticleIdFemale : featuredData?.moreAboutPeriodArticleIdMale;
+
 
                 const categories = vocabulariesAndTermsResponse.categories;
                 // Set categoryIds
@@ -218,13 +228,14 @@ class Content {
                         if (childAgeTagId !== undefined) {
                             const filteredRecords = allContent?.
                                 filtered(`category == ${categoryId} AND type == 'article'`)
-                                .filter(item => item.predefinedTags.indexOf(childAgeTagId) !== -1)
-
+                                .filter(item => item.predefinedTags.indexOf(childAgeTagId) !== -1);
 
                             filteredRecords?.forEach((record, index, collection) => {
-                                categoryArticles.articles.push(
-                                    record
-                                );
+                                if(record.id !== featuredArticleId && oppositeChildGenderTagId && record.predefinedTags.indexOf(oppositeChildGenderTagId) === -1){
+                                    categoryArticles.articles.push(
+                                        record
+                                    );
+                                };
                             });
                         }
 
