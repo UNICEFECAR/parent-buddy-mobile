@@ -70,39 +70,39 @@ export class LoginScreen extends React.Component<Props, State & AnimationsState>
         this.state = state;
     }
 
-    private inputValidation(): boolean{
+    private inputValidation(): boolean {
         let isValidate = true;
 
-        const {password, email } = this.state;
+        const { password, email } = this.state;
 
-        if(password === "" || email === ""){
+        if (password === "" || email === "") {
             this.setState({
                 snackbarMessage: translate('allFieldsMustBeFilled'),
                 isSnackbarVisible: true
             });
-            return false; 
+            return false;
         }
 
         return isValidate;
     }
 
     private async onLoginClick() {
-        const {email, password} = this.state;
-        
-        let userLoginResponse: DrupalLoginResponse = {isUserExist: false}
+        const { email, password } = this.state;
 
-        if(this.inputValidation()){
+        let userLoginResponse: DrupalLoginResponse = { isUserExist: false }
+
+        if (this.inputValidation()) {
 
             let args: DrupalLoginArgs = {
                 username: email,
                 password: password
             }
 
-            try{
+            try {
                 userLoginResponse = await apiStore.drupalLogin(args)
-            }catch(rejectError){}
+            } catch (rejectError) { }
 
-            if(userLoginResponse.isUserExist){
+            if (userLoginResponse.isUserExist) {
                 dataRealmStore.setVariable('userEmail', email);
                 dataRealmStore.setVariable('userIsLoggedIn', true);
                 dataRealmStore.setVariable('loginMethod', 'cms');
@@ -281,7 +281,7 @@ export class LoginScreen extends React.Component<Props, State & AnimationsState>
                         <RoundedTextInput
                             label={translate('fieldLabelEmail')}
                             icon="email-outline"
-                            onChange={(value) => { this.setState({email: value})}}
+                            onChange={(value) => { this.setState({ email: value }) }}
                             onFocus={() => { this.onInputFocus() }}
                             style={{ marginBottom: 15 }}
                         />
@@ -290,7 +290,7 @@ export class LoginScreen extends React.Component<Props, State & AnimationsState>
                         <RoundedTextInput
                             label={translate('fieldLabelPassword')}
                             icon="lock-outline"
-                            onChange={(value) => { this.setState({password: value}) }}
+                            onChange={(value) => { this.setState({ password: value }) }}
                             onFocus={() => { this.onInputFocus() }}
                             style={{ marginBottom: 15 }}
                         />
@@ -329,19 +329,19 @@ export class LoginScreen extends React.Component<Props, State & AnimationsState>
                     </KeyboardAwareScrollView>
 
                     <Snackbar
-                        visible={ this.state.isSnackbarVisible }
-                        duration={ Snackbar.DURATION_SHORT }
-                        onDismiss={ () => { this.setState({isSnackbarVisible:false}) } }
-                        theme={{colors:{onSurface:snackbarErrorStyle?.backgroundColor, accent:snackbarErrorStyle?.actionButtonColor}}}
+                        visible={this.state.isSnackbarVisible}
+                        duration={Snackbar.DURATION_SHORT}
+                        onDismiss={() => { this.setState({ isSnackbarVisible: false }) }}
+                        theme={{ colors: { onSurface: snackbarErrorStyle?.backgroundColor, accent: snackbarErrorStyle?.actionButtonColor } }}
                         action={{
                             label: 'Ok',
                             onPress: () => {
-                                this.setState({isSnackbarVisible:false});
+                                this.setState({ isSnackbarVisible: false });
                             },
                         }}
                     >
-                        <Text style={{fontSize:snackbarErrorStyle?.fontSize}}>
-                            { this.state.snackbarMessage }
+                        <Text style={{ fontSize: snackbarErrorStyle?.fontSize }}>
+                            {this.state.snackbarMessage}
                         </Text>
                     </Snackbar>
                 </SafeAreaView>

@@ -165,10 +165,10 @@ export class WalkthroughScreen extends React.Component<Props, State> {
 
                         <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                             <Switch
-                                value={ this.state.followGrowth }
-                                color={ themes.getCurrentTheme().theme.variables?.colors?.switchColor }
-                                onValueChange={ () => { this.onFollowGrowthChange() } }
-                                style={{marginRight:20}}
+                                value={this.state.followGrowth}
+                                color={themes.getCurrentTheme().theme.variables?.colors?.switchColor}
+                                onValueChange={() => { this.onFollowGrowthChange() }}
+                                style={{ marginRight: 20 }}
                             />
                             <Typography type={TypographyType.bodyRegular} style={{ flex: 1, color: '#262628', textAlign: 'left' }}>
                                 Želim da pratim rast i da me aplikacija podseća da unosim mere deteta
@@ -195,7 +195,7 @@ export class WalkthroughScreen extends React.Component<Props, State> {
                         <View style={{ flex: 1, maxHeight: 30 }} />
 
                         <Typography type={TypographyType.bodyRegular} style={{ color: 'white', textAlign: 'center' }}>
-                            
+
                         </Typography>
 
                         <View style={{ flex: 1 }} />
@@ -219,10 +219,10 @@ export class WalkthroughScreen extends React.Component<Props, State> {
 
                         <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                             <Switch
-                                value={ this.state.followDevelopment }
-                                color={ themes.getCurrentTheme().theme.variables?.colors?.switchColor }
-                                onValueChange={ () => { this.onFollowDevelopmentChange() } }
-                                style={{marginRight:20}}
+                                value={this.state.followDevelopment}
+                                color={themes.getCurrentTheme().theme.variables?.colors?.switchColor}
+                                onValueChange={() => { this.onFollowDevelopmentChange() }}
+                                style={{ marginRight: 20 }}
                             />
                             <Typography type={TypographyType.bodyRegular} style={{ flex: 1, color: '#262628', textAlign: 'left' }}>
                                 {/* Želim da beležim razvojne događaje i da me aplikacija podseća da unosim podatke */}
@@ -251,10 +251,10 @@ export class WalkthroughScreen extends React.Component<Props, State> {
 
                         <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                             <Switch
-                                value={ this.state.followDoctorVisits }
-                                color={ themes.getCurrentTheme().theme.variables?.colors?.switchColor }
-                                onValueChange={ () => { this.onFollowDoctorVisitsChange() } }
-                                style={{marginRight:20}}
+                                value={this.state.followDoctorVisits}
+                                color={themes.getCurrentTheme().theme.variables?.colors?.switchColor}
+                                onValueChange={() => { this.onFollowDoctorVisitsChange() }}
+                                style={{ marginRight: 20 }}
                             />
                             <Typography type={TypographyType.bodyRegular} style={{ flex: 1, color: '#262628', textAlign: 'left' }}>
                                 {/* Želim da evidentiram posete doktoru i da me aplikacija podseća da unosim podatke */}
@@ -268,13 +268,13 @@ export class WalkthroughScreen extends React.Component<Props, State> {
 
                 <View style={{ marginBottom: scale(20), flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                     {screenParams.step !== 0 ? (
-                        <TextButton style={{width:80}} color={ screenParams.step === 2 ? TextButtonColor.white : TextButtonColor.purple } onPress={ () => {this.onBackClick()} }>
-                            { translate('buttonBack') }
+                        <TextButton style={{ width: 80 }} color={screenParams.step === 2 ? TextButtonColor.white : TextButtonColor.purple} onPress={() => { this.onBackClick() }}>
+                            {translate('buttonBack')}
                         </TextButton>
                     ) : null}
 
                     <RoundedButton
-                        text={ translate('buttonNext') + ' >' }
+                        text={translate('buttonNext') + ' >'}
                         type={RoundedButtonType.hollowPurple}
                         onPress={() => { this.onNextClick() }}
                         style={{ width: 150 }}

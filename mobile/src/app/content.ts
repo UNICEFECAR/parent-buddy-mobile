@@ -168,9 +168,9 @@ class Content {
                 let oppositeChildGender: ChildGender | undefined = undefined;
 
                 if (childGender) oppositeChildGender = childGender === 'boy' ? 'girl' : 'boy';
-                
+
                 let oppositeChildGenderTagId: number | undefined = undefined;
-                
+
                 if (oppositeChildGender) {
                     oppositeChildGenderTagId = oppositeChildGender === 'boy' ? 40 : 41;
                 };
@@ -231,7 +231,7 @@ class Content {
                                 .filter(item => item.predefinedTags.indexOf(childAgeTagId) !== -1);
 
                             filteredRecords?.forEach((record, index, collection) => {
-                                if(record.id !== featuredArticleId && oppositeChildGenderTagId && record.predefinedTags.indexOf(oppositeChildGenderTagId) === -1){
+                                if (record.id !== featuredArticleId && oppositeChildGenderTagId && record.predefinedTags.indexOf(oppositeChildGenderTagId) === -1) {
                                     categoryArticles.articles.push(
                                         record
                                     );
@@ -479,14 +479,14 @@ export const content = Content.getInstance();
 
 
 
-/* 
+/*
     private filterPredefinedTagsAndKeywords(key: string, searchValue: string, filter: Realm.Results<ContentEntity & Object> | undefined, relevantArticles: ContentEntity[]): ContentEntity[] {
         const vocabulariesAndTerms = this.getVariable('vocabulariesAndTerms');
 
         let dataForFiltering: ContentEntity[] = [];
         let vocabulariesAndTermsKeys = key === "keywords" ? vocabulariesAndTerms?.keywords : vocabulariesAndTerms?.predefined_tags;
         let articles: ContentEntity[] = [];
-        
+
         vocabulariesAndTermsKeys?.forEach(record => {
             console.log("uso ovde ")
             if (filter && vocabulariesAndTerms) {
@@ -526,6 +526,6 @@ export const content = Content.getInstance();
 
 
 
-    
+
 
 */

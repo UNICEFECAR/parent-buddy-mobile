@@ -20,33 +20,33 @@ class ApiStore {
         return ApiStore.instance;
     }
 
-    public async drupalRegister(args: DrupalRegisterArgs): Promise<DrupalRegisterRespone>{
+    public async drupalRegister(args: DrupalRegisterArgs): Promise<DrupalRegisterRespone> {
 
-        const DrupalRegisterApiUrl = appConfig.apiUrl.substring(0, appConfig.apiUrl.length -3)
+        const DrupalRegisterApiUrl = appConfig.apiUrl.substring(0, appConfig.apiUrl.length - 3)
 
         let url = `${DrupalRegisterApiUrl}entity/user`
         const language = localize.getLanguage();
-        
+
         let bodyParams = {
-            "field_first_name": [{"value": args?.field_first_name}],
-            "field_last_name": [{"value": args?.field_last_name}],
-            "name": [{"value": args?.name}],
-            "mail": [{"value": args?.mail}],
-            "pass": [{"value": args?.password}],
-            "preferred_langcode": [{"value": language}],
-            "preferred_admin_langcode": [{"value": "en"}], 
-            "status": [{"value": "1"}],
-            "roles": [{"target_id": "application_user"}]
+            "field_first_name": [{ "value": args?.field_first_name }],
+            "field_last_name": [{ "value": args?.field_last_name }],
+            "name": [{ "value": args?.name }],
+            "mail": [{ "value": args?.mail }],
+            "pass": [{ "value": args?.password }],
+            "preferred_langcode": [{ "value": language }],
+            "preferred_admin_langcode": [{ "value": "en" }],
+            "status": [{ "value": "1" }],
+            "roles": [{ "target_id": "application_user" }]
         }
 
-        let response: DrupalRegisterRespone = {registrationSuccess: false}
+        let response: DrupalRegisterRespone = { registrationSuccess: false }
 
         try {
             let axiosResponse: AxiosResponse = await axios({
                 url: url,
                 method: 'POST',
                 responseType: 'json',
-                headers:{"Content-type": "application/json"},
+                headers: { "Content-type": "application/json" },
                 timeout: appConfig.apiTimeout,
                 auth: {
                     username: appConfig.apiAuthUsername,
@@ -57,22 +57,22 @@ class ApiStore {
 
             let rawResponseJson = axiosResponse.data;
 
-            if(rawResponseJson){
+            if (rawResponseJson) {
                 response.registrationSuccess = rawResponseJson.status
             }
-        }catch (rejectError) {
-            if(appConfig.showLog){
+        } catch (rejectError) {
+            if (appConfig.showLog) {
                 console.log(rejectError, "reject error");
             }
         }
         return response
-    }   
+    }
 
-    public async drupalLogin(args: DrupalLoginArgs): Promise<DrupalLoginResponse>{
+    public async drupalLogin(args: DrupalLoginArgs): Promise<DrupalLoginResponse> {
 
         let url = `${appConfig.apiUrl}/user/validate?username=${args.username}&password=${args.password}`
-        let response: DrupalLoginResponse = {isUserExist: false}
-        
+        let response: DrupalLoginResponse = { isUserExist: false }
+
         try {
             let axiosResponse: AxiosResponse = await axios({
                 url: url,
@@ -87,11 +87,11 @@ class ApiStore {
 
             let rawResponseJson = axiosResponse.data;
 
-            if(rawResponseJson){
+            if (rawResponseJson) {
                 response.isUserExist = rawResponseJson
             }
-        }catch (rejectError) {
-            if(appConfig.showLog){
+        } catch (rejectError) {
+            if (appConfig.showLog) {
                 console.log(rejectError, "REJECT ERROR");
             }
         }
@@ -102,7 +102,7 @@ class ApiStore {
     public async getContent(args: GetContentArgs): Promise<ContentResponse> {
         // URL
         const language = localize.getLanguage();
-        const contentType: string|undefined = args.type;
+        const contentType: string | undefined = args.type;
         let url = `${appConfig.apiUrl}/list-content/${language}${contentType ? `/${contentType}` : ''}`;
 
         // URL params
@@ -116,11 +116,11 @@ class ApiStore {
         urlParams.published = appConfig.showPublishedContent;
 
         // Get API response
-        let response: ContentResponse = {total:0, data:[]};
+        let response: ContentResponse = { total: 0, data: [] };
 
         try {
             if (appConfig.showLog) {
-                console.log(`apiStore.getContent(): numberOfItems:${urlParams.numberOfItems}, page:${urlParams.page}, type:${contentType?contentType:'all'}, updatedFromDate:${urlParams.updatedFromDate}`);
+                console.log(`apiStore.getContent(): numberOfItems:${urlParams.numberOfItems}, page:${urlParams.page}, type:${contentType ? contentType : 'all'}, updatedFromDate:${urlParams.updatedFromDate}`);
                 console.log(`apiStore.getContent(): URL = ${url}`);
                 console.log(`apiStore.getContent(): URL params = ${JSON.stringify(urlParams, null, 4)}`);
             }
@@ -143,7 +143,7 @@ class ApiStore {
 
             if (rawResponseJson) {
                 response.total = parseInt(rawResponseJson.total);
-                response.data = rawResponseJson.data.map((rawContent:any): ContentEntity => {
+                response.data = rawResponseJson.data.map((rawContent: any): ContentEntity => {
                     let contentType = rawContent.type;
                     if (contentType === 'video_article') {
                         contentType = 'article';
@@ -157,9 +157,9 @@ class ApiStore {
                         summary: rawContent.summary,
                         body: rawContent.body,
                         category: parseInt(rawContent.category),
-                        predefinedTags: rawContent.predefined_tags ? rawContent.predefined_tags.map((value:any) => parseInt(value)) : [],
-                        keywords: rawContent.keywords ? rawContent.keywords.map((value:any) => parseInt(value)) : [],
-                        referencedArticles: rawContent.referenced_articles ? rawContent.referenced_articles.map((value:any) => parseInt(value)) : [],
+                        predefinedTags: rawContent.predefined_tags ? rawContent.predefined_tags.map((value: any) => parseInt(value)) : [],
+                        keywords: rawContent.keywords ? rawContent.keywords.map((value: any) => parseInt(value)) : [],
+                        referencedArticles: rawContent.referenced_articles ? rawContent.referenced_articles.map((value: any) => parseInt(value)) : [],
                         coverImageUrl: rawContent.cover_image?.url,
                         coverImageAlt: rawContent.cover_image?.alt,
                         coverImageName: rawContent.cover_image?.name,
@@ -178,7 +178,7 @@ class ApiStore {
         return response;
     }
 
-    public async getAllContent(contentType?:ContentEntityType, updatedFromDate?:number): Promise<ContentResponse> {
+    public async getAllContent(contentType?: ContentEntityType, updatedFromDate?: number): Promise<ContentResponse> {
         const numberOfItems = appConfig.apiNumberOfItems;
 
         // Make first request
@@ -192,7 +192,7 @@ class ApiStore {
         // If all items are returned in first request
         if (finalContentResponse.total <= numberOfItems) {
             if (appConfig.showLog) {
-                console.log(`apiStore.getAllContent(): contentType=${contentType ? contentType : 'all'}, updatedFromDate=${updatedFromDate}, total:${finalContentResponse.total}, data length:${finalContentResponse.data?.length}`, );
+                console.log(`apiStore.getAllContent(): contentType=${contentType ? contentType : 'all'}, updatedFromDate=${updatedFromDate}, total:${finalContentResponse.total}, data length:${finalContentResponse.data?.length}`,);
             }
 
             return finalContentResponse;
@@ -201,13 +201,13 @@ class ApiStore {
         // Make other requests
         let promises: Promise<any>[] = [];
 
-        for (let page=1; page<Math.ceil(finalContentResponse.total/numberOfItems); page++) {
-            promises.push( this.getContent({
+        for (let page = 1; page < Math.ceil(finalContentResponse.total / numberOfItems); page++) {
+            promises.push(this.getContent({
                 type: contentType,
                 page: page,
                 numberOfItems: numberOfItems,
                 updatedFromDate: updatedFromDate,
-            }) );
+            }));
         }
 
         let allResponses = await Promise.all<ContentResponse>(promises);
@@ -218,7 +218,7 @@ class ApiStore {
         });
 
         if (appConfig.showLog) {
-            console.log(`apiStore.getAllContent(): contentType=${contentType ? contentType : 'all'}, updatedFromDate=${updatedFromDate}, total:${finalContentResponse.total}, data length:${finalContentResponse.data?.length}`, );
+            console.log(`apiStore.getAllContent(): contentType=${contentType ? contentType : 'all'}, updatedFromDate=${updatedFromDate}, total:${finalContentResponse.total}, data length:${finalContentResponse.data?.length}`,);
         }
 
         return finalContentResponse;
@@ -238,17 +238,17 @@ class ApiStore {
             predefined_tags: [],
         };
 
-        const objectToArray = (obj:any) => {
+        const objectToArray = (obj: any) => {
             const rval: any = [];
 
             for (let id in obj) {
                 let value = obj[id];
                 let children = value.children;
-                
+
                 if (!Array.isArray(children)) {
                     children = objectToArray(children);
                 }
-                
+
                 rval.push({
                     id: parseInt(id),
                     name: value.name,
@@ -301,7 +301,7 @@ class ApiStore {
             }
 
             // Download image
-            let {jobId, promise:downloadPromise} = RNFS.downloadFile({
+            let { jobId, promise: downloadPromise } = RNFS.downloadFile({
                 fromUrl: args.srcUrl,
                 toFile: args.destFolder + `/${args.destFilename}`,
                 connectionTimeout: 150 * 1000, // milliseconds
@@ -323,7 +323,7 @@ class ApiStore {
                 //     console.log(`IMAGE DOWNLOAD FAILED: url = ${args.srcUrl}, statusCode: ${downloadResult.statusCode}`);
                 // }
             }
-        } catch(rejectError) {
+        } catch (rejectError) {
             if (appConfig.showLog) {
                 console.log('IMAGE DOWNLOAD ERROR', rejectError);
                 console.log(JSON.stringify(args, null, 4));
@@ -333,18 +333,18 @@ class ApiStore {
         return rval;
     }
 
-    public async downloadImages(args: ApiImageData[]): Promise<{success:boolean, args:ApiImageData}[]> {
+    public async downloadImages(args: ApiImageData[]): Promise<{ success: boolean, args: ApiImageData }[]> {
         const promises: Promise<boolean>[] = [];
 
         // FIRST ATTEMPT
         args.forEach((downloadImageArgs) => {
-            promises.push( this.downloadImage(downloadImageArgs) );
+            promises.push(this.downloadImage(downloadImageArgs));
         });
 
         let allResponses = await Promise.all<boolean>(promises);
 
         if (appConfig.showLog) {
-            console.log(`apiStore.downloadImages() first attempt: Downloaded ${args.length} images`, );
+            console.log(`apiStore.downloadImages() first attempt: Downloaded ${args.length} images`,);
         }
 
         return allResponses.map((value, index) => {
@@ -356,7 +356,7 @@ class ApiStore {
     }
 }
 
-export interface DrupalRegisterArgs{
+export interface DrupalRegisterArgs {
     field_first_name: string,
     field_last_name: string,
     name: string,
@@ -369,7 +369,7 @@ export interface DrupalRegisterRespone {
     registrationSuccess: boolean
 }
 
-export interface DrupalLoginArgs{
+export interface DrupalLoginArgs {
     username: string,
     password: string,
 }
@@ -410,7 +410,7 @@ export type TermChildren = {
     children: TermChildren[];
 };
 
-export type VocabulariesAndTermsResponse  = {
+export type VocabulariesAndTermsResponse = {
     [key in Vocabulary]: {
         id: number;
         name: string;

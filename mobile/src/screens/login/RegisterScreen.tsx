@@ -116,7 +116,7 @@ export class RegisterScreen extends React.Component<Props, State> {
 
             if (userRegisterResponse.registrationSuccess) {
                 this.gotoRegisterCreatedScreen(mail, password);
-            }else{
+            } else {
                 this.setState({
                     snackBarMessage: translate('userAlreadyExist'),
                     isSnackBarVisible: true,
@@ -126,7 +126,7 @@ export class RegisterScreen extends React.Component<Props, State> {
     }
 
     private gotoRegisterCreatedScreen(email: string, password: string) {
-        this.props.navigation.navigate('RootModalStackNavigator_RegisterCreatedScreen', {email: email, password: password});
+        this.props.navigation.navigate('RootModalStackNavigator_RegisterCreatedScreen', { email: email, password: password });
     };
 
     public render() {

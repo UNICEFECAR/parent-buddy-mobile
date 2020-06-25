@@ -537,7 +537,7 @@ class DataRealmStore {
             };
 
             relevantArticles.concat(relevantPredefinedTagArticles);
-           
+
             // Search all relevant records in keywords 
             let serachedKeywordsItem: ContentEntity[] & Object | undefined = [];
             vocabulariesAndTerms?.keywords.forEach(item => {
@@ -562,7 +562,7 @@ class DataRealmStore {
 
         // Set categorizedArticles
         const categorizedArticles: SearchResultsScreenDataCategoryArticles[] = [];
-        
+
         vocabulariesAndTerms?.categories.forEach((category) => {
             const currentCategorizedArticles: SearchResultsScreenDataCategoryArticles = {
                 categoryId: category.id,
@@ -600,12 +600,12 @@ class DataRealmStore {
                 relevantArticles.map(item => {
                     let check = false;
                     item.predefinedTags.map(tag => {
-                        if(tag >= 43 && tag <= 58){
-                            check = true 
+                        if (tag >= 43 && tag <= 58) {
+                            check = true
                         }
                     })
 
-                    if(!check){
+                    if (!check) {
                         relevantArticlesNoAge.push(item)
                     }
                 })
