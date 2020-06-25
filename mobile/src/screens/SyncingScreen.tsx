@@ -1,8 +1,10 @@
 import React from 'react';
-import { SafeAreaView, StyleSheet, ViewStyle, Text } from 'react-native';
+import { SafeAreaView, StyleSheet, ViewStyle } from 'react-native';
 import { NavigationStackProp, NavigationStackState } from 'react-navigation-stack';
-import { IconButton, Button } from "react-native-paper";
-import { scale } from 'react-native-size-matters';
+import { Typography } from '../components';
+import { TypographyType } from '../components/Typography';
+import { utils, syncData } from '../app';
+import { appConfig } from '../app/appConfig';
 
 export interface Props {
     navigation: NavigationStackProp<NavigationStackState>;
@@ -10,19 +12,30 @@ export interface Props {
 
 export class SyncingScreen extends React.Component<Props, object> {
 
-    public constructor(props:Props) {
+    public constructor(props: Props) {
         super(props);
+        this.startSync();
     }
 
-    private onClosePress() {
-        this.props.navigation.goBack();
-    };
+    private async startSync() {
+        if (!appConfig.preventSync) {
+            await syncData.sync();
+        }
+
+        setTimeout(() => {
+            utils.gotoNextScreenOnAppOpen();
+        }, 0);
+    }
 
     public render() {
         return (
-            <SafeAreaView style={ styles.container }>
-                <Text>Syncing</Text>
-                <Button onPress={() => {this.onClosePress()}}>Close</Button>
+            <SafeAreaView style={styles.container}>
+                <Typography type={TypographyType.headingPrimary}>
+                    Changing diapers
+                </Typography>
+                <Typography type={TypographyType.headingSecondary} style={{color:'grey'}}>
+                    ... and syncing data
+                </Typography>
             </SafeAreaView>
         );
     }
@@ -37,8 +50,8 @@ const styles = StyleSheet.create<SyncingScreenStyles>({
     container: {
         flex: 1,
         flexDirection: 'column',
-        justifyContent: 'flex-start',
-        alignItems: 'stretch',
+        justifyContent: 'center',
+        alignItems: 'center',
         backgroundColor: 'white',
     },
 });
