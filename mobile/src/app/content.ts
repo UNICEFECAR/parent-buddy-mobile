@@ -164,7 +164,7 @@ class Content {
 
                 let childAgeTagid = dataRealmStore.getChildAgeTagWithArticles()?.id;
                 let childGender = userRealmStore.getChildGender();
-
+                
                 const featuredArticles = translateData('developmentPeriods');
 
                 if(childAgeTagid && childAgeTagid > 51){
@@ -379,3 +379,53 @@ export const content = Content.getInstance();
 
 
 
+/* 
+    private filterPredefinedTagsAndKeywords(key: string, searchValue: string, filter: Realm.Results<ContentEntity & Object> | undefined, relevantArticles: ContentEntity[]): ContentEntity[] {
+        const vocabulariesAndTerms = this.getVariable('vocabulariesAndTerms');
+
+        let dataForFiltering: ContentEntity[] = [];
+        let vocabulariesAndTermsKeys = key === "keywords" ? vocabulariesAndTerms?.keywords : vocabulariesAndTerms?.predefined_tags;
+        let articles: ContentEntity[] = [];
+        
+        vocabulariesAndTermsKeys?.forEach(record => {
+            console.log("uso ovde ")
+            if (filter && vocabulariesAndTerms) {
+                if (key === "keywords") {
+                    dataForFiltering = filter.filter(record => record.keywords.indexOf(record.id) !== -1);
+                } else {
+                    dataForFiltering = filter.filter(record => record.predefinedTags.indexOf(record.id) !== -1);
+                }
+            }
+
+            if (this.findSearchedKeywords(record.name, searchValue)) {
+                dataForFiltering = dataForFiltering.filter(item => item.keywords.indexOf(record.id))
+                //     if (key === "keywords") {
+                //         console.log('uso u kewyords')
+                //        return item.keywords.indexOf(record.id) !== -1
+                //     } else {
+                //         console.log('uso u predefined');
+                //        return item.predefinedTags.indexOf(record.id) !== -1
+                //     }
+                // })
+            }
+
+            // if (dataForFiltering) {
+            //     dataForFiltering.forEach(item => {
+            //         if (!relevantArticles.some(i => i.id === item?.id)) {
+            //             articles.push(item);
+            //         }
+            //     })
+            // };
+        })
+
+        return articles;
+    }
+
+
+
+
+
+
+    
+
+*/

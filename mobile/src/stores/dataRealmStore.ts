@@ -10,6 +10,9 @@ import { translate } from '../translations/translate';
 import { GraphRequest } from 'react-native-fbsdk';
 import { DateTime } from "luxon";
 import { userRealmStore } from './userRealmStore';
+import { Rect } from 'react-native-svg';
+import { ChildGender } from './ChildEntity';
+import { merge } from 'lodash';
 
 export type Variables = {
     'userEmail': string;
@@ -296,7 +299,7 @@ class DataRealmStore {
 
                 for (let i = 0; i < mergedTags.length; i++) {
                     let check = false;
-     
+
                     filteredRecords?.forEach((record, index, collection) => {
                         record.predefinedTags.forEach(tag => {
                             if (tag === mergedTags[i].id && record.predefinedTags.length !== 0) {
@@ -440,6 +443,15 @@ class DataRealmStore {
         return rval;
     }
 
+    private findSearchedKeywords(keywords: string, searchValue: string): boolean {
+        let isInclude = false;
+        if (keywords.toLowerCase().includes(searchValue.toLowerCase())) {
+            isInclude = true
+        }
+
+        return isInclude;
+    }
+
     public getSearchResultsScreenData(searchTerm: string): SearchResultsScreenDataResponse {
         const rval: SearchResultsScreenDataResponse = {
             articles: [],
@@ -448,24 +460,87 @@ class DataRealmStore {
 
         // Get vocabulariesAndTerms
         const vocabulariesAndTerms = this.getVariable('vocabulariesAndTerms');
+        // console.log(JSON.stringify(vocabulariesAndTerms?.keywords, null, 4), "ITEMS")
 
         // Get relevantArticles
-        const relevantArticles: ContentEntity[] = [];
+        let relevantArticles: ContentEntity[] = [];
+        let relevantKeywordsArticles: ContentEntity[] = [];
+        let relevantPredefinedTagArticles: ContentEntity[] = [];
+
+        const childGender: ChildGender | undefined = userRealmStore.getChildGender();
+        let oppositeChildGender: ChildGender | undefined = undefined;
+
+        if (childGender) oppositeChildGender = childGender === 'boy' ? 'girl' : 'boy';
+
+        let oppositeChildGenderTagId: number | undefined = undefined;
+        if (oppositeChildGender) {
+            oppositeChildGenderTagId = oppositeChildGender === 'boy' ? 40 : 41;
+        }
 
         try {
             const allRecords = this.realm?.objects<ContentEntity>(ContentEntitySchema.name);
-            const filteredRecords = allRecords?.filtered(`type == 'article' AND (body CONTAINS[c] '${searchTerm}' OR title CONTAINS[c] '${searchTerm}')`);
+            const filteredGenderRecords = allRecords?.filtered(`type == 'article'`).filter(
+                (record) => {
+                    if (!childGender || !oppositeChildGenderTagId) return true;
+                    return record.predefinedTags.indexOf(oppositeChildGenderTagId) === -1;
+                }
+            )
+            const filteredRecords = allRecords?.
+                filtered(`(body CONTAINS[c] '${searchTerm}' OR title CONTAINS[c] '${searchTerm}')`)
+                .filter((record) => {
+                    if (!childGender || !oppositeChildGenderTagId) return true;
+                    return record.predefinedTags.indexOf(oppositeChildGenderTagId) === -1;
+                })
 
             filteredRecords?.forEach((record, index, collection) => {
                 relevantArticles.push(record);
             });
+
+            let searchedPredefinedItem: ContentEntity[] & Object | undefined = [];
+            vocabulariesAndTerms?.predefined_tags.forEach(item => {
+                if (this.findSearchedKeywords(item.name, searchTerm)) {
+                    searchedPredefinedItem = filteredGenderRecords?.
+                        filter(record => record.predefinedTags.indexOf(item.id) !== -1)
+                }
+            })
+            if (searchedPredefinedItem !== undefined) {
+                searchedPredefinedItem.forEach(record => {
+                    if (!relevantArticles.some(item => item.id === record?.id)) {
+                        relevantPredefinedTagArticles.push(record);
+                    }
+                })
+            }
+
+            relevantArticles.concat(relevantPredefinedTagArticles);
+
+            let serachedKeywordsItem: ContentEntity[] & Object | undefined = [];
+            vocabulariesAndTerms?.keywords.forEach(item => {
+                if (this.findSearchedKeywords(item.name, searchTerm)) {
+                    serachedKeywordsItem = filteredGenderRecords?.
+                        filter(record => record.keywords.indexOf(item.id) !== -1)
+                };
+            })
+
+            if (serachedKeywordsItem) {
+                serachedKeywordsItem.forEach(record => {
+                    if (!relevantArticles.some(item => item.id === record?.id)) {
+                        // console.log(record.title, 'title')
+                        // console.log(record.id, "ID")
+                        // console.log(relevantArticles.length, 'relevant length before')
+                        relevantKeywordsArticles.push(record);
+                    }
+                })
+            };
+
+            relevantArticles = relevantArticles.concat(relevantKeywordsArticles)
+            // console.log(relevantArticles.length, 'relevant length after')
+
         } catch (e) {
             console.log(e);
         }
 
         // Set categorizedArticles
         const categorizedArticles: SearchResultsScreenDataCategoryArticles[] = [];
-
         vocabulariesAndTerms?.categories.forEach((category) => {
             const currentCategorizedArticles: SearchResultsScreenDataCategoryArticles = {
                 categoryId: category.id,
@@ -473,15 +548,80 @@ class DataRealmStore {
                 contentItems: [],
             };
 
-            relevantArticles.forEach((article) => {
+            const childAge = this.getChildAgeTagWithArticles(category.id)?.id
+            const childAgeNext = this.getChildAgeTagWithArticles(category.id, true)?.id
+
+            let mergedSortedArticles: ContentEntity[] = [];
+
+            if (childAge && childAgeNext) {
+                let relevantArticlesCurrentAge = relevantArticles.filter(item => item.predefinedTags.indexOf(childAge) !== -1);
+                
+                let ageAfter: ContentEntity[] = [];
+                let ageBefore: ContentEntity[] = [];
+                let relevantArticlesNextAge: ContentEntity[] = []
+
+                console.log(JSON.stringify(vocabulariesAndTerms.predefined_tags, null, 4), "ASDASDA")
+
+                vocabulariesAndTerms.predefined_tags.map(item => {
+                    if(item.id === 42){
+                        console.log('uso')
+                        item.children.map(i => {
+                            if (item.id > childAge && item.id < 58) {
+                                ageAfter = relevantArticles.filter(item => {
+                                    return (
+                                        item.predefinedTags.indexOf(item.id) !== -1 &&
+                                        item.predefinedTags.indexOf(childAge) === -1
+                                    )
+                                })
+                            }
+                            if (item.id < childAge && item.id > 43) {
+                                ageBefore = relevantArticles.filter(item => {
+                                    return (
+                                        item.predefinedTags.indexOf(item.id) !== -1 &&
+                                        item.predefinedTags.indexOf(childAge) === -1
+                                    );
+                                });
+                            };
+                        })
+                    }
+                })
+
+                 relevantArticlesNextAge = relevantArticlesNextAge.concat().concat(ageBefore)
+                console.log(ageAfter, "NEXT AGE")
+
+                let relevantArticlesNoAge = relevantArticles.filter(item => {
+                    return (
+                        item.predefinedTags.indexOf(childAgeNext) === -1 &&
+                        item.predefinedTags.indexOf(childAge) === -1
+                    )
+                }
+
+                );
+
+                relevantArticlesCurrentAge.sort((a, b) => b.id - a.id)
+                relevantArticlesNextAge.sort((a, b) => b.id - a.id)
+                relevantArticlesNoAge.sort((a, b) => b.id - a.id)
+
+                mergedSortedArticles = mergedSortedArticles.concat(relevantArticlesCurrentAge)
+                mergedSortedArticles = mergedSortedArticles.concat(relevantArticlesNextAge);
+                mergedSortedArticles = mergedSortedArticles.concat(relevantArticlesNoAge);
+
+            } else {
+                mergedSortedArticles = relevantArticles;
+            }
+
+            mergedSortedArticles.forEach((article) => {
                 if (article.category === category.id) {
+                    // console.log(article.predefinedTags, "pt")
                     currentCategorizedArticles.contentItems.push(article);
                 }
+
             });
 
             if (currentCategorizedArticles.contentItems.length > 0) {
                 categorizedArticles.push(currentCategorizedArticles);
             }
+
         });
 
         // Set faqs
