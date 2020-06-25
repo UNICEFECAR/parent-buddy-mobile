@@ -26,6 +26,9 @@ YellowBox.ignoreWarnings([
     // WebView with Vimeo: https://bit.ly/2YqNaR0
     'startLoadWithResult invoked',
     'Did not receive response to shouldStartLoad',
+
+    // Lottie
+    'ReactNative.NativeModules.LottieAnimationView',
 ]);
 
 // Turn on layout animations on Android

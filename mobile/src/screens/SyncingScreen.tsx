@@ -5,6 +5,8 @@ import { Typography } from '../components';
 import { TypographyType } from '../components/Typography';
 import { utils, syncData } from '../app';
 import { appConfig } from '../app/appConfig';
+import LottieView from 'lottie-react-native';
+import lottieAnimation from './lottie-animation.json';
 
 export interface Props {
     navigation: NavigationStackProp<NavigationStackState>;
@@ -30,10 +32,16 @@ export class SyncingScreen extends React.Component<Props, object> {
     public render() {
         return (
             <SafeAreaView style={styles.container}>
+                <LottieView
+                    style={{ width:'70%' }}
+                    source={lottieAnimation}
+                    autoPlay loop
+                />
+
                 <Typography type={TypographyType.headingPrimary}>
                     Changing diapers
                 </Typography>
-                <Typography type={TypographyType.headingSecondary} style={{color:'grey'}}>
+                <Typography type={TypographyType.headingSecondary} style={{ color: 'grey' }}>
                     ... and syncing data
                 </Typography>
             </SafeAreaView>

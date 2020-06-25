@@ -30,9 +30,8 @@ class Utils {
         const userParentalRole = dataRealmStore.getVariable('userParentalRole');
 
         // Set routeName
-        let routeName: string | null = null;
+        let routeName: string | null = 'LoginStackNavigator';
 
-        // Default route name: LoginStackNavigator
         if (userIsLoggedIn) {
             if (!userIsOnboarded) {
                 routeName = 'WalkthroughStackNavigator';
