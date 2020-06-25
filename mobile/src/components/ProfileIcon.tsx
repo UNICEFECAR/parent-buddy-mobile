@@ -13,6 +13,7 @@ export interface Props {
      */
     image?: string;
     style?: StyleProp<ViewStyle>;
+    onPress?: Function;
 }
 
 export interface State {
@@ -37,8 +38,10 @@ export class ProfileIcon extends React.Component<Props, State> {
         this.state = state;
     }
 
-    private onNoPhotoIconPress = (e:GestureResponderEvent) => {
-
+    private onPhotoIconPress = (e:GestureResponderEvent) => {
+        if (this.props.onPress) {
+            this.props.onPress();
+        }
     };
 
     public render() {
@@ -51,7 +54,7 @@ export class ProfileIcon extends React.Component<Props, State> {
             icon = (
                 <TouchableOpacity
                     style={ { overflow:'hidden', borderRadius:moderateScale(18), backgroundColor:"transparent", width:moderateScale(36), height:moderateScale(36), justifyContent:'center', alignItems:'center'} }
-                    onPress={ this.onNoPhotoIconPress }
+                    onPress={ this.onPhotoIconPress }
                 >
                     <Image
                         source={ {uri: this.props.image} }
@@ -65,7 +68,7 @@ export class ProfileIcon extends React.Component<Props, State> {
             icon = (
                 <TouchableOpacity
                     style={ { overflow:'hidden', borderRadius:moderateScale(18), backgroundColor:"transparent", borderWidth:moderateScale(3), borderColor:colors?.headerIcon, width:moderateScale(36), height:moderateScale(36), justifyContent:'center', alignItems:'center'} }
-                    onPress={ this.onNoPhotoIconPress }
+                    onPress={ this.onPhotoIconPress }
                 >
                     <Icon
                         name={ "account-outline" }

@@ -298,6 +298,10 @@ const HomeStackNavigator = createStackNavigator({
             }, 1000);
         }
 
+        function openBirthDataScreen() {
+            navigation.navigate('HomeStackNavigator_BirthDataScreen');
+        }
+
         return {
             // API: https://bit.ly/2koKtOw
             headerLeft: () => (
@@ -343,7 +347,7 @@ const HomeStackNavigator = createStackNavigator({
                                     onPress={() => { toggleSearchInput() }}
                                 />
                             )}
-                        <ProfileIcon />
+                        <ProfileIcon onPress={openBirthDataScreen} />
                     </View>
                 );
             },
