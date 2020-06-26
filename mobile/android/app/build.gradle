@@ -127,7 +127,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.halo.beba"
+        applicationId "org.unicef.ecar.parentbuddy"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

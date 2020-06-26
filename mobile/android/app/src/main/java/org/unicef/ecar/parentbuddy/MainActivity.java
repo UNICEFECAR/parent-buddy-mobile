@@ -1,4 +1,4 @@
-package com.halo.beba;
+package org.unicef.ecar.parentbuddy;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
