@@ -19,6 +19,8 @@
     "notValidEmail": "E-mail nije validan.",
     "passwordToShort": "Lozinka mora imati najmanje 6 karaktera.",
     "passwordDosntMatch": "Lozinke se ne podudaraju.",
+    "syncScreenText": "Changing diapers",
+    "syncScreenSubText": "... and syncing data",
 
     "accountTitle": "Introduce your child",
     "accountGirl": "Girl",
