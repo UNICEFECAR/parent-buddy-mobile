@@ -13,12 +13,12 @@
     "youCreatedAccount": "You created account",
     "checkEmail": "Check your email and clik to the link in the email to complete the registration.",
     "sendRegisterEmailAgain": "Didn't receive the link, send me the email again",
-    "userAlreadyExist": "Korisnik sa ovim mejlom već postoji.",
-    "userNoExist": "Ne postoji korisnik sa ovim nalogom",
-    "allFieldsMustBeFilled": "Sva polja moraju biti popunjena",
-    "notValidEmail": "E-mail nije validan.",
-    "passwordToShort": "Lozinka mora imati najmanje 6 karaktera.",
-    "passwordDosntMatch": "Lozinke se ne podudaraju.",
+    "userAlreadyExist": "User with this email already exists.",
+    "userNoExist": "There is no user with this account",
+    "allFieldsMustBeFilled": "All fields must be filled",
+    "notValidEmail": "E-mail is not valid.",
+    "passwordToShort": "Password must have at least 6 characters.",
+    "passwordDosntMatch": "Passwords don’t match.",
     "syncScreenText": "Changing diapers",
     "syncScreenSubText": "... and syncing data",
 
@@ -38,6 +38,7 @@
     "accountErrorAllNamesMustBeGiven":  "Enter all names",
     "accountErrorEnterName": "Enter the name",
     "accountSendSmsText": "%PARENT% tells you to install this application: %APP_URL%",
+
     "drawerTitleArticles": "Articles and advices",
     "drawerTitleGrowthDiary": "Developmental Diary",
     "drawerButtonHome": "Home page",
@@ -86,7 +87,7 @@
     "faqPerAge": "By age",
 
     "writeUsEmail": "Write us email",
-    "callUs":  "Pozovite nas",
+    "callUs":  "Call Us",
     "aboutUs": "About us",
     "termsAndConditionsTitle": "Terms and conditions",
 
