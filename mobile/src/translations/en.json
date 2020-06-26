@@ -1,172 +1,165 @@
 {
-    "appName": "Halo Beba",
-    "appEmail": "halobeba@domain.rs",
-    "appPhone": "011 7158 444",
+    "appName": "ParentBuddy"
+    "appEmail": "",
+    "appPhone": "",
 
-    "loginGoogle": "Povežite se Google nalogom",
-    "loginFacebook": "Povežite se Facebook nalogom",
-    "registerAccount": "Napravite nalog koristeći Email",
-    "loginButton": "Login",
-    "loginForgotPassword": "Zaboravili ste lozinku?",
-    "createAccount": "Napravite nalog",
-    "alreadyHaveAccount": "Vec imate nalog? Ulogujte se",
-    "youCreatedAccount": "Napravili ste nalog!",
-    "checkEmail": "Proverite svoju Email poštu i kliknite na link u emailu da biste završili registraciju.",
-    "sendRegisterEmailAgain": "Nije mi stigao link, pošaljite email ponovo",
-    "userAlreadyExist": "Korisnik sa ovim mejlom već postoji.",
-    "userNoExist": "Ne postoji korisnik sa ovim nalogom",
-    "allFieldsMustBeFilled": "Sva polja moraju biti popunjena",
-    "notValidEmail": "E-mail nije validan.",
-    "passwordToShort": "Lozinka mora imati najmanje 6 karaktera.",
-    "passwordDosntMatch": "Lozinke se ne podudaraju.",
+    "loginGoogle":  "Login with Google account"
+    "loginFacebook": "Login with Facebook account"
+    "registerAccount": "Register account using Email"
+    "loginButton": "Login"
+    "loginForgotPassword": "Forgot your password?"
+    "createAccount": "Create account"
+    "alreadyHaveAccount": "Already have account? Log in"
+    "youCreatedAccount": "You created account"
+    "checkEmail": "Check your email and clik to the link in the email to complete the registration."
+    "sendRegisterEmailAgain": "Didn't receive the link, send me the email again"
+
+    "accountTitle": "Introduce your child"
+    "accountGirl": "Girl"
+    "accountBoy": "Boy"
+    "accountSisterOrBrother":  "Sister or brother"
+    "accountName": "Name"
+    "accountEmail": "Email"
+    "accountHasSibling": "The child has a sister or a brother"
+    "accountNext": "Next - Meet the parents"
+    "accountMother": "Mum"
+    "accountFather": "Dad"
+    "accountSave": "Save"
+    "accountInviteFather": "Invite father through SMS to use the application"
+    "accountInviteMother": "Invite mother through SMS to use the application"
+    "accountErrorAllNamesMustBeGiven":  "Enter all names"
+    "accountErrorEnterName": "Enter the name"
+    "accountSendSmsText": "%PARENT% tells you to install this application: %APP_URL%
+    "drawerTitleArticles": "Articles and advices"
+    "drawerTitleGrowthDiary": "Developmental Diary"
+    "drawerButtonHome": "Home page"
+    "drawerButtonGrowth": "Child growth"
+    "drawerButtonDoctor": "Health check-ups"
+    "drawerButtonVaccination": "Vaccinations"
+    "drawerButtonDevelopment": "Child development"
+    "drawerButtonFood": "Nutrition and breastfeeding"
+    "drawerButtonHealth": "Health and wellbeing"
+    "drawerButtonSafety":  "Safety and protection"
+    "drawerButtonGames": "Play and learning"
+    "drawerButtonParents": "Parenting corner"
+    "drawerButtonResponsive": "Responsive parenting"
+    "drawerButtonFaq": "Frequently asked questions"
+    "drawerButtonAboutUs": "About us"
+    "drawerButtonContact": "Contact"
+    "drawerButtonSettings": "Settings"
+
+    "fieldLabelEmail": "Email"
+    "fieldLabelPassword": "Password"
+    "fieldLabelRepeatPassword": "Repeat password"
+    "fieldLabelName": "Name"
+    "fieldLabelSurname": "Surname"
+    "fieldLabelComment": "Comment"
+
+    "buttonGotoHome": "Back to Home screen"
+    "buttonNext": "Next"
+    "buttonBack": "Back"
+    "buttonShare": "Share article"
+
+    "enterSearchTerm": "Enter key words"
+    "searchResults": "Search results"
+    "didntFindAnswerInSearchResults": "You didn't find an answer to your question?"
+    "showAllArticles": "All articles"
+    "relatedArticles": "Related articles"
+    "developmentArticles": "Child development"
+    "noArticles": "There are no articles"
+    "popularArticles": "Popular articles"
+    "todayArticles": "Featured today"
+    "showAllResults": "Show all results"
+    "showLessResults": "Show less"
+    "searchCategoryFaq": "Category: Frequently asked questions-FAQ"
+
+    "faq": "Frequently asked questions - FAQ"
+    "faqYourChild": "Your child"
+    "faqPerAge": "By age"
+
+    "writeUsEmail": "Write us email"
+    "callUs":  "Pozovite nas"
+    "aboutUs": "About us"
+    "termsAndConditionsTitle": "Terms and conditions"
+
+    "settingsTitle": "Settings"
+    "settingsTitleNotifications": "Notifications"
+    "settingsNotificationsWithApp": "I want to receive notifications through the application"
+    "settingsNotificationsWithEmail": "I want to receive notifications through the email"
+    "settingsNotificationsHelp": "Notifications are published once per week. Reminders about health check-ups are published five days before the check-up, one day before and on the day of the check-up.
+    "settingsTitleNotificationsDetails": "Data records and notifications"
+    "settingsEnterGrowth": "I want to track child growth and receive reminders to enter the growth measures of my child"
+    "settingsEnterDevelopment": "I want to track developmental milestones and receive reminders to enter the data"
+    "settingsEnterDoctorVisits": "I want to make records about health check-ups and receive reminders to enter the data"
+    "settingsButtonExport": "Export all saved data"
+    "settingsButtonDeleteAllData": "Delete account and erase all data"
+    "settingsLogout": "Logout"
+
+    "appFeedbackHeaderTitle": "Application improvements"
+    "appFeedbackTitle": "Thank you for participating"
+    "appFeedbackSubTitle": "Improve the application: We will consider all your comments, because babies deserve that!" 
+    "appFeedbackQuestion1": "Why are you using the app today?"
+    "appFeedbackQuestion2": "Did you find what you looked for in the app?"
+    "appFeedbackQuestion3": "Are there questions for which you didn't find an answer?"
+    "appFeedbackQuestion4": "If you could change 1 thing in teh app, what would that be?"
+    "appFeedbackQuestion5": "How would you assess the overal experience with this app?"
+    "appFeedbackButtonSend": "Send responses"
+
+    "birthDataTitle": "Baby's birth"
+    "birthDataDescription": "All data are used to precisely determine developmental periods and to present information relevant for the development of your child"
+    "fieldLabelPlannedTerm": "Planned term of birth"
+    "fieldLabelBirthDate": "Date of birth"
+    "fieldLabelBabyRatingOnBirth": "Baby rating on birth"
+    "fieldLabelMeasurementsOnBirth": "Measurements on birth"
+    "fieldLabelWeight": "Weight"
+    "fieldLabelLength": "Length"
+    "fieldLabelCommentFromDoctor": "Doctor's remark or comment"
+    "buttonSaveData": "Save data"
+
+    "examReminderTitle": "Health check-up reminder"
+    "examReminderDescription": "Enter the date and time of the scheduled check-up and ParentBuddy will remind you."
+    "examReminderDate": "Date"
+    "examReminderTime": "Time"
+    "buttonAddExamReminder": "Add reminder for the check-up"
+
+    "childProfileTitle": "Child's profile"
+    "childProfileBirthday": "Birthday"
+    "childProfileChange": "Change profile"
+    "childProfileAddSibling": "Add sister or brother"
+
+    "growScreenTitle": "Child growht"
+    "noMeasurementsTagWarrning": "Entries are not updated"
+    "noMeasurementsDescription": "Add data on growth measures to be able to track child's growth through time."
+    "noMeasurementsDescriptionAddMeasureBtn": "Enter child measures"
+    "lastMeasurementTitle": "Last measurement"
+    "lastMeasureAddMeasurementBtn": "We have new measures"
+    "newMeasureAddMeasurementBtn": "Enter data from measurement"
+    "newMeasureTitle": "New measurement"
+    "newMeasureScreenTitle": "New measurement"
+    "newMeasureScreenDatePickerLabel": "Date of measurement"
+    "newMeasureScreenPlaceTitle": "Where was the child measured"
+    "newMeasureScreenPlaceOptionDoctor": "At a doctor"
+    "newMeasureScreenPlaceOptionHome": "At home"
+    "newMeasureScreenVaccineTitle": "Did the child receive vaccine?
+    "newMeasureScreenVaccineOptionYes": "Yes"
+    "newMeasureScreenVaccineOptionNo": "No"
+    "newMeasureScreenCommentPlaceholder": "Doctor's remark or comment"
+    "newMeasureScreenSaveBtn": "Save data"
+    "oneMeasurementTitle": "Birth"
+    "measurementMass": "Weight"
+    "measurementLength": "Lenght"
+
+    "growthChartLegendSilverLabel": "-Typical values for age"
+    "growthChartLegendOrangeLabel": "-Suboptimal values for age"
     
-    "accountTitle": "Upoznajmo Vaše dete",
-    "accountGirl": "Devojčica",
-    "accountBoy": "Dečak",
-    "accountSisterOrBrother": "Sestra ili brat",
-    "accountName": "Ime",
-    "accountEmail": "Email",
-    "accountHasSibling": "Dete ima sestru ili brata",
-    "accountNext": "Dalje - Upoznajmo roditelje",
-    "accountMother": "Mama",
-    "accountFather": "Tata",
-    "accountSave": "Sačuvajte podatke",
-    "accountInviteFather": "Pošaljite SMS poziv tati da koristi aplikaciju",
-    "accountInviteMother": "Pošaljite SMS poziv mami da koristi aplikaciju",
-    "accountErrorAllNamesMustBeGiven": "Popuni sva imena",
-    "accountErrorEnterName": "Unesi ime",
-    "accountSendSmsText": "%PARENT% ti kaže da instaliraš ovu aplikaciju: %APP_URL%",
-
-    "drawerTitleArticles": "Članci i saveti",
-    "drawerTitleGrowthDiary": "Dnevnik razvoja",
-    "drawerButtonHome": "Početna strana",
-    "drawerButtonGrowth": "Rast deteta",
-    "drawerButtonDoctor": "Lekarski pregledi",
-    "drawerButtonVaccination": "Vakcinacije",
-    "drawerButtonDevelopment": "Razvoj deteta",
-    "drawerButtonFood": "Ishrana i dojenje",
-    "drawerButtonHealth": "Zdravlje i nega",
-    "drawerButtonSafety": "Bezbednost i zaštita",
-    "drawerButtonGames": "Igra i učenje",
-    "drawerButtonParents": "Kutak za roditelje",
-    "drawerButtonResponsive": "Podsticajno reoditeljstvo",
-    "drawerButtonFaq": "Cesta pitanja",
-    "drawerButtonAboutUs": "O nama",
-    "drawerButtonContact": "Kontakt",
-    "drawerButtonSettings": "Podešavanja",
-
-    "fieldLabelEmail": "Email",
-    "fieldLabelPassword": "Lozinka",
-    "fieldLabelRepeatPassword": "Ponovite lozinku",
-    "fieldLabelName": "Ime",
-    "fieldLabelSurname": "Prezime",
-    "fieldLabelComment": "Komentar",
-
-    "buttonGotoHome": "Idi na početni ekran",
-    "buttonNext": "Dalje",
-    "buttonBack": "Nazad",
-    "buttonShare": "Podelite članak",
-
-    "enterSearchTerm": "Unesite pojam",
-    "searchResults": "Rezultati pretrage",
-    "didntFindAnswerInSearchResults": "Niste pronašli odgovor na svoje pitanje?",
-    "showAllArticles": "Svi tekstovi",
-    "relatedArticles": "Povezani članci",
-    "developmentArticles": "Razvoj dece",
-    "noArticles": "Nema članaka",
-    "popularArticles": "Popular articles",
-    "todayArticles": "Danas izdvajamo",
-    "showAllResults": "Prikaži sve rezultate",
-    "showLessResults": "Prikaži manje",
-    "searchCategoryFaq": "Kategorija: Najčešća pitanja",
-
-    "faq": "Česta pitanja",
-    "faqYourChild": "Vaše dete",
-    "faqPerAge": "Po uzrastu",
-
-    "writeUsEmail": "Pišite nam na e-mail",
-    "callUs": "Pozovite naše savetovalište",
-    "aboutUs": "O nama",
-    "termsAndConditionsTitle": "Uslovi korišćenja",
-
-    "settingsTitle": "Podešavanja",
-    "settingsTitleNotifications": "Obaveštenja",
-    "settingsNotificationsWithApp": "Želim da dobijam obaveštenja putem aplikacije",
-    "settingsNotificationsWithEmail": "Želim da dobijam obaveštenja putem Email-a",
-    "settingsNotificationsHelp": "Obaveštenja se objavljuju jednom nedeljno. Podsetnici o pregledima objavljuju se pet dana pre pregleda, jedan dan pre pregleda i na dan pregleda.",
-    "settingsTitleNotificationsDetails": "Evidencija podataka i podsetnici",
-    "settingsEnterGrowth": "Želim da pratim rast i da me aplikacija podseća da unosim mere deteta",
-    "settingsEnterDevelopment": "Želim da beležim razvojne događaje i da me aplikacija podseća da unosim podatke",
-    "settingsEnterDoctorVisits": "Želim da evidentiram posete doktoru i da me aplikacija podseća da unosim podatke",
-    "settingsButtonExport": "Izvezite sve sačuvane podatke",
-    "settingsButtonDeleteAllData": "Obrišite nalog i izbrišite sve podatke",
-    "settingsLogout": "Odjavite se iz aplikacije",
-
-    "appFeedbackHeaderTitle": "Unapredjenje aplikacije",
-    "appFeedbackTitle": "Hvala Vam što učestvujete!",
-    "appFeedbackSubTitle": "Poboljšajte aplikaciju: Sve komentare koje ostavite uzećemo u razmatranje, jer bebe to zaslužuju!",
-    "appFeedbackQuestion1": "Zbog čega danas koristite aplikaciju?",
-    "appFeedbackQuestion2": "Da li ste pronašli ono što ste tražili u aplikaciji?",
-    "appFeedbackQuestion3": "Imate li pitanja na koja niste pronašli odgovor?",
-    "appFeedbackQuestion4": "Kada biste mogli da promenite jednu stvar u aplikaciji, šta bi to bilo?",
-    "appFeedbackQuestion5": "Kako biste ocenili sveukupno iskustvo korišćenja aplikacije?",
-    "appFeedbackButtonSend": "Pošaljite odgovore",
-
-    "birthDataTitle": "Bebino rodjenje",
-    "birthDataDescription": "Sve podatke koristimo da bismo precizno izračunali razvojne prekretnice i prikazali relevantne informacije za razvoj Vaše bebe.",
-    "fieldLabelPlannedTerm": "Planirani termin rodjenja",
-    "fieldLabelBirthDate": "Datum rodjenja",
-    "fieldLabelBabyRatingOnBirth": "Ocena deteta na rodjenju",
-    "fieldLabelMeasurementsOnBirth": "Mere deteta na rodjenju",
-    "fieldLabelWeight": "Težina",
-    "fieldLabelLength": "Dužina",
-    "fieldLabelCommentFromDoctor": "Komentar ili primedba doktora",
-    "buttonSaveData": "Sačuvajte podatke",
-
-    "examReminderTitle": "Podsetnik za pregled",
-    "examReminderDescription": "Upišite datum i vreme zakazanog pregleda i HaloBeba će Vas podsetiti.",
-    "examReminderDate": "Datum",
-    "examReminderTime": "Vreme",
-    "buttonAddExamReminder": "Dodajte podsetnik za pregled",
-
-    "childProfileTitle": "Profil deteta",
-    "childProfileBirthday": "Rodjendan",
-    "childProfileChange": "Izmenite profil",
-    "childProfileAddSibling": "Dodajte sestru ili brata",
-
-    "growScreenTitle": "Rast deteta",
-    "noMeasurementsTagWarrning": "Podaci nisu ažurirani",
-    "noMeasurementsDescription": "Dodajte podatke o merama kako biste mogli da pratite detetov rast kroz vreme.",
-    "noMeasurementsDescriptionAddMeasureBtn": "Unesite mere deteta",
-    "lastMeasurementTitle": "Poslednje merenje",
-    "lastMeasureAddMeasurementBtn": "Imamo nove mere",
-    "newMeasureAddMeasurementBtn": "Upišite podatke sa merenja",
-    "newMeasureTitle": "Novo merenje",
-    "newMeasureScreenTitle": "Novo merenje",
-    "newMeasureScreenDatePickerLabel": "Datum merenja",
-    "newMeasureScreenPlaceTitle": "Gde je dete izmereno?",
-    "newMeasureScreenPlaceOptionDoctor": "Kod doktora",
-    "newMeasureScreenPlaceOptionHome": "Kod kuće",
-    "newMeasureScreenVaccineTitle": "Da li je dete primilo vakcinu?",
-    "newMeasureScreenVaccineOptionYes": "Da",
-    "newMeasureScreenVaccineOptionNo": "Ne",
-    "newMeasureScreenCommentPlaceholder": "Komentar ili primedba lekara",
-    "newMeasureScreenSaveBtn": "Sačuvajte podatke",
-    "oneMeasurementTitle": "Rođenje",
-    "measurementMass": "Masa",
-    "measurementLength": "Dužina",
-
-    "growthChartLegendSilverLabel": " - Uobičajene vrednosti za uzrast",
-    "growthChartLegendOrangeLabel": " - Odstupajuće vrednosti za uzrast",
-    
-    "vaccinationTitleQuestion": "Da li je dete vakcinisano?",
-    "moreAboutVaccineBtn": "Pročitajte više o vakcini",
-    "moreAboutDisease": "Pročitajte više o bolesti",
-    "AddDataAboutVaccination": "Upišite podatke sa vakcinacije",
-    "AddVaccinationReminder" : "Dodajte podsetnik za vakcinaciju",
-    "NewDoctorVisitMeasurementTitle": "Da li je dete izmereno?",
-    "childMeasuredError": "Molimo Vas da odaberete jedan od ova dva odgovora.",
-    "NewDoctorVisitScreenDatePickerLabel": "Datum posete",
-    "NewDoctorVisitScreenTitle": "Nova poseta doktoru"
+    "vaccinationTitleQuestion": "Was the child vaccinated?"
+    "moreAboutVaccineBtn": "Read more about vaccine"
+    "moreAboutDisease": "Read more about disease"
+    "AddDataAboutVaccination": "Enter data from vaccination"
+    "AddVaccinationReminder" : "Add reminder for vaccination"
+    "NewDoctorVisitMeasurementTitle": "Was the child measured"
+    "childMeasuredError": "Please choose one of the two responses"
+    "NewDoctorVisitScreenDatePickerLabel": "Date of health check-up"
+    "NewDoctorVisitScreenTitle": "New health check-up
 
 }
