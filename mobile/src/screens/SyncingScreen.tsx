@@ -5,6 +5,7 @@ import { Typography } from '../components';
 import { TypographyType } from '../components/Typography';
 import { utils, syncData } from '../app';
 import { appConfig } from '../app/appConfig';
+import { translate } from '../translations';
 import LottieView from 'lottie-react-native';
 import lottieAnimation from './lottie-animation.json';
 
@@ -39,10 +40,10 @@ export class SyncingScreen extends React.Component<Props, object> {
                 />
 
                 <Typography type={TypographyType.headingPrimary}>
-                    Changing diapers
+                    {translate('syncScreenText')}
                 </Typography>
                 <Typography type={TypographyType.headingSecondary} style={{ color: 'grey' }}>
-                    ... and syncing data
+                    {translate('syncScreenSubText')}
                 </Typography>
             </SafeAreaView>
         );

@@ -1,4 +1,4 @@
-package com.halo.beba;
+package org.unicef.ecar.parentbuddy;
 
 import android.app.Application;
 import android.content.Context;

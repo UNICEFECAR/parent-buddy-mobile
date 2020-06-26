@@ -304,9 +304,9 @@ export class LoginScreen extends React.Component<Props, State & AnimationsState>
                         />
 
                         {/* FORGOT THE PASSWORD */}
-                        <TextButton size={TextButtonSize.small} textStyle={{ color: 'white', textAlign: 'center' }} onPress={() => { }}>
+                        {/* <TextButton size={TextButtonSize.small} textStyle={{ color: 'white', textAlign: 'center' }} onPress={() => { }}>
                             {translate('loginForgotPassword')}
-                        </TextButton>
+                        </TextButton> */}
 
                         <View style={{ height: 60 }}></View>
 

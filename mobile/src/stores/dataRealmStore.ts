@@ -33,6 +33,7 @@ export type Variables = {
     'languageCode': string;
     'countryCode': string;
     'lastSyncTimestamp': number;
+    'randomNumber': number;
     'vocabulariesAndTerms': VocabulariesAndTermsResponse;
 };
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet, ViewStyle, } from 'react-native';
+import { View, StyleSheet, ViewStyle, } from 'react-native';
 import { NavigationStackProp, NavigationStackState } from 'react-navigation-stack';
 import { ThemeContextValue, ThemeConsumer } from '../../themes/ThemeContext';
 import { translate } from '../../translations/translate';
@@ -11,7 +11,7 @@ import { RateAChild } from '../../components/RateAChild';
 import { RoundedTextInput } from '../../components/RoundedTextInput';
 import { RoundedTextArea } from '../../components/RoundedTextArea';
 import { RoundedButton, RoundedButtonType } from '../../components/RoundedButton';
-import { userRealmStore } from '../../stores';
+import { userRealmStore, dataRealmStore } from '../../stores';
 import { ChildEntitySchema, ChildEntity } from '../../stores/ChildEntity';
 
 export interface BirthDataScreenParams {
@@ -75,21 +75,24 @@ export class BirthDataScreen extends React.Component<Props, State> {
     }
 
     private submit = () => {
-
         const { comment, weight, height, babyRating, plannedTermDate, birthDate } = this.state;
 
-        const allRecords = userRealmStore.realm?.objects<ChildEntity>(ChildEntitySchema.name);
-        allRecords?.forEach((record, index, collection) => {
-            userRealmStore.realm?.write(() => {
-                record.height = height;
-                record.weight = weight;
-                record.comment = comment;
-                record.babyRating = babyRating;
-                record.plannedTermDate = plannedTermDate,
-                    record.birthDate = birthDate;
-            })
+        const currentChild = userRealmStore.getCurrentChild();
+        if (!currentChild) return;
 
-        })
+        userRealmStore.realm?.write(() => {
+            currentChild.height = height;
+            currentChild.weight = weight;
+            currentChild.comment = comment;
+            currentChild.babyRating = babyRating;
+            currentChild.plannedTermDate = plannedTermDate;
+            currentChild.birthDate = birthDate;
+
+            // This will just trigger the update of data realm
+            dataRealmStore.setVariable('randomNumber', Math.floor(Math.random() * 6000) + 1  );
+
+            this.props.navigation.goBack();
+        });
     }
 
     private setPlannedTerm = (date: Date) => {
@@ -173,7 +176,7 @@ export class BirthDataScreen extends React.Component<Props, State> {
                                 {translate('fieldLabelBabyRatingOnBirth')}
                             </Typography>
 
-                            <RateAChild onChange={(value) => this.setChildRaiting(value)} value={this.state.babyRating}/>
+                            <RateAChild onChange={(value) => this.setChildRaiting(value)} value={this.state.babyRating} />
                             <View style={{ height: themeContext.theme.variables?.sizes.verticalPaddingLarge }} />
 
                             {/* BABY MEASUREMENTS */}
