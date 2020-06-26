@@ -1,165 +1,170 @@
 {
-    "appName": "ParentBuddy"
+    "appName": "ParentBuddy",
     "appEmail": "",
     "appPhone": "",
 
-    "loginGoogle":  "Login with Google account"
-    "loginFacebook": "Login with Facebook account"
-    "registerAccount": "Register account using Email"
-    "loginButton": "Login"
-    "loginForgotPassword": "Forgot your password?"
-    "createAccount": "Create account"
-    "alreadyHaveAccount": "Already have account? Log in"
-    "youCreatedAccount": "You created account"
-    "checkEmail": "Check your email and clik to the link in the email to complete the registration."
-    "sendRegisterEmailAgain": "Didn't receive the link, send me the email again"
+    "loginGoogle":  "Login with Google account",
+    "loginFacebook": "Login with Facebook account",
+    "registerAccount": "Register account using Email",
+    "loginButton": "Login",
+    "loginForgotPassword": "Forgot your password?",
+    "createAccount": "Create account",
+    "alreadyHaveAccount": "Already have account? Log in",
+    "youCreatedAccount": "You created account",
+    "checkEmail": "Check your email and clik to the link in the email to complete the registration.",
+    "sendRegisterEmailAgain": "Didn't receive the link, send me the email again",
+    "userAlreadyExist": "Korisnik sa ovim mejlom već postoji.",
+    "userNoExist": "Ne postoji korisnik sa ovim nalogom",
+    "allFieldsMustBeFilled": "Sva polja moraju biti popunjena",
+    "notValidEmail": "E-mail nije validan.",
+    "passwordToShort": "Lozinka mora imati najmanje 6 karaktera.",
+    "passwordDosntMatch": "Lozinke se ne podudaraju.",
 
-    "accountTitle": "Introduce your child"
-    "accountGirl": "Girl"
-    "accountBoy": "Boy"
-    "accountSisterOrBrother":  "Sister or brother"
-    "accountName": "Name"
-    "accountEmail": "Email"
-    "accountHasSibling": "The child has a sister or a brother"
-    "accountNext": "Next - Meet the parents"
-    "accountMother": "Mum"
-    "accountFather": "Dad"
-    "accountSave": "Save"
-    "accountInviteFather": "Invite father through SMS to use the application"
-    "accountInviteMother": "Invite mother through SMS to use the application"
-    "accountErrorAllNamesMustBeGiven":  "Enter all names"
-    "accountErrorEnterName": "Enter the name"
-    "accountSendSmsText": "%PARENT% tells you to install this application: %APP_URL%
-    "drawerTitleArticles": "Articles and advices"
-    "drawerTitleGrowthDiary": "Developmental Diary"
-    "drawerButtonHome": "Home page"
-    "drawerButtonGrowth": "Child growth"
-    "drawerButtonDoctor": "Health check-ups"
-    "drawerButtonVaccination": "Vaccinations"
-    "drawerButtonDevelopment": "Child development"
-    "drawerButtonFood": "Nutrition and breastfeeding"
-    "drawerButtonHealth": "Health and wellbeing"
-    "drawerButtonSafety":  "Safety and protection"
-    "drawerButtonGames": "Play and learning"
-    "drawerButtonParents": "Parenting corner"
-    "drawerButtonResponsive": "Responsive parenting"
-    "drawerButtonFaq": "Frequently asked questions"
-    "drawerButtonAboutUs": "About us"
-    "drawerButtonContact": "Contact"
-    "drawerButtonSettings": "Settings"
+    "accountTitle": "Introduce your child",
+    "accountGirl": "Girl",
+    "accountBoy": "Boy",
+    "accountSisterOrBrother":  "Sister or brother",
+    "accountName": "Name",
+    "accountEmail": "Email",
+    "accountHasSibling": "The child has a sister or a brother",
+    "accountNext": "Next - Meet the parents",
+    "accountMother": "Mum",
+    "accountFather": "Dad",
+    "accountSave": "Save",
+    "accountInviteFather": "Invite father through SMS to use the application",
+    "accountInviteMother": "Invite mother through SMS to use the application",
+    "accountErrorAllNamesMustBeGiven":  "Enter all names",
+    "accountErrorEnterName": "Enter the name",
+    "accountSendSmsText": "%PARENT% tells you to install this application: %APP_URL%",
+    "drawerTitleArticles": "Articles and advices",
+    "drawerTitleGrowthDiary": "Developmental Diary",
+    "drawerButtonHome": "Home page",
+    "drawerButtonGrowth": "Child growth",
+    "drawerButtonDoctor": "Health check-ups",
+    "drawerButtonVaccination": "Vaccinations",
+    "drawerButtonDevelopment": "Child development",
+    "drawerButtonFood": "Nutrition and breastfeeding",
+    "drawerButtonHealth": "Health and wellbeing",
+    "drawerButtonSafety":  "Safety and protection",
+    "drawerButtonGames": "Play and learning",
+    "drawerButtonParents": "Parenting corner",
+    "drawerButtonResponsive": "Responsive parenting",
+    "drawerButtonFaq": "Frequently asked questions",
+    "drawerButtonAboutUs": "About us",
+    "drawerButtonContact": "Contact",
+    "drawerButtonSettings": "Settings",
 
-    "fieldLabelEmail": "Email"
-    "fieldLabelPassword": "Password"
-    "fieldLabelRepeatPassword": "Repeat password"
-    "fieldLabelName": "Name"
-    "fieldLabelSurname": "Surname"
-    "fieldLabelComment": "Comment"
+    "fieldLabelEmail": "Email",
+    "fieldLabelPassword": "Password",
+    "fieldLabelRepeatPassword": "Repeat password",
+    "fieldLabelName": "Name",
+    "fieldLabelSurname": "Surname",
+    "fieldLabelComment": "Comment",
 
-    "buttonGotoHome": "Back to Home screen"
-    "buttonNext": "Next"
-    "buttonBack": "Back"
-    "buttonShare": "Share article"
+    "buttonGotoHome": "Back to Home screen",
+    "buttonNext": "Next",
+    "buttonBack": "Back",
+    "buttonShare": "Share article",
 
-    "enterSearchTerm": "Enter key words"
-    "searchResults": "Search results"
-    "didntFindAnswerInSearchResults": "You didn't find an answer to your question?"
-    "showAllArticles": "All articles"
-    "relatedArticles": "Related articles"
-    "developmentArticles": "Child development"
-    "noArticles": "There are no articles"
-    "popularArticles": "Popular articles"
-    "todayArticles": "Featured today"
-    "showAllResults": "Show all results"
-    "showLessResults": "Show less"
-    "searchCategoryFaq": "Category: Frequently asked questions-FAQ"
+    "enterSearchTerm": "Enter key words",
+    "searchResults": "Search results",
+    "didntFindAnswerInSearchResults": "You didn't find an answer to your question?",
+    "showAllArticles": "All articles",
+    "relatedArticles": "Related articles",
+    "developmentArticles": "Child development",
+    "noArticles": "There are no articles",
+    "popularArticles": "Popular articles",
+    "todayArticles": "Featured today",
+    "showAllResults": "Show all results",
+    "showLessResults": "Show less",
+    "searchCategoryFaq": "Category: Frequently asked questions-FAQ",
 
-    "faq": "Frequently asked questions - FAQ"
-    "faqYourChild": "Your child"
-    "faqPerAge": "By age"
+    "faq": "Frequently asked questions - FAQ",
+    "faqYourChild": "Your child",
+    "faqPerAge": "By age",
 
-    "writeUsEmail": "Write us email"
-    "callUs":  "Pozovite nas"
-    "aboutUs": "About us"
-    "termsAndConditionsTitle": "Terms and conditions"
+    "writeUsEmail": "Write us email",
+    "callUs":  "Pozovite nas",
+    "aboutUs": "About us",
+    "termsAndConditionsTitle": "Terms and conditions",
 
-    "settingsTitle": "Settings"
-    "settingsTitleNotifications": "Notifications"
-    "settingsNotificationsWithApp": "I want to receive notifications through the application"
-    "settingsNotificationsWithEmail": "I want to receive notifications through the email"
-    "settingsNotificationsHelp": "Notifications are published once per week. Reminders about health check-ups are published five days before the check-up, one day before and on the day of the check-up.
-    "settingsTitleNotificationsDetails": "Data records and notifications"
-    "settingsEnterGrowth": "I want to track child growth and receive reminders to enter the growth measures of my child"
-    "settingsEnterDevelopment": "I want to track developmental milestones and receive reminders to enter the data"
-    "settingsEnterDoctorVisits": "I want to make records about health check-ups and receive reminders to enter the data"
-    "settingsButtonExport": "Export all saved data"
-    "settingsButtonDeleteAllData": "Delete account and erase all data"
-    "settingsLogout": "Logout"
+    "settingsTitle": "Settings",
+    "settingsTitleNotifications": "Notifications",
+    "settingsNotificationsWithApp": "I want to receive notifications through the application",
+    "settingsNotificationsWithEmail": "I want to receive notifications through the email",
+    "settingsNotificationsHelp": "Notifications are published once per week. Reminders about health check-ups are published five days before the check-up, one day before and on the day of the check-up.",
+    "settingsTitleNotificationsDetails": "Data records and notifications",
+    "settingsEnterGrowth": "I want to track child growth and receive reminders to enter the growth measures of my child",
+    "settingsEnterDevelopment": "I want to track developmental milestones and receive reminders to enter the data",
+    "settingsEnterDoctorVisits": "I want to make records about health check-ups and receive reminders to enter the data",
+    "settingsButtonExport": "Export all saved data",
+    "settingsButtonDeleteAllData": "Delete account and erase all data",
+    "settingsLogout": "Logout",
 
-    "appFeedbackHeaderTitle": "Application improvements"
-    "appFeedbackTitle": "Thank you for participating"
-    "appFeedbackSubTitle": "Improve the application: We will consider all your comments, because babies deserve that!" 
-    "appFeedbackQuestion1": "Why are you using the app today?"
-    "appFeedbackQuestion2": "Did you find what you looked for in the app?"
-    "appFeedbackQuestion3": "Are there questions for which you didn't find an answer?"
-    "appFeedbackQuestion4": "If you could change 1 thing in teh app, what would that be?"
-    "appFeedbackQuestion5": "How would you assess the overal experience with this app?"
-    "appFeedbackButtonSend": "Send responses"
+    "appFeedbackHeaderTitle": "Application improvements",
+    "appFeedbackTitle": "Thank you for participating",
+    "appFeedbackSubTitle": "Improve the application: We will consider all your comments, because babies deserve that!",
+    "appFeedbackQuestion1": "Why are you using the app today?",
+    "appFeedbackQuestion2": "Did you find what you looked for in the app?",
+    "appFeedbackQuestion3": "Are there questions for which you didn't find an answer?",
+    "appFeedbackQuestion4": "If you could change 1 thing in teh app, what would that be?",
+    "appFeedbackQuestion5": "How would you assess the overal experience with this app?",
+    "appFeedbackButtonSend": "Send responses",
 
-    "birthDataTitle": "Baby's birth"
-    "birthDataDescription": "All data are used to precisely determine developmental periods and to present information relevant for the development of your child"
-    "fieldLabelPlannedTerm": "Planned term of birth"
-    "fieldLabelBirthDate": "Date of birth"
-    "fieldLabelBabyRatingOnBirth": "Baby rating on birth"
-    "fieldLabelMeasurementsOnBirth": "Measurements on birth"
-    "fieldLabelWeight": "Weight"
-    "fieldLabelLength": "Length"
-    "fieldLabelCommentFromDoctor": "Doctor's remark or comment"
-    "buttonSaveData": "Save data"
+    "birthDataTitle": "Baby's birth",
+    "birthDataDescription": "All data are used to precisely determine developmental periods and to present information relevant for the development of your child",
+    "fieldLabelPlannedTerm": "Planned term of birth",
+    "fieldLabelBirthDate": "Date of birth",
+    "fieldLabelBabyRatingOnBirth": "Baby rating on birth",
+    "fieldLabelMeasurementsOnBirth": "Measurements on birth",
+    "fieldLabelWeight": "Weight",
+    "fieldLabelLength": "Length",
+    "fieldLabelCommentFromDoctor": "Doctor's remark or comment",
+    "buttonSaveData": "Save data",
 
-    "examReminderTitle": "Health check-up reminder"
-    "examReminderDescription": "Enter the date and time of the scheduled check-up and ParentBuddy will remind you."
-    "examReminderDate": "Date"
-    "examReminderTime": "Time"
-    "buttonAddExamReminder": "Add reminder for the check-up"
+    "examReminderTitle": "Health check-up reminder",
+    "examReminderDescription": "Enter the date and time of the scheduled check-up and ParentBuddy will remind you.",
+    "examReminderDate": "Date",
+    "examReminderTime": "Time",
+    "buttonAddExamReminder": "Add reminder for the check-up",
 
-    "childProfileTitle": "Child's profile"
-    "childProfileBirthday": "Birthday"
-    "childProfileChange": "Change profile"
-    "childProfileAddSibling": "Add sister or brother"
+    "childProfileTitle": "Child's profile",
+    "childProfileBirthday": "Birthday",
+    "childProfileChange": "Change profile",
+    "childProfileAddSibling": "Add sister or brother",
 
-    "growScreenTitle": "Child growht"
-    "noMeasurementsTagWarrning": "Entries are not updated"
-    "noMeasurementsDescription": "Add data on growth measures to be able to track child's growth through time."
-    "noMeasurementsDescriptionAddMeasureBtn": "Enter child measures"
-    "lastMeasurementTitle": "Last measurement"
-    "lastMeasureAddMeasurementBtn": "We have new measures"
-    "newMeasureAddMeasurementBtn": "Enter data from measurement"
-    "newMeasureTitle": "New measurement"
-    "newMeasureScreenTitle": "New measurement"
-    "newMeasureScreenDatePickerLabel": "Date of measurement"
-    "newMeasureScreenPlaceTitle": "Where was the child measured"
-    "newMeasureScreenPlaceOptionDoctor": "At a doctor"
-    "newMeasureScreenPlaceOptionHome": "At home"
-    "newMeasureScreenVaccineTitle": "Did the child receive vaccine?
-    "newMeasureScreenVaccineOptionYes": "Yes"
-    "newMeasureScreenVaccineOptionNo": "No"
-    "newMeasureScreenCommentPlaceholder": "Doctor's remark or comment"
-    "newMeasureScreenSaveBtn": "Save data"
-    "oneMeasurementTitle": "Birth"
-    "measurementMass": "Weight"
-    "measurementLength": "Lenght"
+    "growScreenTitle": "Child growht",
+    "noMeasurementsTagWarrning": "Entries are not updated",
+    "noMeasurementsDescription": "Add data on growth measures to be able to track child's growth through time.",
+    "noMeasurementsDescriptionAddMeasureBtn": "Enter child measures",
+    "lastMeasurementTitle": "Last measurement",
+    "lastMeasureAddMeasurementBtn": "We have new measures",
+    "newMeasureAddMeasurementBtn": "Enter data from measurement",
+    "newMeasureTitle": "New measurement",
+    "newMeasureScreenTitle": "New measurement",
+    "newMeasureScreenDatePickerLabel": "Date of measurement",
+    "newMeasureScreenPlaceTitle": "Where was the child measured",
+    "newMeasureScreenPlaceOptionDoctor": "At a doctor",
+    "newMeasureScreenPlaceOptionHome": "At home",
+    "newMeasureScreenVaccineTitle": "Did the child receive vaccine?",
+    "newMeasureScreenVaccineOptionYes": "Yes",
+    "newMeasureScreenVaccineOptionNo": "No",
+    "newMeasureScreenCommentPlaceholder": "Doctor's remark or comment",
+    "newMeasureScreenSaveBtn": "Save data",
+    "oneMeasurementTitle": "Birth",
+    "measurementMass": "Weight",
+    "measurementLength": "Lenght",
 
-    "growthChartLegendSilverLabel": "-Typical values for age"
-    "growthChartLegendOrangeLabel": "-Suboptimal values for age"
+    "growthChartLegendSilverLabel": "-Typical values for age",
+    "growthChartLegendOrangeLabel": "-Suboptimal values for age",
     
-    "vaccinationTitleQuestion": "Was the child vaccinated?"
-    "moreAboutVaccineBtn": "Read more about vaccine"
-    "moreAboutDisease": "Read more about disease"
-    "AddDataAboutVaccination": "Enter data from vaccination"
-    "AddVaccinationReminder" : "Add reminder for vaccination"
-    "NewDoctorVisitMeasurementTitle": "Was the child measured"
-    "childMeasuredError": "Please choose one of the two responses"
-    "NewDoctorVisitScreenDatePickerLabel": "Date of health check-up"
-    "NewDoctorVisitScreenTitle": "New health check-up
-
+    "vaccinationTitleQuestion": "Was the child vaccinated?",
+    "moreAboutVaccineBtn": "Read more about vaccine",
+    "moreAboutDisease": "Read more about disease",
+    "AddDataAboutVaccination": "Enter data from vaccination",
+    "AddVaccinationReminder" : "Add reminder for vaccination",
+    "NewDoctorVisitMeasurementTitle": "Was the child measured",
+    "childMeasuredError": "Please choose one of the two responses",
+    "NewDoctorVisitScreenDatePickerLabel": "Date of health check-up",
+    "NewDoctorVisitScreenTitle": "New health check-up"
 }
