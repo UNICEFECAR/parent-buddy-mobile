@@ -1,6 +1,6 @@
 import React from 'react';
 import Realm from 'realm';
-import { ScrollView, StyleSheet, View, ViewStyle, Alert } from 'react-native';
+import { ScrollView, StyleSheet, View, ViewStyle, Alert, Text } from 'react-native';
 import { Button } from 'react-native-paper';
 import { scale } from 'react-native-size-matters';
 import { NavigationStackProp, NavigationStackState } from 'react-navigation-stack';
@@ -11,7 +11,7 @@ import { ContentEntity, ContentEntitySchema } from '../../stores/ContentEntity';
 import { CategoryArticlesViewEntity } from '../../stores/CategoryArticlesViewEntity';
 import { dataRealmStore } from '../../stores';
 import { translate } from '../../translations/translate';
-import { content } from '../../app';
+import { content, localize } from '../../app';
 import { Media } from '../../components';
 import Orientation from 'react-native-orientation-locker';
 
@@ -61,6 +61,8 @@ export class HomeScreen extends React.Component<Props, object> {
             <ThemeConsumer>
                 {(themeContext: ThemeContextValue) => (
                     <ScrollView style={{ backgroundColor: themeContext.theme.screenContainer?.backgroundColor }} contentContainerStyle={[styles.container, { padding: themeContext.theme.screenContainer?.padding }]}>
+
+                        {/* <Text>{localize.getLanguage()}</Text> */}
 
                         {/* Test button */}
                         {/* <Button onPress={() => {this.onTestButtonPress()}}>Test</Button>
