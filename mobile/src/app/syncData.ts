@@ -1,9 +1,10 @@
 import { dataRealmStore, apiStore } from "../stores";
-import { ContentResponse, ApiImageData } from "../stores/apiStore";
+import { ContentResponse, ApiImageData, BasicPagesResponse } from "../stores/apiStore";
 import { ContentEntitySchema, ContentEntity } from "../stores/ContentEntity";
 import { appConfig } from "./appConfig";
 import { content } from "./content";
 import { navigation } from "../app/Navigators";
+import { BasicPageEntity, BasicPagesEntitySchema } from "../stores/BasicPageEntity";
 
 /**
  * Sync data between API and realm.
@@ -11,7 +12,7 @@ import { navigation } from "../app/Navigators";
 class SyncData {
     private static instance: SyncData;
 
-    private constructor() {}
+    private constructor() { }
 
     static getInstance(): SyncData {
         if (!SyncData.instance) {
@@ -26,7 +27,7 @@ class SyncData {
 
         // DOWNLOAD VOCABULARIES AND TERMS
         const vocabulariesAndTerms = await apiStore.getVocabulariesAndTerms();
-        
+
         if (vocabulariesAndTerms?.categories && vocabulariesAndTerms.categories.length > 0) {
             await dataRealmStore.setVariable('vocabulariesAndTerms', vocabulariesAndTerms);
 
@@ -35,16 +36,17 @@ class SyncData {
             }
         }
 
+
         // DOWNLOAD ALL CONTENT
-        let allContent: ContentResponse = {total:0, data:[]};
+        let allContent: ContentResponse = { total: 0, data: [] };
 
         try {
             if (lastSyncTimestamp) {
                 allContent = await apiStore.getAllContent(undefined, lastSyncTimestamp);
             } else {
                 allContent = await apiStore.getAllContent();
-            }
-        } catch(e) {}
+            };
+        } catch (e) { };
 
         // Save content
         if (allContent?.data && allContent.data.length > 0) {
@@ -59,9 +61,29 @@ class SyncData {
 
                 if (appConfig.showLog) {
                     console.log('syncData.sync(): Saved all content');
-                }
-            } catch(e) {}
+                };
+            } catch (e) { };
         }
+
+        // DOWNLOAD BASIC PAGES 
+        const basicPages = await apiStore.getBasicPages();
+
+        // save basic pages 
+        if (basicPages?.data && basicPages.data.length > 0) {
+            const basicPageCreateOrUpdate: Promise<BasicPageEntity>[] = [];
+            
+            basicPages.data.forEach((value) => {
+                basicPageCreateOrUpdate.push(dataRealmStore.createOrUpdate(BasicPagesEntitySchema, value));
+            });
+
+            try {
+                await Promise.all(basicPageCreateOrUpdate);
+                if (appConfig.showLog) {
+                    console.log('syncData.sync(): Saved basic pages');
+                };
+            } catch (e){};
+        };
+
 
         // DOWNLOAD COVER IMAGES
         if (allContent?.data && allContent.data.length > 0) {
@@ -69,7 +91,7 @@ class SyncData {
 
             allContent.data.forEach((contentEntity) => {
                 const coverImageData = content.getCoverImageData(contentEntity);
-                
+
                 if (coverImageData) {
                     apiImagesData.push(coverImageData);
                 }
@@ -85,7 +107,7 @@ class SyncData {
 
         // UPDATE lastSyncTimestamp
         if (allContent.total > 0 && allContent.data.length === allContent.total) {
-            dataRealmStore.setVariable('lastSyncTimestamp', Math.round(Date.now()/1000));
+            dataRealmStore.setVariable('lastSyncTimestamp', Math.round(Date.now() / 1000));
 
             if (appConfig.showLog) {
                 console.log('syncData.sync(): Updated lastSyncTimestamp');
@@ -104,7 +126,7 @@ class SyncData {
             navigation.navigate('RootModalStackNavigator_SyncingScreen');
             await syncData.sync();
             navigation.navigate('HomeStackNavigator_HomeScreen');
-        } catch(e) {
+        } catch (e) {
             navigation.navigate('HomeStackNavigator_HomeScreen');
         }
     }
