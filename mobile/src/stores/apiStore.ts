@@ -4,6 +4,7 @@ import { ContentEntity, ContentEntityType } from "./ContentEntity";
 import axios, { AxiosResponse } from 'axios';
 import RNFS from 'react-native-fs';
 import URLParser from 'url';
+import { BasicPageEntity } from "./BasicPageEntity";
 
 /**
  * Communication with API.
@@ -19,6 +20,54 @@ class ApiStore {
         }
         return ApiStore.instance;
     }
+
+    public async getBasicPages(): Promise<BasicPagesResponse>{
+        const language = localize.getLanguage();
+
+        let url = `${appConfig.apiUrl}/list-basic-page/${language}`;
+        let response: BasicPagesResponse = {
+            data: [],
+            total: 0,
+        };
+
+        try{
+            let axiosResponse: AxiosResponse = await axios({
+                url: url,
+                method: 'GET',
+                responseType: 'json',
+                headers: {"Content-type": "application/json"},
+                timeout: appConfig.apiTimeout,
+                auth: {
+                    username: appConfig.apiUsername,
+                    password: appConfig.apiPassword,
+                }
+            });
+
+            let rawResponseJson = axiosResponse.data;
+
+            if(rawResponseJson){
+                response.total = parseInt(rawResponseJson.total);
+                response.data = rawResponseJson.data.map((item: any ): BasicPageEntity => {
+                    return {
+                        body: item.body,
+                        title: item.title,
+                        created_at: new Date(item.created_at * 1000),
+                        updated_at: new Date(item.updated_at * 1000 ),
+                        id: parseInt(item.id),
+                        langcode: item.langcode,
+                        type: item.type
+                    };
+                });
+            };
+
+        }catch(rejectError){
+            if(appConfig.showLog){
+                console.log(rejectError, "REJECT ERROR")
+            };
+        };
+
+        return response;
+    };
 
     public async drupalRegister(args: DrupalRegisterArgs): Promise<DrupalRegisterRespone>{
 
@@ -95,7 +144,6 @@ class ApiStore {
                 console.log(rejectError, "REJECT ERROR");
             }
         }
-
         return response
     }
 
@@ -354,6 +402,11 @@ class ApiStore {
             };
         });
     }
+}
+
+export interface BasicPagesResponse{
+    total: number,
+    data: BasicPageEntity[]
 }
 
 export interface DrupalRegisterArgs{

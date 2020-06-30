@@ -2,7 +2,7 @@ import Realm, { ObjectSchema } from 'realm';
 import { dataRealmConfig } from "./dataRealmConfig";
 import { VariableEntity, VariableEntitySchema } from './VariableEntity';
 import { appConfig } from '../app/appConfig';
-import { VocabulariesAndTermsResponse, TermChildren } from './apiStore';
+import { VocabulariesAndTermsResponse, TermChildren, BasicPagesResponse } from './apiStore';
 import { ListCardItem } from '../screens/home/ListCard';
 import { ContentEntity } from '.';
 import { ContentEntitySchema } from './ContentEntity';
@@ -10,6 +10,7 @@ import { translate } from '../translations/translate';
 import { GraphRequest } from 'react-native-fbsdk';
 import { DateTime } from "luxon";
 import { userRealmStore } from './userRealmStore';
+import { BasicPageEntity, BasicPagesEntitySchema } from './BasicPageEntity';
 
 export type Variables = {
     'userEmail': string;
@@ -71,6 +72,12 @@ class DataRealmStore {
             }
         });
     }
+
+    public getBasicPage(id: 4516 | 4836){
+        const basicPageVariable = this.realm?.objects<BasicPageEntity>(BasicPagesEntitySchema.name);
+        return basicPageVariable?.filtered(`id == ${id}`).find(item => item);
+    }
+
 
     public async setVariable<T extends VariableKey>(key: T, value: Variables[T] | null): Promise<boolean> {
         return new Promise((resolve, reject) => {
@@ -180,6 +187,7 @@ class DataRealmStore {
                     resolve(record);
                 });
             } catch (e) {
+                console.log(e, "USAO U ERRROR NA ", entitySchema.name)
                 reject();
             }
         });

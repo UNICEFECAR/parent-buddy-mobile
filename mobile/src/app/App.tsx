@@ -11,6 +11,7 @@ import { utils } from './utils';
 import { localize } from './localize';
 // @ts-ignore
 import {decode as atob, encode as btoa} from 'base-64';
+import { apiStore, dataRealmConfig, dataRealmStore } from '../stores';
 
 // ADD GLOBAL POLYFILLS: atob, btoa
 if (!(global as any).btoa) (global as any).btoa = btoa;
