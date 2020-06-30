@@ -39,13 +39,13 @@ class UserRealmStore {
 
                 // Open realm file
                 Realm.open(userRealmConfig)
-                .then(realm => {
-                    this.realm = realm;
-                    resolve(realm);
-                })
-                .catch(error => {
-                    resolve(null);
-                });
+                    .then(realm => {
+                        this.realm = realm;
+                        resolve(realm);
+                    })
+                    .catch(error => {
+                        resolve(null);
+                    });
             }
         });
     }
@@ -102,10 +102,10 @@ class UserRealmStore {
         try {
             const allVariables = this.realm.objects<VariableEntity>(VariableEntitySchema.name);
             const variablesWithKey = allVariables.filtered(`key == "${key}"`);
-    
+
             if (variablesWithKey && variablesWithKey.length > 0) {
                 const record = variablesWithKey.find(obj => obj.key === key);
-    
+
                 if (record) {
                     return JSON.parse(record.value);
                 } else {
@@ -114,12 +114,12 @@ class UserRealmStore {
             } else {
                 return null;
             }
-        } catch(e) {
+        } catch (e) {
             return null;
         }
     }
 
-    public async deleteVariable<T extends VariableKey>(key:T): Promise<void> {
+    public async deleteVariable<T extends VariableKey>(key: T): Promise<void> {
         return new Promise((resolve, reject) => {
             if (!this.realm) {
                 reject();
@@ -129,10 +129,10 @@ class UserRealmStore {
             try {
                 const allVariables = this.realm.objects<VariableEntity>(VariableEntitySchema.name);
                 const variablesWithKey = allVariables.filtered(`key == "${key}"`);
-        
+
                 if (variablesWithKey && variablesWithKey.length > 0) {
                     const record = variablesWithKey.find(obj => obj.key === key);
-                    
+
                     this.realm.write(() => {
                         this.realm?.delete(record);
                         resolve();
@@ -140,13 +140,13 @@ class UserRealmStore {
                 } else {
                     reject();
                 }
-            } catch(e) {
+            } catch (e) {
                 reject();
             }
         });
     }
 
-    public async create<Entity>(entitySchema:ObjectSchema, record:Entity): Promise<Entity> {
+    public async create<Entity>(entitySchema: ObjectSchema, record: Entity): Promise<Entity> {
         return new Promise((resolve, reject) => {
             if (!this.realm) {
                 reject();
@@ -164,7 +164,7 @@ class UserRealmStore {
         });
     }
 
-    public async delete(record:any): Promise<void> {
+    public async delete(record: any): Promise<void> {
         return new Promise((resolve, reject) => {
             if (!this.realm) {
                 reject();
@@ -182,7 +182,7 @@ class UserRealmStore {
         });
     }
 
-    public async deleteAll(entitySchema:ObjectSchema): Promise<void> {
+    public async deleteAll(entitySchema: ObjectSchema): Promise<void> {
         return new Promise((resolve, reject) => {
             if (!this.realm) {
                 reject();
@@ -191,12 +191,12 @@ class UserRealmStore {
 
             try {
                 const allRecords = this.realm?.objects(entitySchema.name);
-    
+
                 this.realm?.write(() => {
                     this.realm?.delete(allRecords);
                     resolve();
                 });
-            } catch(e) {
+            } catch (e) {
                 reject(e);
             }
         });

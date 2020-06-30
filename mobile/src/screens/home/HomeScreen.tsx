@@ -14,6 +14,7 @@ import { translate } from '../../translations/translate';
 import { content, localize } from '../../app';
 import { Media } from '../../components';
 import Orientation from 'react-native-orientation-locker';
+import { getSearchResultsScreenData } from '../../stores/getSearchResultsScreenData';
 
 export interface HomeScreenParams {
     showSearchInput?: boolean;
@@ -50,7 +51,7 @@ export class HomeScreen extends React.Component<Props, object> {
     }
 
     private onTestButtonPress() {
-        const results = dataRealmStore.getSearchResultsScreenData('yes');
+        const results = getSearchResultsScreenData('yes');
         console.log(JSON.stringify(results, null, 4));
     }
 

@@ -169,5 +169,7 @@
     "NewDoctorVisitMeasurementTitle": "Was the child measured",
     "childMeasuredError": "Please choose one of the two responses",
     "NewDoctorVisitScreenDatePickerLabel": "Date of health check-up",
-    "NewDoctorVisitScreenTitle": "New health check-up"
+    "NewDoctorVisitScreenTitle": "New health check-up",
+
+    "Iam": "I am"
 }

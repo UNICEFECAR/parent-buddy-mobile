@@ -305,7 +305,7 @@ class DataRealmStore {
 
                 for (let i = 0; i < mergedTags.length; i++) {
                     let check = false;
-     
+
                     filteredRecords?.forEach((record, index, collection) => {
                         record.predefinedTags.forEach(tag => {
                             if (tag === mergedTags[i].id && record.predefinedTags.length !== 0) {
@@ -338,7 +338,7 @@ class DataRealmStore {
 
     public getChildAgeTags(removeAllAgesTag: boolean = false) {
         let childAgeTags: TermChildren[] = [];
-        
+
         const vocabulariesAndTerms = dataRealmStore.getVariable('vocabulariesAndTerms');
         const childAgeTagsGroup = vocabulariesAndTerms?.predefined_tags.find((value) => {
             return value.id === 42;
@@ -469,70 +469,25 @@ class DataRealmStore {
         return rval;
     }
 
-    public getSearchResultsScreenData(searchTerm: string): SearchResultsScreenDataResponse {
-        const rval: SearchResultsScreenDataResponse = {
-            articles: [],
-            faqs: [],
-        };
-
-        // Get vocabulariesAndTerms
-        const vocabulariesAndTerms = this.getVariable('vocabulariesAndTerms');
-
-        // Get relevantArticles
-        const relevantArticles: ContentEntity[] = [];
-
-        try {
-            const allRecords = this.realm?.objects<ContentEntity>(ContentEntitySchema.name);
-            const filteredRecords = allRecords?.filtered(`type == 'article' AND (body CONTAINS[c] '${searchTerm}' OR title CONTAINS[c] '${searchTerm}')`);
-
-            filteredRecords?.forEach((record, index, collection) => {
-                relevantArticles.push(record);
-            });
-        } catch (e) {
-            console.log(e);
+    private findSearchedKeywords(keywords: string, searchValue: string): boolean {
+        let isInclude = false;
+        if (keywords.toLowerCase().includes(searchValue.toLowerCase())) {
+            isInclude = true
         }
 
-        // Set categorizedArticles
-        const categorizedArticles: SearchResultsScreenDataCategoryArticles[] = [];
+        return isInclude;
+    };
 
-        vocabulariesAndTerms?.categories.forEach((category) => {
-            const currentCategorizedArticles: SearchResultsScreenDataCategoryArticles = {
-                categoryId: category.id,
-                categoryName: category.name,
-                contentItems: [],
-            };
-
-            relevantArticles.forEach((article) => {
-                if (article.category === category.id) {
-                    currentCategorizedArticles.contentItems.push(article);
-                }
-            });
-
-            if (currentCategorizedArticles.contentItems.length > 0) {
-                categorizedArticles.push(currentCategorizedArticles);
-            }
-        });
-
-        // Set faqs
-        const faqs: ContentEntity[] = [];
-
-        try {
-            const allRecords = this.realm?.objects<ContentEntity>(ContentEntitySchema.name);
-            const filteredRecords = allRecords?.filtered(`type == 'faq' AND (body CONTAINS[c] '${searchTerm}' OR title CONTAINS[c] '${searchTerm}')`);
-
-            filteredRecords?.forEach((record, index, collection) => {
-                faqs.push(record);
-            });
-        } catch (e) {
-            console.log(e);
+    private findSearchedPredefinedTags(keywords: string, searchValue: string): boolean {
+        let isInclude = false;
+        if (keywords.toLowerCase().includes(searchValue.toLowerCase())) {
+            isInclude = true
         }
 
-        // Response
-        rval.articles = categorizedArticles;
-        rval.faqs = faqs;
+        return isInclude;
+    };
 
-        return rval;
-    }
+ 
 }
 
 export type FaqScreenDataResponse = FaqScreenArticlesResponseItem[];

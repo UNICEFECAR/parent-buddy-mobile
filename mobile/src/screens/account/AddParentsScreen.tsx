@@ -87,7 +87,7 @@ export class AddParentsScreen extends React.Component<Props, State> {
                     
                     {/* I AM */}
                     <Typography type={TypographyType.bodyRegular}>
-                        Ja sam
+                        {translate('Iam')}
                     </Typography>
 
                     <View style={{height:scale(20)}}></View>

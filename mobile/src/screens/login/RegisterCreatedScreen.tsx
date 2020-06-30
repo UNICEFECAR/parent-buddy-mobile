@@ -20,7 +20,7 @@ export interface Props {
  */
 export class RegisterCreatedScreen extends React.Component<Props, object> {
 
-    public constructor(props:Props) {
+    public constructor(props: Props) {
         super(props);
     }
 
@@ -30,7 +30,7 @@ export class RegisterCreatedScreen extends React.Component<Props, object> {
         let email = "";
         let password = "";
 
-        if(this.props.navigation.state.params){
+        if (this.props.navigation.state.params) {
             email = this.props.navigation.state.params?.email
             password = this.props.navigation.state.params?.password
         }
@@ -64,14 +64,14 @@ export class RegisterCreatedScreen extends React.Component<Props, object> {
                 <SafeAreaView style={[styles.container]}>
                     {/* TITLE */}
                     <Typography type={TypographyType.logo} style={{ textAlign: 'center', color: 'white', marginTop: 20 }}>
-                        { translate('appName') }
+                        {translate('appName')}
                     </Typography>
 
-                    <View style={{flex:1}} />
+                    <View style={{ flex: 1 }} />
 
                     {/* YOU CREATED ACCOUNT */}
-                    <Typography type={TypographyType.headingSecondary} style={{ textAlign: 'center', color: 'white', marginBottom:scale(20) }}>
-                        { translate('youCreatedAccount') }
+                    <Typography type={TypographyType.headingSecondary} style={{ textAlign: 'center', color: 'white', marginBottom: scale(20) }}>
+                        {translate('youCreatedAccount')}
                     </Typography>
 
                     {/* CHECK EMAIL */}
@@ -81,10 +81,10 @@ export class RegisterCreatedScreen extends React.Component<Props, object> {
 
                     {/* GOTO HOME */}
                     <RoundedButton
-                        text = { translate('buttonGotoHome') }
-                        type = { RoundedButtonType.hollowPurple }
-                        onPress={() => {this.goToHomeScreen()}}
-                        style={{width:'80%', marginBottom:scale(60)}}
+                        text={translate('buttonGotoHome')}
+                        type={RoundedButtonType.hollowPurple}
+                        onPress={() => { this.goToHomeScreen() }}
+                        style={{ width: '80%', marginBottom: scale(60) }}
                     />
 
                     {/* SEND REGISTER EMAIL AGAIN */}
@@ -92,10 +92,10 @@ export class RegisterCreatedScreen extends React.Component<Props, object> {
                         { translate('sendRegisterEmailAgain') }
                     </TextButton> */}
 
-                    <View style={{flex:1}} />
+                    <View style={{ flex: 1 }} />
 
                     {/* LOGO IMAGES */}
-                    <View style={{ marginLeft:scale(15), marginRight:scale(15), marginBottom:scale(15), flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
+                    <View style={{ marginLeft: scale(15), marginRight: scale(15), marginBottom: scale(15), flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
                         <Image
                             source={require('../../themes/assets/gradski_zavod.png')}
                             style={{ width: '48%', maxWidth: 150, aspectRatio: 3.26 }}

@@ -14,6 +14,7 @@ import { dataRealmStore, ContentEntity } from '../../stores';
 import { content } from '../../app';
 import { SearchResultsScreenDataResponse } from '../../stores/dataRealmStore';
 import { Button } from 'react-native-paper';
+import { getSearchResultsScreenData } from '../../stores/getSearchResultsScreenData';
 
 export interface SearchResultsScreenParams {
     searchTerm?: string;
@@ -89,7 +90,7 @@ export class SearchResultsScreen extends React.Component<Props, State> {
         let data: SearchResultsScreenDataResponse = {};
 
         if (screenParams.searchTerm && screenParams.searchTerm !== '') {
-            data = dataRealmStore.getSearchResultsScreenData(screenParams.searchTerm);
+            data = getSearchResultsScreenData(screenParams.searchTerm);
         }
 
         return (

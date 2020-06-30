@@ -33,7 +33,7 @@ import { VideoScreen } from "../screens/VideoScreen";
 import { BirthDataScreen } from "../screens/home/BirthDataScreen";
 import { ExaminationReminderScreen } from "../screens/home/ExaminationReminderScreen";
 import { ChildProfileScreen } from "../screens/home/ChildProfileScreen";
-import {GrowthScreen} from "../screens/growth/GrowthScreen";
+import { GrowthScreen } from "../screens/growth/GrowthScreen";
 import { NewMeasurementScreen } from "../screens/growth/NewMeasurementScreen";
 import { VaccinationScreen, VaccinationDataScreen } from "../screens/home";
 import { NewDoctorVisitScreen } from "../screens/vaccination/NewDoctorVisitScreen";
@@ -251,7 +251,7 @@ const HomeStackNavigator = createStackNavigator({
 
     HomeStackNavigator_VaccinationScreen: {
         screen: VaccinationScreen,
-        navigationOptions:{
+        navigationOptions: {
             title: 'aaa'
         }
     },
@@ -287,15 +287,17 @@ const HomeStackNavigator = createStackNavigator({
         }
 
         function onSubmitEditing(value: string) {
-            navigation.navigate('HomeStackNavigator_SearchResultsScreen', {
-                searchTerm: value,
-                showSearchInput: true,
-            });
+            if (value.length >= 3) {
+                navigation.navigate('HomeStackNavigator_SearchResultsScreen', {
+                    searchTerm: value,
+                    showSearchInput: true,
+                });
 
-            setTimeout(() => {
-                navigation.state.params.searchTerm = '';
-                navigation.state.params.showSearchInput = false;
-            }, 1000);
+                setTimeout(() => {
+                    navigation.state.params.searchTerm = '';
+                    navigation.state.params.showSearchInput = false;
+                }, 1000);
+            }
         }
 
         function openBirthDataScreen() {
