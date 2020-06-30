@@ -141,7 +141,7 @@ export class WalkthroughScreen extends React.Component<Props, State> {
                         <View style={{ flex: 1, maxHeight: 30 }} />
 
                         <Typography type={TypographyType.bodyRegular} style={{ color: 'white', textAlign: 'center' }}>
-                            Pomoći ćemo Vam da pratite rast i razvoj deteta na jednostavan i razumljiv način.
+                            Pomoći ćemo Vam da pratite rast deteta na jednostavan i razumljiv način.
                         </Typography>
 
                         <View style={{ flex: 1 }} />
@@ -154,7 +154,7 @@ export class WalkthroughScreen extends React.Component<Props, State> {
                         <StatusBar barStyle="dark-content" />
 
                         <Typography type={TypographyType.headingPrimary} style={{ width: scale(300), color: '#262628', textAlign: 'center' }}>
-                            Pratite rast i razvoj svog deteta
+                            Pratite rast svog deteta
                         </Typography>
 
                         <Typography type={TypographyType.bodyRegular} style={{ color: '#262628', textAlign: 'center' }}>
