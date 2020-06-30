@@ -82,13 +82,13 @@ export class BirthDataScreen extends React.Component<Props, State> {
         let childWidth:  number | undefined;
 
         if(weight && weight !== ""){
-            childWidth = parseInt(weight);
+            childWidth = parseFloat(weight);
         }else{
             childWidth = undefined
         }
 
         if(height && height !== ""){
-            childHeight = parseInt(height);
+            childHeight = parseFloat(height);
         }else{
             childHeight = undefined
         }
