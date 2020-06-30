@@ -92,6 +92,12 @@ export class Drawer extends React.Component<Props> {
             navigation.navigate('HomeStackNavigator_SettingsScreen');
             navigation.dispatch(DrawerActions.closeDrawer());
         }
+
+        if(fancyButtonType === FancyButtonType.aboutUs){
+            navigation.navigate('HomeStackNavigator_AboutScreen');
+            navigation.dispatch(DrawerActions.closeDrawer());
+
+        }
     }
 
     private onClosePress() {

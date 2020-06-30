@@ -98,7 +98,7 @@ export class RegisterScreen extends React.Component<Props, State> {
 
     private async createAccount() {
         const { firstName, lastName, mail, password } = this.state;
-
+        
         let userRegisterResponse: DrupalRegisterRespone = { registrationSuccess: false }
 
         if (this.dataValidation()) {
@@ -140,6 +140,7 @@ export class RegisterScreen extends React.Component<Props, State> {
                 />
                 <SafeAreaView style={[styles.container]}>
                     <KeyboardAwareScrollView
+                        keyboardShouldPersistTaps='always'
                         style={{ borderWidth: 0, borderColor: 'red' }} contentContainerStyle={{ borderWidth: 0, borderColor: 'green', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center', margin: 30 }}
                     >
                         {/* INPUT: name */}
@@ -176,6 +177,8 @@ export class RegisterScreen extends React.Component<Props, State> {
                             onChange={(value) => { this.setState({ password: value }) }}
                             onFocus={() => { }}
                             style={{ marginBottom: 15 }}
+                            secureTextEntry={true}
+
                         />
 
                         {/* INPUT: repeatPassword */}
@@ -185,6 +188,8 @@ export class RegisterScreen extends React.Component<Props, State> {
                             onChange={(value) => { this.setState({ passwordRepeat: value }) }}
                             onFocus={() => { }}
                             style={{ marginBottom: 15 }}
+                            secureTextEntry={true}
+
                         />
 
                         {/* BUTTON: createAccount */}

@@ -58,7 +58,7 @@
     "drawerButtonSettings": "Podešavanja",
 
     "fieldLabelEmail": "Email",
-    "fieldLabelPassword": "Lozinka",
+    "fieldLabelPassword": "Lozinka / Password",
     "fieldLabelRepeatPassword": "Ponovite lozinku",
     "fieldLabelName": "Ime",
     "fieldLabelSurname": "Prezime",
@@ -169,5 +169,7 @@
     "NewDoctorVisitMeasurementTitle": "Da li je dete izmereno?",
     "childMeasuredError": "Molimo Vas da odaberete jedan od ova dva odgovora.",
     "NewDoctorVisitScreenDatePickerLabel": "Datum posete",
-    "NewDoctorVisitScreenTitle": "Nova poseta doktoru"
+    "NewDoctorVisitScreenTitle": "Nova poseta doktoru",
+
+    "Iam": "Ja sam"
 }

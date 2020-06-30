@@ -56,6 +56,7 @@ export class ExaminationReminderScreen extends React.Component<Props, State> {
                 <KeyboardAwareScrollView
                     // themeContext.theme.screenContainer?.backgroundColor
                     style={{backgroundColor:'white'}}
+                    keyboardShouldPersistTaps='always'
                     contentContainerStyle={ [styles.container] }
                 >
                     <View style={{alignItems:'flex-start', padding:themeContext.theme.screenContainer?.padding}}>
