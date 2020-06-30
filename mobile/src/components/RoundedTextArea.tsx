@@ -100,6 +100,7 @@ const styles = StyleSheet.create<RoundedTextAreaStyles>({
     },
 
     textInput: {
+        textAlignVertical: 'top',
         minHeight:90,
         fontSize: 17,
         fontFamily: 'SFUIDisplay-Regular',

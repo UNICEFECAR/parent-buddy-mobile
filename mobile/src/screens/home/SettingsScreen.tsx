@@ -93,7 +93,9 @@ export class SettingsScreen extends React.Component<Props, State> {
         const variables: string[] = [];
         
         allVariables?.forEach((record, index, collection) => {
-            variables.push(record.key)
+            if(record.key !== "lastSyncTimestamp" && record.key !== "vocabulariesAndTerms" && record.key !== "languageCode" && record.key !== "countryCode"){
+                variables.push(record.key)
+            }
         })
 
         variables.map(item => {

@@ -13,6 +13,7 @@ import { RoundedTextArea } from '../../components/RoundedTextArea';
 import { RoundedButton, RoundedButtonType } from '../../components/RoundedButton';
 import { userRealmStore, dataRealmStore } from '../../stores';
 import { ChildEntitySchema, ChildEntity } from '../../stores/ChildEntity';
+import { parse } from '@babel/core';
 
 export interface BirthDataScreenParams {
 
@@ -26,8 +27,8 @@ export interface State {
     plannedTermDate: Date | undefined,
     birthDate: Date | undefined,
     babyRating: number | undefined,
-    height: number | undefined,
-    weight: number | undefined,
+    height: string | undefined,
+    weight: string | undefined,
     comment: string | undefined,
 }
 
@@ -61,9 +62,9 @@ export class BirthDataScreen extends React.Component<Props, State> {
                 babyRating: record.babyRating,
                 birthDate: record.birthDate,
                 comment: record.comment,
-                height: record.height,
+                height: record.height?.toString(),
                 plannedTermDate: record.plannedTermDate,
-                weight: record.weight,
+                weight: record.weight?.toString(),
             }
 
             this.state = state;
@@ -75,14 +76,29 @@ export class BirthDataScreen extends React.Component<Props, State> {
     }
 
     private submit = () => {
+        console.log('uso u submit')
         const { comment, weight, height, babyRating, plannedTermDate, birthDate } = this.state;
+        let childHeight: number | undefined; 
+        let childWidth:  number | undefined;
+
+        if(weight && weight !== ""){
+            childWidth = parseInt(weight);
+        }else{
+            childWidth = undefined
+        }
+
+        if(height && height !== ""){
+            childHeight = parseInt(height);
+        }else{
+            childHeight = undefined
+        }
 
         const currentChild = userRealmStore.getCurrentChild();
         if (!currentChild) return;
 
         userRealmStore.realm?.write(() => {
-            currentChild.height = height;
-            currentChild.weight = weight;
+            currentChild.height = childHeight;
+            currentChild.weight = childWidth;
             currentChild.comment = comment;
             currentChild.babyRating = babyRating;
             currentChild.plannedTermDate = plannedTermDate;
@@ -109,13 +125,13 @@ export class BirthDataScreen extends React.Component<Props, State> {
 
     private setChildWeight = (value: string) => {
         this.setState({
-            weight: parseInt(value)
+            weight: value
         })
     }
 
     private setChildLength = (value: string) => {
         this.setState({
-            height: parseInt(value)
+            height: value
         })
     }
 
@@ -133,7 +149,6 @@ export class BirthDataScreen extends React.Component<Props, State> {
 
     public render() {
         const screenParams = this.props.navigation.state.params!;
-
         return (
             <ThemeConsumer>
                 {(themeContext: ThemeContextValue) => (
@@ -141,6 +156,7 @@ export class BirthDataScreen extends React.Component<Props, State> {
                         // themeContext.theme.screenContainer?.backgroundColor
                         style={{ backgroundColor: 'white' }}
                         contentContainerStyle={[styles.container]}
+                        keyboardShouldPersistTaps='always'
                     >
                         <View style={{ alignItems: 'flex-start', padding: themeContext.theme.screenContainer?.padding }}>
 
@@ -190,7 +206,8 @@ export class BirthDataScreen extends React.Component<Props, State> {
                                 icon="weight"
                                 style={{ width: scale(150) }}
                                 onChange={(value) => this.setChildWeight(value)}
-                                value={this.state.weight?.toString()}
+                                value={this.state.weight}
+                                keyboardType="numeric"
                             />
 
                             <View style={{ height: themeContext.theme.variables?.sizes.verticalPaddingNormal }} />
@@ -201,7 +218,9 @@ export class BirthDataScreen extends React.Component<Props, State> {
                                 icon="weight"
                                 style={{ width: scale(150) }}
                                 onChange={(value) => this.setChildLength(value)}
-                                value={this.state.height?.toString()}
+                                value={this.state.height}
+                                keyboardType="numeric"
+
                             />
 
                             <View style={{ height: themeContext.theme.variables?.sizes.verticalPaddingLarge }} />
@@ -224,6 +243,7 @@ export class BirthDataScreen extends React.Component<Props, State> {
 
                             <View style={{ height: themeContext.theme.variables?.sizes.verticalPaddingLarge }} />
                         </View>
+                
                     </KeyboardAwareScrollView>
                 )}
             </ThemeConsumer>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleProp, ViewStyle, StyleSheet , Text} from 'react-native';
+import { View, StyleProp, ViewStyle, StyleSheet , Text, KeyboardTypeOptions} from 'react-native';
 import { TextInput } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Typography } from './Typography';
@@ -8,6 +8,8 @@ export interface Props {
     label?: string;
     suffix?: string;
     value?: string;
+    keyboardType: KeyboardTypeOptions;
+    secureTextEntry: boolean
     /**
      * Search for icons [here](https://materialdesignicons.com).
      */
@@ -19,7 +21,8 @@ export interface Props {
 
 export class RoundedTextInput extends React.Component<Props> {
     static defaultProps: Props = {
-        
+        keyboardType: "default",
+        secureTextEntry: false,
     };
 
     constructor(props: Props) {
@@ -50,6 +53,8 @@ export class RoundedTextInput extends React.Component<Props> {
 
                 <View style={ styles.textInputContainer }>
                     <TextInput
+                        secureTextEntry={this?.props?.secureTextEntry}
+                        keyboardType={this?.props?.keyboardType}
                         label={ this?.props?.label }
                         value={ this?.props?.value }
                         style={ styles.textInput }
@@ -57,6 +62,7 @@ export class RoundedTextInput extends React.Component<Props> {
                         underlineColor="transparent"
                         theme={ {colors:{primary:'#767676'}} }
                         autoCapitalize='none'
+                        autoCompleteType="off"
                         autoCorrect={ false }
                         onChangeText={ (text:string) => {this.onChangeText(text)} }
                         onFocus={ () => {this.onTextFocus()} }
