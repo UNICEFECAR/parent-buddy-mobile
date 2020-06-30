@@ -332,7 +332,7 @@ export class LoginScreen extends React.Component<Props, State & AnimationsState>
                         visible={this.state.isSnackbarVisible}
                         duration={Snackbar.DURATION_SHORT}
                         onDismiss={() => { this.setState({ isSnackbarVisible: false }) }}
-                        theme={{ colors: { onSurface: snackbarErrorStyle?.backgroundColor, accent: snackbarErrorStyle?.actionButtonColor } }}
+                        theme={{ colors: { onSurface: snackbarErrorStyle?.backgroundColor, accent: snackbarErrorStyle?.actionButtonColor, } }}
                         action={{
                             label: 'Ok',
                             onPress: () => {

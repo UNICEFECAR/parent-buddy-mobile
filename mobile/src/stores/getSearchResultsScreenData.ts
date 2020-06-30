@@ -2,6 +2,8 @@ import { SearchResultsScreenDataResponse, dataRealmStore } from "./dataRealmStor
 import { ContentEntity } from ".";
 import { ContentEntitySchema } from "./ContentEntity";
 import { TermChildren, VocabulariesAndTermsResponse } from "./apiStore";
+import { ChildGender } from "./ChildEntity";
+import { userRealmStore } from "./userRealmStore";
 
 
 export function getSearchResultsScreenData(searchTerm: string): SearchResultsScreenDataResponse {
@@ -9,6 +11,8 @@ export function getSearchResultsScreenData(searchTerm: string): SearchResultsScr
         articles: [],
         faqs: [],
     };
+
+    const oppositeChildGenderTagId = getOppositeChildGender();
 
     let allArticlesCollection: ContentEntity[] = [];
 
@@ -22,19 +26,22 @@ export function getSearchResultsScreenData(searchTerm: string): SearchResultsScr
 
     // get collections
     const titleAndBodyCollection = allContent?.
-        filtered(`(body CONTAINS[c] '${searchTerm}' OR title CONTAINS[c] '${searchTerm}')`);
+        filtered(`(body CONTAINS[c] '${searchTerm}' OR title CONTAINS[c] '${searchTerm}')`)
+        .filter(article => oppositeChildGenderTagId && article.predefinedTags.indexOf(oppositeChildGenderTagId) === -1);
 
     const keywordsCollection = allContent?.
         filter(record => {
             return record.keywords.filter(x => allKeywordsIds?.includes(x)).length !== 0;
-        });
+        })
+        .filter(record => oppositeChildGenderTagId && record.predefinedTags.indexOf(oppositeChildGenderTagId) === -1)
 
     const predefinedTagsCollection = allContent?.
         filter(record => {
             return record.predefinedTags.filter(x => allPredefinteTagsIds?.includes(x)).length !== 0;
-        });
+        })
+        .filter(record => oppositeChildGenderTagId && record.predefinedTags.indexOf(oppositeChildGenderTagId) === -1)
 
-    
+
     // Remove duplicates and add to allCollection
     titleAndBodyCollection?.forEach(item => {
         let check = isIdExistInArray(allArticlesCollection, item.id);
@@ -71,7 +78,7 @@ export function getSearchResultsScreenData(searchTerm: string): SearchResultsScr
             if (!articleAlreadyAdded) finalArticlesResult.push(article);
         });
     });
-    
+
     // sort child age non set articles
     allArticlesCollection.forEach(item => {
         let articleAlreadyAdded = isIdExistInArray(finalArticlesResult, item.id);
@@ -82,7 +89,7 @@ export function getSearchResultsScreenData(searchTerm: string): SearchResultsScr
 
     // get faq articles
     const categorizedArticles: SearchResultsScreenDataCategoryArticles[] = [];
-    
+
     // move articles in category 
     vocabulariesAndTerms?.categories.forEach((category) => {
         let currentCategorizedArticles = sortArticlesByCategory(finalArticlesResult, category.id, category.name)
@@ -112,6 +119,22 @@ function getTagIdsForSearchTerm(vocabulariesAndTerms: VocabulariesAndTermsRespon
         filter(item => item.name.toLowerCase().includes(searchTerm.toLowerCase()))
         .map(item => item.id);
 }
+
+function getOppositeChildGender() {
+    let childGender: ChildGender | undefined = userRealmStore.getChildGender();
+    let oppositeChildGender: ChildGender | undefined = undefined;
+
+    if (childGender) oppositeChildGender = childGender === 'boy' ? 'girl' : 'boy';
+
+    let oppositeChildGenderTagId: number | undefined = undefined;
+
+    if (oppositeChildGender) {
+        oppositeChildGenderTagId = oppositeChildGender === 'boy' ? 40 : 41;
+    };
+
+    return oppositeChildGenderTagId;
+};
+
 /*
 *   Return list of ids starting from current id 
 */
