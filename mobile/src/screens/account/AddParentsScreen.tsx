@@ -29,14 +29,14 @@ export class AddParentsScreen extends React.Component<Props, State> {
     /**
      * Navigator configuration specific for this screen.
      */
-    public static navigationOptions = ({navigation}: NavigationScreenConfigProps<NavigationStackProp<NavigationStackState>>): NavigationStackOptions => {
+    public static navigationOptions = ({ navigation }: NavigationScreenConfigProps<NavigationStackProp<NavigationStackState>>): NavigationStackOptions => {
         return {
             // API: https://bit.ly/2koKtOw
-            headerTitle: 'Upoznajmo roditelje',
+            headerTitle: translate('meetTheParents'),
         };
     };
 
-    public constructor(props:Props) {
+    public constructor(props: Props) {
         super(props);
         this.initState();
     }
@@ -67,10 +67,10 @@ export class AddParentsScreen extends React.Component<Props, State> {
     private sendSms() {
         if (this.state.parentName) {
             let message = translate('accountSendSmsText');
-            
+
             message = message.replace('%PARENT%', this.state.parentName);
             message = message.replace('%APP_URL%', 'https://www.halobeba.rs');
-            
+
             utils.sendSms(message);
         } else {
             this.setState({
@@ -82,47 +82,47 @@ export class AddParentsScreen extends React.Component<Props, State> {
 
     public render() {
         return (
-            <SafeAreaView style={ [styles.container] }>
-                <View style={ {padding:scale(30), backgroundColor:'white', flex:1, flexDirection:'column', justifyContent:'flex-start', alignItems:'center'} }>
-                    
+            <SafeAreaView style={[styles.container]}>
+                <View style={{ padding: scale(30), backgroundColor: 'white', flex: 1, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center' }}>
+
                     {/* I AM */}
                     <Typography type={TypographyType.bodyRegular}>
                         {translate('Iam')}
                     </Typography>
 
-                    <View style={{height:scale(20)}}></View>
+                    <View style={{ height: scale(20) }}></View>
 
                     {/* CHOOSE PARENT TYPE */}
                     <RadioButtons
-                        value={ this.state.parent }
-                        buttons={ [{text:translate('accountMother'), value:'mother'}, {text:translate('accountFather'), value:'father'}] }
-                        onChange={ (text:any) => {this.setState({parent:text})} }
+                        value={this.state.parent}
+                        buttons={[{ text: translate('accountMother'), value: 'mother' }, { text: translate('accountFather'), value: 'father' }]}
+                        onChange={(text: any) => { this.setState({ parent: text }) }}
                     />
 
-                    <View style={{height:scale(20)}}></View>
+                    <View style={{ height: scale(20) }}></View>
 
                     {/* NAME */}
                     <RoundedTextInput
-                        label={ translate('accountName') }
+                        label={translate('accountName')}
                         icon="email-outline"
-                        value={ this.state.parentName }
-                        onChange={ (value) => { this.setState({parentName:value}) } }
+                        value={this.state.parentName}
+                        onChange={(value) => { this.setState({ parentName: value }) }}
                     />
 
-                    <View style={{height:scale(30)}}></View>
+                    <View style={{ height: scale(30) }}></View>
 
                     {/* INVITE OTHER PARENT WITH SMS */}
-                    <TextButton color={TextButtonColor.purple} onPress={ () => { this.sendSms() } } textStyle={{textAlign:'center'}}>
-                        { this.state.parent === 'mother' ? translate('accountInviteFather') : translate('accountInviteMother') }
+                    <TextButton color={TextButtonColor.purple} onPress={() => { this.sendSms() }} textStyle={{ textAlign: 'center' }}>
+                        {this.state.parent === 'mother' ? translate('accountInviteFather') : translate('accountInviteMother')}
                     </TextButton>
 
-                    <View style={{flex:1}}></View>
+                    <View style={{ flex: 1 }}></View>
 
                     {/* SAVE BUTTON */}
                     <RoundedButton
-                        text = { translate('accountSave') }
-                        type = { RoundedButtonType.purple }
-                        onPress={ () => { this.saveParentsData() } }
+                        text={translate('accountSave')}
+                        type={RoundedButtonType.purple}
+                        onPress={() => { this.saveParentsData() }}
                     />
                 </View>
 
@@ -139,7 +139,7 @@ export class AddParentsScreen extends React.Component<Props, State> {
                     }}
                 >
                     <Text style={{ fontSize: moderateScale(16) }}>
-                        { this.state.snackbarMessage }
+                        {this.state.snackbarMessage}
                     </Text>
                 </Snackbar>
             </SafeAreaView>
