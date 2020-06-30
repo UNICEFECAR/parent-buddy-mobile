@@ -182,7 +182,10 @@ export class AddChildrenScreen extends React.Component<Props, State> {
         return (
 
             <SafeAreaView style={[styles.container]}>
-                <KeyboardAwareScrollView ref={this.scrollView} contentContainerStyle={{ backgroundColor: 'white', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'stretch' }}>
+                <KeyboardAwareScrollView 
+                 ref={this.scrollView} 
+                 keyboardShouldPersistTaps='always'
+                 contentContainerStyle={{ backgroundColor: 'white', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'stretch' }}>
                     {/* TITLE */}
                     <Typography style={{ margin: scale(30) }} type={TypographyType.headingPrimary}>
                         {translate('accountTitle')}

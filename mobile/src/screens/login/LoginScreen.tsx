@@ -239,6 +239,7 @@ export class LoginScreen extends React.Component<Props, State & AnimationsState>
 
                 <SafeAreaView style={[styles.container]}>
                     <KeyboardAwareScrollView
+                        keyboardShouldPersistTaps='always'
                         style={{ borderWidth: 0, borderColor: 'red' }} contentContainerStyle={{ borderWidth: 0, borderColor: 'green', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center', marginLeft: 30, marginRight: 30 }}
                         onKeyboardWillShow={() => { this.onKeyboardWillShow() }}
                         onKeyboardWillHide={() => { this.onKeyboardWillHide() }}
@@ -293,6 +294,7 @@ export class LoginScreen extends React.Component<Props, State & AnimationsState>
                             onChange={(value) => { this.setState({password: value}) }}
                             onFocus={() => { this.onInputFocus() }}
                             style={{ marginBottom: 15 }}
+                            secureTextEntry={true}
                         />
 
                         {/* LOGIN BUTTON */}

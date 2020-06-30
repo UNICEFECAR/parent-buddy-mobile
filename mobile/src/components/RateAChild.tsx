@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleProp, ViewStyle, StyleSheet, TextStyle } from 'react-native';
 import { RadioButton } from 'react-native-paper';
+import { scale } from 'react-native-size-matters';
 
 export interface Props {
     value?: number,
@@ -39,7 +40,7 @@ export class RateAChild extends React.Component<Props, State> {
         return (
             <View style={ [styles.container, this.props.style] }>
                 {Array.from({length:10}).map((item, index) => (
-                    <View style={{flexDirection:'column', justifyContent:'flex-start', alignItems:'center'}}>
+                    <View style={{flexDirection:'column', justifyContent:'flex-start', alignItems:'center', width: scale(32)}}>
                         <RadioButton.Android
                             value=''
                             // color="red"
