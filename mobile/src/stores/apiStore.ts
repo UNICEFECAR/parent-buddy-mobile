@@ -5,6 +5,8 @@ import axios, { AxiosResponse } from 'axios';
 import RNFS from 'react-native-fs';
 import URLParser from 'url';
 import { BasicPageEntity } from "./BasicPageEntity";
+import { raw } from "@storybook/react-native";
+import { MilestoneEntity } from "./MilestoneEntity";
 
 /**
  * Communication with API.
@@ -21,7 +23,113 @@ class ApiStore {
         return ApiStore.instance;
     }
 
-    public async getBasicPages(): Promise<BasicPagesResponse>{
+    public async getDevelopmentMilestones(args: GetMilestoneArgs): Promise<MilestonesResponse> {
+        // URL
+        const language = localize.getLanguage();
+        let url = `${appConfig.apiUrl}/list-milestone/${language}`;
+        // let url = "http://ecaroparentingapppi3xep5h4v.devcloud.acquia-sites.com/api/list-milestone/en?published=0&numberOfItems=10&updateFromDate=1593614089"
+        // URL params
+        const urlParams: any = {};
+        console.log(args.page, "page")
+        console.log(args.updatedFromDate, "updatedFromDate")
+        console.log(args.numberOfItems, "numberOfItems")
+
+        urlParams.page = args.page !== undefined ? args.page : 0;
+        urlParams.published = appConfig.showPublishedContent;
+        urlParams.numberOfItems = args.numberOfItems !== undefined ? args.numberOfItems : 10;
+        if (args.updatedFromDate !== undefined) {
+            urlParams.updateFromDate = args.updatedFromDate;
+        }
+
+
+        console.log(urlParams, "URL PARAMS")
+        // Get API response
+        let response: MilestonesResponse = { total: 0, data: [] };
+        try {
+            let axiosResponse: AxiosResponse = await axios({
+                url: url,
+                params: urlParams,
+                method: 'GET',
+                responseType: 'json',
+                timeout: appConfig.apiTimeout, // milliseconds
+                maxContentLength: 100000, // bytes
+                auth: {
+                    username: appConfig.apiUsername,
+                    password: appConfig.apiPassword,
+                },
+            });
+
+            let rawResponseJson = axiosResponse.data;
+            if (rawResponseJson) {
+                response.total = parseInt(rawResponseJson.total);
+                response.data = rawResponseJson.data.map((rawContent: any):MilestoneEntity => {
+                    return {
+                        id: parseInt(rawContent.id),
+                        body: rawContent.body,
+                        langcode: rawContent.langcode,
+                        predefined_tags: rawContent.predefined_tags ? rawContent.predefined_tags.map((value: any) => parseInt(value)) : [],
+                        related_articles: rawContent.keywords ? rawContent.keywords.map((value: any) => parseInt(value)) : [],
+                        summary: rawContent.summary,
+                        title: rawContent.title,
+                        type: rawContent.type,
+                        created_at: new Date(rawContent.created_at * 1000),
+                        updated_at: new Date(rawContent.updated_at * 1000),
+                    };
+                });
+            };
+
+        } catch (rejectError) {
+            if(appConfig.showLog){
+                console.log(rejectError);
+            };
+        };
+        return response;
+    };
+
+    public async getAllMilestones(updatedFromDate?: number): Promise<MilestonesResponse> {
+        const numberOfItems = appConfig.apiNumberOfItems;
+        // Make first request
+        let finalMilestonsResponse = await this.getDevelopmentMilestones({
+            page: 0,
+            numberOfItems: numberOfItems,
+            updatedFromDate: updatedFromDate,
+        });
+
+        // If all items are returned in first request
+        if (finalMilestonsResponse.total <= numberOfItems) {
+            if (appConfig.showLog) {
+                console.log(`apiStore.getAllMilestones(): updatedFromDate=${updatedFromDate}, total:${finalMilestonsResponse.total}, data length:${finalMilestonsResponse.data?.length}`,);
+            }
+
+            return finalMilestonsResponse;
+        }
+
+        // Make other requests
+        let promises: Promise<any>[] = [];
+
+        for (let page = 1; page < Math.ceil(finalMilestonsResponse.total / numberOfItems); page++) {
+            promises.push(this.getDevelopmentMilestones({
+                page: page,
+                numberOfItems: numberOfItems,
+                updatedFromDate: updatedFromDate,
+            }));
+        }
+
+        let allResponses = await Promise.all<MilestonesResponse>(promises);
+
+        // Combine all responses
+        allResponses.forEach((milestoneResponse) => {
+            finalMilestonsResponse.data = finalMilestonsResponse.data.concat(milestoneResponse.data);
+        });
+
+        if (appConfig.showLog) {
+            console.log(`apiStore.getAllContent(): updatedFromDate=${updatedFromDate}, total:${finalMilestonsResponse.total}, data length:${finalMilestonsResponse.data?.length}`,);
+        }
+
+        return finalMilestonsResponse;
+    }
+
+    public async getBasicPages(): Promise<BasicPagesResponse> {
         const language = localize.getLanguage();
 
         let url = `${appConfig.apiUrl}/list-basic-page/${language}`;
@@ -30,12 +138,12 @@ class ApiStore {
             total: 0,
         };
 
-        try{
+        try {
             let axiosResponse: AxiosResponse = await axios({
                 url: url,
                 method: 'GET',
                 responseType: 'json',
-                headers: {"Content-type": "application/json"},
+                headers: { "Content-type": "application/json" },
                 timeout: appConfig.apiTimeout,
                 auth: {
                     username: appConfig.apiUsername,
@@ -45,14 +153,14 @@ class ApiStore {
 
             let rawResponseJson = axiosResponse.data;
 
-            if(rawResponseJson){
+            if (rawResponseJson) {
                 response.total = parseInt(rawResponseJson.total);
-                response.data = rawResponseJson.data.map((item: any ): BasicPageEntity => {
+                response.data = rawResponseJson.data.map((item: any): BasicPageEntity => {
                     return {
                         body: item.body,
                         title: item.title,
                         created_at: new Date(item.created_at * 1000),
-                        updated_at: new Date(item.updated_at * 1000 ),
+                        updated_at: new Date(item.updated_at * 1000),
                         id: parseInt(item.id),
                         langcode: item.langcode,
                         type: item.type
@@ -60,8 +168,8 @@ class ApiStore {
                 });
             };
 
-        }catch(rejectError){
-            if(appConfig.showLog){
+        } catch (rejectError) {
+            if (appConfig.showLog) {
                 console.log(rejectError, "REJECT ERROR")
             };
         };
@@ -69,7 +177,7 @@ class ApiStore {
         return response;
     };
 
-    public async drupalRegister(args: DrupalRegisterArgs): Promise<DrupalRegisterRespone>{
+    public async drupalRegister(args: DrupalRegisterArgs): Promise<DrupalRegisterRespone> {
 
         const DrupalRegisterApiUrl = appConfig.apiUrl.substring(0, appConfig.apiUrl.length - 3)
 
@@ -404,12 +512,12 @@ class ApiStore {
     }
 }
 
-export interface BasicPagesResponse{
+export interface BasicPagesResponse {
     total: number,
     data: BasicPageEntity[]
 }
 
-export interface DrupalRegisterArgs{
+export interface DrupalRegisterArgs {
     field_first_name: string,
     field_last_name: string,
     name: string,
@@ -450,9 +558,31 @@ interface GetContentArgs {
     updatedFromDate?: number;
 }
 
+interface GetMilestoneArgs {
+    /**
+     * Defaults to 10
+     */
+    numberOfItems?: number;
+
+    /**
+     * Defaults to 0
+     */
+    page?: number;
+
+    /**
+     * UNIX timestamp
+     */
+    updatedFromDate?: number;
+}
+
 export interface ContentResponse {
     total: number;
     data: ContentEntity[];
+}
+
+export interface MilestonesResponse{
+    total: number;
+    data: MilestoneEntity[];
 }
 
 type Vocabulary = 'categories' | 'keywords' | 'predefined_tags';
