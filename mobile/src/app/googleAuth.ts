@@ -1,4 +1,5 @@
 import { GoogleSignin, User, statusCodes } from '@react-native-community/google-signin';
+import RNFS from 'react-native-fs';
 
 /**
  * Authenticate with Google.
@@ -6,7 +7,7 @@ import { GoogleSignin, User, statusCodes } from '@react-native-community/google-
 class GoogleAuth {
     private static instance: GoogleAuth;
 
-    private constructor() {}
+    private constructor() { }
 
     static getInstance(): GoogleAuth {
         if (!GoogleAuth.instance) {
@@ -27,13 +28,16 @@ class GoogleAuth {
     }
 
     public async signIn() {
-        let user: User|null = null;
+        let user: User | null = null;
 
         try {
             await GoogleSignin.hasPlayServices();
             user = await GoogleSignin.signIn();
         } catch (error) {
             // error.code === statusCodes.SIGN_IN_CANCELLED
+            // TODO
+            var path = RNFS.DocumentDirectoryPath + '/my_debug.txt';
+            RNFS.writeFile(path, JSON.stringify(error, null, 4));
         }
 
         return user;
@@ -41,20 +45,20 @@ class GoogleAuth {
 
     public async isSignedIn() {
         let isSignedIn: boolean = false;
-        
+
         try {
             isSignedIn = await GoogleSignin.isSignedIn();
-        } catch (error) {}
+        } catch (error) { }
 
         return isSignedIn;
     }
 
     public async getCurrentUser() {
-        let currentUser: User|null = null;
+        let currentUser: User | null = null;
 
         try {
             currentUser = await GoogleSignin.getCurrentUser();
-        } catch (error) {}
+        } catch (error) { }
 
         return currentUser;
     }
@@ -63,11 +67,11 @@ class GoogleAuth {
      * Don't save tokens anywhere, always request new tokens so they are refreshed.
      */
     public async getTokens() {
-        let tokens: {idToken:string, accessToken: string} | null = null;
+        let tokens: { idToken: string, accessToken: string } | null = null;
 
         try {
             tokens = await GoogleSignin.getTokens();
-        } catch (error) {}
+        } catch (error) { }
 
         return tokens;
     }
@@ -77,7 +81,7 @@ class GoogleAuth {
 
         try {
             signOut = await GoogleSignin.signOut();
-        } catch (error) {}
+        } catch (error) { }
 
         return signOut;
     }
