@@ -5,7 +5,6 @@ import axios, { AxiosResponse } from 'axios';
 import RNFS from 'react-native-fs';
 import URLParser from 'url';
 import { BasicPageEntity } from "./BasicPageEntity";
-import { raw } from "@storybook/react-native";
 import { MilestoneEntity } from "./MilestoneEntity";
 
 /**

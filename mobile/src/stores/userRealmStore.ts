@@ -4,10 +4,12 @@ import { VariableEntity, VariableEntitySchema } from './VariableEntity';
 import { appConfig } from '../app/appConfig';
 import { ChildEntity } from '.';
 import { ChildEntitySchema } from './ChildEntity';
+import { MilestoneEntity, MilestoneEntitySchema } from './MilestoneEntity';
 
 type Variables = {
     'userChildren': any;
     'userData': any;
+    'checkedMilestones': any;
 };
 
 type VariableKey = keyof Variables;
@@ -96,6 +98,8 @@ class UserRealmStore {
         });
     }
 
+    // public async setMilestone(T exte)
+
     public getVariable<T extends VariableKey>(key: T): Variables[T] | null {
         if (!this.realm) return null;
 
@@ -118,6 +122,7 @@ class UserRealmStore {
             return null;
         }
     }
+
 
     public async deleteVariable<T extends VariableKey>(key: T): Promise<void> {
         return new Promise((resolve, reject) => {

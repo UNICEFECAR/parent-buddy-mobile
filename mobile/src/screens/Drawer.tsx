@@ -84,7 +84,7 @@ export class Drawer extends React.Component<Props> {
 
         // temporary 
         if(fancyButtonType === FancyButtonType.development){
-            navigation.navigate('HomeStackNavigator_BirthDataScreen');
+            navigation.navigate('HomeStackNavigator_DevelopmentScreen');
             navigation.dispatch(DrawerActions.closeDrawer())
         }
 
@@ -96,7 +96,6 @@ export class Drawer extends React.Component<Props> {
         if(fancyButtonType === FancyButtonType.aboutUs){
             navigation.navigate('HomeStackNavigator_AboutScreen');
             navigation.dispatch(DrawerActions.closeDrawer());
-
         }
     }
 

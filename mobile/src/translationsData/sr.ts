@@ -3,6 +3,7 @@ export const sr = {
         {
             period: '1. mesec',
             name: 'Razvoj u 1. mesecu',
+            subtitle: '1. mesec',
             moreAboutPeriodArticleIdMale: 3466,
             moreAboutPeriodArticleIdFemale: 3461,
             description: `
@@ -36,6 +37,7 @@ export const sr = {
         {
             period: '2 meseca',
             name: 'Razvoj u 2. mesecu',
+            subtitle: '2. mesec',
             moreAboutPeriodArticleIdMale: 3476,
             moreAboutPeriodArticleIdFemale: 3471,
             description: `
@@ -73,6 +75,7 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
             name: 'Razvoj u 3. i  4. mesecu',
             moreAboutPeriodArticleIdMale: 3486,
             moreAboutPeriodArticleIdFemale: 3481,
+            subtitle: '3. i 4. mesec',    
             description: `
 <p>
 Ovo je period raznovrsnih iskustava
@@ -107,6 +110,7 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
         {
             period: '5-6 meseci',
             name: 'Razvoj u 5. i 6. mesecu',
+            subtitle: '5. i 6. mesec',
             moreAboutPeriodArticleIdMale: 3496,
             moreAboutPeriodArticleIdFemale: 3491,
             description: `
@@ -144,6 +148,7 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
         {
             period: '7-9 meseci',
             name: 'Razvoj od 7. do 9. meseca',
+            subtitle: '7. do 9. mesec',
             moreAboutPeriodArticleIdMale: 3511,
             moreAboutPeriodArticleIdFemale: 3506,
             description: `
@@ -182,6 +187,7 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
         {
             period: '10-12 meseci',
             name: 'Razvoj od 10. do 12. meseca',
+            subtitle: '10. do 12. mesec',
             moreAboutPeriodArticleIdMale: 3521,
             moreAboutPeriodArticleIdFemale: 3516,
             description: `
@@ -218,6 +224,7 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
         {
             period: '13-18 meseci',
             name: 'Razvoj od 13. do 18. meseca',
+            subtitle: '13. do 18. mesec',
             moreAboutPeriodArticleIdMale: 3531,
             moreAboutPeriodArticleIdFemale: 3526,
             description: `
@@ -258,6 +265,7 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
             name: 'Razvoj od 19. do 24. meseca',
             moreAboutPeriodArticleIdMale: 3541,
             moreAboutPeriodArticleIdFemale: 3536,
+            subtitle: '19. do 24. mesec',
             description: `
 <p>
 Ovo je period osamostaljivanja
@@ -293,6 +301,7 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
         {
             period: '25-36 meseci',
             name: 'Razvoj od 25. do 36. meseca',
+            subtitle: '25. do 36. mesec',
             moreAboutPeriodArticleIdMale: 3551,
             moreAboutPeriodArticleIdFemale: 3546,
             description: `

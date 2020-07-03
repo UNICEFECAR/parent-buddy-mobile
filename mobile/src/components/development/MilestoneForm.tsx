@@ -2,7 +2,7 @@ import React, { Component, Children } from 'react'
 import { ViewStyle, StyleSheet, TextStyle, Dimensions, View } from 'react-native'
 import { Typography, TypographyType } from '../Typography';
 import { RoundedButton, RoundedButtonType } from '../RoundedButton';
-import { scale } from 'react-native-size-matters';
+import { scale, moderateScale } from 'react-native-size-matters';
 import { ScrollView } from 'react-native-gesture-handler';
 // @ts-ignore
 import HTML from 'react-native-render-html';
@@ -34,10 +34,10 @@ export class MilestoneForm extends Component<Props> {
     render() {
         return (
             <ScrollView>
-                <Typography type={TypographyType.headingSecondary} style={styles.headerStyle}>{this.props.title}</Typography>
+                <Typography type={TypographyType.bodyRegularLargeSpacing} style={styles.headerStyle}>{this.props.title}</Typography>
                 <AccordionCheckBoxList
                     items={this.props.items}
-                    onCheckboxPressed={this.props.onCheckboxPressed}
+                    onCheckboxPressed={(id: number) => this.change(id)}
                 />
                 {
                     this.props.roundedButton && (
@@ -86,7 +86,10 @@ const styles = StyleSheet.create<MilestoneFormStyles>({
         marginBottom: scale(32)
     },
     headerStyle: {
-        textAlign: 'center'
+        textAlign: 'center',
+        fontSize: moderateScale(20),
+        fontWeight: "600",
+        marginBottom: 24,
     }
 
 })
