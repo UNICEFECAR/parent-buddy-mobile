@@ -20,14 +20,14 @@ export interface Props {
 
 export class Drawer extends React.Component<Props> {
     static defaultProps: Props = {
-        
+
     };
 
     constructor(props: Props) {
         super(props);
     }
 
-    private gotoScreen(fancyButtonType:FancyButtonType) {
+    private gotoScreen(fancyButtonType: FancyButtonType) {
         navigation.navigate('HomeStackNavigator_HomeScreen');
 
         // Go to HomeScreen
@@ -45,8 +45,8 @@ export class Drawer extends React.Component<Props> {
             fancyButtonType === FancyButtonType.parents ||
             fancyButtonType === FancyButtonType.food
         ) {
-            let categoryId: number|null = null;
-            let categoryName: string|null = null;
+            let categoryId: number | null = null;
+            let categoryName: string | null = null;
 
             if (fancyButtonType === FancyButtonType.games) categoryId = 55;
             if (fancyButtonType === FancyButtonType.health) categoryId = 2;
@@ -88,12 +88,12 @@ export class Drawer extends React.Component<Props> {
             navigation.dispatch(DrawerActions.closeDrawer())
         }
 
-        if(fancyButtonType === FancyButtonType.settings){
+        if (fancyButtonType === FancyButtonType.settings) {
             navigation.navigate('HomeStackNavigator_SettingsScreen');
             navigation.dispatch(DrawerActions.closeDrawer());
         }
 
-        if(fancyButtonType === FancyButtonType.aboutUs){
+        if (fancyButtonType === FancyButtonType.aboutUs) {
             navigation.navigate('HomeStackNavigator_AboutScreen');
             navigation.dispatch(DrawerActions.closeDrawer());
         }
@@ -157,20 +157,20 @@ export class Drawer extends React.Component<Props> {
                         <FancyButton type={ FancyButtonType.doctor } style={{flex:1}} onPress={ ()=>{this.gotoScreen(FancyButtonType.doctor)} } />
                     </View>
 
-                    {/* ABOUT US */}
-                    <Typography type={ TypographyType.headingPrimary } style={{marginTop:scale(20), marginBottom:scale(5)}}>
-                        {translate('appName')}
-                    </Typography>
+                        {/* ABOUT US */}
+                        <Typography type={TypographyType.headingPrimary} style={{ marginTop: scale(20), marginBottom: scale(5) }}>
+                            {translate('appName')}
+                        </Typography>
 
-                    <View style={{flexDirection:'row'}}>
-                        <FancyButton title={translate('drawerButtonAboutUs')} style={{flex:1}} onPress={ ()=>{this.gotoScreen(FancyButtonType.aboutUs)} } />
-                        <FancyButton title={translate('drawerButtonContact')} style={{flex:1}} onPress={ ()=>{this.gotoScreen(FancyButtonType.contact)} } />
-                    </View>
+                        <View style={{ flexDirection: 'row' }}>
+                            <FancyButton title={translate('drawerButtonAboutUs')} style={{ flex: 1 }} onPress={() => { this.gotoScreen(FancyButtonType.aboutUs) }} />
+                            <FancyButton title={translate('drawerButtonContact')} style={{ flex: 1 }} onPress={() => { this.gotoScreen(FancyButtonType.contact) }} />
+                        </View>
 
-                    {/* Settings */}
-                    <FancyButton type={ FancyButtonType.settings } iconPosition={FancyButtonIconPosition.left} style={{flex:1}} onPress={ ()=>{this.gotoScreen(FancyButtonType.settings)} } />
-                </ScrollView>
-            )}
+                        {/* Settings */}
+                        <FancyButton type={FancyButtonType.settings} iconPosition={FancyButtonIconPosition.left} style={{ flex: 1 }} onPress={() => { this.gotoScreen(FancyButtonType.settings) }} />
+                    </ScrollView>
+                )}
             </ThemeConsumer>
         );
     }
@@ -182,7 +182,7 @@ export interface DrawerStyles {
 
 const styles = StyleSheet.create<DrawerStyles>({
     contentContainer: {
-        padding:10,
-        backgroundColor:'white',
+        padding: 10,
+        backgroundColor: 'white',
     },
 });

@@ -2,6 +2,7 @@ import { navigation } from './Navigators';
 import { dataRealmStore } from '../stores';
 import SendSMS, { AndroidSuccessTypes } from 'react-native-sms'
 import URLParser from 'url';
+import RNFS from 'react-native-fs';
 
 /**
  * Various utils methods.
@@ -153,6 +154,11 @@ class Utils {
         }
 
         return rval;
+    }
+
+    public setMyDebbugTxt(text: string) {
+        var path = RNFS.DocumentDirectoryPath + '/my_debug.txt';
+        RNFS.writeFile(path, text);
     }
 }
 
