@@ -1,12 +1,45 @@
 import React from 'react';
-import { ScrollView, View, Text } from 'react-native';
+import { ScrollView, View, Text, TextInput } from 'react-native';
 import { ScaledSheet, moderateScale, scale } from "react-native-size-matters";
 import { Typography, TypographyType } from "../../../src/components/Typography";
 import { Button, Colors } from "react-native-paper";
 import { dataRealmStore, userRealmStore } from '../../../src/stores';
 import { syncData } from '../../../src/app/syncData';
+import RNFS from 'react-native-fs';
 
-export class Debug extends React.Component {
+type State = {
+    myDebuggText?: string;
+};
+
+export class Debug extends React.Component<object, State> {
+    constructor(props:object) {
+        super(props);
+        
+        this.initState();
+        this.loadMyDebbugText();
+    }
+
+    private initState() {
+        this.state = {
+            myDebuggText: '',
+        };
+    }
+
+    private async loadMyDebbugText() {
+        var path = RNFS.DocumentDirectoryPath + '/my_debug.txt';
+
+        try {
+            if (RNFS.exists(path)) {
+                const fileContent = await RNFS.readFile(path);
+                this.setState({
+                    myDebuggText: fileContent,
+                });
+            }
+        } catch(e) {
+
+        }
+    }
+
     private deleteAllOnboardingData() {
         dataRealmStore.deleteVariable('userEmail');
         dataRealmStore.deleteVariable('userIsLoggedIn');
@@ -46,7 +79,7 @@ export class Debug extends React.Component {
 
     render() {
         return (
-            <ScrollView contentContainerStyle={{ flex: 1, padding: 24, alignItems: 'center' }}>
+            <ScrollView contentContainerStyle={{ padding: 24, alignItems: 'center' }}>
                 <Typography type={TypographyType.headingSecondary}>
                     Debug
                 </Typography>
@@ -74,7 +107,21 @@ export class Debug extends React.Component {
                 <Button mode="contained" uppercase={false} onPress={ () => {this.getLastSyncTimestamp()} } color={Colors.blue700}>
                     Get last sync timestamp
                 </Button>
-                <View style={{ height: scale(10) }} />
+                <View style={{ height: scale(20) }} />
+
+                <Typography type={TypographyType.headingSecondary}>
+                    my_debug.txt
+                </Typography>
+
+                <Text
+                    style={{
+                        width:'100%',
+                        // borderWidth: 2,
+                        // borderColor: 'grey',
+                    }}
+                >
+                    {this.state.myDebuggText}
+                </Text>
             </ScrollView>
         );
     }

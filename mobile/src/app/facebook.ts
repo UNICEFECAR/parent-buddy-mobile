@@ -1,4 +1,5 @@
 import { LoginManager, LoginResult, GraphRequest, GraphRequestManager, UserData, AccessToken } from 'react-native-fbsdk';
+import { utils } from './utils';
 
 const PERMISSIONS = ["public_profile", "email"];
 
@@ -24,6 +25,11 @@ class Facebook {
      */
     public async logIn(permissions:string[] = PERMISSIONS): Promise<LoginResult> {
         const loginResult = await LoginManager.logInWithPermissions(permissions);
+
+        if (loginResult.error) {
+            utils.setMyDebbugTxt(JSON.stringify(loginResult.error, null, 4))
+        }
+
         return loginResult;
     }
 

@@ -2,14 +2,35 @@ import React from 'react';
 import { View, SafeAreaView, Text,Button } from 'react-native';
 import { NavigationStackProp, NavigationStackState } from 'react-navigation-stack';
 
+export interface TestScreenParams {
+    text?: string;
+}
+
 export interface Props {
-    navigation: NavigationStackProp<NavigationStackState>;
+    navigation: NavigationStackProp<NavigationStackState, TestScreenParams>;
 }
 
 /**
  * Use this screen for testing.
  */
 export class TestScreen extends React.Component<Props, object> {
+
+    public constructor(props: Props) {
+        super(props);
+        this.setDefaultScreenParams();
+    }
+
+    private setDefaultScreenParams() {
+        let defaultScreenParams: TestScreenParams = {
+            text: '',
+        };
+
+        if (this.props.navigation.state.params) {
+            this.props.navigation.state.params = Object.assign({}, defaultScreenParams, this.props.navigation.state.params);
+        } else {
+            this.props.navigation.state.params = defaultScreenParams;
+        }
+    }
 
     public render() {
         return (

@@ -1,5 +1,5 @@
 import { GoogleSignin, User, statusCodes } from '@react-native-community/google-signin';
-import RNFS from 'react-native-fs';
+import { utils } from './utils';
 
 /**
  * Authenticate with Google.
@@ -36,8 +36,7 @@ class GoogleAuth {
         } catch (error) {
             // error.code === statusCodes.SIGN_IN_CANCELLED
             // TODO
-            var path = RNFS.DocumentDirectoryPath + '/my_debug.txt';
-            RNFS.writeFile(path, JSON.stringify(error, null, 4));
+            utils.setMyDebbugTxt(JSON.stringify(error, null, 4));
         }
 
         return user;
