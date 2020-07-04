@@ -98,10 +98,10 @@ export class Drawer extends React.Component<Props> {
             navigation.dispatch(DrawerActions.closeDrawer());
         }
 
-        if (fancyButtonType === FancyButtonType.contact) {
-            navigation.navigate('RootModalStackNavigator_StorybookScreen');
-            navigation.dispatch(DrawerActions.closeDrawer());
-        }
+        // if (fancyButtonType === FancyButtonType.contact) {
+        //     navigation.navigate('RootModalStackNavigator_StorybookScreen');
+        //     navigation.dispatch(DrawerActions.closeDrawer());
+        // }
     }
 
     private onClosePress() {
