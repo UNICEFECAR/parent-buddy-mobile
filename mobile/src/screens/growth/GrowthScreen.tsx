@@ -8,7 +8,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { ThemeConsumer, ThemeContextValue } from '../../themes/ThemeContext';
 import { scale } from 'react-native-size-matters';
 import { NewMeasurements } from '../../components/growth/NewMeasurements';
-import {HomeScreenParams} from '../home/HomeScreen';
+import { HomeScreenParams } from '../home/HomeScreen';
 import { translate } from '../../translations/translate';
 
 export interface GrowthScreenParams {

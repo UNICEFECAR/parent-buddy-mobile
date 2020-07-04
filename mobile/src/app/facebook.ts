@@ -26,9 +26,9 @@ class Facebook {
     public async logIn(permissions:string[] = PERMISSIONS): Promise<LoginResult> {
         const loginResult = await LoginManager.logInWithPermissions(permissions);
 
-        if (loginResult.error) {
-            utils.setMyDebbugTxt(JSON.stringify(loginResult.error, null, 4))
-        }
+        // if (loginResult.error) {
+        //     utils.setMyDebbugTxt(JSON.stringify(loginResult.error, null, 4))
+        // }
 
         return loginResult;
     }

@@ -11,7 +11,7 @@ import { ContentEntity, ContentEntitySchema } from '../../stores/ContentEntity';
 import { CategoryArticlesViewEntity } from '../../stores/CategoryArticlesViewEntity';
 import { dataRealmStore } from '../../stores';
 import { translate } from '../../translations/translate';
-import { content, localize } from '../../app';
+import { content, localize, utils } from '../../app';
 import { Media } from '../../components';
 import Orientation from 'react-native-orientation-locker';
 import { getSearchResultsScreenData } from '../../stores/getSearchResultsScreenData';
@@ -51,8 +51,8 @@ export class HomeScreen extends React.Component<Props, object> {
     }
 
     private onTestButtonPress() {
-        const results = getSearchResultsScreenData('yes');
-        console.log(JSON.stringify(results, null, 4));
+        const randomString = Math.round(Math.random()*1000);
+        utils.setMyDebbugTxt(randomString + '');
     }
 
     public render() {
