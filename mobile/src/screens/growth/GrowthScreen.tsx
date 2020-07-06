@@ -10,6 +10,8 @@ import { scale } from 'react-native-size-matters';
 import { NewMeasurements } from '../../components/growth/NewMeasurements';
 import { HomeScreenParams } from '../home/HomeScreen';
 import { translate } from '../../translations/translate';
+import { Typography } from '../../components';
+import { TypographyType } from '../../components/Typography';
 
 export interface GrowthScreenParams {
 
@@ -19,11 +21,19 @@ export interface Props {
     navigation: NavigationStackProp<NavigationStackState, HomeScreenParams>,
 }
 
+export interface State{
+    
+}
+
 export class GrowthScreen extends Component<Props> {
     public constructor(props: Props) {
         super(props);
-
+        this.initState()
         this.setDefaultScreenParams();
+    }   
+
+    private initState(){
+
     }
 
     private setDefaultScreenParams() {
@@ -46,8 +56,12 @@ export class GrowthScreen extends Component<Props> {
                         style={{ backgroundColor: themeContext.theme.screenContainer?.backgroundColor }}
                         contentContainerStyle={styles.container}
                     >
+                        <Typography type={TypographyType.headingPrimary}>
+                            Rast deteta
+                        </Typography>
                         {/* margin just for testing */}
-                        <View style={{ marginBottom: 20 }}>
+
+                        {/* <View style={{ marginBottom: 20 }}>
                             <NoMeasurements />
                         </View>
                         <View style={{ marginBottom: 20 }} >
@@ -75,7 +89,7 @@ export class GrowthScreen extends Component<Props> {
                         </View>
                         <View >
                             <NewMeasurements onPress={() => this.props.navigation.navigate('HomeStackNavigator_NewMeasurementScreen')} />
-                        </View>
+                        </View> */}
                     </ScrollView>
                 )}
             </ThemeConsumer>
