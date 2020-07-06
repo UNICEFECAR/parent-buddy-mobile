@@ -17,7 +17,7 @@ export interface DevelopmentScreenParams {
 
 };
 
-export interface State{
+export interface State {
     data: DevelopmentPeriodsType[]
 }
 
@@ -57,7 +57,7 @@ export class DevelopmentScreen extends Component<Props, State> {
     private goToPeriodArticle(id: number) {
         let article = dataRealmStore.getContentFromId(id);
         let categoryName = dataRealmStore.getCategoryNameFromId(id);
-        
+
         const pushAction = StackActions.push({
             routeName: 'HomeStackNavigator_ArticleScreen',
             params: {

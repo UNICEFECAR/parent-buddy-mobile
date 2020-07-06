@@ -58,7 +58,7 @@ export class EditPeriodScreen extends Component<Props, State> {
         let defaultScreenParams: EditPeriodScreenParams = {
             id: 0,
             isCurrenPeriod: false,
-            onGoBack: () => {},
+            onGoBack: () => { },
             subtitle: '',
             title: '',
             warningText: '',
@@ -71,6 +71,9 @@ export class EditPeriodScreen extends Component<Props, State> {
         };
     };
 
+    /*
+    * Delete milestone from unchecked and push in checked milestones array
+    */
     private filterItems(id: number) {
         let milestones: number[] = userRealmStore.getVariable('checkedMilestones');
         let milestonesIds: number[] = [];
@@ -117,7 +120,7 @@ export class EditPeriodScreen extends Component<Props, State> {
             });
         };
 
-        if(this.props.navigation.state.params?.onGoBack){
+        if (this.props.navigation.state.params?.onGoBack) {
             this.props.navigation.state.params.onGoBack();
         }
     };
@@ -160,13 +163,15 @@ export class EditPeriodScreen extends Component<Props, State> {
                                     <Typography type={TypographyType.headingSecondary}>
                                         {this.props.navigation.state?.params?.title}
                                     </Typography>
-                                    <Typography style={{marginTop: -5}}>
+                                    <Typography style={{ marginTop: -5 }}>
                                         {this.props.navigation.state?.params?.subtitle}
                                     </Typography>
                                 </View>
                             </View>
                             {
-                                // Render all unchecked milestones
+                                /* 
+                                * Render all unchecked milestones
+                                */
                                 this.state.uncheckedMilestones.length !== 0 && (
                                     <MilestoneForm
                                         items={this.state.uncheckedMilestones}
@@ -180,7 +185,9 @@ export class EditPeriodScreen extends Component<Props, State> {
                                 )
                             }
                             {
-                                // Render all checked milestones
+                                /* 
+                                * Render all checked milestones
+                                */
                                 this.state.checkedMilestones.length !== 0 && (
                                     <MilestoneForm
                                         title={translate('abilitiesAndSkillsChildAlreadGet')}
@@ -191,6 +198,9 @@ export class EditPeriodScreen extends Component<Props, State> {
                             }
                         </View>
                         {
+                            /* 
+                            * Render warning text 
+                            */
                             this.props.navigation.state?.params?.warningText &&
                             <DevelopmentInfo html={this.props.navigation.state.params.warningText} />
                         }
@@ -219,8 +229,8 @@ const styles = StyleSheet.create<EditPeriodScreenStyles>({
         fontSize: moderateScale(26),
         color: "#2CBA39",
     },
-    headerView:{
-        flexDirection: 'row', 
-        marginBottom: 24 
+    headerView: {
+        flexDirection: 'row',
+        marginBottom: 24
     }
 });

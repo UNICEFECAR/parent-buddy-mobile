@@ -194,7 +194,10 @@ class DataRealmStore {
             }
         });
     };
-
+    
+    /*
+    *   Return all milestones for given age tag
+    */
     public getMilestonesFromChildAge(ageTagId: number) {
         try {
             const allRecords = this.realm?.objects<MilestoneEntity>(MilestoneEntitySchema.name);
@@ -310,9 +313,10 @@ class DataRealmStore {
 
         if (allMilestones) {
             allMilestones.forEach(milestone => {
-                // true if item exist in checked item
+                // true if item exist in checked item array
                 let item = checkedItems?.find(id => id === milestone.id)
 
+                // if item exist, update checkedMilestones else udpate unchecked milestones => Important for split screen logic 
                 if (item) {
                     milestones.checkedMilestones.push({
                         checked: true,
