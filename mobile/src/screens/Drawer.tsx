@@ -97,6 +97,11 @@ export class Drawer extends React.Component<Props> {
             navigation.navigate('HomeStackNavigator_AboutScreen');
             navigation.dispatch(DrawerActions.closeDrawer());
         }
+
+        // if (fancyButtonType === FancyButtonType.contact) {
+        //     navigation.navigate('RootModalStackNavigator_StorybookScreen');
+        //     navigation.dispatch(DrawerActions.closeDrawer());
+        // }
     }
 
     private onClosePress() {
