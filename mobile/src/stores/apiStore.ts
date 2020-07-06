@@ -63,7 +63,7 @@ class ApiStore {
                         body: rawContent.body,
                         langcode: rawContent.langcode,
                         predefined_tags: rawContent.predefined_tags ? rawContent.predefined_tags.map((value: any) => parseInt(value)) : [],
-                        related_articles: rawContent.keywords ? rawContent.keywords.map((value: any) => parseInt(value)) : [],
+                        related_articles: rawContent.related_articles ? rawContent.related_articles.map((value: any) => parseInt(value)) : [],
                         summary: rawContent.summary,
                         title: rawContent.title,
                         type: rawContent.type,

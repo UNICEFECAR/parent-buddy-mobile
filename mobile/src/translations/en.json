@@ -174,12 +174,14 @@
     "Iam": "I am",
     "meetTheParents": "Meet the parents",
 
-    "childDevelopmentTitle": "Razvoj deteta",
+    "childDevelopmentTitle": "Razvoj deteta TODO",
     "abilitiesAndSkillsChildAlreadGet": "Sposobnosti i veštine iz ovog perioda koje je dete osvojilo: TODO",
     "abilitiesAndSkillsChildNeedToGet": "Sposobnosti i veštine iz ovog perioda koje dete treba da osvoji: TODO",
     "questionnaireAboutChildDevelopment": "Upitnik o razvoju deteta TODO",
     "moreAboutDevelopmentPeriod": "Više o razvoju u ovom periodu TODO",
     "updateQuestionnaire": "Ažurirajte upitnik o razvoju deteta TODO",
     "viewQuestionnaire": "Pogledajte upitnik o razvoju deteta TODO",
-    "fillQuestionnaire": "Popunite upitnik o razvoju deteta TODO"
+    "fillQuestionnaire": "Popunite upitnik o razvoju deteta TODO",
+
+    "readMore": "Read more"
 }
