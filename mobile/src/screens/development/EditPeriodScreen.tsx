@@ -107,6 +107,7 @@ export class EditPeriodScreen extends Component<Props, State> {
                 uncheckedMilestones: milestones.uncheckedMilestones,
             });
         };
+
     };
 
     private renderIcon = () => {

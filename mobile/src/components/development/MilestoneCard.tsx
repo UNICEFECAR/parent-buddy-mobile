@@ -46,7 +46,6 @@ export class MilestoneCard extends Component<Props> {
     }
 
     render() {
-        console.log(this.props.roundedButton?.roundedButtonType, "TYPE") 
 
         return (
             <View style={styles.container}>

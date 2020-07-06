@@ -310,7 +310,7 @@ class DataRealmStore {
 
         if (allMilestones) {
             allMilestones.forEach(milestone => {
-                // true if item exist in checked item 
+                // true if item exist in checked item
                 let item = checkedItems?.find(id => id === milestone.id)
 
                 if (item) {
@@ -318,12 +318,14 @@ class DataRealmStore {
                         checked: true,
                         html: milestone.body,
                         id: milestone.id,
-                        title: milestone.title
+                        title: milestone.title,
+                        relatedArticles: milestone.related_articles,
                     });
                 } else {
                     milestones.uncheckedMilestones.push({
                         checked: false,
                         html: milestone.body,
+                        relatedArticles: milestone.related_articles,
                         id: milestone.id,
                         title: milestone.title
                     });

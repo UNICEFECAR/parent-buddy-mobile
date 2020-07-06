@@ -13,6 +13,7 @@ export interface MilestoneItem {
     title: string;
     id: number,
     html: string;
+    relatedArticles: object
 }
 
 export interface Props {

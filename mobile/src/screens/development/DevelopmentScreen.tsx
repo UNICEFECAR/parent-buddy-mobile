@@ -11,20 +11,49 @@ import { MilestoneCard } from '../../components/development/MilestoneCard';
 import { navigation } from '../../app';
 import { RoundedButtonType } from '../../components/RoundedButton';
 import { StackActions } from 'react-navigation';
+import { DevelopmentPeriodsType } from '../../stores/dataRealmStore';
 
 export interface DevelopmentScreenParams {
 
 };
 
+export interface State{
+    data: DevelopmentPeriodsType[]
+}
+
 export interface Props {
     navigation: NavigationStackProp<NavigationStackState, HomeScreenParams>,
 };
 
-export class DevelopmentScreen extends Component<Props> {
+export class DevelopmentScreen extends Component<Props, State> {
     public constructor(props: Props) {
         super(props);
         this.setDefaultScreenParams();
+        this.initState();
     };
+
+    private initState(){
+        let state: State = {
+            data: []
+        }
+
+        let data: DevelopmentPeriodsType[] = dataRealmStore.getDevelopmentPeriods().map((item: DevelopmentPeriodsType): DevelopmentPeriodsType => {
+            return{
+                title: item.title,
+                body: item.body,
+                currentPeriod: item.currentPeriod,
+                relatedArticleId: item.relatedArticleId,
+                subtilte: item.subtilte,
+                childAgeTagId: item.childAgeTagId,
+                finished: item.finished,
+                warningText: item.warningText,
+            };
+        });
+
+        state.data = data;
+
+        this.state = state;
+    }
 
     private setDefaultScreenParams() {
         let defaultScreenParams: DevelopmentScreenParams = {
@@ -94,7 +123,7 @@ export class DevelopmentScreen extends Component<Props> {
                         contentContainerStyle={styles.container}
                     >
                         {
-                            dataRealmStore.getDevelopmentPeriods()?.map(item => (
+                            this.state.data.map(item => (
                                 <View style={{ marginTop: 20 }}>
                                     <MilestoneCard
                                         title={item.title}
