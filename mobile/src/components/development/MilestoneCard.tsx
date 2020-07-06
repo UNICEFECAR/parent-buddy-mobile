@@ -46,7 +46,6 @@ export class MilestoneCard extends Component<Props> {
     }
 
     render() {
-
         return (
             <View style={styles.container}>
                 <View style={{flexDirection: 'row'}}>

@@ -29,31 +29,7 @@ export class DevelopmentScreen extends Component<Props, State> {
     public constructor(props: Props) {
         super(props);
         this.setDefaultScreenParams();
-        this.initState();
     };
-
-    private initState(){
-        let state: State = {
-            data: []
-        }
-
-        let data: DevelopmentPeriodsType[] = dataRealmStore.getDevelopmentPeriods().map((item: DevelopmentPeriodsType): DevelopmentPeriodsType => {
-            return{
-                title: item.title,
-                body: item.body,
-                currentPeriod: item.currentPeriod,
-                relatedArticleId: item.relatedArticleId,
-                subtilte: item.subtilte,
-                childAgeTagId: item.childAgeTagId,
-                finished: item.finished,
-                warningText: item.warningText,
-            };
-        });
-
-        state.data = data;
-
-        this.state = state;
-    }
 
     private setDefaultScreenParams() {
         let defaultScreenParams: DevelopmentScreenParams = {
@@ -74,13 +50,14 @@ export class DevelopmentScreen extends Component<Props, State> {
             isCurrenPeriod: isCurrenPeriod,
             warningText: warningText,
             subtitle: subtitle,
+            onGoBack: () => this.forceUpdate(),
         });
     };
 
     private goToPeriodArticle(id: number) {
         let article = dataRealmStore.getContentFromId(id);
         let categoryName = dataRealmStore.getCategoryNameFromId(id);
-
+        
         const pushAction = StackActions.push({
             routeName: 'HomeStackNavigator_ArticleScreen',
             params: {
@@ -88,6 +65,7 @@ export class DevelopmentScreen extends Component<Props, State> {
                 categoryName: categoryName,
             },
         });
+
 
         this.props.navigation.dispatch(pushAction);
     };
@@ -114,6 +92,8 @@ export class DevelopmentScreen extends Component<Props, State> {
         };
     };
 
+
+
     render() {
         return (
             <ThemeConsumer>
@@ -123,7 +103,7 @@ export class DevelopmentScreen extends Component<Props, State> {
                         contentContainerStyle={styles.container}
                     >
                         {
-                            this.state.data.map(item => (
+                            dataRealmStore.getDevelopmentPeriods().map(item => (
                                 <View style={{ marginTop: 20 }}>
                                     <MilestoneCard
                                         title={item.title}

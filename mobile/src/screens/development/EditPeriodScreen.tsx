@@ -4,7 +4,6 @@ import { NavigationStackProp, NavigationStackState } from 'react-navigation-stac
 import { ScrollView } from 'react-native-gesture-handler';
 import { ThemeConsumer, ThemeContextValue } from '../../themes/ThemeContext';
 import { scale, moderateScale } from 'react-native-size-matters';
-import { HomeScreenParams } from '../home/HomeScreen';
 import { dataRealmStore, userRealmStore } from '../../stores';
 import { MilestoneForm, MilestoneItem } from '../../components/development/MilestoneForm';
 import { Typography } from '../../components';
@@ -14,12 +13,17 @@ import { DevelopmentInfo } from '../../components/development/DevelopmentInfo';
 import { translate } from '../../translations';
 
 export interface EditPeriodScreenParams {
-
+    id: number,
+    title: string,
+    isCurrenPeriod: boolean,
+    warningText: string,
+    subtitle: string,
+    onGoBack: Function
 };
 
 
 export interface Props {
-    navigation: NavigationStackProp<NavigationStackState, HomeScreenParams>,
+    navigation: NavigationStackProp<NavigationStackState, EditPeriodScreenParams>,
 };
 export interface State {
     uncheckedMilestones: MilestoneItem[],
@@ -52,7 +56,12 @@ export class EditPeriodScreen extends Component<Props, State> {
 
     private setDefaultScreenParams() {
         let defaultScreenParams: EditPeriodScreenParams = {
-
+            id: 0,
+            isCurrenPeriod: false,
+            onGoBack: () => {},
+            subtitle: '',
+            title: '',
+            warningText: '',
         };
 
         if (this.props.navigation.state.params) {
@@ -108,6 +117,9 @@ export class EditPeriodScreen extends Component<Props, State> {
             });
         };
 
+        if(this.props.navigation.state.params?.onGoBack){
+            this.props.navigation.state.params.onGoBack();
+        }
     };
 
     private renderIcon = () => {

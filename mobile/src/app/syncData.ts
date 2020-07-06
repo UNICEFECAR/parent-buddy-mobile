@@ -39,7 +39,6 @@ class SyncData {
 
         // DOWNLOAD DEVELOPMENT MILESTONES 
         let allMilestones: MilestonesResponse = {total: 0, data: []}
-
         try{
             if(lastSyncTimestamp){
                 allMilestones = await apiStore.getAllMilestones(lastSyncTimestamp)
@@ -47,7 +46,6 @@ class SyncData {
                 allMilestones = await apiStore.getAllMilestones();
             }
         } catch (e){};
-
         // Save milestones
         if(allMilestones?.data && allMilestones.data.length > 0){
             const milestonesCreateOrUpdate: Promise<MilestoneEntity>[] = [];

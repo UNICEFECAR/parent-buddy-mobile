@@ -29,19 +29,15 @@ class ApiStore {
         // let url = "http://ecaroparentingapppi3xep5h4v.devcloud.acquia-sites.com/api/list-milestone/en?published=0&numberOfItems=10&updateFromDate=1593614089"
         // URL params
         const urlParams: any = {};
-        console.log(args.page, "page")
-        console.log(args.updatedFromDate, "updatedFromDate")
-        console.log(args.numberOfItems, "numberOfItems")
 
         urlParams.page = args.page !== undefined ? args.page : 0;
-        urlParams.published = appConfig.showPublishedContent;
+        urlParams.published = 0; // replace with appConfig.showPublishedContent
         urlParams.numberOfItems = args.numberOfItems !== undefined ? args.numberOfItems : 10;
         if (args.updatedFromDate !== undefined) {
             urlParams.updateFromDate = args.updatedFromDate;
         }
 
 
-        console.log(urlParams, "URL PARAMS")
         // Get API response
         let response: MilestonesResponse = { total: 0, data: [] };
         try {
