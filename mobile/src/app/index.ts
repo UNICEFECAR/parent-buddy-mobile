@@ -7,6 +7,7 @@ import { localize } from "./localize";
 import { navigation } from './Navigators';
 import { syncData } from "./syncData";
 import { utils } from "./utils";
+import { backup } from "./backup";
 
 export { App };
 export { navigation };
@@ -17,3 +18,4 @@ export { utils };
 export { localize };
 export { syncData };
 export { content };
+export { backup };
