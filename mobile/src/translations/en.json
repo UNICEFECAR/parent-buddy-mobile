@@ -103,6 +103,7 @@
     "settingsTitleImportExport": "Data export / import",
     "settingsButtonExport": "Export all saved data",
     "settingsButtonImport": "Import all saved data",
+    "settingsButtonExportError": "Export failed",
     "settingsButtonDeleteAllData": "Delete account and erase all data",
     "settingsLogout": "Logout",
 

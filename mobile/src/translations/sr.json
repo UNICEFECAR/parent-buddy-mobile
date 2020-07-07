@@ -103,6 +103,7 @@
     "settingsTitleImportExport": "Uvoz i izvoz sačuvanih podataka",
     "settingsButtonExport": "Izvezite sve sačuvane podatke",
     "settingsButtonImport": "Uvezite sve sačuvane podatke",
+    "settingsButtonExportError": "Podaci nisu uspesno izvezeni",
     "settingsButtonDeleteAllData": "Obrišite nalog i izbrišite sve podatke",
     "settingsLogout": "Odjavite se iz aplikacije",
 

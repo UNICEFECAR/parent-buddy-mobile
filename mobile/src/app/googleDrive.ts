@@ -40,6 +40,10 @@ class GoogleDrive {
         // Default args
         if (!args.contentType) args.contentType = 'text/plain';
         
+        if (args.isBase64 === undefined) {
+            args.isBase64 = false;
+        }
+
         // Set Google access token
         const isAccessTokenSet = await this.setAccessToken();
         if (!isAccessTokenSet) {
@@ -55,7 +59,8 @@ class GoogleDrive {
                 {
                     parents: [args.parentFolderId],
                     name: args.name
-                }
+                },
+                args.isBase64,
             );
 
             let responseJson = await response.json();
@@ -67,6 +72,27 @@ class GoogleDrive {
             }
         } catch (e) {
             return new Error('GDrive file was not created');
+        }
+    }
+
+    public async deleteFile(fileId: string): Promise<boolean|Error> {
+        // Set Google access token
+        const isAccessTokenSet = await this.setAccessToken();
+        if (!isAccessTokenSet) {
+            return new ErrorAccessTokenNotSet();
+        }
+
+        // Delete file
+        try {
+            const response: Response = await GDrive.files.delete(fileId);
+
+            if (response.status >= 200 && response.status < 300) {
+                return true;
+            } else {
+                return new Error('GDrive file was not deleted');
+            }
+        } catch (e) {
+            return new Error('GDrive file was not deleted');
         }
     }
 
@@ -276,6 +302,7 @@ interface CreateFileMultipartArgs {
      * id of parent folder. 'root' has special meaning.
      */
     parentFolderId: string;
+    isBase64?: boolean;
 }
 
 interface SafeCreateFolderArgs {
