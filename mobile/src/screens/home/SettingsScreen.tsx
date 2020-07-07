@@ -5,7 +5,7 @@ import { NavigationStackProp, NavigationStackState, NavigationStackOptions } fro
 import { ThemeContextValue, ThemeConsumer } from '../../themes/ThemeContext';
 import { translate } from '../../translations/translate';
 import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
-import { Switch, Caption } from 'react-native-paper';
+import { Switch, Caption, Divider } from 'react-native-paper';
 import { Typography, TypographyType } from '../../components/Typography';
 import { TextButton, TextButtonColor } from '../../components/TextButton';
 import { RoundedButton, RoundedButtonType } from '../../components/RoundedButton';
@@ -93,7 +93,7 @@ export class SettingsScreen extends React.Component<Props, State> {
         const variables: string[] = [];
 
         allVariables?.forEach((record, index, collection) => {
-            if(record.key !== "lastSyncTimestamp" && record.key !== "vocabulariesAndTerms" && record.key !== "languageCode" && record.key !== "countryCode"){
+            if (record.key !== "lastSyncTimestamp" && record.key !== "vocabulariesAndTerms" && record.key !== "languageCode" && record.key !== "countryCode") {
                 variables.push(record.key)
             }
         })
@@ -114,6 +114,35 @@ export class SettingsScreen extends React.Component<Props, State> {
                         contentContainerStyle={[styles.container]}
                     >
                         <View style={{ alignItems: 'flex-start', padding: themeContext.theme.screenContainer?.padding }}>
+
+                            {/* TITLE */}
+                            <Typography type={TypographyType.headingSecondary}>
+                                {translate('settingsTitleImportExport')}
+                            </Typography>
+
+                            <View style={{ height: themeContext.theme.variables?.sizes.verticalPaddingNormal }} />
+
+                            {/* Export all data */}
+                            <RoundedButton
+                                text={translate('settingsButtonExport')}
+                                type={RoundedButtonType.hollowPurple}
+                                iconName="file-export"
+                                onPress={() => { }}
+                                style={{ width: '85%', alignSelf: 'center' }}
+                            />
+
+                            <View style={{ height: themeContext.theme.variables?.sizes.verticalPaddingNormal }} />
+
+                            {/* Import all data */}
+                            <RoundedButton
+                                text={translate('settingsButtonImport')}
+                                type={RoundedButtonType.hollowPurple}
+                                iconName="file-import"
+                                onPress={() => { }}
+                                style={{ width: '85%', alignSelf: 'center' }}
+                            />
+
+                            <Divider style={{width:'100%', height:1, marginTop:scale(60), marginBottom:scale(40)}} />
 
                             {/* TITLE */}
                             <Typography type={TypographyType.headingSecondary}>
@@ -210,16 +239,6 @@ export class SettingsScreen extends React.Component<Props, State> {
                             </View>
 
                             <View style={{ height: scale(50) }} />
-
-                            {/* Export all data */}
-                            <RoundedButton
-                                text={translate('settingsButtonExport')}
-                                type={RoundedButtonType.hollowPurple}
-                                onPress={() => { }}
-                                style={{ width: '85%', alignSelf: 'center' }}
-                            />
-
-                            <View style={{ height: themeContext.theme.variables?.sizes.verticalPaddingLarge }} />
 
                             {/* Logout */}
                             <View style={{ alignSelf: 'center', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>

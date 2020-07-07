@@ -100,7 +100,9 @@
     "settingsEnterGrowth": "I want to track child growth and receive reminders to enter the growth measures of my child",
     "settingsEnterDevelopment": "I want to track developmental milestones and receive reminders to enter the data",
     "settingsEnterDoctorVisits": "I want to make records about health check-ups and receive reminders to enter the data",
+    "settingsTitleImportExport": "Data export / import",
     "settingsButtonExport": "Export all saved data",
+    "settingsButtonImport": "Import all saved data",
     "settingsButtonDeleteAllData": "Delete account and erase all data",
     "settingsLogout": "Logout",
 

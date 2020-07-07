@@ -100,7 +100,9 @@
     "settingsEnterGrowth": "Želim da pratim rast i da me aplikacija podseća da unosim mere deteta",
     "settingsEnterDevelopment": "Želim da beležim razvojne događaje i da me aplikacija podseća da unosim podatke",
     "settingsEnterDoctorVisits": "Želim da evidentiram posete doktoru i da me aplikacija podseća da unosim podatke",
+    "settingsTitleImportExport": "Uvoz i izvoz sačuvanih podataka",
     "settingsButtonExport": "Izvezite sve sačuvane podatke",
+    "settingsButtonImport": "Uvezite sve sačuvane podatke",
     "settingsButtonDeleteAllData": "Obrišite nalog i izbrišite sve podatke",
     "settingsLogout": "Odjavite se iz aplikacije",
 
