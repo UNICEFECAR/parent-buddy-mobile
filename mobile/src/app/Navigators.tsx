@@ -188,15 +188,6 @@ const HomeStackNavigator = createStackNavigator({
             }
         }
     },
-    HomeStackNavigator_SettingsScreen: {
-        screen: SettingsScreen,
-        navigationOptions: ({ navigation }: NavigationScreenConfigProps<NavigationStackProp<NavigationStackState, any>>): NavigationStackOptions => {
-            return {
-                title: translate('settingsTitle'),
-                ...secondaryHomeNavigationOptions
-            }
-        }
-    },
     HomeStackNavigator_AppFeedbackScreen: {
         screen: AppFeedbackScreen,
         navigationOptions: ({ navigation }: NavigationScreenConfigProps<NavigationStackProp<NavigationStackState, any>>): NavigationStackOptions => {
@@ -486,6 +477,15 @@ const RootModalStackNavigator = createStackNavigator({
         navigationOptions: {
             title: "Video"
         }
+    },
+    RootModalStackNavigator_SettingsScreen: {
+        screen: SettingsScreen,
+        // navigationOptions: ({ navigation }: NavigationScreenConfigProps<NavigationStackProp<NavigationStackState, any>>): NavigationStackOptions => {
+        //     return {
+        //         title: translate('settingsTitle'),
+        //         ...secondaryHomeNavigationOptions
+        //     }
+        // }
     },
     DrawerNavigator: {
         screen: DrawerNavigator

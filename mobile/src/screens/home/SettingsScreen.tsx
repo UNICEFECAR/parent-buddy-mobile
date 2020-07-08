@@ -14,7 +14,7 @@ import { Variables } from '../../stores/dataRealmStore';
 import { navigation, backup, googleDrive } from '../../app';
 import { VariableEntitySchema } from '../../stores/VariableEntity';
 import { variables } from '../../themes/defaultTheme/variables';
-import { ActivityIndicator, Snackbar, Colors } from 'react-native-paper';
+import { ActivityIndicator, Snackbar, Colors, Appbar } from 'react-native-paper';
 import { appConfig } from '../../app/appConfig';
 
 export interface SettingsScreenParams {
@@ -137,8 +137,12 @@ export class SettingsScreen extends React.Component<Props, State> {
         });
 
         // if (Array.isArray(list)) {
-            console.log(JSON.stringify(list, null, 4));
+        console.log(JSON.stringify(list, null, 4));
         // }
+    }
+
+    private onBackButtonClick() {
+        navigation.resetStackAndNavigate('DrawerNavigator');
     }
 
     public render() {
@@ -146,6 +150,11 @@ export class SettingsScreen extends React.Component<Props, State> {
             <ThemeConsumer>
                 {(themeContext: ThemeContextValue) => (
                     <View style={{ flex: 1 }}>
+                        <Appbar.Header style={{backgroundColor:'#F8F8F8', borderBottomColor:'#DFE0E2', borderBottomWidth:1}}>
+                            <Appbar.BackAction onPress={() => {this.onBackButtonClick()}} color={themeContext.theme.variables?.colors?.primary} />
+                            <Appbar.Content title={translate('settingsTitle')} titleStyle={{fontWeight:'bold'}} style={{alignItems:'flex-start'}} />
+                        </Appbar.Header>
+
                         <ScrollView
                             style={{ backgroundColor: 'white' }}
                             contentContainerStyle={[styles.container]}

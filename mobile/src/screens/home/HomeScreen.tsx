@@ -38,6 +38,10 @@ export class HomeScreen extends React.Component<Props, object> {
         Orientation.lockToPortrait();
     }
 
+    public componentWillUnmount() {
+        
+    }
+
     private setDefaultScreenParams() {
         let defaultScreenParams: HomeScreenParams = {
             showSearchInput: false,

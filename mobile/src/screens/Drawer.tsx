@@ -89,7 +89,8 @@ export class Drawer extends React.Component<Props> {
         }
 
         if (fancyButtonType === FancyButtonType.settings) {
-            navigation.navigate('HomeStackNavigator_SettingsScreen');
+            // navigation.navigate('HomeStackNavigator_SettingsScreen');
+            navigation.resetStackAndNavigate('RootModalStackNavigator_SettingsScreen');
             navigation.dispatch(DrawerActions.closeDrawer());
         }
 
