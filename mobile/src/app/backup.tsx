@@ -1,10 +1,10 @@
 import { googleAuth } from "./googleAuth";
 import { googleDrive } from "./googleDrive";
 import { userRealmStore } from "../stores";
-import RNFS from 'react-native-fs';
 import { appConfig } from "./appConfig";
 import { utils } from ".";
 import { translate } from "../translations/translate";
+import RNFS from 'react-native-fs';
 
 /**
  * Export / import user realm to GDrive in order to create backup.
