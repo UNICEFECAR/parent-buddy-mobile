@@ -50,6 +50,23 @@ class UserRealmStore {
         });
     }
 
+    public closeRealm() {
+        if (this.realm) {
+            this.realm.close();
+            delete this.realm;
+        }
+    }
+
+    public isRealmClosed(): boolean {
+        let rval = true;
+
+        if (this.realm) {
+            rval = this.realm.isClosed;
+        }
+
+        return rval;
+    }
+
     public getCurrentChild = () => {
         return this.realm?.objects<ChildEntity>(ChildEntitySchema.name).find((record, index, collection) => index === 0);
     }

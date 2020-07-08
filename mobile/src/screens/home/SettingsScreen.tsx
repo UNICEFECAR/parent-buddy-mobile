@@ -9,7 +9,7 @@ import { Switch, Caption, Divider } from 'react-native-paper';
 import { Typography, TypographyType } from '../../components/Typography';
 import { TextButton, TextButtonColor } from '../../components/TextButton';
 import { RoundedButton, RoundedButtonType } from '../../components/RoundedButton';
-import { dataRealmStore, VariableEntity } from '../../stores';
+import { dataRealmStore, VariableEntity, userRealmStore } from '../../stores';
 import { Variables } from '../../stores/dataRealmStore';
 import { navigation, backup, googleDrive } from '../../app';
 import { VariableEntitySchema } from '../../stores/VariableEntity';
@@ -31,7 +31,8 @@ export interface State {
     followGrowth: boolean;
     followDevelopment: boolean;
     followDoctorVisits: boolean;
-    exportAllButtonDisabled: boolean;
+    isExportRunning: boolean;
+    isImportRunning: boolean;
     isSnackbarVisible: boolean;
     snackbarMessage: string;
 }
@@ -71,7 +72,8 @@ export class SettingsScreen extends React.Component<Props, State> {
             followGrowth: followGrowth ? followGrowth : false,
             followDevelopment: followDevelopment ? followDevelopment : false,
             followDoctorVisits: followDoctorVisits ? followDoctorVisits : false,
-            exportAllButtonDisabled: false,
+            isExportRunning: false,
+            isImportRunning: false,
             isSnackbarVisible: false,
             snackbarMessage: '',
         };
@@ -114,11 +116,11 @@ export class SettingsScreen extends React.Component<Props, State> {
     }
 
     private async exportAllData() {
-        this.setState({ exportAllButtonDisabled: true, });
-        const backupIsSuccess = await backup.backup();
-        this.setState({ exportAllButtonDisabled: false, });
+        this.setState({ isExportRunning: true, });
+        const exportIsSuccess = await backup.export();
+        this.setState({ isExportRunning: false, });
 
-        if (!backupIsSuccess) {
+        if (!exportIsSuccess) {
             this.setState({
                 isSnackbarVisible: true,
                 snackbarMessage: translate('settingsButtonExportError'),
@@ -127,22 +129,22 @@ export class SettingsScreen extends React.Component<Props, State> {
     }
 
     private async importAllData() {
-        // DELETE
-        // const response = await googleDrive.deleteFile('16xlCJm9uIbbswY9M49uQJLmmGAi2s6se');
-        // console.log('XXX', response);
+        this.setState({ isImportRunning: true, });
+        const importResponse = await backup.import();
+        this.setState({ isImportRunning: false, });
 
-        // LIST
-        const list = await googleDrive.list({
-            filter: `trashed=false and (name contains '${appConfig.backupFileName}') and ('root' in parents)`,
-        });
-
-        // if (Array.isArray(list)) {
-        console.log(JSON.stringify(list, null, 4));
-        // }
+        if (importResponse instanceof Error) {
+            this.setState({
+                isSnackbarVisible: true,
+                snackbarMessage: importResponse.message,
+            });
+        }
     }
 
     private onBackButtonClick() {
-        navigation.resetStackAndNavigate('DrawerNavigator');
+        if (!this.state.isExportRunning && !this.state.isImportRunning) {
+            navigation.resetStackAndNavigate('DrawerNavigator');
+        }
     }
 
     public render() {
@@ -150,9 +152,9 @@ export class SettingsScreen extends React.Component<Props, State> {
             <ThemeConsumer>
                 {(themeContext: ThemeContextValue) => (
                     <View style={{ flex: 1 }}>
-                        <Appbar.Header style={{backgroundColor:'#F8F8F8', borderBottomColor:'#DFE0E2', borderBottomWidth:1}}>
-                            <Appbar.BackAction onPress={() => {this.onBackButtonClick()}} color={themeContext.theme.variables?.colors?.primary} />
-                            <Appbar.Content title={translate('settingsTitle')} titleStyle={{fontWeight:'bold'}} style={{alignItems:'flex-start'}} />
+                        <Appbar.Header style={{ backgroundColor: '#F8F8F8', borderBottomColor: '#DFE0E2', borderBottomWidth: 1 }}>
+                            <Appbar.BackAction onPress={() => { this.onBackButtonClick() }} color={themeContext.theme.variables?.colors?.primary} />
+                            <Appbar.Content title={translate('settingsTitle')} titleStyle={{ fontWeight: 'bold' }} style={{ alignItems: 'flex-start' }} />
                         </Appbar.Header>
 
                         <ScrollView
@@ -174,12 +176,12 @@ export class SettingsScreen extends React.Component<Props, State> {
                                         text={translate('settingsButtonExport')}
                                         type={RoundedButtonType.hollowPurple}
                                         iconName="file-export"
-                                        disabled={this.state.exportAllButtonDisabled}
+                                        disabled={this.state.isExportRunning || this.state.isImportRunning}
                                         onPress={() => { this.exportAllData() }}
                                         style={{ flex: 1 }}
                                     />
 
-                                    {this.state.exportAllButtonDisabled && (
+                                    {this.state.isExportRunning && (
                                         <ActivityIndicator animating={true} style={{ marginLeft: scale(20) }} />
                                     )}
                                 </View>
@@ -187,13 +189,20 @@ export class SettingsScreen extends React.Component<Props, State> {
                                 <View style={{ height: themeContext.theme.variables?.sizes.verticalPaddingNormal }} />
 
                                 {/* Import all data */}
-                                <RoundedButton
-                                    text={translate('settingsButtonImport')}
-                                    type={RoundedButtonType.hollowPurple}
-                                    iconName="file-import"
-                                    onPress={() => { this.importAllData() }}
-                                    style={{ width: '85%', alignSelf: 'center' }}
-                                />
+                                <View style={{ flexDirection: 'row', width: '85%', alignSelf: 'center' }}>
+                                    <RoundedButton
+                                        text={translate('settingsButtonImport')}
+                                        type={RoundedButtonType.hollowPurple}
+                                        iconName="file-import"
+                                        disabled={this.state.isExportRunning || this.state.isImportRunning}
+                                        onPress={() => { this.importAllData() }}
+                                        style={{ flex: 1 }}
+                                    />
+
+                                    {this.state.isImportRunning && (
+                                        <ActivityIndicator animating={true} style={{ marginLeft: scale(20) }} />
+                                    )}
+                                </View>
 
                                 <Divider style={{ width: '100%', height: 1, marginTop: scale(60), marginBottom: scale(40) }} />
 

@@ -8,6 +8,7 @@
     "registerAccount": "Napravite nalog koristeći Email",
     "loginButton": "Login",
     "loginForgotPassword": "Zaboravili ste lozinku?",
+    "loginCanceled": "Otkazali ste log in",
     "createAccount": "Napravite nalog",
     "alreadyHaveAccount": "Vec imate nalog? Ulogujte se",
     "youCreatedAccount": "Napravili ste nalog!",
@@ -104,6 +105,7 @@
     "settingsButtonExport": "Izvezite sve sačuvane podatke",
     "settingsButtonImport": "Uvezite sve sačuvane podatke",
     "settingsButtonExportError": "Podaci nisu uspesno izvezeni",
+    "settingsButtonImportError": "Backup file ne postoji",
     "settingsButtonDeleteAllData": "Obrišite nalog i izbrišite sve podatke",
     "settingsLogout": "Odjavite se iz aplikacije",
 

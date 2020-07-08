@@ -8,6 +8,7 @@
     "registerAccount": "Register account using Email",
     "loginButton": "Login",
     "loginForgotPassword": "Forgot your password?",
+    "loginCanceled": "You canceled log in",
     "createAccount": "Create account",
     "alreadyHaveAccount": "Already have account? Log in",
     "youCreatedAccount": "You created account",
@@ -104,6 +105,7 @@
     "settingsButtonExport": "Export all saved data",
     "settingsButtonImport": "Import all saved data",
     "settingsButtonExportError": "Export failed",
+    "settingsButtonImportError": "There is no backup file",
     "settingsButtonDeleteAllData": "Delete account and erase all data",
     "settingsLogout": "Logout",
 
