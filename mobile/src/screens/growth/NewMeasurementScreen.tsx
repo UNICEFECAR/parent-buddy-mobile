@@ -12,6 +12,9 @@ import { Checkbox } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { scale, moderateScale } from 'react-native-size-matters';
 import { translate } from '../../translations/translate';
+import { userRealmStore, dataRealmStore } from '../../stores';
+import { Measures } from '../../stores/ChildEntity';
+import { navigation } from '../../app';
 
 
 export interface Props {
@@ -19,8 +22,8 @@ export interface Props {
 }
 
 export interface State {
-    measurementDate: string,
-    weight: string,
+    measurementDate: Date | undefined,
+    length: string,
     height: string,
     comment: string,
     measurementPlace: string | undefined,
@@ -37,8 +40,8 @@ export class NewMeasurementScreen extends Component<Props, State> {
 
     private initState = () => {
         let state: State = {
-            measurementDate: "",
-            weight: "",
+            measurementDate: undefined,
+            length: "",
             height: "",
             comment: "",
             isVaccineReceived: "no",
@@ -61,22 +64,49 @@ export class NewMeasurementScreen extends Component<Props, State> {
         })
     }
 
-    private setMeasurementDate = (value: string) => {
+    private setMeasurementDate = (value: Date) => {
         this.setState({
             measurementDate: value,
         })
     }
 
     private measureChange = (value: string, label: string) => {
-        if (label === "weight") {
+        if (label === "length") {
             this.setState({
-                weight: value
+                length: value
             })
         } else {
             this.setState({
                 height: value
             })
         }
+    }
+
+    private submit(){
+        const { comment, length, height, measurementDate } = this.state;
+        const currentChild = userRealmStore.getCurrentChild();
+        if (!currentChild) return;
+
+        let measures: Measures[] = [];
+
+        if (currentChild.measures !== null && currentChild.measures !== "") {
+            measures = JSON.parse(currentChild.measures);
+            measures.push({ length: length, height: height, measurementDate: measurementDate })
+        } else {
+            measures[0].height = height;
+            measures[0].length = length;
+            measures[0].measurementDate = measurementDate;
+        }
+
+        userRealmStore.realm?.write(() => {
+            currentChild.comment = comment;
+            currentChild.measures = JSON.stringify(measures);
+            // This will just trigger the update of data realm
+            dataRealmStore.setVariable('randomNumber', Math.floor(Math.random() * 6000) + 1);
+
+            // this.props.navigation.goBack();
+            navigation.goBack()
+        });
     }
 
     render() {
@@ -88,7 +118,9 @@ export class NewMeasurementScreen extends Component<Props, State> {
                         contentContainerStyle={styles.container}
                     >
                         <View style={styles.dateTimePickerContainer}>
-                            <DateTimePicker label={translate("newMeasureScreenDatePickerLabel")} onChange={() => { }} />
+                            <DateTimePicker 
+                                label={translate("newMeasureScreenDatePickerLabel")} 
+                                onChange={(date) => this.setMeasurementDate(date)} />
                         </View>
                         <View style={styles.measurementPlaceContainer}>
                             <Typography style={{ marginBottom: 22 }}>{translate("newMeasureScreenPlaceTitle")}</Typography>
@@ -109,16 +141,16 @@ export class NewMeasurementScreen extends Component<Props, State> {
                                 suffix="g"
                                 icon="weight"
                                 style={{ width: 150 }}
-                                value={this.state.weight}
-                                onChange={value => this.measureChange(value, 'weight')}
+                                value={this.state.height}
+                                onChange={value => this.measureChange(value, 'height')}
                             />
                             <RoundedTextInput
                                 label="Visina"
                                 suffix="cm"
                                 icon="weight"
                                 style={{ width: 150, marginTop: 8 }}
-                                value={this.state.height}
-                                onChange={value => this.measureChange(value, 'height')}
+                                value={this.state.length}
+                                onChange={value => this.measureChange(value, 'length')}
 
                             />
                         </View>
@@ -202,7 +234,11 @@ export class NewMeasurementScreen extends Component<Props, State> {
                         </View>
 
                         <View>
-                            <RoundedButton text={translate("newMeasureScreenSaveBtn")} type={RoundedButtonType.purple} />
+                            <RoundedButton 
+                                text={translate("newMeasureScreenSaveBtn")} 
+                                type={RoundedButtonType.purple} 
+                                onPress={() => this.submit()}
+                            />
                         </View>
                     </ScrollView>
                 )}

@@ -82,13 +82,13 @@ export class GrowthChart extends React.Component<Props, State> {
 
         /* Create line chart array for type chart */
         this.props.lineChartData.map(item => {
-            chartData.push(this.props.chartType === chartTypes.heightLength ? { x: item.length, y: item.height } : { x: item.measurementDay / 30, y: item.length })
+            chartData.push(this.props.chartType === chartTypes.heightLength ? { x: item.length, y: item.height } : { x: item.measurementDate / 30, y: item.length })
         })
 
         let state: State = {
             orientation: windowWidth > windowHeight ? 'landscape' : 'portrait',
-            width: windowWidth,
-            height: windowHeight,
+            width: windowWidth - 40,
+            height: 250,
             bottomArea: obj.bottomArea,
             topArea: obj.topArea,
             middleArea: obj.middleArea,
@@ -172,14 +172,14 @@ export class GrowthChart extends React.Component<Props, State> {
         return obj;
     }
 
-    private onLayout = (event: LayoutChangeEvent) => {
-        let layout = event.nativeEvent.layout;
+    // private onLayout = (event: LayoutChangeEvent) => {
+    //     let layout = event.nativeEvent.layout;
 
-        this.setState({
-            width: layout.width,
-            height: this.props.showFullscreen ? layout.height - 50 : layout.height - 200,
-        })
-    }
+    //     this.setState({
+    //         width: layout.width,
+    //         height: this.props.showFullscreen ? 
+    //     })
+    // }
 
     private renderChart = (): ReactNode => (
         <>
@@ -230,8 +230,8 @@ export class GrowthChart extends React.Component<Props, State> {
                     style={victoryStyles.VictoryLine}
                 />
 
-                {/* ********* SCATTER ********* */}
-                <VictoryScatter
+                {/********** SCATTER ********* */}
+                 <VictoryScatter
                     data={this.state.lineChart}
                     size={9}
                     style={victoryStyles.VictoryScatter}
@@ -340,7 +340,7 @@ export class GrowthChart extends React.Component<Props, State> {
     public render() {
 
         return (
-            <View style={styles.container} onLayout={this.onLayout}>
+            <View style={styles.container} >
                 <View style={styles.chartHeader}>
                     <Typography type={TypographyType.headingSecondary}>{this.props.title}</Typography>
                     {
@@ -447,7 +447,7 @@ export enum chartTypes {
 }
 
 export interface ChartData {
-    measurementDay: number,
+    measurementDate: number,
     height: number,
     length: number,
 }

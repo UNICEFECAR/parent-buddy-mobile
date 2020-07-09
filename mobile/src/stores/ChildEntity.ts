@@ -1,5 +1,12 @@
 import { ObjectSchema } from "realm";
 
+
+export type Measures = {
+    height: string | undefined
+    length: string | undefined
+    measurementDate: Date | undefined
+}
+
 export type ChildEntity = {
     uuid: string;
     name: string;
@@ -10,14 +17,17 @@ export type ChildEntity = {
     plannedTermDate?: Date;
     birthDate?: Date;
     babyRating?: number;
-    height?: number;
-    weight?: number; 
+    measures: string;
     comment?: string;
 };
 
 /**
  * Realm schema for ChildEntity.
  */
+export const Measure = {
+
+}
+
 export const ChildEntitySchema: ObjectSchema = {
     name: 'ChildEntity',
     primaryKey: 'uuid',
@@ -33,8 +43,7 @@ export const ChildEntitySchema: ObjectSchema = {
         plannedTermDate: {type: 'date', optional: true},
         birthDate: {type: 'date', optional: true},
         babyRating: {type: 'int', optional: true},
-        height: {type: 'double', optional: true},
-        weight: {type: 'double', optional: true}, 
+        measures: {type: 'string', optional: true},
         comment: {type: 'string', optional: true},
     }
 };

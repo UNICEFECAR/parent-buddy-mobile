@@ -329,4 +329,46 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
             predefinedTagId: 51,
         },
     ],
+    growthPeriods: [
+        {
+            dayMin: 0,
+            dayMax: 30,
+            text: 'Novorođenče će na početku izgubiti do 10% svoje telesne mase (težine), a ovaj gubitak će, uz odgovarajuću negu i ishranu, najbolje majčinim mlekom, nadoknaditi najdalje do kraja druge nedelje života. Sledi period najbržeg rasta: u težini  20 do 30 gr dnevno, a mesečno u dužini do 5 cm, u obimu glave  2 -2,5 cm.  '
+        },
+        {
+            dayMin: 31,
+            dayMax: 91,
+            text: 'U drugom i trećem mesecu dete nastavlja da raste približno istom brzinom koju je uspostavilo tokom prvih nedelja. Mesečno dobija 700 do 900 gr u težini, 2,5 do 4 cm u dužini i oko 1,2 cm u obimu glave.   '
+        },
+        {
+            dayMin: 92,
+            dayMax: 152,
+            text: 'U četvrtom mesecu rast počinje da se usporava. Tokom četvrtog i petog meseca, dete mesečno dobija u proseku 450 do 550 gr u težini i oko 2 cm u dužini'
+        },
+        {
+            dayMin: 153,
+            dayMax: 183,
+            text: 'Dete nastavlja da dobija mesečno proseku 450 do 550 gr u težini i oko 2 cm u dužini. Dok navrši 6 meseci dete je već udvostručilo telesnu masu sa rođenja. '
+        },
+        {
+            dayMin: 184,
+            dayMax: 274,
+            text: 'Od sedmog do devetog meseca rast se i dalje usporava. Deca rastu različitom brzinom ali je važno da slede obrazac rasta koji su uspostavila tokom predhodnih meseci.',
+        },
+        {
+            dayMin: 275,
+            dayMax: 365,
+            text: 'U poslednjem tromesečju prve godine dete dobija oko 1 cm mesečno u dužini a težina varira i zavisi od aktivnosti. Tokom prve godine dete uglavnom utrostruči svoju težinu sa rođenju, poraste u proseku  25 cm a obim glave se poveća za 12,5 cm.  ',
+        },
+        {
+            dayMin: 366,
+            dayMax: 730,
+            text: 'U drugoj godini se nastavlja postepeno usporavanje rasta. U ovoj godini dete poraste oko 12 cm,  dobije 2-2,5 kg u težini i obim glave se uveća za 2-2,5 cm. ',
+        },
+        {
+            dayMin: 731,
+            dayMax: 2190,
+            text: 'Dete od treće godine ujednačeno raste. Dete u visini dobija  5-7,5 cm, a u težini 2-3 kg godišnje. ',
+        },
+    ]
 };

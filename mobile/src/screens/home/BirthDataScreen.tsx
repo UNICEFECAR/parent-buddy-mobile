@@ -12,8 +12,8 @@ import { RoundedTextInput } from '../../components/RoundedTextInput';
 import { RoundedTextArea } from '../../components/RoundedTextArea';
 import { RoundedButton, RoundedButtonType } from '../../components/RoundedButton';
 import { userRealmStore, dataRealmStore } from '../../stores';
-import { ChildEntitySchema, ChildEntity } from '../../stores/ChildEntity';
-import { parse } from '@babel/core';
+import { Measures } from '../../stores/ChildEntity';
+import { currentLocale } from 'i18n-js';
 
 export interface BirthDataScreenParams {
 
@@ -28,7 +28,7 @@ export interface State {
     birthDate: Date | undefined,
     babyRating: number | undefined,
     height: string | undefined,
-    weight: string | undefined,
+    length: string | undefined,
     comment: string | undefined,
 }
 
@@ -56,56 +56,63 @@ export class BirthDataScreen extends React.Component<Props, State> {
     private initState = () => {
         let state: State;
 
-        const allRecords = userRealmStore.realm?.objects<ChildEntity>(ChildEntitySchema.name);
-        allRecords?.forEach((record, index, collection) => {
+        const curentChild = userRealmStore.getCurrentChild();
+
+        if (curentChild) {
+
+            let height: string = "";
+            let length: string = "";
+
+            if(curentChild.measures && curentChild.measures !== ""){
+                let measures = JSON.parse(curentChild.measures);
+
+                height = measures[0].height;
+                length = measures[0].length;
+            };
+
             state = {
-                babyRating: record.babyRating,
-                birthDate: record.birthDate,
-                comment: record.comment,
-                height: record.height?.toString(),
-                plannedTermDate: record.plannedTermDate,
-                weight: record.weight?.toString(),
-            }
+                babyRating: curentChild.babyRating,
+                birthDate: curentChild.birthDate,
+                comment: curentChild.comment,
+                height: height === undefined ? "" : height.toString(),
+                plannedTermDate: curentChild.plannedTermDate,
+                length: length === undefined ? "" : length.toString(),
+            };
 
             this.state = state;
-        })
-    }
+        };
+    };
 
     private gotoBack() {
         this.props.navigation.goBack();
-    }
+    };
 
     private submit = () => {
-        console.log('uso u submit')
-        const { comment, weight, height, babyRating, plannedTermDate, birthDate } = this.state;
-        let childHeight: number | undefined; 
-        let childWidth:  number | undefined;
-
-        if(weight && weight !== ""){
-            childWidth = parseFloat(weight);
-        }else{
-            childWidth = undefined
-        }
-
-        if(height && height !== ""){
-            childHeight = parseFloat(height);
-        }else{
-            childHeight = undefined
-        }
+        const { comment, length, height, babyRating, plannedTermDate, birthDate } = this.state;
 
         const currentChild = userRealmStore.getCurrentChild();
         if (!currentChild) return;
 
+        let measures: Measures[] = [];
+
+        if (currentChild.measures !== null && currentChild.measures !== "") {
+            measures = JSON.parse(currentChild.measures);
+
+            measures[0].height = height;
+            measures[0].length = length;
+            measures[0].measurementDate = birthDate;
+        } else {
+            measures.push({ length: height, height: length, measurementDate: birthDate })
+        }
+
         userRealmStore.realm?.write(() => {
-            currentChild.height = childHeight;
-            currentChild.weight = childWidth;
             currentChild.comment = comment;
             currentChild.babyRating = babyRating;
             currentChild.plannedTermDate = plannedTermDate;
             currentChild.birthDate = birthDate;
-
+            currentChild.measures = JSON.stringify(measures);
             // This will just trigger the update of data realm
-            dataRealmStore.setVariable('randomNumber', Math.floor(Math.random() * 6000) + 1  );
+            dataRealmStore.setVariable('randomNumber', Math.floor(Math.random() * 6000) + 1);
 
             this.props.navigation.goBack();
         });
@@ -125,13 +132,13 @@ export class BirthDataScreen extends React.Component<Props, State> {
 
     private setChildWeight = (value: string) => {
         this.setState({
-            weight: value
+            height: value
         })
     }
 
     private setChildLength = (value: string) => {
         this.setState({
-            height: value
+            length: value
         })
     }
 
@@ -206,7 +213,7 @@ export class BirthDataScreen extends React.Component<Props, State> {
                                 icon="weight"
                                 style={{ width: scale(150) }}
                                 onChange={(value) => this.setChildWeight(value)}
-                                value={this.state.weight}
+                                value={this.state.height}
                                 keyboardType="numeric"
                             />
 
@@ -218,7 +225,7 @@ export class BirthDataScreen extends React.Component<Props, State> {
                                 icon="weight"
                                 style={{ width: scale(150) }}
                                 onChange={(value) => this.setChildLength(value)}
-                                value={this.state.height}
+                                value={this.state.length}
                                 keyboardType="numeric"
 
                             />
@@ -243,7 +250,7 @@ export class BirthDataScreen extends React.Component<Props, State> {
 
                             <View style={{ height: themeContext.theme.variables?.sizes.verticalPaddingLarge }} />
                         </View>
-                
+
                     </KeyboardAwareScrollView>
                 )}
             </ThemeConsumer>
