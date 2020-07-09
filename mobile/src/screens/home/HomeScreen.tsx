@@ -15,6 +15,8 @@ import { content, localize } from '../../app';
 import { Media } from '../../components';
 import Orientation from 'react-native-orientation-locker';
 import { getSearchResultsScreenData } from '../../stores/getSearchResultsScreenData';
+import axios, { AxiosResponse } from 'axios';
+import { appConfig } from "../../app/appConfig";
 
 export interface HomeScreenParams {
     showSearchInput?: boolean;
@@ -50,9 +52,48 @@ export class HomeScreen extends React.Component<Props, object> {
         }
     }
 
-    private onTestButtonPress() {
-        const results = getSearchResultsScreenData('yes');
-        console.log(JSON.stringify(results, null, 4));
+    private async onTestButtonPress() {
+        // let baseUrl = `http://${appConfig.apiUsername}:${appConfig.apiPassword}@ecaroparentingapppi3xep5h4v.devcloud.acquia-sites.com/api`;
+        let baseUrl = appConfig.apiUrl;
+
+        let url = `${baseUrl}/list-taxonomy/en/predefined_tags`;
+
+        // console.log(JSON.stringify({
+        //     url: url,
+        //     username: appConfig.apiUsername,
+        //     password: appConfig.apiPassword,
+        // }, null, 4));
+
+        try {
+            let axiosResponse: AxiosResponse = await axios({
+                // API: https://bit.ly/2ZatNfQ
+                url: url,
+                method: 'GET',
+                responseType: 'json',
+                // timeout: appConfig.apiTimeout, // milliseconds
+                // maxContentLength: 100000, // bytes
+                // withCredentials: true,
+                // headers: { 'Authorization': `Basic YWNjZXNzX2NvbnRlbnQ6eEFMUlk1R2YyS244MFpVTUhFYmQ=` } ,
+                auth: {
+                    username: appConfig.apiUsername,
+                    password: appConfig.apiPassword,
+                },
+                transformRequest: [function (data, headers) {
+                    // Do whatever you want to transform the data
+                    console.log('data', JSON.stringify(data, null, 4));
+                    console.log('headers', JSON.stringify(headers, null, 4));
+                    return data;
+                }],
+            });
+
+            // Transform response
+            if (axiosResponse.data?.data) {
+                console.log('SUCCESS SUCCESS');
+            }
+        } catch (rejectError) {
+            // console.log(JSON.stringify(rejectError, null, 4));
+            console.log('ERROR BRE');
+        }
     }
 
     public render() {
@@ -66,18 +107,18 @@ export class HomeScreen extends React.Component<Props, object> {
                         {/* <Text>{localize.getLanguage()}</Text> */}
 
                         {/* Test button */}
-                        {/* <Button onPress={() => {this.onTestButtonPress()}}>Test</Button>
-                        <View style={{height:30}} /> */}
+                        <Button onPress={() => { this.onTestButtonPress() }}>Test</Button>
+                        <View style={{ height: 30 }} />
 
                         <DataRealmConsumer>
                             {(dataRealmContext: DataRealmContextValue) => (
                                 <>
-                                {  
-                                    content.getHomeScreenDevelopmentArticles(dataRealmContext.realm).categoryArticles?.length !== 0 ?
-                                    <ArticlesSection data={content.getHomeScreenDevelopmentArticles(dataRealmContext.realm)} />
-                                    : null
-                                }
-                                <ArticlesSection data={content.getHomeScreenArticles(dataRealmContext.realm)} />
+                                    {
+                                        content.getHomeScreenDevelopmentArticles(dataRealmContext.realm).categoryArticles?.length !== 0 ?
+                                            <ArticlesSection data={content.getHomeScreenDevelopmentArticles(dataRealmContext.realm)} />
+                                            : null
+                                    }
+                                    <ArticlesSection data={content.getHomeScreenArticles(dataRealmContext.realm)} />
                                 </>
                             )}
                         </DataRealmConsumer>
