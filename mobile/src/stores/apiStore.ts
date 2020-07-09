@@ -5,6 +5,7 @@ import axios, { AxiosResponse } from 'axios';
 import RNFS from 'react-native-fs';
 import URLParser from 'url';
 import { BasicPageEntity } from "./BasicPageEntity";
+import { Platform } from "react-native";
 
 /**
  * Communication with API.
@@ -25,6 +26,7 @@ class ApiStore {
         const language = localize.getLanguage();
 
         let url = `${appConfig.apiUrl}/list-basic-page/${language}`;
+        url = this.addBasicAuthForIOS(url);
         let response: BasicPagesResponse = {
             data: [],
             total: 0,
@@ -74,6 +76,7 @@ class ApiStore {
         const DrupalRegisterApiUrl = appConfig.apiUrl.substring(0, appConfig.apiUrl.length - 3)
 
         let url = `${DrupalRegisterApiUrl}entity/user`
+        url = this.addBasicAuthForIOS(url);
         const language = localize.getLanguage();
 
         let bodyParams = {
@@ -120,6 +123,7 @@ class ApiStore {
     public async drupalLogin(args: DrupalLoginArgs): Promise<DrupalLoginResponse> {
 
         let url = `${appConfig.apiUrl}/user/validate?username=${args.username}&password=${args.password}`
+        url = this.addBasicAuthForIOS(url);
         let response: DrupalLoginResponse = { isUserExist: false }
 
         try {
@@ -152,6 +156,7 @@ class ApiStore {
         const language = localize.getLanguage();
         const contentType: string | undefined = args.type;
         let url = `${appConfig.apiUrl}/list-content/${language}${contentType ? `/${contentType}` : ''}`;
+        url = this.addBasicAuthForIOS(url);
 
         // URL params
         const urlParams: any = {};
@@ -310,6 +315,7 @@ class ApiStore {
         for (let index in vocabularies) {
             let vocabulary = vocabularies[index];
             let url = `${appConfig.apiUrl}/list-taxonomy/${language}/${vocabulary}`;
+            url = this.addBasicAuthForIOS(url);
 
             try {
                 let axiosResponse: AxiosResponse = await axios({
@@ -401,6 +407,14 @@ class ApiStore {
                 args: args[index],
             };
         });
+    }
+
+    private addBasicAuthForIOS(url: string): string {
+        if (Platform.OS === 'ios') {
+            return url.replace('http://', `http://${appConfig.apiUsername}:${appConfig.apiPassword}@`);
+        } else {
+            return url;
+        }
     }
 }
 
