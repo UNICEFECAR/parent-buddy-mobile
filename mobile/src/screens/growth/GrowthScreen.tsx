@@ -33,7 +33,8 @@ export interface Props {
 export interface State {
     periodIntroductionText: string,
     measuresData: ChartData[],
-    InterpretationTexWeightLength: InterpretationTex,
+    interpretationTexWeightLength: InterpretationTex,
+    interpretationTexLenghtAge: InterpretationTex,
     childBirthDate: Date,
     childGender: ChildGender,
     lastMeasurementDate: string | undefined,
@@ -46,10 +47,10 @@ export class GrowthScreen extends Component<Props, State> {
         this.setDefaultScreenParams();
     }
 
-    private getInterpretationTexLenghtForAge(gender: ChildGender, childAgeInDays: number, lastMeasurements: Measures) {
+    private getInterpretationTexLenghtForAge(gender: ChildGender, lastMeasurements: Measures) {
         const childAgeId = dataRealmStore.getChildAgeTagWithArticles()?.id;
 
-        let InterpretationTex: InterpretationTex = {
+        let interpretationTex: InterpretationTex = {
             name: "",
             text: "",
             articleId: 0
@@ -63,29 +64,64 @@ export class GrowthScreen extends Component<Props, State> {
             chartData = Data.Height_age_girls0_5
         }
 
-        let height: number = 0;
         let length: number = 0;
 
         if (lastMeasurements.height && lastMeasurements.length) {
-            height = parseFloat(lastMeasurements.height);
             length = parseFloat(lastMeasurements.length);
         };
 
+        const childBirthDay = userRealmStore.getCurrentChild()?.birthDate;
+        let measurementDate: DateTime = DateTime.local();
+        
+        if(lastMeasurements.measurementDate){
+            console.log('uso')
+            measurementDate = DateTime.fromJSDate(new Date(lastMeasurements.measurementDate));
+        }
 
-        let filteredDataForHeight = chartData.find(data => data.Day === childAgeInDays)
-        let InterpretationData = translateData('interpretationWeightForHeight')?.find(item => item.predefined_tags.indexOf(childAgeId) !== -1)
+        let days = 0;
 
-        // if(filteredDataForHeight){
-        //     if()
-        // }
+        if(childBirthDay){
+            let date = DateTime.fromJSDate(childBirthDay);
+            let convertInDays = measurementDate.diff(date, "days").toObject().days;
 
+            if(convertInDays!== undefined) days = convertInDays;
+        };
+
+        console.log(days, "ASDadsaddasadsasdasdasdasdadsasd")
+
+        let filteredData = chartData.find(data => data.Day === days)
+        let interpretationData = translateData('interpretationWeightForHeight')?.find(item => item.predefined_tags.indexOf(childAgeId) !== -1)
+
+        if(filteredData){
+            if(length >= filteredData.SD2neg && length <= filteredData.SD3){
+                // dobro 
+                interpretationTex = interpretationData.goodText;
+            }
+
+            if(length < filteredData.SD2neg && length > filteredData.SD3neg){
+                // sporo raste warningLow
+                interpretationTex = interpretationData.warrningSmallLengthText
+            }
+
+            if(length < filteredData.SD3neg){
+                // rast ozbiljno zaostaje uzas katastrofa
+                interpretationTex = interpretationData.emergencySmallLengthText
+            }
+
+            if(length > filteredData.SD3){
+                // MASALA
+                interpretationTex = interpretationData.warrningBigLengthText
+            }
+        }
+
+        return interpretationTex;
     }
 
     private getInterpretationTexWeightForHeight(gender: ChildGender, childAgeInDays: number, lastMeasurements: Measures) {
         const dayLimit = 730; // 0-2 yeast || 2-5 years 
         const childAgeId = dataRealmStore.getChildAgeTagWithArticles()?.id;
 
-        let InterpretationTex: InterpretationTex = {
+        let interpretationTex: InterpretationTex = {
             name: "",
             text: "",
             articleId: 0
@@ -116,32 +152,32 @@ export class GrowthScreen extends Component<Props, State> {
         };
 
         let filteredDataForHeight = chartData.find(data => data.Height === length);
-        let InterpretationData = translateData('interpretationWeightForHeight')?.
+        let interpretationData = translateData('interpretationWeightForHeight')?.
             find(item => item.predefined_tags.indexOf(childAgeId) !== -1);
 
         if (filteredDataForHeight) {
             if (height >= filteredDataForHeight?.SD2neg && height <= filteredDataForHeight.SD2) {
-                InterpretationTex = InterpretationData.goodText;
+                interpretationTex = interpretationData.goodText;
             };
 
             if (height <= filteredDataForHeight.SD2neg && height >= filteredDataForHeight.SD3neg) {
-                InterpretationTex = InterpretationData.warrningSmallHeightText;
+                interpretationTex = interpretationData.warrningSmallHeightText;
             };
 
             if (height < filteredDataForHeight.SD3neg) {
-                InterpretationTex = InterpretationData.emergencySmallHeightText;
+                interpretationTex = interpretationData.emergencySmallHeightText;
             };
 
             if (height >= filteredDataForHeight.SD2 && height <= filteredDataForHeight.SD3) {
-                InterpretationTex = InterpretationData.warrningBigHeightText;
+                interpretationTex = interpretationData.warrningBigHeightText;
             };
 
             if (height > filteredDataForHeight.SD3) {
-                InterpretationTex = InterpretationData.emergencyBigHeightText;
+                interpretationTex = interpretationData.emergencyBigHeightText;
             };
         };
 
-        return InterpretationTex;
+        return interpretationTex;
     }
 
     private convertMeasuresData(measures: Measures[]) {
@@ -150,7 +186,7 @@ export class GrowthScreen extends Component<Props, State> {
 
         let measuresData = measures.map(item => {
             if (item.measurementDate) {
-                let date = DateTime.fromJSDate(item.measurementDate);
+                let date = DateTime.fromJSDate(new Date(item.measurementDate));
                 measurementDateInDays = timeNow.diff(date, "days").toObject().days;
             };
 
@@ -172,7 +208,12 @@ export class GrowthScreen extends Component<Props, State> {
             childBirthDate: new Date(),
             childGender: "boy",
             lastMeasurementDate: undefined,
-            InterpretationTexWeightLength: {
+            interpretationTexWeightLength: {
+                text: "",
+                articleId: 0,
+                name: "",
+            },
+            interpretationTexLenghtAge: {
                 text: "",
                 articleId: 0,
                 name: "",
@@ -209,16 +250,22 @@ export class GrowthScreen extends Component<Props, State> {
                 }
 
                 const measuresData = this.convertMeasuresData(measures);
-                const InterpretationTexWeightLength = this.getInterpretationTexWeightForHeight(
+                const interpretationTexWeightLength = this.getInterpretationTexWeightForHeight(
                     childGender,
                     childAgeInDays,
                     measures[measures.length - 1]
                 );
 
+                const interpretationTexLenghtAge = this.getInterpretationTexLenghtForAge(
+                    childGender,
+                    measures[measures.length - 1]
+                )
+
                 state = {
                     periodIntroductionText: periodIntroductionText,
                     measuresData: measuresData,
-                    InterpretationTexWeightLength: InterpretationTexWeightLength,
+                    interpretationTexWeightLength: interpretationTexWeightLength,
+                    interpretationTexLenghtAge: interpretationTexLenghtAge,
                     childGender: childGender,
                     childBirthDate: currentChild.birthDate,
                     lastMeasurementDate: lastMeasurementDate,
@@ -265,7 +312,8 @@ export class GrowthScreen extends Component<Props, State> {
             measuresData,
             childBirthDate,
             childGender,
-            InterpretationTexWeightLength,
+            interpretationTexWeightLength,
+            interpretationTexLenghtAge
         } = this.state;
 
         return (
@@ -312,10 +360,10 @@ export class GrowthScreen extends Component<Props, State> {
                                                     />
                                                 </View>
                                                 {
-                                                    this.state.InterpretationTexWeightLength.text ?
+                                                    interpretationTexWeightLength.text ?
                                                         <View style={styles.card}>
                                                             <Typography>
-                                                                {this.state.InterpretationTexWeightLength.text}
+                                                                {interpretationTexWeightLength.text}
                                                             </Typography>
                                                             <TextButton color={TextButtonColor.purple} onPress={() => { console.log('ID', this.state.InterpretationTexWeightLength.articleId) }}>Saznaj vise</TextButton>
                                                         </View> : null
@@ -332,10 +380,10 @@ export class GrowthScreen extends Component<Props, State> {
                                                     />
                                                 </View>
                                                 {
-                                                    this.state.InterpretationTexWeightLength.text ?
+                                                    interpretationTexLenghtAge.text ?
                                                         <View style={{ flex: 1, padding: 20, marginBottom: 20, justifyContent: 'center', alignItems: 'stretch', backgroundColor: 'white' }}>
                                                             <Typography>
-                                                                {this.state.InterpretationTexWeightLength.text}
+                                                                {interpretationTexLenghtAge.text}
                                                             </Typography>
                                                             <TextButton color={TextButtonColor.purple} onPress={() => this.goToArticle(this.state.InterpretationTexWeightLength.articleId)}>Saznaj vise</TextButton>
                                                         </View> : null
