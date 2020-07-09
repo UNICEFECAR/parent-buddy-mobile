@@ -4,30 +4,32 @@ import { Measures } from '../../stores/ChildEntity';
 import { userRealmStore } from '../../stores';
 import { DateTime } from 'luxon';
 import { OneMeasurements } from '../../components/growth/OneMeasurement';
+import { NewMeasurements } from '../../components/growth/NewMeasurements';
+import { navigation } from '../../app';
 
-interface Props{
+interface Props {
 
 }
 
-interface State{
+interface State {
     allMeasurements: Measures[]
 }
 
 export class AllMeasurementsScreen extends Component<Props, State>{
-    constructor(props: Props){
+    constructor(props: Props) {
         super(props);
 
         this.initState();
     }
 
-    private initState(){
+    private initState() {
         let state: State = {
             allMeasurements: []
         }
 
         let currentChild = userRealmStore.getCurrentChild();
 
-        if(currentChild && currentChild.measures !== "" && currentChild.measures !== null){
+        if (currentChild && currentChild.measures !== "" && currentChild.measures !== null) {
             let measrues = JSON.parse(currentChild.measures);
             let measurementDateInDays: number | undefined = 0;
             const timeNow = DateTime.local();
@@ -37,7 +39,7 @@ export class AllMeasurementsScreen extends Component<Props, State>{
                     let date = DateTime.fromJSDate(item.measurementDate);
                     measurementDateInDays = timeNow.diff(date, "days").toObject().days;
                 };
-    
+
                 return {
                     height: item.height ? parseFloat(item.height) : 0,
                     length: item.length ? parseFloat(item.length) : 0,
@@ -52,17 +54,23 @@ export class AllMeasurementsScreen extends Component<Props, State>{
     }
 
 
-    render(){
-        return(
-            <View>
+    render() {
+        return (
+            <View style={{ padding: 20 }}>
                 {this.state.allMeasurements.length && this.state.allMeasurements.map(measure => (
-                    <OneMeasurements 
-                        measureDate={measure.measurementDate ? measure.measurementDate?.toDateString() : ""}
-                        measureLength={measure.length ? measure.length?.toString() : ""}
-                        measureMass={measure.height ? measure.height.toString() : ""}
-                        title="a"
-                    />
+                    <View>
+                        <OneMeasurements
+                            measureDate={measure.measurementDate ? measure.measurementDate?.toDateString() : ""}
+                            measureLength={measure.length ? measure.length?.toString() : ""}
+                            measureMass={measure.height ? measure.height.toString() : ""}
+                            title="TODO"
+                            isHorizontalLineVisible={true}
+                        />
+                    </View>
                 ))}
+                <NewMeasurements
+                    onPress={() => navigation.navigate('HomeStackNavigator_NewMeasurementScreen')}
+                />
             </View>
         )
     }

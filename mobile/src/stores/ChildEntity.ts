@@ -2,8 +2,8 @@ import { ObjectSchema } from "realm";
 
 
 export type Measures = {
-    height: string | undefined
-    length: string | undefined
+    height: string
+    length: string
     measurementDate: Date | undefined
 }
 
@@ -15,7 +15,7 @@ export type ChildEntity = {
     createdAt: Date;
     updatedAt: Date;
     plannedTermDate?: Date;
-    birthDate?: Date;
+    birthDate?: Date | undefined;
     babyRating?: number;
     measures: string;
     comment?: string;

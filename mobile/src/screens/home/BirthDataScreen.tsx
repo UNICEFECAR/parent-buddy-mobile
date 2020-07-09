@@ -27,8 +27,8 @@ export interface State {
     plannedTermDate: Date | undefined,
     birthDate: Date | undefined,
     babyRating: number | undefined,
-    height: string | undefined,
-    length: string | undefined,
+    height: string,
+    length: string,
     comment: string | undefined,
 }
 
@@ -56,26 +56,26 @@ export class BirthDataScreen extends React.Component<Props, State> {
     private initState = () => {
         let state: State;
 
-        const curentChild = userRealmStore.getCurrentChild();
+        const currentChild = userRealmStore.getCurrentChild();
 
-        if (curentChild) {
+        if (currentChild) {
 
             let height: string = "";
             let length: string = "";
 
-            if(curentChild.measures && curentChild.measures !== ""){
-                let measures = JSON.parse(curentChild.measures);
+            if(currentChild.measures && currentChild.measures !== ""){
+                let measures = JSON.parse(currentChild.measures);
 
                 height = measures[0].height;
                 length = measures[0].length;
             };
 
             state = {
-                babyRating: curentChild.babyRating,
-                birthDate: curentChild.birthDate,
-                comment: curentChild.comment,
+                babyRating: currentChild.babyRating,
+                birthDate: currentChild.birthDate ? currentChild.birthDate : undefined,
+                comment: currentChild.comment,
                 height: height === undefined ? "" : height.toString(),
-                plannedTermDate: curentChild.plannedTermDate,
+                plannedTermDate: currentChild.plannedTermDate,
                 length: length === undefined ? "" : length.toString(),
             };
 
@@ -102,7 +102,7 @@ export class BirthDataScreen extends React.Component<Props, State> {
             measures[0].length = length;
             measures[0].measurementDate = birthDate;
         } else {
-            measures.push({ length: height, height: length, measurementDate: birthDate })
+            measures.push({ length: length, height: height, measurementDate: birthDate })
         }
 
         userRealmStore.realm?.write(() => {

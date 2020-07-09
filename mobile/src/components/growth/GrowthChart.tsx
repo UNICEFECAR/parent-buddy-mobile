@@ -172,15 +172,6 @@ export class GrowthChart extends React.Component<Props, State> {
         return obj;
     }
 
-    // private onLayout = (event: LayoutChangeEvent) => {
-    //     let layout = event.nativeEvent.layout;
-
-    //     this.setState({
-    //         width: layout.width,
-    //         height: this.props.showFullscreen ? 
-    //     })
-    // }
-
     private renderChart = (): ReactNode => (
         <>
             <VictoryChart
@@ -374,7 +365,9 @@ const styles = StyleSheet.create<GrowtChartStyles>({
         justifyContent: 'flex-start',
     },
     chartHeader: {
-        flexDirection: "row"
+        flexDirection: "row",
+        paddingLeft: 20,
+        paddingTop: 20,
     },
     contentWrapper: {
         paddingLeft: 15,
