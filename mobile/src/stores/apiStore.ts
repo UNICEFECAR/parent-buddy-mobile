@@ -416,12 +416,6 @@ class ApiStore {
             return url;
         }
     }
-
-    private async waitMilliseconds(milliseconds: number): Promise<string> {
-        return new Promise((resolve, reject) => {
-            setTimeout(() => { resolve('success') }, milliseconds);
-        });
-    }
 }
 
 export interface BasicPagesResponse {

@@ -49,13 +49,13 @@ class Utils {
         }
     }
 
-    public sendSms(text:string) {
+    public sendSms(text: string) {
         SendSMS.send({
             body: text,
             // @ts-ignore
             successTypes: ['sent', 'queued'],
             allowAndroidSendWithoutReadPermission: true
-        }, (completed:boolean, cancelled:boolean, error:boolean) => {
+        }, (completed: boolean, cancelled: boolean, error: boolean) => {
             console.log('SMS Callback: completed: ' + completed + ' cancelled: ' + cancelled + 'error: ' + error);
         });
     }
@@ -84,27 +84,27 @@ class Utils {
 
     public randomizeArray(arr: any[]) {
         var currentIndex = arr.length, temporaryValue, randomIndex;
-          
+
         // While there remain elements to shuffle...
         while (0 !== currentIndex) {
-      
-          // Pick a remaining element...
-          randomIndex = Math.floor(Math.random() * currentIndex);
-          currentIndex -= 1;
-      
-          // And swap it with the current element.
-          temporaryValue = arr[currentIndex];
-          arr[currentIndex] = arr[randomIndex];
-          arr[randomIndex] = temporaryValue;
+
+            // Pick a remaining element...
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex -= 1;
+
+            // And swap it with the current element.
+            temporaryValue = arr[currentIndex];
+            arr[currentIndex] = arr[randomIndex];
+            arr[randomIndex] = temporaryValue;
         }
-      
+
         return arr;
     }
 
-     /**
-     * email validator
-     */
-    public emailValidator(email: string): boolean{
+    /**
+    * email validator
+    */
+    public emailValidator(email: string): boolean {
         const re = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
         return re.test(email)
     }
@@ -119,7 +119,7 @@ class Utils {
         if (url.indexOf('youtu.be') === -1) {
             let re = new RegExp('v=([^&]+)', 'img');
             let result = re.exec(url)
-            
+
             if (result && result[1]) {
                 rval = result[1];
             }
@@ -129,7 +129,7 @@ class Utils {
         if (url.indexOf('youtu.be') !== -1) {
             let re = new RegExp('youtu.be/([^?]+)', 'img');
             let result = re.exec(url)
-            
+
             if (result && result[1]) {
                 rval = result[1];
             }
@@ -148,7 +148,7 @@ class Utils {
 
         let re = new RegExp('vimeo.com/([0-9]+)[^0-9]*', 'img');
         let result = re.exec(url)
-        
+
         if (result && result[1]) {
             rval = result[1];
         }
@@ -159,6 +159,12 @@ class Utils {
     public setMyDebbugTxt(text: string) {
         var path = RNFS.DocumentDirectoryPath + '/my_debug.txt';
         RNFS.writeFile(path, text);
+    }
+
+    public async waitMilliseconds(milliseconds: number): Promise<string> {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => { resolve('success') }, milliseconds);
+        });
     }
 }
 
