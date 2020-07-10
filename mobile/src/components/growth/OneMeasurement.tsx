@@ -12,7 +12,7 @@ export interface Props {
     measureMass: string,
     measureLength: string,
     title: string,
-    isHorizontalLineVisible?: boolean
+    isVerticalLineVisible?: boolean
 }
 
 export class OneMeasurements extends Component<Props> {
@@ -54,7 +54,7 @@ export class OneMeasurements extends Component<Props> {
                         </View>
                     </View>
                 </View>
-                {this.props.isHorizontalLineVisible ? <View style={styles.horizontalLine}/> : null} 
+                {this.props.isVerticalLineVisible ? <View style={styles.verticalLine}/> : null} 
             </View>
         )
     }
@@ -69,7 +69,7 @@ export interface OneMeasurementsStyles {
     measureDateContainerText: TextStyle,
     measureDateText: TextStyle,
     iconStyle: IconProps,
-    horizontalLine: ViewStyle
+    verticalLine: ViewStyle
 }
 
 const styles = StyleSheet.create<OneMeasurementsStyles>({
@@ -105,7 +105,7 @@ const styles = StyleSheet.create<OneMeasurementsStyles>({
         color: "#2CBA39",
         lineHeight: moderateScale(21),
     },
-    horizontalLine:{
+    verticalLine:{
         width: 3,
         height: moderateScale(24),
         backgroundColor: '#979797',

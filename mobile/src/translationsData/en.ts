@@ -353,71 +353,71 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
         {
             dayMin: 0,
             dayMax: 30,
-            text: 'Novorođenče će na početku izgubiti do 10% svoje telesne mase (težine), a ovaj gubitak će, uz odgovarajuću negu i ishranu, najbolje majčinim mlekom, nadoknaditi najdalje do kraja druge nedelje života. Sledi period najbržeg rasta: u težini  20 do 30 gr dnevno, a mesečno u dužini do 5 cm, u obimu glave  2 -2,5 cm.  '
+            text: `During the first 5 days, the newborn will lose up to 10% of his body weight but with appropriate care and nutrition, primarily breastfeeding, they will compensate for this loss by the end of the second week of life. In the following period, the newborn will be gaining 20 to 30 g per day in weight, up to 5 cm monthly in length and 2-2.5 cm in head circumference.`
         },
         {
             dayMin: 31,
             dayMax: 91,
-            text: 'U drugom i trećem mesecu dete nastavlja da raste približno istom brzinom koju je uspostavilo tokom prvih nedelja. Mesečno dobija 700 do 900 gr u težini, 2,5 do 4 cm u dužini i oko 1,2 cm u obimu glave.   '
+            text: `In the second and third month, the child continues to grow at approximately the same pace that it established during the first weeks. S/he will gain 700 to 900 g per month in weight, 2.5 to 4 cm in length and about 1.2 cm in head circumference.`
         },
         {
             dayMin: 92,
             dayMax: 152,
-            text: 'U četvrtom mesecu rast počinje da se usporava. Tokom četvrtog i petog meseca, dete mesečno dobija u proseku 450 do 550 gr u težini i oko 2 cm u dužini'
+            text: `The growth begins to slow down and during the fourth, fifth and sixth month, the child  gains on an average 450-550 g in weight and about 2 cm in length `
         },
         {
             dayMin: 153,
             dayMax: 183,
-            text: 'Dete nastavlja da dobija mesečno proseku 450 do 550 gr u težini i oko 2 cm u dužini. Dok navrši 6 meseci dete je već udvostručilo telesnu masu sa rođenja. '
+            text: `The child continues to gain 450-550 grams per month in weight and about 2 cm in lenght on an average. By the age of 6 months, the child has already doubled its body weight from birth.`
         },
         {
             dayMin: 184,
             dayMax: 274,
-            text: 'Od sedmog do devetog meseca rast se i dalje usporava. Deca rastu različitom brzinom ali je važno da slede obrazac rasta koji su uspostavila tokom predhodnih meseci.',
+            text: `From the seventh to the ninth month, growth continues to slow down. Children grow at different pace but it is important to follow the pattern of growth that is established during the previous months.`,
         },
         {
             dayMin: 275,
             dayMax: 365,
-            text: 'U poslednjem tromesečju prve godine dete dobija oko 1 cm mesečno u dužini a težina varira i zavisi od aktivnosti. Tokom prve godine dete uglavnom utrostruči svoju težinu sa rođenju, poraste u proseku  25 cm a obim glave se poveća za 12,5 cm.  ',
+            text: `In the last trimester of the first year, the child gains about 1 cm per month while the weight varies and depends on the activity level. During the first year, a child usually triples its weight at birth, grows 25 cm on an average and the head circumference increases by 12.5 cm. `,
         },
         {
             dayMin: 366,
             dayMax: 730,
-            text: 'U drugoj godini se nastavlja postepeno usporavanje rasta. U ovoj godini dete poraste oko 12 cm,  dobije 2-2,5 kg u težini i obim glave se uveća za 2-2,5 cm. ',
+            text: `In the second year, the gradual slowdown in growth continues. During this year, a child grows about 12 cm, gains 2-2.5 kg in weight and the head circumference increases by 2-2.5 cm.`,
         },
         {
             dayMin: 731,
             dayMax: 2190,
-            text: 'Dete od treće godine ujednačeno raste. Dete u visini dobija  5-7,5 cm, a u težini 2-3 kg godišnje. ',
+            text: `The growth from the third years onwards becomes more even. A child gains 5-7.5 cm in height and 2-3 kg in weight per year.`,
         },
     ],
     interpretationWeightForHeight: [
         {
             predefined_tags: [43, 44, 45, 46],
             goodText: {
-                name: 'Tipičan rast deteta: prvih 6 meseci - težine za dužinu/visinu deteta je između -2SD do +2 SD',
-                text: 'Bravo! Vaše dete dobro raste i njegova težina je u skladu sa njegovom visinom. Nastavite da se pridžavate preporuka za optimalnu ishranu, fizičku aktivnost i spavanje. Pratite i dalje rast vašeg deteta.',
+                name: 'Typical growth of a child: first 6 months- weight for the length / height of the child is between -2SD to + 2 SD',
+                text: `Bravo! Your child grows well and her/ his weight is in harmonious with her/his height. Continue to follow the recommendations for optimal nutrition, physical activity and sleep. Keep track of your child's growth.`,
                 articleId: 3026,
 
             },
             warrningSmallHeightText: {
-                name: 'Tipičan rast deteta: prvih 6 meseci- težine za dužinu/visinu deteta su između -2 i -3 SD',
-                text: 'Pažnja! Vaše dete gubi na težini (ili ne dobija u skladu sa visinom) i ima umereni nedostatak težine za dužinu/visinu. Ovo stanje je moglo nastati tokom nekoliko nedelja, stoga razmislite o mogućim neposrednim uzrocima: skorašnja zarazna bolest ili dijarea, hronične bolesti, nedovoljna i vrlo nepravilna ishrana, promene u neposrednom okruženju itd. Obavezno zakažite pregled kod pedijtra radi otkrivanja uzroka, korekcije nastalog gubitka kao i određivanja dinamike daljeg praćenja rasta. Ozbiljno razmislite kako da poboljšate ishranu vašeg detetu.',
+                name: `Typical growth of a child: first 6 months- weights for the length / height of the child as between -2 and -3 SD`,
+                text: `Attention! Your child is losing weight (or not gaining weight) and has a moderate lack of weight for length / height.  This situation could have happened in a course of few weeks, hence consider to find out some immediate causes: recent infectious disease or diahorea, some other chronic illness, insufficient and a very improper diet, changes in the immediate environment, etc. Be sure to schedule an examination with a pediatrician to discover the cause, correct the loss and determine the dynamics of further monitoring of growth. You child needs major consideration to have an improved diet.`,
                 articleId: 3051,
             },
             emergencySmallHeightText: {
-                name: 'Tipičan rast deteta: prvih 6 meseci- Vrednosti težine za dužinu/visinu deteta su ispod  -3 SD',
-                text: 'Hitno! Vaše dete ima ozbiljan nedostatak težine za dužinu/visinu. Ovo stanje je moglo nastati tokom nekoliko nedelja, stoga razmislite o mogućim neposrednim uzrocima. Neki od mogućih uzroka bi mogli biti: skorašnja bolest, metabolička stanja, hronične bolesti, nedovoljna i nepravilna ishrana, promene u najbližem  okružrnju i dr. Hitno se obratite pedijatru radi ispitivanja uzroka i određivanja načina za nadoknadu nastalog gubitka.',
+                name: `Typical growth of a child: first 6 months-weights for the length / height of the child below -3 SD`,
+                text: `Attention! Your child has a serious lack of weight for length / height. This situation could have happened in a course of few weeks, hence consider to find out some possible immediate causes, some causes could be: recent illness, metabolic and chronic diseases, insufficient and improper diet, changes in the immediate environment, etc. Urgently consult a pediatrician to investigate the cause and determine how to compensate for the loss.`,
                 articleId: 3076,
             },
             warrningBigHeightText: {
-                name: 'Tipičan rast deteta: prvih 6 mesecii- Vrednosti težine za dužinu/visinu deteta su između +2 i +3 SD',
-                text: 'Pažnja! Vaše dete ima umereni višak težine za visinu. Ova prekomerna težina može ugroziti njegovo zdravlje i zato razmislite šta je tome doprinelo: povećan unos energetski bogatije hrane (kao što su slatke i masne namirnice), unos bezvrednih namirnica - takozvane brze hrane, smanjena fizička aktivnost, produženo vreme boravka u sedećem položaju ili boravak ispred ekrana, promene u najbližem okružrnju i dr. Obavezno zakažite pregled kod pedijatra radi dobijanja dodatnih preporuka i određivanja dinamike praćenja rasta vašeg deteta',
+                name: `Typical growth of a child: first 6 months- weight for length / height of the child are between +2 and +3 SD`,
+                text: `Attention! Your child is moderately overweight for height. This overweight can endanger his/her health, so think about what contributed to that: excess intake of energy-rich foods (such as sweet and oily products), intake of junk foods, reduced physical activity, increased screen time or changes in the immediate environment, etc. Be sure to make an appointment with a pediatrician to get additional recommendations and determine the dynamics of monitoring your child's growth.`,
                 articleId: 3101
             },
             emergencyBigHeightText: {
-                name: '',
-                text: 'Hitno! Vaše dete je gojazno, odnosno ima ozbiljan višak težine za visinu. Ova težina može ozbiljno ugroziti zdravlje vašeg deteta. Razmislite šta je tome doprinelo: povećan unos energetski bogatije hrane (kao što su slatke i masne namirnice), unos bezvrednih namirnica- takozvane brze hrane, smanjena fizička aktivnost, produženo vreme boravka u sedećem položaju ili boravak ispred ekrana, promene u najbližem okružrnju i dr. Obavezno zakažite posetu kod pedijatra radi pregleda i dodatnog ispitivanja kao i određivanja dinamike daljeg praćenja rasta!',
+                name: `Typical growth of a child: first 6 months- weight for length / height of the child are above +3 SD`,
+                text: `Urgent attention! Your child is obese, that is, s/he has a serious excess weight for height. This weight can seriously endanger your child's health. Think about what contributed to that: excess intake of energy-rich foods (such as sweet and oily products), intake of junk foods, reduced physical activity, increased screen time or changes in the immediate environment, etc. Be sure to schedule a visit to the pediatrician for an examination and additional diagnostics, as well as to determine the dynamics of further growth monitoring!`,
                 articleId: 3126
             }
 
@@ -425,29 +425,29 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
         {
             predefined_tags: [47],
             goodText: {
-                name: 'Tipičan rast deteta: 7-9 meseci - težine za dužinu/visinu deteta je između -2SD do +2 SD',
-                text: 'Bravo! Vaše dete dobro raste i njegova težina je u skladu sa njegovom visinom. Nastavite da se pridžavate preporuka za optimalnu  ishranu, fizičku aktivnost i spavanje. Pratite i dalje rast vašeg deteta.',
+                name: 'Typical growth of a child:7-9  months- weight for the length / height of the child is between -2SD to + 2 SD',
+                text: `Bravo! Your child grows well and her/ his weight is in harmonious with her/his height. Continue to follow the recommendations for optimal nutrition, physical activity and sleep. Keep track of your child's growth.`,
                 articleId: 3031,
 
             },
             warrningSmallHeightText: {
-                name: 'Tipičan rast deteta: 7-9 meseci- težine za dužinu/visinu deteta su između -2 i -3 SD',
-                text: 'Pažnja! Vaše dete gubi na težini (ili ne dobija u skladu sa visinom) i ima umereni nedostatak težine za dužinu/visinu. Ovo stanje je moglo nastati tokom nekoliko nedelja, stoga razmislite o mogućim neposrednim uzrocima: skorašnja zarazna bolest ili dijarea, hronične bolesti, nedovoljna i vrlo nepravilna ishrana, promene u neposrednom okruženju itd. Obavezno zakažite pregled kod pedijtra radi otkrivanja uzroka, korekcije nastalog gubitka kao i određivanja dinamike daljeg praćenja rasta. Ozbiljno razmislite kako da poboljšate ishranu vašeg detetu.',
+                name: `Typical growth of a child: 7-9 months- weights for the length / height of the child as between -2 and -3 SD`,
+                text: `Attention! Your child is losing weight (or not gaining weight) and has a moderate lack of weight for length / height.  This situation could have happened in a course of few weeks, hence consider to find out some immediate causes: recent infectious disease or diahorea, some other chronic illness, insufficient and a very improper diet, changes in the immediate environment, etc. Be sure to schedule an examination with a pediatrician to discover the cause, correct the loss and determine the dynamics of further monitoring of growth. You child needs major consideration to have an improved diet.`,
                 articleId: 3056,
             },
             emergencySmallHeightText: {
-                name: 'Tipičan rast deteta: 7-9 meseci- Vrednosti težine za dužinu/visinu deteta su ispod  -3 SD',
-                text: 'Hitno! Vaše dete ima ozbiljan nedostatak težine za dužinu/visinu. Ovo stanje je moglo nastati tokom nekoliko nedelja, stoga razmislite o mogućim neposrednim uzrocima. Neki od mogućih uzroka bi mogli biti: skorašnja bolest, metabolička stanja, hronične bolesti, nedovoljna i nepravilna ishrana, promene u najbližem  okružrnju i dr. Hitno se obratite pedijatru radi ispitivanja uzroka i određivanja načina za nadoknadu nastalog gubitka.',
+                name: `Typical growth of a child: 7-9 months-weights for the length / height of the child below -3 SD`,
+                text: `Attention! Your child has a serious lack of weight for length / height. This situation could have happened in a course of few weeks, hence consider to find out some possible immediate causes, some causes could be: recent illness, metabolic and chronic diseases, insufficient and improper diet, changes in the immediate environment, etc. Urgently consult a pediatrician to investigate the cause and determine how to compensate for the loss.`,
                 articleId: 3081,
             },
             warrningBigHeightText: {
-                name: 'Tipičan rast deteta: 7-9 mesecii- Vrednosti težine za dužinu/visinu deteta su između +2 i +3 SD',
-                text: 'Pažnja! Vaše dete ima umereni višak težine za visinu. Ova prekomerna težina može ugroziti njegovo zdravlje i zato razmislite šta je tome doprinelo: povećan unos energetski bogatije hrane (kao što su slatke i masne namirnice), unos bezvrednih namirnica - takozvane brze hrane, smanjena fizička aktivnost, produženo vreme boravka u sedećem položaju ili boravak ispred ekrana, promene u najbližem okružrnju i dr. Obavezno zakažite pregled kod pedijatra radi dobijanja dodatnih preporuka i određivanja dinamike praćenja rasta vašeg deteta',
+                name: `Typical growth of a child: 7-9 months- weight for length / height of the child are between +2 and +3 SD`,
+                text: `Attention! Your child is moderately overweight for height. This overweight can endanger his/her health, so think about what contributed to that: excess intake of energy-rich foods (such as sweet and oily products), intake of junk foods, reduced physical activity, increased screen time or changes in the immediate environment, etc. Be sure to make an appointment with a pediatrician to get additional recommendations and determine the dynamics of monitoring your child's growth.`,
                 articleId: 3106
             },
             emergencyBigHeightText: {
                 name: 'Tipičan rast deteta: 7-9 mesecii- Vrednosti težine za dužinu/visinu deteta su iznad +3 SD',
-                text: 'Hitno! Vaše dete je gojazno, odnosno ima ozbiljan višak težine za visinu. Ova težina može ozbiljno ugroziti zdravlje vašeg deteta. Razmislite šta je tome doprinelo: povećan unos energetski bogatije hrane (kao što su slatke i masne namirnice), unos bezvrednih namirnica- takozvane brze hrane, smanjena fizička aktivnost, produženo vreme boravka u sedećem položaju ili boravak ispred ekrana, promene u najbližem okružrnju i dr. Obavezno zakažite posetu kod pedijatra radi pregleda i dodatnog ispitivanja kao i određivanja dinamike daljeg praćenja rasta!',
+                text: `Urgent attention! Your child is obese, that is, s/he has a serious excess weight for height. This weight can seriously endanger your child's health. Think about what contributed to that: excess intake of energy-rich foods (such as sweet and oily products), intake of junk foods, reduced physical activity, increased screen time or changes in the immediate environment, etc. Be sure to schedule a visit to the pediatrician for an examination and additional diagnostics, as well as to determine the dynamics of further growth monitoring!`,
                 articleId: 3131
             }
 
@@ -455,84 +455,84 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
         {
             predefined_tags: [48],
             goodText: {
-                name: 'Tipičan rast deteta: 10-12 meseci - težine za dužinu/visinu deteta je između -2SD do +2 SD',
-                text: 'Bravo! Vaše dete dobro raste i njegova težina je u skladu sa njegovom visinom. Nastavite da se pridžavate preporuka za optimalnu  ishranu, fizičku aktivnost i spavanje. Pratite i dalje rast vašeg deteta.',
+                text: `Bravo! Your child grows well and her/ his weight is in harmonious with her/his height. Continue to follow the recommendations for optimal nutrition, physical activity and sleep. Keep track of your child's growth.`,
+                name: `Typical growth of a child:10-12  months- weight for the length / height of the child is between -2SD to + 2 SD`,
                 articleId: 3036,
             },
             warrningSmallHeightText: {
-                name: 'Tipičan rast deteta: 10-12 meseci- težine za dužinu/visinu deteta su između -2 i -3 SD',
-                text: 'Pažnja! Vaše dete gubi na težini (ili ne dobija u skladu sa visinom) i ima umereni nedostatak težine za dužinu/visinu. Ovo stanje je moglo nastati tokom nekoliko nedelja, stoga razmislite o mogućim neposrednim uzrocima: skorašnja zarazna bolest ili dijarea, hronične bolesti, nedovoljna i vrlo nepravilna ishrana, promene u neposrednom okruženju itd. Obavezno zakažite pregled kod pedijtra radi otkrivanja uzroka, korekcije nastalog gubitka kao i određivanja dinamike daljeg praćenja rasta. Ozbiljno razmislite kako da poboljšate ishranu vašeg detetu.',
+                name: 'Typical growth of a child:10-12 months- weights for the length / height of the child as between -2 and -3 SD',
+                text: `Attention! Your child is losing weight (or not gaining weight) and has a moderate lack of weight for length / height.  This situation could have happened in a course of few weeks, hence consider to find out some immediate causes: recent infectious disease or diahorea, some other chronic illness, insufficient and a very improper diet, changes in the immediate environment, etc. Be sure to schedule an examination with a pediatrician to discover the cause, correct the loss and determine the dynamics of further monitoring of growth. You child needs major consideration to have an improved diet.`,
                 articleId: 3061
             },
             emergencySmallHeightText: {
-                name: 'Tipičan rast deteta: 10-12 meseci- Vrednosti težine za dužinu/visinu deteta su ispod  -3 SD',
-                text: 'Hitno! Vaše dete ima ozbiljan nedostatak težine za dužinu/visinu. Ovo stanje je moglo nastati tokom nekoliko nedelja, stoga razmislite o mogućim neposrednim uzrocima. Neki od mogućih uzroka bi mogli biti: skorašnja bolest, metabolička stanja, hronične bolesti, nedovoljna i nepravilna ishrana, promene u najbližem  okružrnju i dr. Hitno se obratite pedijatru radi ispitivanja uzroka i određivanja načina za nadoknadu nastalog gubitka.',
+                name: `Typical growth of a child: 10-12 months-weights for the length / height of the child below -3 SD`,
+                text: `Attention! Your child has a serious lack of weight for length / height. This situation could have happened in a course of few weeks, hence consider to find out some possible immediate causes, some causes could be: recent illness, metabolic and chronic diseases, insufficient and improper diet, changes in the immediate environment, etc. Urgently consult a pediatrician to investigate the cause and determine how to compensate for the loss.`,
                 articleId: 3086,
             },
             warrningBigHeightText: {
-                name: 'Tipičan rast deteta: 10-12 mesecii- Vrednosti težine za dužinu/visinu deteta su između +2 i +3 SD',
-                text: 'Pažnja! Vaše dete ima umereni višak težine za visinu. Ova prekomerna težina može ugroziti njegovo zdravlje i zato razmislite šta je tome doprinelo: povećan unos energetski bogatije hrane (kao što su slatke i masne namirnice), unos bezvrednih namirnica - takozvane brze hrane, smanjena fizička aktivnost, produženo vreme boravka u sedećem položaju ili boravak ispred ekrana, promene u najbližem okružrnju i dr. Obavezno zakažite pregled kod pedijatra radi dobijanja dodatnih preporuka i određivanja dinamike praćenja rasta vašeg deteta',
+                name: `Typical growth of a child: 10-12 months- weight for length / height of the child are between +2 and +3 SD`,
+                text: `Attention! Your child is moderately overweight for height. This overweight can endanger his/her health, so think about what contributed to that: excess intake of energy-rich foods (such as sweet and oily products), intake of junk foods, reduced physical activity, increased screen time or changes in the immediate environment, etc. Be sure to make an appointment with a pediatrician to get additional recommendations and determine the dynamics of monitoring your child's growth.`,
                 articleId: 3111
             },
             emergencyBigHeightText: {
-                name: 'Tipičan rast deteta: 10-12 mesecii- Vrednosti težine za dužinu/visinu deteta su iznad +3 SD',                
-                text: 'Hitno! Vaše dete je gojazno, odnosno ima ozbiljan višak težine za visinu. Ova težina može ozbiljno ugroziti zdravlje vašeg deteta. Razmislite šta je tome doprinelo: povećan unos energetski bogatije hrane (kao što su slatke i masne namirnice), unos bezvrednih namirnica- takozvane brze hrane, smanjena fizička aktivnost, produženo vreme boravka u sedećem položaju ili boravak ispred ekrana, promene u najbližem okružrnju i dr. Obavezno zakažite posetu kod pedijatra radi pregleda i dodatnog ispitivanja kao i određivanja dinamike daljeg praćenja rasta!',
-                articleId: 3131
+                name: `Typical growth of a child: 10-12 months- weight for length / height of the child are above +3 SD`,                
+                text: `Urgent attention! Your child is obese, that is, s/he has a serious excess weight for height. This weight can seriously endanger your child's health. Think about what contributed to that: excess intake of energy-rich foods (such as sweet and oily products), intake of junk foods, reduced physical activity, increased screen time or changes in the immediate environment, etc. Be sure to schedule a visit to the pediatrician for an examination and additional diagnostics, as well as to determine the dynamics of further growth monitoring!`,
+                articleId: 3136
             }
         },
         {
             predefined_tags: [49,50],
             goodText: {
-                name: 'Tipičan rast deteta: 13-24 meseci - težine za dužinu/visinu deteta je između -2SD do +2 SD',
-                text: 'Bravo! Vaše dete dobro raste i njegova težina je u skladu sa njegovom visinom. Nastavite da se pridžavate preporuka za optimalnu  ishranu, fizičku aktivnost i spavanje. Pratite i dalje rast vašeg deteta.',
+                name: `Typical growth of a child:13-24  months- weight for the length / height of the child is between -2SD to + 2 SD`,
+                text: `Bravo! Your child grows well and her/ his weight is in harmonious with her/his height. Continue to follow the recommendations for optimal nutrition, physical activity and sleep. Keep track of your child's growth.`,
                 articleId: 3041,
             },
             warrningSmallHeightText: {
-                name: 'Tipičan rast deteta: 13-24 meseci- težine za dužinu/visinu deteta su između -2 i -3 SD',
-                text: 'Pažnja! Vaše dete gubi na težini (ili ne dobija u skladu sa visinom) i ima umereni nedostatak težine za dužinu/visinu. Ovo stanje je moglo nastati tokom nekoliko nedelja, stoga razmislite o mogućim neposrednim uzrocima: skorašnja zarazna bolest ili dijarea, hronične bolesti, nedovoljna i vrlo nepravilna ishrana, promene u neposrednom okruženju itd. Obavezno zakažite pregled kod pedijtra radi otkrivanja uzroka, korekcije nastalog gubitka kao i određivanja dinamike daljeg praćenja rasta. Ozbiljno razmislite kako da poboljšate ishranu vašeg detetu.',
+                name: `Typical growth of a child:13-24 months- weights for the length / height of the child as between -2 and -3 SD`,
+                text: `Attention! Your child is losing weight (or not gaining weight) and has a moderate lack of weight for length / height.  This situation could have happened in a course of few weeks, hence consider to find out some immediate causes: recent infectious disease or diahorea, some other chronic illness, insufficient and a very improper diet, changes in the immediate environment, etc. Be sure to schedule an examination with a pediatrician to discover the cause, correct the loss and determine the dynamics of further monitoring of growth. You child needs major consideration to have an improved diet.`,
                 articleId: 3066
             },
             emergencySmallHeightText: {
-                name: 'Tipičan rast deteta: 13-24 meseci- Vrednosti težine za dužinu/visinu deteta su ispod  -3 SD',
-                text: 'Hitno! Vaše dete ima ozbiljan nedostatak težine za dužinu/visinu. Ovo stanje je moglo nastati tokom nekoliko nedelja, stoga razmislite o mogućim neposrednim uzrocima. Neki od mogućih uzroka bi mogli biti: skorašnja bolest, metabolička stanja, hronične bolesti, nedovoljna i nepravilna ishrana, promene u najbližem  okružrnju i dr. Hitno se obratite pedijatru radi ispitivanja uzroka i određivanja načina za nadoknadu nastalog gubitka.',
+                name: `Typical growth of a child: 13-24 months-weights for the length / height of the child below -3 SD`,
+                text: `Attention! Your child has a serious lack of weight for length / height. This situation could have happened in a course of few weeks, hence consider to find out some possible immediate causes, some causes could be: recent illness, metabolic and chronic diseases, insufficient and improper diet, changes in the immediate environment, etc. Urgently consult a pediatrician to investigate the cause and determine how to compensate for the loss.`,
                 articleId: 3091,
             },
             warrningBigHeightText: {
-                name: 'Tipičan rast deteta: 13-24 mesecii- Vrednosti težine za dužinu/visinu deteta su između +2 i +3 SD',
-                text: 'Pažnja! Vaše dete ima umereni višak težine za visinu. Ova prekomerna težina može ugroziti njegovo zdravlje i zato razmislite šta je tome doprinelo: povećan unos energetski bogatije hrane (kao što su slatke i masne namirnice), unos bezvrednih namirnica - takozvane brze hrane, smanjena fizička aktivnost, produženo vreme boravka u sedećem položaju ili boravak ispred ekrana, promene u najbližem okružrnju i dr. Obavezno zakažite pregled kod pedijatra radi dobijanja dodatnih preporuka i određivanja dinamike praćenja rasta vašeg deteta',
-                articleId: 3116,
+                name: `Typical growth of a child: 10-12 months- weight for length / height of the child are between +2 and +3 SD`,
+                text: `Attention! Your child is moderately overweight for height. This overweight can endanger his/her health, so think about what contributed to that: excess intake of energy-rich foods (such as sweet and oily products), intake of junk foods, reduced physical activity, increased screen time or changes in the immediate environment, etc. Be sure to make an appointment with a pediatrician to get additional recommendations and determine the dynamics of monitoring your child's growth.`,
+                articleId: 3111
             },
             emergencyBigHeightText: {
-                name: 'Tipičan rast deteta: 13-24 mesecii- Vrednosti težine za dužinu/visinu deteta su iznad +3 SD',                
-                text: 'Hitno! Vaše dete je gojazno, odnosno ima ozbiljan višak težine za visinu. Ova težina može ozbiljno ugroziti zdravlje vašeg deteta. Razmislite šta je tome doprinelo: povećan unos energetski bogatije hrane (kao što su slatke i masne namirnice), unos bezvrednih namirnica- takozvane brze hrane, smanjena fizička aktivnost, produženo vreme boravka u sedećem položaju ili boravak ispred ekrana, promene u najbližem okružrnju i dr. Obavezno zakažite posetu kod pedijatra radi pregleda i dodatnog ispitivanja kao i određivanja dinamike daljeg praćenja rasta!',
+                name: `Typical growth of a child: 13-24 months- weight for length / height of the child are above +3 SD`,                
+                text: `Urgent attention! Your child is obese, that is, s/he has a serious excess weight for height. This weight can seriously endanger your child's health. Think about what contributed to that: excess intake of energy-rich foods (such as sweet and oily products), intake of junk foods, reduced physical activity, increased screen time or changes in the immediate environment, etc. Be sure to schedule a visit to the pediatrician for an examination and additional diagnostics, as well as to determine the dynamics of further growth monitoring!`,
                 articleId: 3141
             }
         },
         {
             predefined_tags: [51,52,53,57,58],
             goodText: {
-                name: 'Tipičan rast deteta: 25 -72  meseci - težine za dužinu/visinu deteta je između -2SD do +2 SD',
-                text: 'Bravo! Vaše dete dobro raste i njegova težina je u skladu sa njegovom visinom. Nastavite da se pridžavate preporuka za optimalnu  ishranu, fizičku aktivnost i spavanje. Pratite i dalje rast vašeg deteta.',
+                name: `Typical growth of a child:25-72  months- weight for the length / height of the child is between -2SD to + 2 SD`,
+                text: `Bravo! Your child grows well and her/ his weight is in harmonious with her/his height. Continue to follow the recommendations for optimal nutrition, physical activity and sleep. Keep track of your child's growth.`,
                 articleId: 3046,
             },
             warrningSmallHeightText: {
-                name: 'Tipičan rast deteta: 25-72 meseci- težine za dužinu/visinu deteta su između -2 i -3 SD',
-                text: 'Pažnja! Vaše dete gubi na težini (ili ne dobija u skladu sa visinom) i ima umereni nedostatak težine za dužinu/visinu. Ovo stanje je moglo nastati tokom nekoliko nedelja, stoga razmislite o mogućim neposrednim uzrocima: skorašnja zarazna bolest ili dijarea, hronične bolesti, nedovoljna i vrlo nepravilna ishrana, promene u neposrednom okruženju itd. Obavezno zakažite pregled kod pedijtra radi otkrivanja uzroka, korekcije nastalog gubitka kao i određivanja dinamike daljeg praćenja rasta. Ozbiljno razmislite kako da poboljšate ishranu vašeg detetu.',
+                name: 'Typical growth of a child:25-72 months- weights for the length / height of the child as between -2 and -3 SD',
+                text: `Attention! Your child is losing weight (or not gaining weight) and has a moderate lack of weight for length / height.  This situation could have happened in a course of few weeks, hence consider to find out some immediate causes: recent infectious disease or diahorea, some other chronic illness, insufficient and a very improper diet, changes in the immediate environment, etc. Be sure to schedule an examination with a pediatrician to discover the cause, correct the loss and determine the dynamics of further monitoring of growth. You child needs major consideration to have an improved diet.`,
                 articleId: 3071
             },
             emergencySmallHeightText: {
-                name: 'Tipičan rast deteta: 25-72 meseci- Vrednosti težine za dužinu/visinu deteta su ispod  -3 SD',
-                text: 'Hitno! Vaše dete ima ozbiljan nedostatak težine za dužinu/visinu. Ovo stanje je moglo nastati tokom nekoliko nedelja, stoga razmislite o mogućim neposrednim uzrocima. Neki od mogućih uzroka bi mogli biti: skorašnja bolest, metabolička stanja, hronične bolesti, nedovoljna i nepravilna ishrana, promene u najbližem  okružrnju i dr. Hitno se obratite pedijatru radi ispitivanja uzroka i određivanja načina za nadoknadu nastalog gubitka.',
+                name: `Typical growth of a child: 25-72 months-weights for the length / height of the child below -3 SD`,
+                text: `Attention! Your child has a serious lack of weight for length / height. This situation could have happened in a course of few weeks, hence consider to find out some possible immediate causes, some causes could be: recent illness, metabolic and chronic diseases, insufficient and improper diet, changes in the immediate environment, etc. Urgently consult a pediatrician to investigate the cause and determine how to compensate for the loss.  `,
                 articleId: 3096,
             },
             warrningBigHeightText: {
-                name: 'Tipičan rast deteta: 25-72 mesecii- Vrednosti težine za dužinu/visinu deteta su između +2 i +3 SD',
-                text: 'Pažnja! Vaše dete ima umereni višak težine za visinu. Ova prekomerna težina može ugroziti njegovo zdravlje i zato razmislite šta je tome doprinelo: povećan unos energetski bogatije hrane (kao što su slatke i masne namirnice), unos bezvrednih namirnica - takozvane brze hrane, smanjena fizička aktivnost, produženo vreme boravka u sedećem položaju ili boravak ispred ekrana, promene u najbližem okružrnju i dr. Obavezno zakažite pregled kod pedijatra radi dobijanja dodatnih preporuka i određivanja dinamike praćenja rasta vašeg deteta',
+                name: 'Typical growth of a child: 25-72 months- weight for length / height of the child are between +2 and +3 SD',                
+                text: `Attention! Your child is moderately overweight for height. This overweight can endanger his/her health, so think about what contributed to that: excess intake of energy-rich foods (such as sweet and oily products), intake of junk foods, reduced physical activity, increased screen time or changes in the immediate environment, etc. Be sure to make an appointment with a pediatrician to get additional recommendations and determine the dynamics of monitoring your child's growth.`,
                 articleId: 3121,
             },
             emergencyBigHeightText: {
-                name: 'Tipičan rast deteta: 25-72 mesecii- Vrednosti težine za dužinu/visinu deteta su iznad +3 SD',                
-                text: 'Hitno! Vaše dete je gojazno, odnosno ima ozbiljan višak težine za visinu. Ova težina može ozbiljno ugroziti zdravlje vašeg deteta. Razmislite šta je tome doprinelo: povećan unos energetski bogatije hrane (kao što su slatke i masne namirnice), unos bezvrednih namirnica- takozvane brze hrane, smanjena fizička aktivnost, produženo vreme boravka u sedećem položaju ili boravak ispred ekrana, promene u najbližem okružrnju i dr. Obavezno zakažite posetu kod pedijatra radi pregleda i dodatnog ispitivanja kao i određivanja dinamike daljeg praćenja rasta!',
+                name: 'Typical growth of a child: 25-72 months- weight for length / height of the child are above +3 SD',                
+                text: `Urgent attention! Your child is obese, that is, s/he has a serious excess weight for height. This weight can seriously endanger your child's health. Think about what contributed to that: excess intake of energy-rich foods (such as sweet and oily products), intake of junk foods, reduced physical activity, increased screen time or changes in the immediate environment, etc. Be sure to schedule a visit to the pediatrician for an examination and additional diagnostics, as well as to determine the dynamics of further growth monitoring!`,
                 articleId: 3146
             }
         },
@@ -542,117 +542,117 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
         {
             predefined_tags: [43, 44, 45, 46],
             goodText: {
-                name: 'Tipičan rast deteta: prvih 6 mesecii- rednost dužine/visine deteta za uzrast je između -2SD do +3D',
-                text: 'Bravo! Vaše dete raste u dužinu/visinu po zacrtanoj liniji ili malo iznad okvira za njegov uzrast i pol. Nastavite da se pridžavate preporuka dobre prakse u ishrani, fizičkoj aktivnosti i spavanju i pratite rast vašeg deteta.',
+                name: `Typical growth of the child: first 6 months - values of the length / height of the child for the age are between -2SD to + 3SD`,
+                text: `Bravo! Your child grows in length / height in line or slightly above the range expected for his age and gender. Continue to follow the recommendations of good practice in nutrition, physical activity and sleep and monitor your child's growth.`,
                 articleId: 3151,
 
             },
             warrningSmallLengthText: {
-                name: 'Tipičan rast deteta: prvih 6 meseci- Vrednost dužine/visine deteta za uzrast  je ispod -2 SD',
-                text: 'Pažnja! Vaše dete sporo raste u dužini/visinu i sada je sa umerenim zaostajanjem u rastu. Razmislite da li je neki od mogućih dugoročnih uzroka tome doprineo: hronično nedovoljna ishrana, hronična bolest, endokrini poremećaj i dr. Obavezno zakažite pregled kod pedijatra radi dodatnog ispitivanja, dobijanja dodatnih preporuka i određivanja dinamike daljeg praćenja rasta.',
+                name: `Typical growth of a child: first 6 months - value of the length / height of the child for age is below -2 SD`,
+                text: `Attention! Your child’s growth in length / height is slow and is now moderately delayed. Consider whether any of the long term possible causes contributed to it: chronic malnutrition, chronic disease, endocrine disorder, etc. Be sure to schedule an appointment with a pediatrician for additional examination, obtaining additional recommendations and determining the dynamics of further monitoring of growth.`,
                 articleId: 3176,
             },
             emergencySmallLengthText: {
-                name: 'Tipičan rast deteta: prvih 6 meseci - Vrednost dužine/visine deteta za uzrast  je ispod -3 SD',
-                text: 'Hitno! Rast vašeg deteta u dužinu/visinu ozbiljno zaostaje. Hitno zakažite pregled kod pedijatra radi dodatnog ispitivanja, dobijanja odgovarajućeg tretmana i određivanja dinamike daljeg praćenja rasta!',
+                name: `Typical growth of a child: first 6 months- value of the length / height of the child for age is below -3 SD`,
+                text: `Urgently! Your child’s growth in length / height is severely delayed. Make an urgent appointment with a pediatrician for additional examination, obtaining appropriate treatment and determining the dynamics of further growth monitoring!`,
                 articleId: 3201,
             },
             warrningBigLengthText: {
-                name: 'Tipičan rast deteta: prvih 6 meseci - Vrednost dužine/visine deteta za uzrast  je iznad +3 SD',
-                text: 'Vaše dete je poraslo u visinu znatno iznad okvira uobičajenih za njegov uzrast i pol. Verovatno da je to rezultat njegovih genetskih potencijala ali ipak razgovarajte o tome sa pedijatrom. Nastavite da se pridžavate usvojenih preporuka i pratite rast vašeg deteta u regularnim intervalima.',
+                name: `Typical growth of a child: first 6 months- value of the length / height of the child for the age is above + 3 SD`,
+                text: `Your child has grown to a height well above the normal range for his age and gender. It is probably the result of his genetic potential, but still talk about it with the pediatrician. Continue to follow the adopted recommendations and monitor your child's growth at regular intervals.`,
                 articleId: 3226
             },
         },
         {
             predefined_tags: [47],
             goodText: {
-                name: 'Tipičan rast deteta: 7-9 mesecii- rednost dužine/visine deteta za uzrast je između -2SD do +3D',
-                text: 'Bravo! Vaše dete raste u dužinu/visinu po zacrtanoj liniji ili malo iznad okvira za njegov uzrast i pol. Nastavite da se pridžavate preporuka dobre prakse u ishrani, fizičkoj aktivnosti i spavanju i pratite rast vašeg deteta.',
+                name: `Typical growth of the child: 7-9 months - values of the length / height of the child for the age are between -2SD to + 3SD`,
+                text: `Bravo! Your child grows in length / height in line or slightly above the range expected for his age and gender. Continue to follow the recommendations of good practice in nutrition, physical activity and sleep and monitor your child's growth.`,
                 articleId: 3156,
 
             },
             warrningSmallLengthText: {
-                name: 'Tipičan rast deteta: 7-9 meseci- Vrednost dužine/visine deteta za uzrast  je ispod -2 SD',
-                text: 'Pažnja! Vaše dete sporo raste u dužini/visinu i sada je sa umerenim zaostajanjem u rastu. Razmislite da li je neki od mogućih dugoročnih uzroka tome doprineo: hronično nedovoljna ishrana, hronična bolest, endokrini poremećaj i dr. Obavezno zakažite pregled kod pedijatra radi dodatnog ispitivanja, dobijanja dodatnih preporuka i određivanja dinamike daljeg praćenja rasta.',
+                name: `Typical growth of a child:7-9 months - value of the length / height of the child for age is below -2 SD`,
+                text: `Attention! Your child’s growth in length / height is slow and is now moderately delayed. Consider whether any of the long term possible causes contributed to it: chronic malnutrition, chronic disease, endocrine disorder, etc. Be sure to schedule an appointment with a pediatrician for additional examination, obtaining additional recommendations and determining the dynamics of further monitoring of growth.`,
                 articleId: 3181,
             },
             emergencySmallLengthText: {
-                name: 'Tipičan rast deteta: 7-9 meseci - Vrednost dužine/visine deteta za uzrast  je ispod -3 SD',
-                text: 'Hitno! Rast vašeg deteta u dužinu/visinu ozbiljno zaostaje. Hitno zakažite pregled kod pedijatra radi dodatnog ispitivanja, dobijanja odgovarajućeg tretmana i određivanja dinamike daljeg praćenja rasta!',
+                name: `Typical growth of a child: 7-9 months- value of the length / height of the child for age is below -3 SD`,
+                text: `Urgently! Your child’s growth in length / height is severely delayed. Make an urgent appointment with a pediatrician for additional examination, obtaining appropriate treatment and determining the dynamics of further growth monitoring!`,
                 articleId: 3206,
             },
             warrningBigLengthText: {
-                name: 'Tipičan rast deteta: 7-9 meseci - Vrednost dužine/visine deteta za uzrast  je iznad +3 SD',
-                text: 'Vaše dete je poraslo u visinu znatno iznad okvira uobičajenih za njegov uzrast i pol. Verovatno da je to rezultat njegovih genetskih potencijala ali ipak razgovarajte o tome sa pedijatrom. Nastavite da se pridžavate usvojenih preporuka i pratite rast vašeg deteta u regularnim intervalima.',
+                name: `Typical growth of a child: 7-9 months- value of the length / height of the child for the age is above + 3 SD`,
+                text: `Your child has grown to a height well above the normal range for his age and gender. It is probably the result of his genetic potential, but still talk about it with the pediatrician. Continue to follow the adopted recommendations and monitor your child's growth at regular intervals.`,
                 articleId: 3231
             },
         },
         {
             predefined_tags: [48],
             goodText: {
-                name: 'Tipičan rast deteta: 10-12 mesecii- rednost dužine/visine deteta za uzrast je između -2SD do +3D',
-                text: 'Bravo! Vaše dete raste u dužinu/visinu po zacrtanoj liniji ili malo iznad okvira za njegov uzrast i pol. Nastavite da se pridžavate preporuka dobre prakse u ishrani, fizičkoj aktivnosti i spavanju i pratite rast vašeg deteta.',
+                name: `Typical growth of the child: 10-12 months - values of the length / height of the child for the age are between -2SD to + 3SD`,
+                text: `Bravo! Your child grows in length / height in line or slightly above the range expected for his age and gender. Continue to follow the recommendations of good practice in nutrition, physical activity and sleep and monitor your child's growth.`,
                 articleId: 3161,
             },
             warrningSmallHeightText: {
-                name: 'Tipičan rast deteta: 10-12 meseci- Vrednost dužine/visine deteta za uzrast  je ispod -2 SD',
-                text: 'Pažnja! Vaše dete sporo raste u dužini/visinu i sada je sa umerenim zaostajanjem u rastu. Razmislite da li je neki od mogućih dugoročnih uzroka tome doprineo: hronično nedovoljna ishrana, hronična bolest, endokrini poremećaj i dr. Obavezno zakažite pregled kod pedijatra radi dodatnog ispitivanja, dobijanja dodatnih preporuka i određivanja dinamike daljeg praćenja rasta.',
+                name: `Typical growth of a child: 10-12 months - value of the length / height of the child for age is below -2 SD`,
+                text: `Attention! Your child’s growth in length / height is slow and is now moderately delayed. Consider whether any of the long term possible causes contributed to it: chronic malnutrition, chronic disease, endocrine disorder, etc. Be sure to schedule an appointment with a pediatrician for additional examination, obtaining additional recommendations and determining the dynamics of further monitoring of growth.`,
                 articleId: 3186
             },
             emergencySmallHeightText: {
-                name: 'Tipičan rast deteta: 10-12 meseci - Vrednost dužine/visine deteta za uzrast  je ispod -3 SD',
-                text: 'Hitno! Rast vašeg deteta u dužinu/visinu ozbiljno zaostaje. Hitno zakažite pregled kod pedijatra radi dodatnog ispitivanja, dobijanja odgovarajućeg tretmana i određivanja dinamike daljeg praćenja rasta!',
+                name: `Typical growth of a child: 10-12 months- value of the length / height of the child for age is below -3 SD`,
+                text: `Urgently! Your child’s growth in length / height is severely delayed. Make an urgent appointment with a pediatrician for additional examination, obtaining appropriate treatment and determining the dynamics of further growth monitoring!`,
                 articleId: 3211,
             },
             warrningBigHeightText: {
                 name: 'Tipičan rast deteta: 10-12 meseci - Vrednost dužine/visine deteta za uzrast  je iznad +3 SD',
-                text: 'Vaše dete je poraslo u visinu znatno iznad okvira uobičajenih za njegov uzrast i pol. Verovatno da je to rezultat njegovih genetskih potencijala ali ipak razgovarajte o tome sa pedijatrom. Nastavite da se pridžavate usvojenih preporuka i pratite rast vašeg deteta u regularnim intervalima.',
+                text: `Your child has grown to a height well above the normal range for his age and gender. It is probably the result of his genetic potential, but still talk about it with the pediatrician. Continue to follow the adopted recommendations and monitor your child's growth at regular intervals.`,
                 articleId: 3236
             },
         },
         {
             predefined_tags: [49,50],
             goodText: {
-                name: 'Tipičan rast deteta: 13-24 mesecii- rednost dužine/visine deteta za uzrast je između -2SD do +3D',
-                text: 'Bravo! Vaše dete raste u dužinu/visinu po zacrtanoj liniji ili malo iznad okvira za njegov uzrast i pol. Nastavite da se pridžavate preporuka dobre prakse u ishrani, fizičkoj aktivnosti i spavanju i pratite rast vašeg deteta.',
+                name: `Typical growth of the child: 13-24 months - values of the length / height of the child for the age are between -2SD to + 3SD`,
+                text: `Bravo! Your child grows in length / height in line or slightly above the range expected for his age and gender. Continue to follow the recommendations of good practice in nutrition, physical activity and sleep and monitor your child's growth.`,
                 articleId: 3166,
             },
             warrningSmallHeightText: {
-                name: 'Tipičan rast deteta: 13-24 meseci- Vrednost dužine/visine deteta za uzrast  je ispod -2 SD',
-                text: 'Pažnja! Vaše dete sporo raste u dužini/visinu i sada je sa umerenim zaostajanjem u rastu. Razmislite da li je neki od mogućih dugoročnih uzroka tome doprineo: hronično nedovoljna ishrana, hronična bolest, endokrini poremećaj i dr. Obavezno zakažite pregled kod pedijatra radi dodatnog ispitivanja, dobijanja dodatnih preporuka i određivanja dinamike daljeg praćenja rasta.',
+                name: `Typical growth of a child: 13-24 months - value of the length / height of the child for age is below -2 SD`,
+                text: `Attention! Your child’s growth in length / height is slow and is now moderately delayed. Consider whether any of the long term possible causes contributed to it: chronic malnutrition, chronic disease, endocrine disorder, etc. Be sure to schedule an appointment with a pediatrician for additional examination, obtaining additional recommendations and determining the dynamics of further monitoring of growth.`,
                 articleId: 3191
             },
             emergencySmallHeightText: {
-                name: 'Tipičan rast deteta: 13-24 meseci - Vrednost dužine/visine deteta za uzrast  je ispod -3 SD',
-                text: 'Hitno! Rast vašeg deteta u dužinu/visinu ozbiljno zaostaje. Hitno zakažite pregled kod pedijatra radi dodatnog ispitivanja, dobijanja odgovarajućeg tretmana i određivanja dinamike daljeg praćenja rasta!',
+                name: `Typical growth of a child: 13-24 months- value of the length / height of the child for age is below -3 SD`,
+                text: `Urgently! Your child’s growth in length / height is severely delayed. Make an urgent appointment with a pediatrician for additional examination, obtaining appropriate treatment and determining the dynamics of further growth monitoring!`,
                 articleId: 3216,
             },
             warrningBigHeightText: {
-                name: 'Tipičan rast deteta: 13-24 meseci - Vrednost dužine/visine deteta za uzrast  je iznad +3 SD',
-                text: 'Vaše dete je poraslo u visinu znatno iznad okvira uobičajenih za njegov uzrast i pol. Verovatno da je to rezultat njegovih genetskih potencijala ali ipak razgovarajte o tome sa pedijatrom. Nastavite da se pridžavate usvojenih preporuka i pratite rast vašeg deteta u regularnim intervalima.',
+                name: 'Typical growth of a child: 13-24 months- value of the length / height of the child for the age is above + 3 SD',
+                text: `Your child has grown to a height well above the normal range for his age and gender. It is probably the result of his genetic potential, but still talk about it with the pediatrician. Continue to follow the adopted recommendations and monitor your child's growth at regular intervals.`,
                 articleId: 3241,
             },
         },
         {
             predefined_tags: [51,52,53,57,58],
             goodText: {
-                name: 'Tipičan rast deteta: 25-72 mesecii- rednost dužine/visine deteta za uzrast je između -2SD do +3D',
-                text: 'Bravo! Vaše dete raste u dužinu/visinu po zacrtanoj liniji ili malo iznad okvira za njegov uzrast i pol. Nastavite da se pridžavate preporuka dobre prakse u ishrani, fizičkoj aktivnosti i spavanju i pratite rast vašeg deteta.',
+                name: `Typical growth of the child: 25-72 months - values of the length / height of the child for the age are between -2SD to + 3SD`,
+                text: `Bravo! Your child grows in length / height in line or slightly above the range expected for his age and gender. Continue to follow the recommendations of good practice in nutrition, physical activity and sleep and monitor your child's growth.`,
                 articleId: 3171,
             },
             warrningSmallHeightText: {
-                name: 'Tipičan rast deteta: 25-72 meseci- Vrednost dužine/visine deteta za uzrast  je ispod -2 SD',
-                text: 'Pažnja! Vaše dete sporo raste u dužini/visinu i sada je sa umerenim zaostajanjem u rastu. Razmislite da li je neki od mogućih dugoročnih uzroka tome doprineo: hronično nedovoljna ishrana, hronična bolest, endokrini poremećaj i dr. Obavezno zakažite pregled kod pedijatra radi dodatnog ispitivanja, dobijanja dodatnih preporuka i određivanja dinamike daljeg praćenja rasta.',
+                name: `Typical growth of a child: 25-72 months - value of the length / height of the child for age is below -2 SD`,
+                text: `Attention! Your child’s growth in length / height is slow and is now moderately delayed. Consider whether any of the long term possible causes contributed to it: chronic malnutrition, chronic disease, endocrine disorder, etc. Be sure to schedule an appointment with a pediatrician for additional examination, obtaining additional recommendations and determining the dynamics of further monitoring of growth.`,
                 articleId: 3196
             },
             emergencySmallHeightText: {
-                name: 'Tipičan rast deteta: 25-72 meseci - Vrednost dužine/visine deteta za uzrast  je ispod -3 SD',
-                text: 'Hitno! Rast vašeg deteta u dužinu/visinu ozbiljno zaostaje. Hitno zakažite pregled kod pedijatra radi dodatnog ispitivanja, dobijanja odgovarajućeg tretmana i određivanja dinamike daljeg praćenja rasta!',
+                name: `Typical growth of a child: 25-72 months- value of the length / height of the child for age is below -3 SD`,
+                text: `Urgently! Your child’s growth in length / height is severely delayed. Make an urgent appointment with a pediatrician for additional examination, obtaining appropriate treatment and determining the dynamics of further growth monitoring!`,
                 articleId: 3221,
             },
             warrningBigHeightText: {
-                name: 'Tipičan rast deteta: 25-72 meseci - Vrednost dužine/visine deteta za uzrast  je iznad +3 SD',
-                text: 'Vaše dete je poraslo u visinu znatno iznad okvira uobičajenih za njegov uzrast i pol. Verovatno da je to rezultat njegovih genetskih potencijala ali ipak razgovarajte o tome sa pedijatrom. Nastavite da se pridžavate usvojenih preporuka i pratite rast vašeg deteta u regularnim intervalima.',
+                name: `Typical growth of a child: 25-72 months- value of the length / height of the child for the age is above + 3 SD`,
+                text: `Your child has grown to a height well above the normal range for his age and gender. It is probably the result of his genetic potential, but still talk about it with the pediatrician. Continue to follow the adopted recommendations and monitor your child's growth at regular intervals.`,
                 articleId: 3246,
             },
         },

@@ -6,6 +6,10 @@ import { DateTime } from 'luxon';
 import { OneMeasurements } from '../../components/growth/OneMeasurement';
 import { NewMeasurements } from '../../components/growth/NewMeasurements';
 import { navigation } from '../../app';
+import { ScrollView } from 'react-native-gesture-handler';
+import { translate } from '../../translations';
+import { Typography } from '../../components';
+import { TypographyType } from '../../components/Typography';
 
 interface Props {
 
@@ -31,19 +35,26 @@ export class AllMeasurementsScreen extends Component<Props, State>{
 
         if (currentChild && currentChild.measures !== "" && currentChild.measures !== null) {
             let measrues = JSON.parse(currentChild.measures);
-            let measurementDateInDays: number | undefined = 0;
+            let measurementDate: DateTime = DateTime.local();
             const timeNow = DateTime.local();
 
-            state.allMeasurements = measrues.map(item => {
+            state.allMeasurements = measrues.map((item: Measures) => {
                 if (item.measurementDate) {
-                    let date = DateTime.fromJSDate(item.measurementDate);
-                    measurementDateInDays = timeNow.diff(date, "days").toObject().days;
+                    measurementDate = DateTime.fromJSDate(new Date(item.measurementDate))
                 };
+
+                let month: number = 0;
+
+                if(currentChild?.birthDate){
+                    let birthDay = DateTime.fromJSDate(new Date(currentChild.birthDate))
+                    month = Math.round(measurementDate.diff(birthDay, "month").months);
+                }
 
                 return {
                     height: item.height ? parseFloat(item.height) : 0,
                     length: item.length ? parseFloat(item.length) : 0,
-                    measurementDate: measurementDateInDays ? measurementDateInDays : 0,
+                    measurementDate: measurementDate.toFormat("dd'.'MM'.'yyyy"),
+                    titleDateInMonth: month,
                 };
             })
 
@@ -53,25 +64,37 @@ export class AllMeasurementsScreen extends Component<Props, State>{
         this.state = state;
     }
 
+    private renderTitle(key: number, measurementDate: number,){
+        if(key === 0){
+            return translate('onBirthDay');
+        }else{
+            return `${measurementDate}. ${translate('month')}`;
+        };
+    };
 
     render() {
         return (
-            <View style={{ padding: 20 }}>
-                {this.state.allMeasurements.length && this.state.allMeasurements.map(measure => (
-                    <View>
-                        <OneMeasurements
-                            measureDate={measure.measurementDate ? measure.measurementDate?.toDateString() : ""}
-                            measureLength={measure.length ? measure.length?.toString() : ""}
-                            measureMass={measure.height ? measure.height.toString() : ""}
-                            title="TODO"
-                            isHorizontalLineVisible={true}
-                        />
-                    </View>
-                ))}
-                <NewMeasurements
-                    onPress={() => navigation.navigate('HomeStackNavigator_NewMeasurementScreen')}
-                />
-            </View>
+            <ScrollView contentContainerStyle={{padding: 20}}>
+                    <Typography type={TypographyType.headingPrimary}>
+                        {translate('allMeasurements')}
+                    </Typography>
+                    {this.state.allMeasurements.length && this.state.allMeasurements.map((measure, index) => (
+                        <View>
+                            <OneMeasurements
+                                measureDate={measure.measurementDate ? measure.measurementDate.toString() : ""}
+                                measureLength={measure.length ? measure.length?.toString() : ""}
+                                measureMass={measure.height ? measure.height.toString() : ""}
+                                title={this.renderTitle(index, measure.titleDateInMonth ? measure.titleDateInMonth : 0)}
+                                isVerticalLineVisible={true}
+                            />
+                        </View>
+                    ))}
+                    <NewMeasurements
+                        onPress={() => navigation.navigate('HomeStackNavigator_NewMeasurementScreen')}
+                    />
+            </ScrollView>
+
         )
     }
 }
+

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, ViewStyle } from 'react-native'
+import { View, StyleSheet, ViewStyle, LayoutChangeEvent } from 'react-native'
 import { NavigationStackProp, NavigationStackState } from 'react-navigation-stack';
 import { NoMeasurements } from '../../components/growth/NoMeasurements';
 import { LastMeasurements } from '../../components/growth/LastMeasurements';
@@ -20,8 +20,6 @@ import { ChartData as Data, GrowthChart0_2Type, GrowthChartHeightAgeType } from 
 import { TextButtonColor } from '../../components/TextButton';
 import { navigation } from '../../app';
 
-const lineChartData = [{ measurementDate: 269, height: 2, length: 45 }, { measurementDate: 330, height: 4.5, length: 55 }, { measurementDate: 400, height: 7, length: 70 }, { measurementDate: 1000, height: 8, length: 80 }, { measurementDate: 1000, height: 12, length: 87 }];
-
 export interface GrowthScreenParams {
 
 }
@@ -35,7 +33,7 @@ export interface State {
     measuresData: ChartData[],
     interpretationTexWeightLength: InterpretationTex,
     interpretationTexLenghtAge: InterpretationTex,
-    childBirthDate: Date,
+    childBirthDate: Date | null,
     childGender: ChildGender,
     lastMeasurementDate: string | undefined,
 }
@@ -65,57 +63,51 @@ export class GrowthScreen extends Component<Props, State> {
         }
 
         let length: number = 0;
-
-        if (lastMeasurements.height && lastMeasurements.length) {
+        if (lastMeasurements !== undefined && lastMeasurements.height && lastMeasurements.length) {
             length = parseFloat(lastMeasurements.length);
         };
 
         const childBirthDay = userRealmStore.getCurrentChild()?.birthDate;
         let measurementDate: DateTime = DateTime.local();
-        
-        if(lastMeasurements.measurementDate){
-            console.log('uso')
+
+        if (lastMeasurements !== undefined && lastMeasurements.measurementDate) {
             measurementDate = DateTime.fromJSDate(new Date(lastMeasurements.measurementDate));
         }
 
         let days = 0;
 
-        if(childBirthDay){
+        if (childBirthDay) {
             let date = DateTime.fromJSDate(childBirthDay);
             let convertInDays = measurementDate.diff(date, "days").toObject().days;
 
-            if(convertInDays!== undefined) days = convertInDays;
+
+            if (convertInDays !== undefined) days = Math.round(convertInDays);
         };
 
-        console.log(days, "ASDadsaddasadsasdasdasdasdadsasd")
+        let filteredData = chartData.find(data => data.Day === days);
+        let interpretationData = translateData('interpretationLenghtForAge')?.
+            find(item => item.predefined_tags.indexOf(childAgeId) !== -1);
 
-        let filteredData = chartData.find(data => data.Day === days)
-        let interpretationData = translateData('interpretationWeightForHeight')?.find(item => item.predefined_tags.indexOf(childAgeId) !== -1)
-
-        if(filteredData){
-            if(length >= filteredData.SD2neg && length <= filteredData.SD3){
-                // dobro 
+        if (filteredData !== undefined) {
+            if (length >= filteredData.SD2neg && length <= filteredData.SD3) {
                 interpretationTex = interpretationData.goodText;
-            }
+            };
 
-            if(length < filteredData.SD2neg && length > filteredData.SD3neg){
-                // sporo raste warningLow
-                interpretationTex = interpretationData.warrningSmallLengthText
-            }
+            if (length < filteredData.SD2neg && length > filteredData.SD3neg) {
+                interpretationTex = interpretationData.warrningSmallLengthText;
+            };
 
-            if(length < filteredData.SD3neg){
-                // rast ozbiljno zaostaje uzas katastrofa
-                interpretationTex = interpretationData.emergencySmallLengthText
-            }
+            if (length < filteredData.SD3neg) {
+                interpretationTex = interpretationData.emergencySmallLengthText;
+            };
 
-            if(length > filteredData.SD3){
-                // MASALA
-                interpretationTex = interpretationData.warrningBigLengthText
-            }
-        }
+            if (length > filteredData.SD3) {
+                interpretationTex = interpretationData.warrningBigLengthText;
+            };
+        };
 
         return interpretationTex;
-    }
+    };
 
     private getInterpretationTexWeightForHeight(gender: ChildGender, childAgeInDays: number, lastMeasurements: Measures) {
         const dayLimit = 730; // 0-2 yeast || 2-5 years 
@@ -146,7 +138,7 @@ export class GrowthScreen extends Component<Props, State> {
         let height: number = 0;
         let length: number = 0;
 
-        if (lastMeasurements.height && lastMeasurements.length) {
+        if (lastMeasurements !== undefined && lastMeasurements.height && lastMeasurements.length) {
             height = parseFloat(lastMeasurements.height);
             length = parseFloat(lastMeasurements.length);
         };
@@ -180,14 +172,15 @@ export class GrowthScreen extends Component<Props, State> {
         return interpretationTex;
     }
 
-    private convertMeasuresData(measures: Measures[]) {
+    private convertMeasuresData(measures: Measures[], childBirthDay: Date) {
         let measurementDateInDays: number | undefined = 0;
-        const timeNow = DateTime.local();
 
         let measuresData = measures.map(item => {
             if (item.measurementDate) {
+                let childAge = DateTime.fromJSDate(childBirthDay)
                 let date = DateTime.fromJSDate(new Date(item.measurementDate));
-                measurementDateInDays = timeNow.diff(date, "days").toObject().days;
+
+                measurementDateInDays = date.diff(childAge, "days").toObject().days;
             };
 
             return {
@@ -205,7 +198,7 @@ export class GrowthScreen extends Component<Props, State> {
         let state: State = {
             periodIntroductionText: "",
             measuresData: [],
-            childBirthDate: new Date(),
+            childBirthDate: null,
             childGender: "boy",
             lastMeasurementDate: undefined,
             interpretationTexWeightLength: {
@@ -230,6 +223,7 @@ export class GrowthScreen extends Component<Props, State> {
 
         // if currentChild birthDate is not set return HomeScreen message 
         if (currentChild && currentChild.birthDate) {
+            state.childBirthDate = currentChild.birthDate;
             let childGender = currentChild?.gender;
 
             let growthPeriod = translateData('growthPeriods')?.
@@ -244,12 +238,14 @@ export class GrowthScreen extends Component<Props, State> {
 
                 let lastMeasurementDate: string | undefined = undefined;
 
-                if (measures[measures.length - 1].measurementDate !== undefined) {
+                if (measures[measures.length - 1]?.measurementDate !== undefined) {
                     let date = new Date(measures[0].measurementDate ? measures[0].measurementDate : "");
-                    lastMeasurementDate = DateTime.fromJSDate(date).toISODate()
+                    lastMeasurementDate = DateTime.fromJSDate(date).toFormat("dd'.'MM'.'yyyy");
                 }
 
-                const measuresData = this.convertMeasuresData(measures);
+                let birthDay = new Date(currentChild.birthDate);
+                
+                const measuresData = this.convertMeasuresData(measures, birthDay);
                 const interpretationTexWeightLength = this.getInterpretationTexWeightForHeight(
                     childGender,
                     childAgeInDays,
@@ -299,9 +295,22 @@ export class GrowthScreen extends Component<Props, State> {
         let article = dataRealmStore.getContentFromId(id);
         let categoryName = dataRealmStore.getCategoryNameFromId(id);
 
+        if(article === undefined) return;
+
         navigation.navigate(
             'HomeStackNavigator_ArticleScreen',
             { article: article, categoryName: categoryName }
+        );
+    };
+
+    private openFullScreenChart(type: chartTypes) {
+        this.props.navigation.navigate('HomeStackNavigator_ChartFullScreen',
+            {
+                chartType: type,
+                childBirthDate: this.state.childBirthDate,
+                childGender: this.state.childGender === "boy" ? "male" : 'female',
+                lineChartData: this.state.measuresData,
+            }
         );
     };
 
@@ -324,19 +333,29 @@ export class GrowthScreen extends Component<Props, State> {
                         contentContainerStyle={styles.container}
                     >
                         {
-                            this.state.periodIntroductionText === "" ?
+                            this.state.childBirthDate === null ?
                                 <Typography>TODO: NO BIRTH DAY (HOME SCREEN NOTIFICATION)</Typography>
                                 :
                                 <View>
                                     <View style={styles.header}>
-                                        <View style={{alignSelf: 'center'}}>
+                                        <View style={{ alignSelf: 'center' }}>
                                             <Typography type={TypographyType.headingPrimary}>
-                                                Rast deteta
+                                                {translate('growScreenTitle')}
                                             </Typography>
                                         </View>
-                                        <View style={styles.allMeasuresBtn}>
-                                            <TextButton color={TextButtonColor.purple} onPress={() => { navigation.navigate('HomeStackNavigator_AllMeasurementScreen') }}>Sva merenja</TextButton>
-                                        </View>
+                                        {
+                                            measuresData.length !== 0 ?
+                                                <View style={styles.allMeasuresBtn}>
+                                                    <TextButton
+                                                        color={TextButtonColor.purple}
+                                                        onPress={() => {
+                                                            navigation.navigate('HomeStackNavigator_AllMeasurementScreen')
+                                                        }}
+                                                    >
+                                                        {translate('allMeasurements')}
+                                                    </TextButton>
+                                                </View> : null
+                                        }
                                     </View>
                                     <View style={styles.card}>
                                         <Typography>
@@ -345,17 +364,20 @@ export class GrowthScreen extends Component<Props, State> {
                                     </View>
                                     {
                                         measuresData.length === 0 ?
-                                            <NoMeasurements />
+                                            <NoMeasurements
+                                                addNewMeasures={() => this.goToNewMeasurements()}
+                                            />
                                             :
                                             <>
                                                 <View style={styles.chartCard}>
                                                     <GrowthChart
-                                                        title="Tezina za visinu"
+                                                        title={translate('heightForLength')}
                                                         chartType={chartTypes.heightLength}
-                                                        childBirthDate={childBirthDate}
+                                                        childBirthDate={childBirthDate ? childBirthDate : new Date()}
                                                         childGender={childGender === "boy" ? "male" : 'female'}
                                                         lineChartData={measuresData}
                                                         showFullscreen={false}
+                                                        openFullScreen={() => this.openFullScreenChart(chartTypes.heightLength)}
 
                                                     />
                                                 </View>
@@ -365,27 +387,39 @@ export class GrowthScreen extends Component<Props, State> {
                                                             <Typography>
                                                                 {interpretationTexWeightLength.text}
                                                             </Typography>
-                                                            <TextButton color={TextButtonColor.purple} onPress={() => { console.log('ID', this.state.InterpretationTexWeightLength.articleId) }}>Saznaj vise</TextButton>
+                                                            <TextButton
+                                                                color={TextButtonColor.purple}
+                                                                onPress={() => this.goToArticle(interpretationTexLenghtAge.articleId)}
+                                                            >
+                                                                {translate('moreAboutChildGrowth')}
+                                                            </TextButton>
                                                         </View> : null
                                                 }
 
                                                 <View style={styles.chartCard}>
                                                     <GrowthChart
-                                                        title="Visina za uzrast"
+                                                        title={translate('lengthForAge')}
                                                         chartType={chartTypes.lengthAge}
-                                                        childBirthDate={childBirthDate}
+                                                        childBirthDate={childBirthDate ? childBirthDate : new Date()}
                                                         childGender={childGender === "boy" ? "male" : 'female'}
                                                         lineChartData={measuresData}
                                                         showFullscreen={false}
+                                                        openFullScreen={() => this.openFullScreenChart(chartTypes.lengthAge)}
+
                                                     />
                                                 </View>
                                                 {
                                                     interpretationTexLenghtAge.text ?
-                                                        <View style={{ flex: 1, padding: 20, marginBottom: 20, justifyContent: 'center', alignItems: 'stretch', backgroundColor: 'white' }}>
+                                                        <View style={styles.card}>
                                                             <Typography>
                                                                 {interpretationTexLenghtAge.text}
                                                             </Typography>
-                                                            <TextButton color={TextButtonColor.purple} onPress={() => this.goToArticle(this.state.InterpretationTexWeightLength.articleId)}>Saznaj vise</TextButton>
+                                                            <TextButton
+                                                                color={TextButtonColor.purple}
+                                                                onPress={() => this.goToArticle(interpretationTexLenghtAge.articleId)}
+                                                            >
+                                                                {translate('moreAboutChildGrowth')}
+                                                            </TextButton>
                                                         </View> : null
                                                 }
                                                 <View>
@@ -429,15 +463,16 @@ const styles = StyleSheet.create<GrowthScreenStyles>({
         padding: scale(14),
         alignItems: 'stretch',
     },
-    header:{
-        display: 'flex', 
-        flexDirection: 'row', 
-        width: '100%', 
+    header: {
+        display: 'flex',
+        flexDirection: 'row',
+        width: '100%',
         alignContent: 'center'
     },
-    allMeasuresBtn:{
-        position: "absolute", 
-        right: 0, 
+    allMeasuresBtn: {
+        position: "absolute",
+        right: 0,
+        top: 16,
         alignSelf: 'center'
     },
     card: {

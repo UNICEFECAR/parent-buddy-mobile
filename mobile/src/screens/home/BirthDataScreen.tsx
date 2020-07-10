@@ -98,11 +98,18 @@ export class BirthDataScreen extends React.Component<Props, State> {
         if (currentChild.measures !== null && currentChild.measures !== "") {
             measures = JSON.parse(currentChild.measures);
 
-            measures[0].height = height;
-            measures[0].length = length;
+            if(height !== ""){
+                measures[0].height = height;
+            }
+
+            if(length !== ""){
+                measures[0].length = length;
+            }
+
             measures[0].measurementDate = birthDate;
         } else {
-            measures.push({ length: length, height: height, measurementDate: birthDate })
+            if(height !== "" && length !== "")
+                measures.push({ length: length, height: height, measurementDate: birthDate })
         }
 
         userRealmStore.realm?.write(() => {

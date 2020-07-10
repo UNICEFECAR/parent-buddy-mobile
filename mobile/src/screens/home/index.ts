@@ -4,6 +4,7 @@ import { VaccinationScreen } from './../vaccination/VaccinationScreen';
 import { NewMeasurementScreen } from '../growth/NewMeasurementScreen';
 import { AllMeasurementsScreen } from '../growth/AllMeasurementsScreen';
 import { GrowthScreen } from '../growth/GrowthScreen';
+import { ChartFullScreen } from '../growth/ChartFullScreen'
 import { AppFeedbackScreen } from "./AppFeedbackScreen";
 import { ArticleScreen } from "./ArticleScreen";
 import { ArticlesSection } from "./ArticlesSection";
@@ -39,3 +40,4 @@ export {VaccinationScreen}
 export {NewDoctorVisitScreen}
 export {AllMeasurementsScreen}
 export {VaccinationDataScreen}
+export {ChartFullScreen}

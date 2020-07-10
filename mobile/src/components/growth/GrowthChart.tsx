@@ -24,6 +24,8 @@ export interface Props {
     childGender: "male" | "female",
     childBirthDate: Date,
     showFullscreen: boolean,
+    openFullScreen?: Function,
+    closeFullScreen?: Function,
 }
 export interface State {
     orientation: 'portrait' | 'landscape';
@@ -33,7 +35,7 @@ export interface State {
     middleArea: singleAreaDataFormat[],
     bottomArea: singleAreaDataFormat[],
     lineChart: LineChartData[]
-    labelX: "cm" | "meseci",
+    labelX: string,
     labelY: "kg" | "cm",
 }
 
@@ -85,15 +87,17 @@ export class GrowthChart extends React.Component<Props, State> {
             chartData.push(this.props.chartType === chartTypes.heightLength ? { x: item.length, y: item.height } : { x: item.measurementDate / 30, y: item.length })
         })
 
+        let orientation: "portrait"  | "landscape" = windowWidth > windowHeight ? 'landscape' : 'portrait';
+
         let state: State = {
-            orientation: windowWidth > windowHeight ? 'landscape' : 'portrait',
-            width: windowWidth - 40,
-            height: 250,
+            orientation: orientation,
+            width: windowWidth,
+            height: windowHeight,
             bottomArea: obj.bottomArea,
             topArea: obj.topArea,
             middleArea: obj.middleArea,
             lineChart: chartData,
-            labelX: chartType === chartTypes.heightLength ? "cm" : "meseci",
+            labelX: chartType === chartTypes.heightLength ? "cm" : translate('chartMonth'),
             labelY: chartType === chartTypes.heightLength ? "kg" : "cm"
         };
 
@@ -170,6 +174,25 @@ export class GrowthChart extends React.Component<Props, State> {
         }
 
         return obj;
+    }
+
+    private fullScreenEvents(){
+        if(this.props.openFullScreen){
+            this.props.openFullScreen()
+        }
+
+        if(this.props.closeFullScreen){
+            this.props.closeFullScreen()
+        }
+    }
+
+    private onLayout = (event: LayoutChangeEvent) => {
+        let layout = event.nativeEvent.layout;
+
+        this.setState({
+            width: layout.width,
+            height: this.props.showFullscreen ? layout.height - 120 : layout.height - 90,
+        })
     }
 
     private renderChart = (): ReactNode => (
@@ -320,7 +343,9 @@ export class GrowthChart extends React.Component<Props, State> {
                     this.props.showFullscreen && (
                         <View style={styles.chartLegendItem}>
                             <View style={{ width: 27, height: 12, backgroundColor: '#F9C49E', margin: 10 }}></View>
-                            <Typography style={{ fontSize: 11, opacity: 0.5 }}>{translate('growthChartLegendOrangeLabel')}</Typography>
+                            <Typography style={{ fontSize: 11, opacity: 0.5 }}>
+                                {translate('growthChartLegendOrangeLabel')}
+                            </Typography>
                         </View>
                     )
                 }
@@ -331,14 +356,16 @@ export class GrowthChart extends React.Component<Props, State> {
     public render() {
 
         return (
-            <View style={styles.container} >
+            <View style={styles.container} onLayout={this.onLayout} >
                 <View style={styles.chartHeader}>
                     <Typography type={TypographyType.headingSecondary}>{this.props.title}</Typography>
                     {
                         this.props.showFullscreen ?
-                            <Icon name="md-close" style={{ position: 'absolute', right: 0, fontSize: 20 }} />
+                            <Icon name="md-close" style={{ position: 'absolute', right: 0, top: 20, fontSize: 20 }} onPress={() => this.fullScreenEvents()}/>
                             :
-                            <Icon name="md-resize" style={{ position: 'absolute', right: 0, fontSize: 20 }} />
+                            <Icon name="md-resize" 
+                                style={{ position: 'absolute', right: 15, top: 20, fontSize: 20 }} 
+                                onPress={() => this.fullScreenEvents()}/>
 
                     }
                 </View>

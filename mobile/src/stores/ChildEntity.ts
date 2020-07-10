@@ -2,9 +2,10 @@ import { ObjectSchema } from "realm";
 
 
 export type Measures = {
-    height: string
-    length: string
-    measurementDate: Date | undefined
+    height: string;
+    length: string;
+    measurementDate: Date | undefined;
+    titleDateInMonth?: number,
 }
 
 export type ChildEntity = {

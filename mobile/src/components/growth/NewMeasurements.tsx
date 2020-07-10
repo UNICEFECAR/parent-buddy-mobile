@@ -3,7 +3,7 @@ import { View, ViewStyle, StyleSheet, TextStyle } from 'react-native'
 import { Typography, TypographyType } from '../Typography';
 import { RoundedButton, RoundedButtonType } from '../RoundedButton';
 import { translate } from '../../translations/translate';
-import Icon from "react-native-vector-icons/FontAwesome";
+import Icon from "react-native-vector-icons/AntDesign";
 import { scale, moderateScale } from 'react-native-size-matters';
 import { IconProps } from 'react-native-paper/lib/typescript/src/components/MaterialCommunityIcon';
 
@@ -18,7 +18,7 @@ export class NewMeasurements extends Component<Props> {
             <View style={styles.container}>
                 <View style={{ flexDirection: 'row' }}>
                     <Icon
-                        name={"plus"} // Can't find same icon in font-awesome 
+                        name={"pluscircleo"} // Can't find same icon in font-awesome 
                         style={styles.iconStyle}
                     />
                     <View style={{ flexDirection: "column" }}>

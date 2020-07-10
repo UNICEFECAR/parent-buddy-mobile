@@ -45,7 +45,7 @@ export class VaccinationScreen extends Component<Props> {
                     >
                         <OneVaccinations
                             title="Na rođenju"
-                            isHorizontalLineVisible={true}
+                            isVerticalLineVisible={true}
                             vaccineList={[
                                 { complete: true, title: "Protiv tuberkuloze", },
                                 { complete: true, title: "Protiv zarazne žutice B", },
@@ -63,7 +63,7 @@ export class VaccinationScreen extends Component<Props> {
                                 { complete: true, title: "Protiv oboljenja izazvanih hemofilusom influence tipa B - 15.5.2019.", description: "Konjugovana vakcina" },
                             ]}
                             title="5. Mesec"
-                            isHorizontalLineVisible={true}
+                            isVerticalLineVisible={true}
                             onPress={() => this.props.navigation.navigate('HomeStackNavigator_NewDoctorVisitScreen')}
                             onPress2={() => this.props.navigation.navigate('HomeStackNavigator_VaccinationDataScreen')}
 
