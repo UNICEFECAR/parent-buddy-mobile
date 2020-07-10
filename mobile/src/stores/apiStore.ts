@@ -387,7 +387,7 @@ class ApiStore {
     }
 
     public async downloadImages(args: ApiImageData[]): Promise<{ success: boolean, args: ApiImageData }[] | null> {
-        const allResponses: any[] = [];
+        let allResponses: any[] = [];
         const numberOfLoops: number = Math.ceil(args.length / appConfig.downloadImagesBatchSize);
 
         for (let loop = 0; loop < numberOfLoops; loop++) {
@@ -410,7 +410,7 @@ class ApiStore {
             }, 0);
 
             // Add responses to allResponses
-            allResponses.concat(
+            allResponses = allResponses.concat(
                 loopResponses.map((value, index) => {
                     return {
                         success: value,

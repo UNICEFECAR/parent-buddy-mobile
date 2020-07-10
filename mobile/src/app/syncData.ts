@@ -86,6 +86,8 @@ class SyncData {
 
 
         // DOWNLOAD COVER IMAGES
+        let numberOfFailedImageDownloads: number | undefined = 0;
+
         if (allContent?.data && allContent.data.length > 0) {
             const apiImagesData: ApiImageData[] = [];
 
@@ -99,23 +101,29 @@ class SyncData {
 
             const imagesDownloadResult = await apiStore.downloadImages(apiImagesData);
 
-            if (appConfig.showLog) {
-                // console.log('Images download results');
-                // console.log( JSON.stringify(imagesDownloadResult, null, 4) );
-            }
+            numberOfFailedImageDownloads = imagesDownloadResult?.reduce((acc, currentValue) => {
+                if (!currentValue.success) {
+                    return acc + 1;
+                } else {
+                    return acc;
+                }
+            }, 0);
+            if (numberOfFailedImageDownloads === undefined) numberOfFailedImageDownloads = 0;
         }
 
         // UPDATE lastSyncTimestamp
-        if (allContent.total > 0 && allContent.data.length === allContent.total) {
+        const allContentIsDownloaded = allContent.total > 0 && allContent.data.length === allContent.total;
+
+        if (allContentIsDownloaded && numberOfFailedImageDownloads === 0) {
             dataRealmStore.setVariable('lastSyncTimestamp', Math.round(Date.now() / 1000));
 
             if (appConfig.showLog) {
                 console.log('syncData.sync(): Updated lastSyncTimestamp');
             }
-        }
-
-        if (appConfig.showLog) {
-            console.log('syncData.sync(): Finished');
+        } else {
+            if (appConfig.showLog) {
+                console.log('syncData.sync(): lastSyncTimestamp was NOT updated');
+            }
         }
 
         return rval;
