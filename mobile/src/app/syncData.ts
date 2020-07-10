@@ -135,14 +135,6 @@ class SyncData {
                 }
             }, 0);
             if (numberOfFailedImageDownloads === undefined) numberOfFailedImageDownloads = 0;
-            // if (appConfig.showLog) {
-            //     let numberOfSucceses = 0;
-            //     imagesDownloadResult.forEach((value)=>{
-            //         if (value.success) numberOfSucceses++;
-            //     });
-
-            //     console.log(`Number of images downloaded: ${numberOfSucceses}`);
-            // }
         }
 
         // UPDATE lastSyncTimestamp

@@ -59,53 +59,6 @@ export class HomeScreen extends React.Component<Props, object> {
         // }
 
         // await apiStore.downloadImages(images);
-        // let baseUrl = `http://${appConfig.apiUsername}:${appConfig.apiPassword}@ecaroparentingapppi3xep5h4v.devcloud.acquia-sites.com/api`;
-        let baseUrl = appConfig.apiUrl;
-
-        let url = `${baseUrl}/list-taxonomy/en/predefined_tags`;
-
-        // console.log(JSON.stringify({
-        //     url: url,
-        //     username: appConfig.apiUsername,
-        //     password: appConfig.apiPassword,
-        // }, null, 4));
-
-        try {
-            let axiosResponse: AxiosResponse = await axios({
-                // API: https://bit.ly/2ZatNfQ
-                url: url,
-                method: 'get',
-                responseType: 'json',
-                timeout: appConfig.apiTimeout, // milliseconds
-                maxContentLength: 100000, // bytes
-                // withCredentials: true,
-                // headers: {
-                //     // 'Authorization': "Basic (YWNjZXNzX2NvbnRlbnQ6eEFMUlk1R2YyS244MFpVTUhFYmQ=)",
-                //     // 'User-Agent': 'misha bre',
-                //     // 'Access-Control-Allow-Origin': '*',
-                //     // 'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS, HEAD',
-                //     // 'Access-Control-Allow-Headers': 'Authorization',
-                // },
-                auth: {
-                    username: appConfig.apiUsername,
-                    password: appConfig.apiPassword,
-                },
-                // transformRequest: [function (data, headers) {
-                //     // Do whatever you want to transform the data
-                //     console.log('data', JSON.stringify(data, null, 4));
-                //     console.log('headers', JSON.stringify(headers, null, 4));
-                //     return data;
-                // }],
-            });
-    
-            // Transform response
-            if (axiosResponse.data?.data) {
-                console.log('SUCCESS SUCCESS');
-            }
-        } catch (rejectError) {
-            // console.log(JSON.stringify(rejectError, null, 4));
-            console.log('ERROR BRE');
-        }
     }
 
     public render() {
