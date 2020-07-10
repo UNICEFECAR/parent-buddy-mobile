@@ -1,5 +1,5 @@
 import { appConfig } from "../app/appConfig";
-import { localize } from "../app";
+import { localize, utils } from "../app";
 import { ContentEntity, ContentEntityType } from "./ContentEntity";
 import axios, { AxiosResponse } from 'axios';
 import RNFS from 'react-native-fs';
@@ -22,7 +22,7 @@ class ApiStore {
         return ApiStore.instance;
     }
 
-    public async getBasicPages(): Promise<BasicPagesResponse>{
+    public async getBasicPages(): Promise<BasicPagesResponse> {
         const language = localize.getLanguage();
 
         let url = `${appConfig.apiUrl}/list-basic-page/${language}`;
@@ -32,12 +32,12 @@ class ApiStore {
             total: 0,
         };
 
-        try{
+        try {
             let axiosResponse: AxiosResponse = await axios({
                 url: url,
                 method: 'GET',
                 responseType: 'json',
-                headers: {"Content-type": "application/json"},
+                headers: { "Content-type": "application/json" },
                 timeout: appConfig.apiTimeout,
                 auth: {
                     username: appConfig.apiUsername,
@@ -47,14 +47,14 @@ class ApiStore {
 
             let rawResponseJson = axiosResponse.data;
 
-            if(rawResponseJson){
+            if (rawResponseJson) {
                 response.total = parseInt(rawResponseJson.total);
-                response.data = rawResponseJson.data.map((item: any ): BasicPageEntity => {
+                response.data = rawResponseJson.data.map((item: any): BasicPageEntity => {
                     return {
                         body: item.body,
                         title: item.title,
                         created_at: new Date(item.created_at * 1000),
-                        updated_at: new Date(item.updated_at * 1000 ),
+                        updated_at: new Date(item.updated_at * 1000),
                         id: parseInt(item.id),
                         langcode: item.langcode,
                         type: item.type
@@ -62,8 +62,8 @@ class ApiStore {
                 });
             };
 
-        }catch(rejectError){
-            if(appConfig.showLog){
+        } catch (rejectError) {
+            if (appConfig.showLog) {
                 console.log(rejectError, "REJECT ERROR")
             };
         };
@@ -71,12 +71,12 @@ class ApiStore {
         return response;
     };
 
-    public async drupalRegister(args: DrupalRegisterArgs): Promise<DrupalRegisterRespone>{
+    public async drupalRegister(args: DrupalRegisterArgs): Promise<DrupalRegisterRespone> {
 
         const DrupalRegisterApiUrl = appConfig.apiUrl.substring(0, appConfig.apiUrl.length - 3)
 
         let url = `${DrupalRegisterApiUrl}entity/user`
-        url = this.addBasicAuthForIOS(url);
+        url = this.addBasicAuthForIOS(url, true);
         const language = localize.getLanguage();
 
         let bodyParams = {
@@ -123,7 +123,7 @@ class ApiStore {
     public async drupalLogin(args: DrupalLoginArgs): Promise<DrupalLoginResponse> {
 
         let url = `${appConfig.apiUrl}/user/validate?username=${args.username}&password=${args.password}`
-        url = this.addBasicAuthForIOS(url);
+        url = this.addBasicAuthForIOS(url, true);
         let response: DrupalLoginResponse = { isUserExist: false }
 
         try {
@@ -354,7 +354,7 @@ class ApiStore {
                 await RNFS.mkdir(args.destFolder);
             }
 
-            // Download image
+            // Download image: https://bit.ly/2S5CeEu
             let { jobId, promise: downloadPromise } = RNFS.downloadFile({
                 fromUrl: args.srcUrl,
                 toFile: args.destFolder + `/${args.destFilename}`,
@@ -365,65 +365,91 @@ class ApiStore {
             let downloadResult = await downloadPromise;
 
             if (downloadResult.statusCode === 200) {
-                rval = true;
+                if (RNFS.exists(args.destFolder + '/' + args.destFilename)) {
+                    rval = true;
 
-                let parsedUrl = URLParser.parse(args.srcUrl);
-
-                // if (appConfig.showLog) {
-                //     console.log(`apiStore.downloadImage(): ${parsedUrl.pathname}`, );
-                // }
+                    // if (appConfig.showLog) {
+                    //     console.log('IMAGE DOWNLOADED: ', args.destFilename);
+                    // }
+                }
             } else {
-                // if (appConfig.showLog) {
-                //     console.log(`IMAGE DOWNLOAD FAILED: url = ${args.srcUrl}, statusCode: ${downloadResult.statusCode}`);
-                // }
+                if (appConfig.showLog) {
+                    console.log(`IMAGE DOWNLOAD ERROR: url = ${args.srcUrl}, statusCode: ${downloadResult.statusCode}`);
+                }
             }
         } catch (rejectError) {
             if (appConfig.showLog) {
-                console.log('IMAGE DOWNLOAD ERROR', rejectError);
-                console.log(JSON.stringify(args, null, 4));
+                console.log('IMAGE DOWNLOAD ERROR', rejectError, args.srcUrl);
             }
         }
 
         return rval;
     }
 
-    public async downloadImages(args: ApiImageData[]): Promise<{ success: boolean, args: ApiImageData }[]> {
-        const promises: Promise<boolean>[] = [];
+    public async downloadImages(args: ApiImageData[]): Promise<{ success: boolean, args: ApiImageData }[] | null> {
+        let allResponses: any[] = [];
+        const numberOfLoops: number = Math.ceil(args.length / appConfig.downloadImagesBatchSize);
 
-        // FIRST ATTEMPT
-        args.forEach((downloadImageArgs) => {
-            promises.push(this.downloadImage(downloadImageArgs));
-        });
+        for (let loop = 0; loop < numberOfLoops; loop++) {
+            // Get currentLoopImages
+            const indexStart = loop * appConfig.downloadImagesBatchSize;
+            const indexEnd = loop * appConfig.downloadImagesBatchSize + appConfig.downloadImagesBatchSize;
+            const currentLoopImages = args.slice(indexStart, indexEnd);
 
-        let allResponses = await Promise.all<boolean>(promises);
+            // Download current loop images
+            const promises: Promise<boolean>[] = [];
+            currentLoopImages.forEach((downloadImageArgs) => {
+                promises.push(this.downloadImage(downloadImageArgs));
+            });
 
-        if (appConfig.showLog) {
-            console.log(`apiStore.downloadImages() first attempt: Downloaded ${args.length} images`,);
+            let loopResponses = await Promise.all<boolean>(promises);
+
+            // Set numberOfSuccess
+            const numberOfSuccess = loopResponses.reduce((acc: number, currentValue: boolean) => {
+                if (currentValue) return acc + 1; else return acc;
+            }, 0);
+
+            // Add responses to allResponses
+            allResponses = allResponses.concat(
+                loopResponses.map((value, index) => {
+                    return {
+                        success: value,
+                        args: currentLoopImages[index],
+                    };
+                })
+            );
+
+            // Log
+            if (appConfig.showLog) {
+                console.log(`apiStore.downloadImages() batch ${loop + 1}: Downloaded ${numberOfSuccess} from ${currentLoopImages.length} images`,);
+            }
+
+            // Wait between batches
+            await utils.waitMilliseconds(appConfig.downloadImagesIntervalBetweenBatches);
         }
 
-        return allResponses.map((value, index) => {
-            return {
-                success: value,
-                args: args[index],
-            };
-        });
+        return allResponses;
     }
 
-    private addBasicAuthForIOS(url: string): string {
+    private addBasicAuthForIOS(url: string, isLoginRegister: boolean = false): string {
         if (Platform.OS === 'ios') {
-            return url.replace('http://', `http://${appConfig.apiUsername}:${appConfig.apiPassword}@`);
+            if (isLoginRegister) {
+                return url.replace('http://', `http://${appConfig.apiAuthUsername}:${appConfig.apiAuthPassword}@`);
+            } else {
+                return url.replace('http://', `http://${appConfig.apiUsername}:${appConfig.apiPassword}@`);
+            }
         } else {
             return url;
         }
     }
 }
 
-export interface BasicPagesResponse{
+export interface BasicPagesResponse {
     total: number,
     data: BasicPageEntity[]
 }
 
-export interface DrupalRegisterArgs{
+export interface DrupalRegisterArgs {
     field_first_name: string,
     field_last_name: string,
     name: string,
