@@ -76,7 +76,7 @@ class ApiStore {
         const DrupalRegisterApiUrl = appConfig.apiUrl.substring(0, appConfig.apiUrl.length - 3)
 
         let url = `${DrupalRegisterApiUrl}entity/user`
-        url = this.addBasicAuthForIOS(url);
+        url = this.addBasicAuthForIOS(url, true);
         const language = localize.getLanguage();
 
         let bodyParams = {
@@ -123,7 +123,7 @@ class ApiStore {
     public async drupalLogin(args: DrupalLoginArgs): Promise<DrupalLoginResponse> {
 
         let url = `${appConfig.apiUrl}/user/validate?username=${args.username}&password=${args.password}`
-        url = this.addBasicAuthForIOS(url);
+        url = this.addBasicAuthForIOS(url, true);
         let response: DrupalLoginResponse = { isUserExist: false }
 
         try {
@@ -354,7 +354,7 @@ class ApiStore {
                 await RNFS.mkdir(args.destFolder);
             }
 
-            // Download image
+            // Download image: https://bit.ly/2S5CeEu
             let { jobId, promise: downloadPromise } = RNFS.downloadFile({
                 fromUrl: args.srcUrl,
                 toFile: args.destFolder + `/${args.destFilename}`,
@@ -365,22 +365,18 @@ class ApiStore {
             let downloadResult = await downloadPromise;
 
             if (downloadResult.statusCode === 200) {
-                rval = true;
-
-                let parsedUrl = URLParser.parse(args.srcUrl);
-
-                // if (appConfig.showLog) {
-                //     console.log(`apiStore.downloadImage(): ${parsedUrl.pathname}`, );
-                // }
+                if (RNFS.exists(args.destFolder + '/' + args.destFilename)) {
+                    rval = true;
+                }
             } else {
                 // if (appConfig.showLog) {
-                //     console.log(`IMAGE DOWNLOAD FAILED: url = ${args.srcUrl}, statusCode: ${downloadResult.statusCode}`);
+                //     console.log(`IMAGE DOWNLOAD ERROR: url = ${args.srcUrl}, statusCode: ${downloadResult.statusCode}`);
                 // }
             }
         } catch (rejectError) {
             if (appConfig.showLog) {
-                console.log('IMAGE DOWNLOAD ERROR', rejectError);
-                console.log(JSON.stringify(args, null, 4));
+                console.log('IMAGE DOWNLOAD ERROR', rejectError, args.srcUrl);
+                // console.log(JSON.stringify(args, null, 4));
             }
         }
 
@@ -409,12 +405,22 @@ class ApiStore {
         });
     }
 
-    private addBasicAuthForIOS(url: string): string {
+    private addBasicAuthForIOS(url: string, isLoginRegister: boolean = false): string {
         if (Platform.OS === 'ios') {
-            return url.replace('http://', `http://${appConfig.apiUsername}:${appConfig.apiPassword}@`);
+            if (isLoginRegister) {
+                return url.replace('http://', `http://${appConfig.apiAuthUsername}:${appConfig.apiAuthPassword}@`);
+            } else {
+                return url.replace('http://', `http://${appConfig.apiUsername}:${appConfig.apiPassword}@`);
+            }
         } else {
             return url;
         }
+    }
+
+    private async waitMilliseconds(milliseconds: number): Promise<string> {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => { resolve('success') }, milliseconds);
+        });
     }
 }
 
