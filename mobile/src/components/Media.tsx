@@ -48,13 +48,6 @@ export class Media extends React.Component<Props, State> {
         super(props);
         this.vimeoWebViewRef = React.createRef<WebView>();
         this.initState();
-
-        if (this.props.coverImageUrl.indexOf('cover_image_331') !== -1) {
-            // console.log(this.props.coverImageUrl, );
-            RNFS.exists(this.props.coverImageUrl).then((value) => {
-                console.log('exists: ' + value);
-            });
-        }
     }
 
     private initState() {

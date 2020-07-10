@@ -9,7 +9,7 @@ import { ArticlesSection, ArticlesSectionData } from './ArticlesSection';
 import { DataRealmContext, DataRealmContextValue, DataRealmConsumer } from '../../stores/DataRealmContext';
 import { ContentEntity, ContentEntitySchema } from '../../stores/ContentEntity';
 import { CategoryArticlesViewEntity } from '../../stores/CategoryArticlesViewEntity';
-import { dataRealmStore } from '../../stores';
+import { dataRealmStore, apiStore } from '../../stores';
 import { translate } from '../../translations/translate';
 import { content, localize, utils } from '../../app';
 import { Media } from '../../components';
@@ -53,10 +53,12 @@ export class HomeScreen extends React.Component<Props, object> {
     }
 
     private async onTestButtonPress() {
-        for (let i=0; i < 3; i++) {
-            console.log('Buuu');
-            await utils.waitMilliseconds(1000);
-        }
+        // let images: any[] = [];
+        // for (let i = 0; i < 320; i++) {
+        //     images.push({srcUrl:'', destFilename:'', destFolder:''},);
+        // }
+
+        // await apiStore.downloadImages(images);
     }
 
     public render() {

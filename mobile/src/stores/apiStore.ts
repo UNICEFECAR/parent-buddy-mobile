@@ -1,5 +1,5 @@
 import { appConfig } from "../app/appConfig";
-import { localize } from "../app";
+import { localize, utils } from "../app";
 import { ContentEntity, ContentEntityType } from "./ContentEntity";
 import axios, { AxiosResponse } from 'axios';
 import RNFS from 'react-native-fs';
@@ -367,42 +367,68 @@ class ApiStore {
             if (downloadResult.statusCode === 200) {
                 if (RNFS.exists(args.destFolder + '/' + args.destFilename)) {
                     rval = true;
+
+                    // if (appConfig.showLog) {
+                    //     console.log('IMAGE DOWNLOADED: ', args.destFilename);
+                    // }
                 }
             } else {
-                // if (appConfig.showLog) {
-                //     console.log(`IMAGE DOWNLOAD ERROR: url = ${args.srcUrl}, statusCode: ${downloadResult.statusCode}`);
-                // }
+                if (appConfig.showLog) {
+                    console.log(`IMAGE DOWNLOAD ERROR: url = ${args.srcUrl}, statusCode: ${downloadResult.statusCode}`);
+                }
             }
         } catch (rejectError) {
             if (appConfig.showLog) {
                 console.log('IMAGE DOWNLOAD ERROR', rejectError, args.srcUrl);
-                // console.log(JSON.stringify(args, null, 4));
             }
         }
 
         return rval;
     }
 
-    public async downloadImages(args: ApiImageData[]): Promise<{ success: boolean, args: ApiImageData }[]> {
-        const promises: Promise<boolean>[] = [];
+    public async downloadImages(args: ApiImageData[]): Promise<{ success: boolean, args: ApiImageData }[] | null> {
+        const allResponses: any[] = [];
+        const numberOfLoops: number = Math.ceil(args.length / appConfig.downloadImagesBatchSize);
 
-        // FIRST ATTEMPT
-        args.forEach((downloadImageArgs) => {
-            promises.push(this.downloadImage(downloadImageArgs));
-        });
+        for (let loop = 0; loop < numberOfLoops; loop++) {
+            // Get currentLoopImages
+            const indexStart = loop * appConfig.downloadImagesBatchSize;
+            const indexEnd = loop * appConfig.downloadImagesBatchSize + appConfig.downloadImagesBatchSize;
+            const currentLoopImages = args.slice(indexStart, indexEnd);
 
-        let allResponses = await Promise.all<boolean>(promises);
+            // Download current loop images
+            const promises: Promise<boolean>[] = [];
+            currentLoopImages.forEach((downloadImageArgs) => {
+                promises.push(this.downloadImage(downloadImageArgs));
+            });
 
-        if (appConfig.showLog) {
-            console.log(`apiStore.downloadImages() first attempt: Downloaded ${args.length} images`,);
+            let loopResponses = await Promise.all<boolean>(promises);
+
+            // Set numberOfSuccess
+            const numberOfSuccess = loopResponses.reduce((acc: number, currentValue: boolean) => {
+                if (currentValue) return acc + 1; else return acc;
+            }, 0);
+
+            // Add responses to allResponses
+            allResponses.concat(
+                loopResponses.map((value, index) => {
+                    return {
+                        success: value,
+                        args: currentLoopImages[index],
+                    };
+                })
+            );
+
+            // Log
+            if (appConfig.showLog) {
+                console.log(`apiStore.downloadImages() batch ${loop + 1}: Downloaded ${numberOfSuccess} from ${currentLoopImages.length} images`,);
+            }
+
+            // Wait between batches
+            await utils.waitMilliseconds(appConfig.downloadImagesIntervalBetweenBatches);
         }
 
-        return allResponses.map((value, index) => {
-            return {
-                success: value,
-                args: args[index],
-            };
-        });
+        return allResponses;
     }
 
     private addBasicAuthForIOS(url: string, isLoginRegister: boolean = false): string {
