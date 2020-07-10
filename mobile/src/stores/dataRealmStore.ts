@@ -355,7 +355,7 @@ class DataRealmStore {
 
 
 
-    private getTagIdFromChildAge = (months: number): number => {
+    public getTagIdFromChildAge = (months: number): number => {
         let id = 58;
         if (months === 1 || months === 0) {
             id = 43;
@@ -408,7 +408,6 @@ class DataRealmStore {
 
         const birthday = userRealmStore.getCurrentChild()?.birthDate;
         const timeNow = DateTime.local();
-
 
         if (birthday === null || birthday === undefined) {
             obj = null;

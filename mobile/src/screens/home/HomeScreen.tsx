@@ -9,12 +9,14 @@ import { ArticlesSection, ArticlesSectionData } from './ArticlesSection';
 import { DataRealmContext, DataRealmContextValue, DataRealmConsumer } from '../../stores/DataRealmContext';
 import { ContentEntity, ContentEntitySchema } from '../../stores/ContentEntity';
 import { CategoryArticlesViewEntity } from '../../stores/CategoryArticlesViewEntity';
-import { dataRealmStore } from '../../stores';
+import { dataRealmStore, apiStore } from '../../stores';
 import { translate } from '../../translations/translate';
-import { content, localize } from '../../app';
+import { content, localize, utils } from '../../app';
 import { Media } from '../../components';
 import Orientation from 'react-native-orientation-locker';
 import { getSearchResultsScreenData } from '../../stores/getSearchResultsScreenData';
+import axios, { AxiosResponse } from 'axios';
+import { appConfig } from "../../app/appConfig";
 
 export interface HomeScreenParams {
     showSearchInput?: boolean;
@@ -50,9 +52,13 @@ export class HomeScreen extends React.Component<Props, object> {
         }
     }
 
-    private onTestButtonPress() {
-        const results = getSearchResultsScreenData('yes');
-        console.log(JSON.stringify(results, null, 4));
+    private async onTestButtonPress() {
+        // let images: any[] = [];
+        // for (let i = 0; i < 320; i++) {
+        //     images.push({srcUrl:'', destFilename:'', destFolder:''},);
+        // }
+
+        // await apiStore.downloadImages(images);
     }
 
     public render() {
