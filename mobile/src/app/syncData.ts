@@ -125,10 +125,14 @@ class SyncData {
 
             const imagesDownloadResult = await apiStore.downloadImages(apiImagesData);
 
-            if (appConfig.showLog) {
-                // console.log('Images download results');
-                // console.log( JSON.stringify(imagesDownloadResult, null, 4) );
-            }
+            // if (appConfig.showLog) {
+            //     let numberOfSucceses = 0;
+            //     imagesDownloadResult.forEach((value)=>{
+            //         if (value.success) numberOfSucceses++;
+            //     });
+
+            //     console.log(`Number of images downloaded: ${numberOfSucceses}`);
+            // }
         }
 
         // UPDATE lastSyncTimestamp
