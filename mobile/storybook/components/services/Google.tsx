@@ -37,7 +37,7 @@ export class Google extends React.Component {
         const response = await googleDrive.createFileMultipart({
             name: 'file1.txt',
             content: `Hello file`,
-            parentFolderId: 'root',
+            parentFolderId: '1hRrrAeG9UAiqZFeyHNWdycOLgMA6ztn4', // root
             contentType: 'text/plain',
         });
 
@@ -47,6 +47,26 @@ export class Google extends React.Component {
             console.warn('File created. ID = ', response);
         }
     };
+
+    private createPermissions = async () => {
+        const response = await googleDrive.createPermissions(
+            '1hryg0QQEhW6ZgjFET1mQZWBaLPJm6TrP', // fileId
+            {
+                emailAddress: 'halobebaapp@gmail.com',
+                role: 'writer',
+                type: 'user',
+            },
+            {
+                emailMessage: `This is your backup.`,
+            }
+        );
+
+        if (response instanceof Error) {
+            console.warn(response.message);
+        } else {
+            console.warn('Permission created', response);
+        }
+    }
 
     private gdriveCreateFolder = async () => {
         const response = await googleDrive.safeCreateFolder({
@@ -163,6 +183,11 @@ export class Google extends React.Component {
 
                 <Button mode="contained" uppercase={false} onPress={this.gdriveCreateFile} color={Colors.deepPurple500}>
                     Create file
+                </Button>
+                <View style={{ height: scale(10) }} />
+
+                <Button mode="contained" uppercase={false} onPress={this.createPermissions} color={Colors.deepPurple500}>
+                    Give permissions
                 </Button>
                 <View style={{ height: scale(10) }} />
 
