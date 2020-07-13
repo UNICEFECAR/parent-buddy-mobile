@@ -37,11 +37,21 @@ class Backup {
         // Get realmContent
         const realmContent = await RNFS.readFile(userRealmPath, 'base64');
 
+        // Get backupFolderId
+        let backupFolderId = await googleDrive.safeCreateFolder({
+            name: appConfig.backupGDriveFolderName,
+            parentFolderId: 'root'
+        });
+
+        if (backupFolderId instanceof Error) {
+            return false;
+        }
+
         // Get backup file ID if exists on GDrive
         let backupFileId: string | null = null;
 
         const backupFiles = await googleDrive.list({
-            filter: `trashed=false and (name contains '${appConfig.backupGDriveFileName}') and ('root' in parents)`,
+            filter: `trashed=false and (name contains '${appConfig.backupGDriveFileName}') and ('${backupFolderId}' in parents)`,
         });
 
         if (Array.isArray(backupFiles) && backupFiles.length > 0) {
@@ -58,12 +68,12 @@ class Backup {
             name: appConfig.backupGDriveFileName,
             content: realmContent,
             contentType: 'application/realm',
-            parentFolderId: 'root',
+            parentFolderId: backupFolderId,
             isBase64: true,
         });
 
         if (typeof response !== 'string') {
-            utils.setMyDebbugTxt(response.message);
+            // utils.setMyDebbugTxt(response.message);
             return false;
         }
 
@@ -79,11 +89,21 @@ class Backup {
             if (!user) return new Error(translate('loginCanceled'));
         }
 
+        // Get backupFolderId
+        let backupFolderId = await googleDrive.safeCreateFolder({
+            name: appConfig.backupGDriveFolderName,
+            parentFolderId: 'root'
+        });
+
+        if (backupFolderId instanceof Error) {
+            return new Error('Backup folder doesnt exist on GDrive');
+        }
+
         // Get backup file ID if exists on GDrive
         let backupFileId: string | null = null;
 
         const backupFiles = await googleDrive.list({
-            filter: `trashed=false and (name contains '${appConfig.backupGDriveFileName}') and ('root' in parents)`,
+            filter: `trashed=false and (name contains '${appConfig.backupGDriveFileName}') and ('${backupFolderId}' in parents)`,
         });
 
         if (Array.isArray(backupFiles) && backupFiles.length > 0) {
