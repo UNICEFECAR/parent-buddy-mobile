@@ -15,10 +15,12 @@ import { translate } from '../../translations/translate';
 import { userRealmStore, dataRealmStore } from '../../stores';
 import { Measures } from '../../stores/ChildEntity';
 import { navigation } from '../../app';
+import { NavigationStackProp, NavigationStackState } from 'react-navigation-stack';
+import { GrowthScreen } from '../home';
 
 
 export interface Props {
-    // navigation: NavigationStackProp<NavigationStackState, {}>;
+    navigation: NavigationStackProp<NavigationStackState, {}>;
 }
 
 export interface State {
@@ -130,11 +132,11 @@ export class NewMeasurementScreen extends Component<Props, State> {
                 currentChild.measures = JSON.stringify(measures);
                 // This will just trigger the update of data realm
                 dataRealmStore.setVariable('randomNumber', Math.floor(Math.random() * 6000) + 1);
-    
-                // this.props.navigation.goBack();
-                navigation.goBack()
+                this.props.navigation.goBack();
             });
         }
+
+       
     }
 
     render() {

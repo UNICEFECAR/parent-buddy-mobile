@@ -13,6 +13,7 @@ import { ChartData, GrowthChart0_2Type, GrowthChartHeightAgeType } from './growt
 import Icon from 'react-native-vector-icons/Ionicons';
 import { translate } from '../../translations';
 import Orientation from 'react-native-orientation-locker';
+import { scale, moderateScale } from 'react-native-size-matters';
 
 const fontFamily = 'SFUIDisplay-Regular';
 const dayLimit = 730;
@@ -49,7 +50,6 @@ export class GrowthChart extends React.Component<Props, State> {
     private initState() {
         let windowWidth = Dimensions.get('window').width;
         let windowHeight = Dimensions.get('window').height;
-
 
         const { GrowthChartBoys0_2, GrowthChartBoys2_5, GrowthChartGirls0_2, GrowthChartGirls2_5, Height_age_boys0_5, Height_age_girls0_5 } = ChartData;
         const { childGender, chartType } = this.props;
@@ -102,18 +102,6 @@ export class GrowthChart extends React.Component<Props, State> {
         };
 
         this.state = state;
-    }
-
-    public componentDidMount() {
-        if (this.props.showFullscreen) {
-            Orientation.lockToLandscape()
-        } else {
-            Orientation.lockToPortrait()
-        }
-    }
-
-    public componentWillUnmount() {
-        Orientation.lockToPortrait();
     }
 
     private getChildAge = () => {
@@ -186,27 +174,22 @@ export class GrowthChart extends React.Component<Props, State> {
         }
     }
 
-    private onLayout = (event: LayoutChangeEvent) => {
-        let layout = event.nativeEvent.layout;
 
-        this.setState({
-            width: layout.width,
-            height: this.props.showFullscreen ? layout.height - 120 : layout.height - 90,
-        })
+    private renderProps = () => {
+        return this.props.showFullscreen ? {height: this.state.height - 120} : null
     }
-
     private renderChart = (): ReactNode => (
         <>
             <VictoryChart
                 theme={VictoryTheme.material}
-                width={this.state.width}
-                height={this.state.height}
+                width={this.state.width - 30}
+                {...this.renderProps()}
             >
                 {/* ********* AXIS HORIZONTAL ********* */}
                 <VictoryAxis
                     style={victoryStyles.VictoryAxis}
                     label={this.state.labelX}
-                    axisLabelComponent={<VictoryLabel x={this.state.width - 20} />}
+                    axisLabelComponent={<VictoryLabel x={this.state.width - 60} />}
                 />
 
                 {/* ********* AXIS VERTICAL ********* */}
@@ -262,7 +245,6 @@ export class GrowthChart extends React.Component<Props, State> {
                         eventHandlers: {
                             onPressIn: (evt, pressedProps) => {
                                 const selectedDataIndex = pressedProps.index
-                                console.log(selectedDataIndex, 'data index')
                                 return [
                                     {
                                         eventKey: 'all',
@@ -309,9 +291,6 @@ export class GrowthChart extends React.Component<Props, State> {
                                         eventKey: "all",
                                         target: "labels",
                                         mutation: (props) => {
-                                            console.log(props.index, 'props index in onPressOut');
-                                            console.log(selectedDataIndex, 'selected data index in onPressOut');
-
                                             return props.index === selectedDataIndex
                                                 ? { active: props.active }
                                                 : null
@@ -354,14 +333,13 @@ export class GrowthChart extends React.Component<Props, State> {
     )
 
     public render() {
-
         return (
-            <View style={styles.container} onLayout={this.onLayout} >
+            <View style={[styles.container, this.props.showFullscreen ? {marginLeft: 20} : null]} >
                 <View style={styles.chartHeader}>
                     <Typography type={TypographyType.headingSecondary}>{this.props.title}</Typography>
                     {
                         this.props.showFullscreen ?
-                            <Icon name="md-close" style={{ position: 'absolute', right: 0, top: 20, fontSize: 20 }} onPress={() => this.fullScreenEvents()}/>
+                            <Icon name="md-close" style={{ position: 'absolute', right: 15, top: 20, fontSize: 20 }} onPress={() => this.fullScreenEvents()}/>
                             :
                             <Icon name="md-resize" 
                                 style={{ position: 'absolute', right: 15, top: 20, fontSize: 20 }} 
@@ -373,7 +351,7 @@ export class GrowthChart extends React.Component<Props, State> {
                     Platform.OS === 'ios' ?
                         this.renderChart()
                         :
-                        <Svg style={{ marginLeft: -10 }} >
+                        <Svg style={{ marginLeft: -10}} >
                             {this.renderChart()}
                         </Svg>
                 }

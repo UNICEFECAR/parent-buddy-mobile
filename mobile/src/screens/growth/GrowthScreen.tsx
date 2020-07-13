@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, ViewStyle, LayoutChangeEvent } from 'react-native'
+import { View, StyleSheet, ViewStyle, LayoutChangeEvent, Dimensions } from 'react-native'
 import { NavigationStackProp, NavigationStackState } from 'react-navigation-stack';
 import { NoMeasurements } from '../../components/growth/NoMeasurements';
 import { LastMeasurements } from '../../components/growth/LastMeasurements';
@@ -19,6 +19,8 @@ import { DateTime } from 'luxon';
 import { ChartData as Data, GrowthChart0_2Type, GrowthChartHeightAgeType } from '../../components/growth/growthChartData';
 import { TextButtonColor } from '../../components/TextButton';
 import { navigation } from '../../app';
+import { ActivityIndicator } from 'react-native-paper';
+import FastImage from 'react-native-fast-image';
 
 export interface GrowthScreenParams {
 
@@ -36,6 +38,8 @@ export interface State {
     childBirthDate: Date | null,
     childGender: ChildGender,
     lastMeasurementDate: string | undefined,
+    isFirstChartLoaded: boolean,
+    isSecoundChartLoaded: boolean
 }
 
 export class GrowthScreen extends Component<Props, State> {
@@ -193,7 +197,27 @@ export class GrowthScreen extends Component<Props, State> {
         return measuresData;
     }
 
-    private initState() {
+    componentDidMount() {
+        setTimeout(() => {
+            this.setState({
+                isFirstChartLoaded: true,
+            })
+        }, 200);
+
+        setTimeout(() => {
+            this.setState({
+                isSecoundChartLoaded: true,
+            })
+        }, 250)
+    }
+
+    private update(){
+        this.initState();
+        // this.forceUpdate()
+    }
+
+    public initState() {
+        
         // initialize state 
         let state: State = {
             periodIntroductionText: "",
@@ -201,6 +225,8 @@ export class GrowthScreen extends Component<Props, State> {
             childBirthDate: null,
             childGender: "boy",
             lastMeasurementDate: undefined,
+            isFirstChartLoaded: false,
+            isSecoundChartLoaded: false,
             interpretationTexWeightLength: {
                 text: "",
                 articleId: 0,
@@ -244,7 +270,7 @@ export class GrowthScreen extends Component<Props, State> {
                 }
 
                 let birthDay = new Date(currentChild.birthDate);
-                
+
                 const measuresData = this.convertMeasuresData(measures, birthDay);
                 const interpretationTexWeightLength = this.getInterpretationTexWeightForHeight(
                     childGender,
@@ -265,6 +291,8 @@ export class GrowthScreen extends Component<Props, State> {
                     childGender: childGender,
                     childBirthDate: currentChild.birthDate,
                     lastMeasurementDate: lastMeasurementDate,
+                    isFirstChartLoaded: false,
+                    isSecoundChartLoaded: false,
                 };
 
             } else {
@@ -295,7 +323,7 @@ export class GrowthScreen extends Component<Props, State> {
         let article = dataRealmStore.getContentFromId(id);
         let categoryName = dataRealmStore.getCategoryNameFromId(id);
 
-        if(article === undefined) return;
+        if (article === undefined) return;
 
         navigation.navigate(
             'HomeStackNavigator_ArticleScreen',
@@ -304,7 +332,7 @@ export class GrowthScreen extends Component<Props, State> {
     };
 
     private openFullScreenChart(type: chartTypes) {
-        this.props.navigation.navigate('HomeStackNavigator_ChartFullScreen',
+        this.props.navigation.navigate('RootModalStackNavigator_ChartFullScreen',
             {
                 chartType: type,
                 childBirthDate: this.state.childBirthDate,
@@ -315,7 +343,6 @@ export class GrowthScreen extends Component<Props, State> {
     };
 
     render() {
-
         const {
             periodIntroductionText,
             measuresData,
@@ -369,18 +396,23 @@ export class GrowthScreen extends Component<Props, State> {
                                             />
                                             :
                                             <>
-                                                <View style={styles.chartCard}>
-                                                    <GrowthChart
-                                                        title={translate('heightForLength')}
-                                                        chartType={chartTypes.heightLength}
-                                                        childBirthDate={childBirthDate ? childBirthDate : new Date()}
-                                                        childGender={childGender === "boy" ? "male" : 'female'}
-                                                        lineChartData={measuresData}
-                                                        showFullscreen={false}
-                                                        openFullScreen={() => this.openFullScreenChart(chartTypes.heightLength)}
+                                                {this.state.isFirstChartLoaded ?
+                                                    <View style={styles.chartCard}>
+                                                        <GrowthChart
+                                                            title={translate('heightForLength')}
+                                                            chartType={chartTypes.heightLength}
+                                                            childBirthDate={childBirthDate ? childBirthDate : new Date()}
+                                                            childGender={childGender === "boy" ? "male" : 'female'}
+                                                            lineChartData={measuresData}
+                                                            showFullscreen={false}
+                                                            openFullScreen={() => this.openFullScreenChart(chartTypes.heightLength)}
 
-                                                    />
-                                                </View>
+                                                        />
+                                                    </View>
+                                                    : <View style={styles.card}><ActivityIndicator /></View>
+
+                                                }
+
                                                 {
                                                     interpretationTexWeightLength.text ?
                                                         <View style={styles.card}>
@@ -395,19 +427,22 @@ export class GrowthScreen extends Component<Props, State> {
                                                             </TextButton>
                                                         </View> : null
                                                 }
+                                                {
+                                                    this.state.isSecoundChartLoaded ?
+                                                        <View style={styles.chartCard}>
+                                                            <GrowthChart
+                                                                title={translate('lengthForAge')}
+                                                                chartType={chartTypes.lengthAge}
+                                                                childBirthDate={childBirthDate ? childBirthDate : new Date()}
+                                                                childGender={childGender === "boy" ? "male" : 'female'}
+                                                                lineChartData={measuresData}
+                                                                showFullscreen={false}
+                                                                openFullScreen={() => this.openFullScreenChart(chartTypes.lengthAge)}
 
-                                                <View style={styles.chartCard}>
-                                                    <GrowthChart
-                                                        title={translate('lengthForAge')}
-                                                        chartType={chartTypes.lengthAge}
-                                                        childBirthDate={childBirthDate ? childBirthDate : new Date()}
-                                                        childGender={childGender === "boy" ? "male" : 'female'}
-                                                        lineChartData={measuresData}
-                                                        showFullscreen={false}
-                                                        openFullScreen={() => this.openFullScreenChart(chartTypes.lengthAge)}
+                                                            />
+                                                        </View> : <View style={styles.card}><ActivityIndicator /></View>
+                                                }
 
-                                                    />
-                                                </View>
                                                 {
                                                     interpretationTexLenghtAge.text ?
                                                         <View style={styles.card}>
@@ -491,7 +526,7 @@ const styles = StyleSheet.create<GrowthScreenStyles>({
         shadowOffset: { width: 2, height: 2 },
         shadowOpacity: 0.2,
         marginBottom: 20,
-        height: moderateScale(340)
+        // height: moderateScale(940)
     }
 })
 

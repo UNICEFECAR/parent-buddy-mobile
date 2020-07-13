@@ -260,16 +260,6 @@ const HomeStackNavigator = createStackNavigator({
         }
     },
 
-    HomeStackNavigator_ChartFullScreen: {
-        screen: ChartFullScreen,
-        navigationOptions: ({ navigation }: NavigationScreenConfigProps<NavigationStackProp<NavigationStackState, any>>): NavigationStackOptions => {
-            return {
-                title: translate('newMeasureScreenTitle'),
-                ...secondaryHomeNavigationOptions
-            }
-        }
-    },
-
     HomeStackNavigator_VaccinationScreen: {
         screen: VaccinationScreen,
         navigationOptions: {
@@ -504,6 +494,12 @@ const RootModalStackNavigator = createStackNavigator({
     },
     RootModalStackNavigator_VideoScreen: {
         screen: VideoScreen,
+        navigationOptions: {
+            title: "Video"
+        }
+    },
+    RootModalStackNavigator_ChartFullScreen: {
+        screen: ChartFullScreen,
         navigationOptions: {
             title: "Video"
         }

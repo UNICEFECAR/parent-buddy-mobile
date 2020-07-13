@@ -4,56 +4,83 @@ import { navigation } from "../../app";
 import { NavigationStackProp, NavigationStackState } from "react-navigation-stack";
 import { HomeScreenParams } from "../home/HomeScreen";
 import { translate } from "../../translations";
+import { Typography } from "../../components";
+import Orientation from "react-native-orientation-locker";
+import { View, Dimensions } from "react-native";
+import { ActivityIndicator } from "react-native-paper";
 
-interface State{
+interface State {
     chartType: chartTypes,
     childBirthDate: Date,
     childGender: "male" | "female",
     lineChartData: ChartData[],
+    isChartVisible: boolean
 }
 
-interface Props{
+interface Props {
     navigation: NavigationStackProp<NavigationStackState, HomeScreenParams>,
 }
 
 export class ChartFullScreen extends Component<Props, State>{
-    constructor(props: Props){
+    constructor(props: Props) {
         super(props);
         this.initState();
     }
 
-    private initState(){
-       if(this.props.navigation.state.params){
-           const {chartType, childBirthDate, childGender, lineChartData} = this.props.navigation.state.params;
-           let state: State = {
-               chartType: chartType,
-               childBirthDate: childBirthDate,
-               childGender: childGender,
-               lineChartData: lineChartData,
-           }
+    private initState() {
 
-           this.state = state;
-       }
+        if (this.props.navigation.state.params) {
+            const { chartType, childBirthDate, childGender, lineChartData } = this.props.navigation.state.params;
+            let state: State = {
+                chartType: chartType,
+                childBirthDate: childBirthDate,
+                childGender: childGender,
+                lineChartData: lineChartData,
+                isChartVisible: false,
+            }
+
+            this.state = state;
+        }
     }
 
-    private closeFullScreen(){
-        navigation.navigate('');
+    componentDidMount() {
+        Orientation.lockToLandscape()
+
+        setTimeout(() => {
+            this.setState({
+                isChartVisible: true
+            })
+        }, 170)
     }
 
-    render(){
-        const {chartType, childBirthDate, childGender, lineChartData} = this.state;
+    public componentWillUnmount() {
+        Orientation.lockToPortrait();
+    }
+
+    private closeFullScreen() {
+        navigation.goBack()
+    }
+
+    render() {
+        const { chartType, childBirthDate, childGender, lineChartData } = this.state;
         const title = chartType === chartTypes.heightLength ? translate('heightForLength') : translate('lengthForAge');
-        
-        return(
-            <GrowthChart 
-                title={title}
-                showFullscreen={true}
-                chartType={chartType}
-                childBirthDate={childBirthDate}
-                childGender={childGender}
-                lineChartData={lineChartData}
-                closeFullScreen={() => this.closeFullScreen()}
-            />
+
+        return (
+            <View style={{width: Dimensions.get('window').width, height: Dimensions.get('window').height, flex: 1}}>
+                {this.state.isChartVisible ?
+                    <GrowthChart
+                        title={title}
+                        showFullscreen={true}
+                        chartType={chartType}
+                        childBirthDate={childBirthDate}
+                        childGender={childGender}
+                        lineChartData={lineChartData}
+                        closeFullScreen={() => this.closeFullScreen()}
+                    /> : <View style={{flex: 1, alignContent: 'center', width: "100%", height: '100%', alignItems: "center", justifyContent: "center"}}><ActivityIndicator /></View>
+
+                }
+
+            </View>
         )
     }
 

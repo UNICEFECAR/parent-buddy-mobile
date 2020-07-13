@@ -65,9 +65,19 @@ export class BirthDataScreen extends React.Component<Props, State> {
 
             if(currentChild.measures && currentChild.measures !== ""){
                 let measures = JSON.parse(currentChild.measures);
+                
+                if(measures[0]?.height === undefined){
+                    console.log("OVDE")
+                    height = ""
+                }else{
+                    height = measures[0].height;
+                }
 
-                height = measures[0].height;
-                length = measures[0].length;
+                if(measures[0]?.length === undefined){
+                    length = ""
+                }else{
+                    length = measures[0].length;
+                }
             };
 
             state = {
@@ -99,11 +109,11 @@ export class BirthDataScreen extends React.Component<Props, State> {
             measures = JSON.parse(currentChild.measures);
 
             if(height !== ""){
-                measures[0].height = height;
+                measures[0] = {...measures[0], height: height}
             }
 
             if(length !== ""){
-                measures[0].length = length;
+                measures[0] = {...measures[0], length: length};
             }
 
             measures[0].measurementDate = birthDate;

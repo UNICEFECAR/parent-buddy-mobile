@@ -40,4 +40,3 @@ export {VaccinationScreen}
 export {NewDoctorVisitScreen}
 export {AllMeasurementsScreen}
 export {VaccinationDataScreen}
-export {ChartFullScreen}
