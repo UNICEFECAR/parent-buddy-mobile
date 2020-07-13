@@ -57,12 +57,10 @@ export class HomeScreen extends React.Component<Props, object> {
     }
 
     private async onTestButtonPress() {
-        // let images: any[] = [];
-        // for (let i = 0; i < 320; i++) {
-        //     images.push({srcUrl:'', destFilename:'', destFolder:''},);
-        // }
-
-        // await apiStore.downloadImages(images);
+        const response = await apiStore.setVariable('foo', 'bar');
+        // const response = await apiStore.getVariable('foo');
+        // const response = await apiStore.deleteVariable('foo');
+        console.log(response);
     }
 
     public render() {

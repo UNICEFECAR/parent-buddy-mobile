@@ -443,16 +443,106 @@ class ApiStore {
         }
     }
 
-    public async setVariable(key: string, value: any) {
+    public async setVariable(key: string, value: any): Promise<boolean> {
+        let rval = true;
 
+        let url = `${appConfig.apiUrl}/variable-set`;
+        url = this.addBasicAuthForIOS(url);
+
+        try {
+            let axiosResponse: AxiosResponse = await axios({
+                // API: https://bit.ly/2ZatNfQ
+                url: url,
+                data: {
+                    key: key,
+                    data: JSON.stringify(value),
+                },
+                method: 'POST',
+                responseType: 'json',
+                timeout: appConfig.apiTimeout, // milliseconds
+                maxContentLength: 100000, // bytes
+                auth: {
+                    username: appConfig.apiUsername,
+                    password: appConfig.apiPassword,
+                },
+            });
+
+            let rawResponseJson: { status: boolean, message: string } = axiosResponse.data;
+
+            if (!rawResponseJson || !rawResponseJson.status) rval = false;
+        } catch (rejectError) {
+            rval = false;
+            if (appConfig.showLog) {
+                console.log(rejectError.message);
+            }
+        }
+
+        return rval;
     }
 
-    public async getVariable(key: string) {
+    public async getVariable(key: string): Promise<any | null> {
+        let rval: any = null;
 
+        let url = `${appConfig.apiUrl}/variable-get/${key}`;
+        url = this.addBasicAuthForIOS(url);
+
+        try {
+            let axiosResponse: AxiosResponse = await axios({
+                // API: https://bit.ly/2ZatNfQ
+                url: url,
+                method: 'GET',
+                responseType: 'json',
+                timeout: appConfig.apiTimeout, // milliseconds
+                maxContentLength: 100000, // bytes
+                auth: {
+                    username: appConfig.apiUsername,
+                    password: appConfig.apiPassword,
+                },
+            });
+
+            let rawResponseJson: { status: boolean, key: string, data: string, message: string } = axiosResponse.data;
+
+            if (rawResponseJson && rawResponseJson.status) {
+                rval = JSON.parse(rawResponseJson.data);
+            }
+        } catch (rejectError) {
+            if (appConfig.showLog) console.log(rejectError);
+        }
+
+        return rval;
     }
 
-    public async deleteVariable(key: string) {
+    public async deleteVariable(key: string): Promise<boolean> {
+        let rval = true;
 
+        let url = `${appConfig.apiUrl}/variable-delete/${key}`;
+        url = this.addBasicAuthForIOS(url);
+
+        try {
+            let axiosResponse: AxiosResponse = await axios({
+                // API: https://bit.ly/2ZatNfQ
+                url: url,
+                method: 'GET',
+                responseType: 'json',
+                timeout: appConfig.apiTimeout, // milliseconds
+                maxContentLength: 100000, // bytes
+                auth: {
+                    username: appConfig.apiUsername,
+                    password: appConfig.apiPassword,
+                },
+            });
+
+            let rawResponseJson: { status: boolean, message: string } = axiosResponse.data;
+
+            if (!rawResponseJson || !rawResponseJson.status) {
+                rval = false;
+            }
+        } catch (rejectError) {
+            rval = false;
+            if (appConfig.showLog) console.log(rejectError);
+        }
+
+        return rval;
     }
 }
 
