@@ -41,7 +41,7 @@ class Backup {
         let backupFileId: string | null = null;
 
         const backupFiles = await googleDrive.list({
-            filter: `trashed=false and (name contains '${appConfig.backupFileName}') and ('root' in parents)`,
+            filter: `trashed=false and (name contains '${appConfig.backupGDriveFileName}') and ('root' in parents)`,
         });
 
         if (Array.isArray(backupFiles) && backupFiles.length > 0) {
@@ -55,7 +55,7 @@ class Backup {
 
         // Create file on gdrive
         const response = await googleDrive.createFileMultipart({
-            name: appConfig.backupFileName,
+            name: appConfig.backupGDriveFileName,
             content: realmContent,
             contentType: 'application/realm',
             parentFolderId: 'root',
@@ -83,7 +83,7 @@ class Backup {
         let backupFileId: string | null = null;
 
         const backupFiles = await googleDrive.list({
-            filter: `trashed=false and (name contains '${appConfig.backupFileName}') and ('root' in parents)`,
+            filter: `trashed=false and (name contains '${appConfig.backupGDriveFileName}') and ('root' in parents)`,
         });
 
         if (Array.isArray(backupFiles) && backupFiles.length > 0) {
