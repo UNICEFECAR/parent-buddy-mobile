@@ -4,7 +4,7 @@ import { VariableEntity, VariableEntitySchema } from './VariableEntity';
 import { appConfig } from '../app/appConfig';
 import { ChildEntity } from '.';
 import { ChildEntitySchema } from './ChildEntity';
-import { MilestoneEntity, MilestoneEntitySchema } from './MilestoneEntity';
+import { DateTime } from 'luxon';
 
 type Variables = {
     'userChildren': any;
@@ -72,6 +72,22 @@ class UserRealmStore {
     public getCurrentChild = () => {
         return this.realm?.objects<ChildEntity>(ChildEntitySchema.name).find((record, index, collection) => index === 0);
     }
+
+    public getCurrentChildAgeInDays = (birthDay?: Date) => {
+        let childBirthDay = birthDay ? birthDay : this.getCurrentChild()?.birthDate;
+
+        const timeNow = DateTime.local();
+        let days: number = 0;
+
+        if(childBirthDay){
+            let date = DateTime.fromJSDate(childBirthDay);
+            let convertInDays = timeNow.diff(date, "days").toObject().days;
+
+            if(convertInDays!== undefined) days = convertInDays;
+        };
+
+        return days;
+    };
 
     public getChildGender = () => {
         let child = this.getCurrentChild()

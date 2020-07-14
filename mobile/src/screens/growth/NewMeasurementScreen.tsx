@@ -12,16 +12,24 @@ import { Checkbox } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { scale, moderateScale } from 'react-native-size-matters';
 import { translate } from '../../translations/translate';
+import { userRealmStore, dataRealmStore } from '../../stores';
+import { Measures } from '../../stores/ChildEntity';
+import { navigation } from '../../app';
+import { NavigationStackProp, NavigationStackState } from 'react-navigation-stack';
+import { GrowthScreen } from '../home';
 
 
 export interface Props {
-    // navigation: NavigationStackProp<NavigationStackState, {}>;
+    navigation: NavigationStackProp<NavigationStackState, {}>;
 }
 
 export interface State {
-    measurementDate: string,
-    weight: string,
+    measurementDate: Date | undefined,
+    measurementDateError: boolean,
+    length: string,
+    lengthError: boolean,
     height: string,
+    heightError: boolean,
     comment: string,
     measurementPlace: string | undefined,
     isVaccineReceived: string | undefined,
@@ -37,13 +45,15 @@ export class NewMeasurementScreen extends Component<Props, State> {
 
     private initState = () => {
         let state: State = {
-            measurementDate: "",
-            weight: "",
+            measurementDate: undefined,
+            length: "",
             height: "",
             comment: "",
             isVaccineReceived: "no",
             measurementPlace: "home",
-
+            measurementDateError: false,
+            heightError: false,
+            lengthError: false,
         };
 
         this.state = state;
@@ -51,7 +61,7 @@ export class NewMeasurementScreen extends Component<Props, State> {
 
     private setMeasurementPlace = (value: string | undefined) => {
         this.setState({
-            measurementPlace: value,
+            // measurementPlace: value,
         })
     }
 
@@ -61,22 +71,72 @@ export class NewMeasurementScreen extends Component<Props, State> {
         })
     }
 
-    private setMeasurementDate = (value: string) => {
+    private setMeasurementDate = (value: Date) => {
         this.setState({
             measurementDate: value,
         })
     }
 
     private measureChange = (value: string, label: string) => {
-        if (label === "weight") {
+        if (label === "length") {
             this.setState({
-                weight: value
+                length: value
             })
         } else {
             this.setState({
                 height: value
             })
         }
+    }
+
+    private valueCheck() {
+        let isValid = true;
+
+        if (this.state.length === "") {
+            isValid = false;
+            this.setState({ lengthError: true })
+        }
+
+        if (this.state.height === "") {
+            isValid = false;
+            this.setState({ heightError: true })
+        }
+
+        if (this.state.measurementDate === undefined) {
+            isValid = false;
+            this.setState({ measurementDateError: true })
+        }
+
+        return isValid;
+    }
+
+    private submit() {
+        const { comment, length, height, measurementDate } = this.state;
+        const currentChild = userRealmStore.getCurrentChild();
+        if (!currentChild) return;
+
+        let measures: Measures[] = [];
+
+        if(this.valueCheck()){
+            if (currentChild.measures !== null && currentChild.measures !== "") {
+                measures = JSON.parse(currentChild.measures);
+                measures.push({ length: length, height: height, measurementDate: measurementDate })
+            } else {
+                measures[0].height = height;
+                measures[0].length = length;
+                measures[0].measurementDate = measurementDate;
+            }
+    
+            userRealmStore.realm?.write(() => {
+                currentChild.comment = comment;
+                currentChild.measures = JSON.stringify(measures);
+                // This will just trigger the update of data realm
+                dataRealmStore.setVariable('randomNumber', Math.floor(Math.random() * 6000) + 1);
+                this.props.navigation.goBack();
+            });
+        }
+
+       
     }
 
     render() {
@@ -88,7 +148,9 @@ export class NewMeasurementScreen extends Component<Props, State> {
                         contentContainerStyle={styles.container}
                     >
                         <View style={styles.dateTimePickerContainer}>
-                            <DateTimePicker label={translate("newMeasureScreenDatePickerLabel")} onChange={() => { }} />
+                            <DateTimePicker
+                                label={translate("newMeasureScreenDatePickerLabel")}
+                                onChange={(date) => this.setMeasurementDate(date)} />
                         </View>
                         <View style={styles.measurementPlaceContainer}>
                             <Typography style={{ marginBottom: 22 }}>{translate("newMeasureScreenPlaceTitle")}</Typography>
@@ -105,20 +167,20 @@ export class NewMeasurementScreen extends Component<Props, State> {
 
                         <View>
                             <RoundedTextInput
-                                label="Težina"
+                                label={translate('heightLabel')}
                                 suffix="g"
                                 icon="weight"
                                 style={{ width: 150 }}
-                                value={this.state.weight}
-                                onChange={value => this.measureChange(value, 'weight')}
+                                value={this.state.height}
+                                onChange={value => this.measureChange(value, 'height')}
                             />
                             <RoundedTextInput
-                                label="Visina"
+                                label={translate('lengthLabel')}
                                 suffix="cm"
                                 icon="weight"
                                 style={{ width: 150, marginTop: 8 }}
-                                value={this.state.height}
-                                onChange={value => this.measureChange(value, 'height')}
+                                value={this.state.length}
+                                onChange={value => this.measureChange(value, 'length')}
 
                             />
                         </View>
@@ -130,7 +192,7 @@ export class NewMeasurementScreen extends Component<Props, State> {
                                     <Typography style={{ marginBottom: 16 }}>{translate("newMeasureScreenVaccineTitle")}</Typography>
                                     <RadioButtons
                                         value={this.state.isVaccineReceived}
-                                        buttonStyle={{width: 150}}
+                                        buttonStyle={{ width: 150 }}
                                         buttons={[
                                             { text: translate("newMeasureScreenVaccineOptionYes"), value: 'yes' },
                                             { text: translate("newMeasureScreenVaccineOptionNo"), value: 'no' }
@@ -202,7 +264,11 @@ export class NewMeasurementScreen extends Component<Props, State> {
                         </View>
 
                         <View>
-                            <RoundedButton text={translate("newMeasureScreenSaveBtn")} type={RoundedButtonType.purple} />
+                            <RoundedButton
+                                text={translate("newMeasureScreenSaveBtn")}
+                                type={RoundedButtonType.purple}
+                                onPress={() => this.submit()}
+                            />
                         </View>
                     </ScrollView>
                 )}

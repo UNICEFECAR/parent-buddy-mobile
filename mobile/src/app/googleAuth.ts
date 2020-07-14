@@ -34,7 +34,6 @@ class GoogleAuth {
             await GoogleSignin.hasPlayServices();
             user = await GoogleSignin.signIn();
         } catch (error) {
-            // error.code === statusCodes.SIGN_IN_CANCELLED
             // utils.setMyDebbugTxt(JSON.stringify(error, null, 4));
         }
 

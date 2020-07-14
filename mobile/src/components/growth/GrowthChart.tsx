@@ -13,6 +13,7 @@ import { ChartData, GrowthChart0_2Type, GrowthChartHeightAgeType } from './growt
 import Icon from 'react-native-vector-icons/Ionicons';
 import { translate } from '../../translations';
 import Orientation from 'react-native-orientation-locker';
+import { scale, moderateScale } from 'react-native-size-matters';
 
 const fontFamily = 'SFUIDisplay-Regular';
 const dayLimit = 730;
@@ -24,6 +25,8 @@ export interface Props {
     childGender: "male" | "female",
     childBirthDate: Date,
     showFullscreen: boolean,
+    openFullScreen?: Function,
+    closeFullScreen?: Function,
 }
 export interface State {
     orientation: 'portrait' | 'landscape';
@@ -33,7 +36,7 @@ export interface State {
     middleArea: singleAreaDataFormat[],
     bottomArea: singleAreaDataFormat[],
     lineChart: LineChartData[]
-    labelX: "cm" | "meseci",
+    labelX: string,
     labelY: "kg" | "cm",
 }
 
@@ -47,7 +50,6 @@ export class GrowthChart extends React.Component<Props, State> {
     private initState() {
         let windowWidth = Dimensions.get('window').width;
         let windowHeight = Dimensions.get('window').height;
-
 
         const { GrowthChartBoys0_2, GrowthChartBoys2_5, GrowthChartGirls0_2, GrowthChartGirls2_5, Height_age_boys0_5, Height_age_girls0_5 } = ChartData;
         const { childGender, chartType } = this.props;
@@ -82,34 +84,24 @@ export class GrowthChart extends React.Component<Props, State> {
 
         /* Create line chart array for type chart */
         this.props.lineChartData.map(item => {
-            chartData.push(this.props.chartType === chartTypes.heightLength ? { x: item.length, y: item.height } : { x: item.measurementDay / 30, y: item.length })
+            chartData.push(this.props.chartType === chartTypes.heightLength ? { x: item.length, y: item.height } : { x: item.measurementDate / 30, y: item.length })
         })
 
+        let orientation: "portrait"  | "landscape" = windowWidth > windowHeight ? 'landscape' : 'portrait';
+
         let state: State = {
-            orientation: windowWidth > windowHeight ? 'landscape' : 'portrait',
+            orientation: orientation,
             width: windowWidth,
             height: windowHeight,
             bottomArea: obj.bottomArea,
             topArea: obj.topArea,
             middleArea: obj.middleArea,
             lineChart: chartData,
-            labelX: chartType === chartTypes.heightLength ? "cm" : "meseci",
+            labelX: chartType === chartTypes.heightLength ? "cm" : translate('chartMonth'),
             labelY: chartType === chartTypes.heightLength ? "kg" : "cm"
         };
 
         this.state = state;
-    }
-
-    public componentDidMount() {
-        if (this.props.showFullscreen) {
-            Orientation.lockToLandscape()
-        } else {
-            Orientation.lockToPortrait()
-        }
-    }
-
-    public componentWillUnmount() {
-        Orientation.lockToPortrait();
     }
 
     private getChildAge = () => {
@@ -172,27 +164,32 @@ export class GrowthChart extends React.Component<Props, State> {
         return obj;
     }
 
-    private onLayout = (event: LayoutChangeEvent) => {
-        let layout = event.nativeEvent.layout;
+    private fullScreenEvents(){
+        if(this.props.openFullScreen){
+            this.props.openFullScreen()
+        }
 
-        this.setState({
-            width: layout.width,
-            height: this.props.showFullscreen ? layout.height - 50 : layout.height - 200,
-        })
+        if(this.props.closeFullScreen){
+            this.props.closeFullScreen()
+        }
     }
 
+
+    private renderProps = () => {
+        return this.props.showFullscreen ? {height: this.state.height - 120} : null
+    }
     private renderChart = (): ReactNode => (
         <>
             <VictoryChart
                 theme={VictoryTheme.material}
-                width={this.state.width}
-                height={this.state.height}
+                width={this.state.width - 30}
+                {...this.renderProps()}
             >
                 {/* ********* AXIS HORIZONTAL ********* */}
                 <VictoryAxis
                     style={victoryStyles.VictoryAxis}
                     label={this.state.labelX}
-                    axisLabelComponent={<VictoryLabel x={this.state.width - 20} />}
+                    axisLabelComponent={<VictoryLabel x={this.state.width - 60} />}
                 />
 
                 {/* ********* AXIS VERTICAL ********* */}
@@ -230,8 +227,8 @@ export class GrowthChart extends React.Component<Props, State> {
                     style={victoryStyles.VictoryLine}
                 />
 
-                {/* ********* SCATTER ********* */}
-                <VictoryScatter
+                {/********** SCATTER ********* */}
+                 <VictoryScatter
                     data={this.state.lineChart}
                     size={9}
                     style={victoryStyles.VictoryScatter}
@@ -248,7 +245,6 @@ export class GrowthChart extends React.Component<Props, State> {
                         eventHandlers: {
                             onPressIn: (evt, pressedProps) => {
                                 const selectedDataIndex = pressedProps.index
-                                console.log(selectedDataIndex, 'data index')
                                 return [
                                     {
                                         eventKey: 'all',
@@ -295,9 +291,6 @@ export class GrowthChart extends React.Component<Props, State> {
                                         eventKey: "all",
                                         target: "labels",
                                         mutation: (props) => {
-                                            console.log(props.index, 'props index in onPressOut');
-                                            console.log(selectedDataIndex, 'selected data index in onPressOut');
-
                                             return props.index === selectedDataIndex
                                                 ? { active: props.active }
                                                 : null
@@ -329,7 +322,9 @@ export class GrowthChart extends React.Component<Props, State> {
                     this.props.showFullscreen && (
                         <View style={styles.chartLegendItem}>
                             <View style={{ width: 27, height: 12, backgroundColor: '#F9C49E', margin: 10 }}></View>
-                            <Typography style={{ fontSize: 11, opacity: 0.5 }}>{translate('growthChartLegendOrangeLabel')}</Typography>
+                            <Typography style={{ fontSize: 11, opacity: 0.5 }}>
+                                {translate('growthChartLegendOrangeLabel')}
+                            </Typography>
                         </View>
                     )
                 }
@@ -338,16 +333,17 @@ export class GrowthChart extends React.Component<Props, State> {
     )
 
     public render() {
-
         return (
-            <View style={styles.container} onLayout={this.onLayout}>
+            <View style={[styles.container, this.props.showFullscreen ? {marginLeft: 20} : null]} >
                 <View style={styles.chartHeader}>
                     <Typography type={TypographyType.headingSecondary}>{this.props.title}</Typography>
                     {
                         this.props.showFullscreen ?
-                            <Icon name="md-close" style={{ position: 'absolute', right: 0, fontSize: 20 }} />
+                            <Icon name="md-close" style={{ position: 'absolute', right: 15, top: 20, fontSize: 20 }} onPress={() => this.fullScreenEvents()}/>
                             :
-                            <Icon name="md-resize" style={{ position: 'absolute', right: 0, fontSize: 20 }} />
+                            <Icon name="md-resize" 
+                                style={{ position: 'absolute', right: 15, top: 20, fontSize: 20 }} 
+                                onPress={() => this.fullScreenEvents()}/>
 
                     }
                 </View>
@@ -355,7 +351,7 @@ export class GrowthChart extends React.Component<Props, State> {
                     Platform.OS === 'ios' ?
                         this.renderChart()
                         :
-                        <Svg style={{ marginLeft: -10 }} >
+                        <Svg style={{ marginLeft: -10}} >
                             {this.renderChart()}
                         </Svg>
                 }
@@ -374,7 +370,9 @@ const styles = StyleSheet.create<GrowtChartStyles>({
         justifyContent: 'flex-start',
     },
     chartHeader: {
-        flexDirection: "row"
+        flexDirection: "row",
+        paddingLeft: 20,
+        paddingTop: 20,
     },
     contentWrapper: {
         paddingLeft: 15,
@@ -447,7 +445,7 @@ export enum chartTypes {
 }
 
 export interface ChartData {
-    measurementDay: number,
+    measurementDate: number,
     height: number,
     length: number,
 }

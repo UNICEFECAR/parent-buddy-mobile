@@ -2,7 +2,9 @@ import { VaccinationDataScreen } from './../vaccination/VaccinationDataScreen';
 import { NewDoctorVisitScreen } from './../vaccination/NewDoctorVisitScreen';
 import { VaccinationScreen } from './../vaccination/VaccinationScreen';
 import { NewMeasurementScreen } from '../growth/NewMeasurementScreen';
+import { AllMeasurementsScreen } from '../growth/AllMeasurementsScreen';
 import { GrowthScreen } from '../growth/GrowthScreen';
+import { ChartFullScreen } from '../growth/ChartFullScreen'
 import { AppFeedbackScreen } from "./AppFeedbackScreen";
 import { ArticleScreen } from "./ArticleScreen";
 import { ArticlesSection } from "./ArticlesSection";
@@ -17,8 +19,8 @@ import { HomeScreen } from "./HomeScreen";
 import { ListCard } from "./ListCard";
 import { SearchResultsScreen } from "./SearchResultsScreen";
 import { SettingsScreen } from "./SettingsScreen";
-import {DevelopmentScreen} from '../development/DevelopmentScreen';
-import {EditPeriodScreen} from '../development/EditPeriodScreen';
+import { DevelopmentScreen } from '../development/DevelopmentScreen';
+import { EditPeriodScreen } from '../development/EditPeriodScreen';
 
 export { HomeScreen };
 export { CategoryArticlesScreen };
@@ -34,10 +36,12 @@ export { AppFeedbackScreen };
 export { BirthDataScreen };
 export { ExaminationReminderScreen };
 export { ChildProfileScreen };
-export {GrowthScreen};
-export {NewMeasurementScreen}
-export {VaccinationScreen}
-export {NewDoctorVisitScreen}
-export {VaccinationDataScreen}
-export {DevelopmentScreen}
-export {EditPeriodScreen}
+export { GrowthScreen };
+export { NewMeasurementScreen }
+export { VaccinationScreen }
+export { NewDoctorVisitScreen }
+export { VaccinationDataScreen }
+export { DevelopmentScreen }
+export { EditPeriodScreen }
+export { AllMeasurementsScreen }
+export { ChartFullScreen }

@@ -37,8 +37,9 @@ import { GrowthScreen } from "../screens/growth/GrowthScreen";
 import { NewMeasurementScreen } from "../screens/growth/NewMeasurementScreen";
 import { VaccinationScreen, VaccinationDataScreen, DevelopmentScreen, EditPeriodScreen } from "../screens/home";
 import { NewDoctorVisitScreen } from "../screens/vaccination/NewDoctorVisitScreen";
-
-/**
+import { AllMeasurementsScreen } from "../screens/growth/AllMeasurementsScreen";
+import { ChartFullScreen } from '../screens/growth/ChartFullScreen';
+ /**
  * Use it to [navigate screens](https://reactnavigation.org/docs/en/navigating-without-navigation-prop.html)
  * from anywhere in the code.
  */
@@ -253,6 +254,16 @@ const HomeStackNavigator = createStackNavigator({
         navigationOptions: ({ navigation }: NavigationScreenConfigProps<NavigationStackProp<NavigationStackState, any>>): NavigationStackOptions => {
             return {
                 title: translate('newMeasureScreenTitle'),
+                ...secondaryHomeNavigationOptions
+            }
+        }
+    },
+
+    HomeStackNavigator_AllMeasurementScreen: {
+        screen: AllMeasurementsScreen,
+        navigationOptions: ({ navigation }: NavigationScreenConfigProps<NavigationStackProp<NavigationStackState, any>>): NavigationStackOptions => {
+            return {
+                title: translate('allMeasurements'),
                 ...secondaryHomeNavigationOptions
             }
         }
@@ -504,6 +515,12 @@ const RootModalStackNavigator = createStackNavigator({
         //         ...secondaryHomeNavigationOptions
         //     }
         // }
+    },
+    RootModalStackNavigator_ChartFullScreen: {
+        screen: ChartFullScreen,
+        navigationOptions: {
+            title: "Video"
+        }
     },
     DrawerNavigator: {
         screen: DrawerNavigator

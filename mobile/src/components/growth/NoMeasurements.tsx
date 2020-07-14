@@ -6,7 +6,11 @@ import { Tag, TagColor } from '../Tag';
 import { translate } from '../../translations/translate';
 import { scale, moderateScale } from 'react-native-size-matters';
 
-export class NoMeasurements extends Component {
+interface Props{
+    addNewMeasures: Function
+}
+
+export class NoMeasurements extends Component<Props> {
     render() {
         return (
             <View style={styles.container}>
@@ -23,6 +27,7 @@ export class NoMeasurements extends Component {
                 <RoundedButton
                     type={RoundedButtonType.purple}
                     showArrow={true}
+                    onPress={() => this.props.addNewMeasures()}
                     text={translate('noMeasurementsDescriptionAddMeasureBtn')} 
                 />
             </View>

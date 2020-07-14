@@ -4,12 +4,14 @@ import { Typography, TypographyType } from '../Typography';
 import { RoundedButton, RoundedButtonType } from '../RoundedButton';
 import { translate } from '../../translations/translate';
 import { scale, moderateScale } from 'react-native-size-matters';
+import { toHumanSize } from 'i18n-js';
 
 
 export interface Props {
     measureDate: string,
     measureMass: string,
     measureLength: string,
+    onPress: Function,
 }
 
 export class LastMeasurements extends Component<Props> {
@@ -47,6 +49,7 @@ export class LastMeasurements extends Component<Props> {
                     style={styles.button}
                     type={RoundedButtonType.purple}
                     showArrow={true}
+                    onPress={() => this.props.onPress()}
                     text={translate('lastMeasureAddMeasurementBtn')}
                 />
             </View>

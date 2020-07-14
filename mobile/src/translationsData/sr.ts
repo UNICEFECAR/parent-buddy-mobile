@@ -338,4 +338,313 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
             predefinedTagId: 51,
         },
     ],
+    growthPeriods: [
+        {
+            dayMin: 0,
+            dayMax: 30,
+            text: 'Novorođenče će na početku izgubiti do 10% svoje telesne mase (težine), a ovaj gubitak će, uz odgovarajuću negu i ishranu, najbolje majčinim mlekom, nadoknaditi najdalje do kraja druge nedelje života. Sledi period najbržeg rasta: u težini  20 do 30 gr dnevno, a mesečno u dužini do 5 cm, u obimu glave  2 -2,5 cm.  '
+        },
+        {
+            dayMin: 31,
+            dayMax: 91,
+            text: 'U drugom i trećem mesecu dete nastavlja da raste približno istom brzinom koju je uspostavilo tokom prvih nedelja. Mesečno dobija 700 do 900 gr u težini, 2,5 do 4 cm u dužini i oko 1,2 cm u obimu glave.   '
+        },
+        {
+            dayMin: 92,
+            dayMax: 152,
+            text: 'U četvrtom mesecu rast počinje da se usporava. Tokom četvrtog i petog meseca, dete mesečno dobija u proseku 450 do 550 gr u težini i oko 2 cm u dužini'
+        },
+        {
+            dayMin: 153,
+            dayMax: 183,
+            text: 'Dete nastavlja da dobija mesečno proseku 450 do 550 gr u težini i oko 2 cm u dužini. Dok navrši 6 meseci dete je već udvostručilo telesnu masu sa rođenja. '
+        },
+        {
+            dayMin: 184,
+            dayMax: 274,
+            text: 'Od sedmog do devetog meseca rast se i dalje usporava. Deca rastu različitom brzinom ali je važno da slede obrazac rasta koji su uspostavila tokom predhodnih meseci.',
+        },
+        {
+            dayMin: 275,
+            dayMax: 365,
+            text: 'U poslednjem tromesečju prve godine dete dobija oko 1 cm mesečno u dužini a težina varira i zavisi od aktivnosti. Tokom prve godine dete uglavnom utrostruči svoju težinu sa rođenju, poraste u proseku  25 cm a obim glave se poveća za 12,5 cm.  ',
+        },
+        {
+            dayMin: 366,
+            dayMax: 730,
+            text: 'U drugoj godini se nastavlja postepeno usporavanje rasta. U ovoj godini dete poraste oko 12 cm,  dobije 2-2,5 kg u težini i obim glave se uveća za 2-2,5 cm. ',
+        },
+        {
+            dayMin: 731,
+            dayMax: 2190,
+            text: 'Dete od treće godine ujednačeno raste. Dete u visini dobija  5-7,5 cm, a u težini 2-3 kg godišnje. ',
+        },
+    ],
+    interpretationWeightForHeight: [
+        {
+            predefined_tags: [43, 44, 45, 46],
+            goodText: {
+                name: 'Tipičan rast deteta: prvih 6 meseci - težine za dužinu/visinu deteta je između -2SD do +2 SD',
+                text: 'Bravo! Vaše dete dobro raste i njegova težina je u skladu sa njegovom visinom. Nastavite da se pridžavate preporuka za optimalnu ishranu, fizičku aktivnost i spavanje. Pratite i dalje rast vašeg deteta.',
+                articleId: 3026,
+
+            },
+            warrningSmallHeightText: {
+                name: 'Tipičan rast deteta: prvih 6 meseci- težine za dužinu/visinu deteta su između -2 i -3 SD',
+                text: 'Pažnja! Vaše dete gubi na težini (ili ne dobija u skladu sa visinom) i ima umereni nedostatak težine za dužinu/visinu. Ovo stanje je moglo nastati tokom nekoliko nedelja, stoga razmislite o mogućim neposrednim uzrocima: skorašnja zarazna bolest ili dijarea, hronične bolesti, nedovoljna i vrlo nepravilna ishrana, promene u neposrednom okruženju itd. Obavezno zakažite pregled kod pedijtra radi otkrivanja uzroka, korekcije nastalog gubitka kao i određivanja dinamike daljeg praćenja rasta. Ozbiljno razmislite kako da poboljšate ishranu vašeg detetu.',
+                articleId: 3051,
+            },
+            emergencySmallHeightText: {
+                name: 'Tipičan rast deteta: prvih 6 meseci- Vrednosti težine za dužinu/visinu deteta su ispod  -3 SD',
+                text: 'Hitno! Vaše dete ima ozbiljan nedostatak težine za dužinu/visinu. Ovo stanje je moglo nastati tokom nekoliko nedelja, stoga razmislite o mogućim neposrednim uzrocima. Neki od mogućih uzroka bi mogli biti: skorašnja bolest, metabolička stanja, hronične bolesti, nedovoljna i nepravilna ishrana, promene u najbližem  okružrnju i dr. Hitno se obratite pedijatru radi ispitivanja uzroka i određivanja načina za nadoknadu nastalog gubitka.',
+                articleId: 3076,
+            },
+            warrningBigHeightText: {
+                name: 'Tipičan rast deteta: prvih 6 mesecii- Vrednosti težine za dužinu/visinu deteta su između +2 i +3 SD',
+                text: 'Pažnja! Vaše dete ima umereni višak težine za visinu. Ova prekomerna težina može ugroziti njegovo zdravlje i zato razmislite šta je tome doprinelo: povećan unos energetski bogatije hrane (kao što su slatke i masne namirnice), unos bezvrednih namirnica - takozvane brze hrane, smanjena fizička aktivnost, produženo vreme boravka u sedećem položaju ili boravak ispred ekrana, promene u najbližem okružrnju i dr. Obavezno zakažite pregled kod pedijatra radi dobijanja dodatnih preporuka i određivanja dinamike praćenja rasta vašeg deteta',
+                articleId: 3101
+            },
+            emergencyBigHeightText: {
+                name: '',
+                text: 'Hitno! Vaše dete je gojazno, odnosno ima ozbiljan višak težine za visinu. Ova težina može ozbiljno ugroziti zdravlje vašeg deteta. Razmislite šta je tome doprinelo: povećan unos energetski bogatije hrane (kao što su slatke i masne namirnice), unos bezvrednih namirnica- takozvane brze hrane, smanjena fizička aktivnost, produženo vreme boravka u sedećem položaju ili boravak ispred ekrana, promene u najbližem okružrnju i dr. Obavezno zakažite posetu kod pedijatra radi pregleda i dodatnog ispitivanja kao i određivanja dinamike daljeg praćenja rasta!',
+                articleId: 3126
+            }
+
+        },
+        {
+            predefined_tags: [47],
+            goodText: {
+                name: 'Tipičan rast deteta: 7-9 meseci - težine za dužinu/visinu deteta je između -2SD do +2 SD',
+                text: 'Bravo! Vaše dete dobro raste i njegova težina je u skladu sa njegovom visinom. Nastavite da se pridžavate preporuka za optimalnu  ishranu, fizičku aktivnost i spavanje. Pratite i dalje rast vašeg deteta.',
+                articleId: 3031,
+
+            },
+            warrningSmallHeightText: {
+                name: 'Tipičan rast deteta: 7-9 meseci- težine za dužinu/visinu deteta su između -2 i -3 SD',
+                text: 'Pažnja! Vaše dete gubi na težini (ili ne dobija u skladu sa visinom) i ima umereni nedostatak težine za dužinu/visinu. Ovo stanje je moglo nastati tokom nekoliko nedelja, stoga razmislite o mogućim neposrednim uzrocima: skorašnja zarazna bolest ili dijarea, hronične bolesti, nedovoljna i vrlo nepravilna ishrana, promene u neposrednom okruženju itd. Obavezno zakažite pregled kod pedijtra radi otkrivanja uzroka, korekcije nastalog gubitka kao i određivanja dinamike daljeg praćenja rasta. Ozbiljno razmislite kako da poboljšate ishranu vašeg detetu.',
+                articleId: 3056,
+            },
+            emergencySmallHeightText: {
+                name: 'Tipičan rast deteta: 7-9 meseci- Vrednosti težine za dužinu/visinu deteta su ispod  -3 SD',
+                text: 'Hitno! Vaše dete ima ozbiljan nedostatak težine za dužinu/visinu. Ovo stanje je moglo nastati tokom nekoliko nedelja, stoga razmislite o mogućim neposrednim uzrocima. Neki od mogućih uzroka bi mogli biti: skorašnja bolest, metabolička stanja, hronične bolesti, nedovoljna i nepravilna ishrana, promene u najbližem  okružrnju i dr. Hitno se obratite pedijatru radi ispitivanja uzroka i određivanja načina za nadoknadu nastalog gubitka.',
+                articleId: 3081,
+            },
+            warrningBigHeightText: {
+                name: 'Tipičan rast deteta: 7-9 mesecii- Vrednosti težine za dužinu/visinu deteta su između +2 i +3 SD',
+                text: 'Pažnja! Vaše dete ima umereni višak težine za visinu. Ova prekomerna težina može ugroziti njegovo zdravlje i zato razmislite šta je tome doprinelo: povećan unos energetski bogatije hrane (kao što su slatke i masne namirnice), unos bezvrednih namirnica - takozvane brze hrane, smanjena fizička aktivnost, produženo vreme boravka u sedećem položaju ili boravak ispred ekrana, promene u najbližem okružrnju i dr. Obavezno zakažite pregled kod pedijatra radi dobijanja dodatnih preporuka i određivanja dinamike praćenja rasta vašeg deteta',
+                articleId: 3106
+            },
+            emergencyBigHeightText: {
+                name: 'Tipičan rast deteta: 7-9 mesecii- Vrednosti težine za dužinu/visinu deteta su iznad +3 SD',
+                text: 'Hitno! Vaše dete je gojazno, odnosno ima ozbiljan višak težine za visinu. Ova težina može ozbiljno ugroziti zdravlje vašeg deteta. Razmislite šta je tome doprinelo: povećan unos energetski bogatije hrane (kao što su slatke i masne namirnice), unos bezvrednih namirnica- takozvane brze hrane, smanjena fizička aktivnost, produženo vreme boravka u sedećem položaju ili boravak ispred ekrana, promene u najbližem okružrnju i dr. Obavezno zakažite posetu kod pedijatra radi pregleda i dodatnog ispitivanja kao i određivanja dinamike daljeg praćenja rasta!',
+                articleId: 3131
+            }
+
+        },
+        {
+            predefined_tags: [48],
+            goodText: {
+                name: 'Tipičan rast deteta: 10-12 meseci - težine za dužinu/visinu deteta je između -2SD do +2 SD',
+                text: 'Bravo! Vaše dete dobro raste i njegova težina je u skladu sa njegovom visinom. Nastavite da se pridžavate preporuka za optimalnu  ishranu, fizičku aktivnost i spavanje. Pratite i dalje rast vašeg deteta.',
+                articleId: 3036,
+            },
+            warrningSmallHeightText: {
+                name: 'Tipičan rast deteta: 10-12 meseci- težine za dužinu/visinu deteta su između -2 i -3 SD',
+                text: 'Pažnja! Vaše dete gubi na težini (ili ne dobija u skladu sa visinom) i ima umereni nedostatak težine za dužinu/visinu. Ovo stanje je moglo nastati tokom nekoliko nedelja, stoga razmislite o mogućim neposrednim uzrocima: skorašnja zarazna bolest ili dijarea, hronične bolesti, nedovoljna i vrlo nepravilna ishrana, promene u neposrednom okruženju itd. Obavezno zakažite pregled kod pedijtra radi otkrivanja uzroka, korekcije nastalog gubitka kao i određivanja dinamike daljeg praćenja rasta. Ozbiljno razmislite kako da poboljšate ishranu vašeg detetu.',
+                articleId: 3061
+            },
+            emergencySmallHeightText: {
+                name: 'Tipičan rast deteta: 10-12 meseci- Vrednosti težine za dužinu/visinu deteta su ispod  -3 SD',
+                text: 'Hitno! Vaše dete ima ozbiljan nedostatak težine za dužinu/visinu. Ovo stanje je moglo nastati tokom nekoliko nedelja, stoga razmislite o mogućim neposrednim uzrocima. Neki od mogućih uzroka bi mogli biti: skorašnja bolest, metabolička stanja, hronične bolesti, nedovoljna i nepravilna ishrana, promene u najbližem  okružrnju i dr. Hitno se obratite pedijatru radi ispitivanja uzroka i određivanja načina za nadoknadu nastalog gubitka.',
+                articleId: 3086,
+            },
+            warrningBigHeightText: {
+                name: 'Tipičan rast deteta: 10-12 mesecii- Vrednosti težine za dužinu/visinu deteta su između +2 i +3 SD',
+                text: 'Pažnja! Vaše dete ima umereni višak težine za visinu. Ova prekomerna težina može ugroziti njegovo zdravlje i zato razmislite šta je tome doprinelo: povećan unos energetski bogatije hrane (kao što su slatke i masne namirnice), unos bezvrednih namirnica - takozvane brze hrane, smanjena fizička aktivnost, produženo vreme boravka u sedećem položaju ili boravak ispred ekrana, promene u najbližem okružrnju i dr. Obavezno zakažite pregled kod pedijatra radi dobijanja dodatnih preporuka i određivanja dinamike praćenja rasta vašeg deteta',
+                articleId: 3111
+            },
+            emergencyBigHeightText: {
+                name: 'Tipičan rast deteta: 10-12 mesecii- Vrednosti težine za dužinu/visinu deteta su iznad +3 SD',                
+                text: 'Hitno! Vaše dete je gojazno, odnosno ima ozbiljan višak težine za visinu. Ova težina može ozbiljno ugroziti zdravlje vašeg deteta. Razmislite šta je tome doprinelo: povećan unos energetski bogatije hrane (kao što su slatke i masne namirnice), unos bezvrednih namirnica- takozvane brze hrane, smanjena fizička aktivnost, produženo vreme boravka u sedećem položaju ili boravak ispred ekrana, promene u najbližem okružrnju i dr. Obavezno zakažite posetu kod pedijatra radi pregleda i dodatnog ispitivanja kao i određivanja dinamike daljeg praćenja rasta!',
+                articleId: 3131
+            }
+        },
+        {
+            predefined_tags: [49,50],
+            goodText: {
+                name: 'Tipičan rast deteta: 13-24 meseci - težine za dužinu/visinu deteta je između -2SD do +2 SD',
+                text: 'Bravo! Vaše dete dobro raste i njegova težina je u skladu sa njegovom visinom. Nastavite da se pridžavate preporuka za optimalnu  ishranu, fizičku aktivnost i spavanje. Pratite i dalje rast vašeg deteta.',
+                articleId: 3041,
+            },
+            warrningSmallHeightText: {
+                name: 'Tipičan rast deteta: 13-24 meseci- težine za dužinu/visinu deteta su između -2 i -3 SD',
+                text: 'Pažnja! Vaše dete gubi na težini (ili ne dobija u skladu sa visinom) i ima umereni nedostatak težine za dužinu/visinu. Ovo stanje je moglo nastati tokom nekoliko nedelja, stoga razmislite o mogućim neposrednim uzrocima: skorašnja zarazna bolest ili dijarea, hronične bolesti, nedovoljna i vrlo nepravilna ishrana, promene u neposrednom okruženju itd. Obavezno zakažite pregled kod pedijtra radi otkrivanja uzroka, korekcije nastalog gubitka kao i određivanja dinamike daljeg praćenja rasta. Ozbiljno razmislite kako da poboljšate ishranu vašeg detetu.',
+                articleId: 3066
+            },
+            emergencySmallHeightText: {
+                name: 'Tipičan rast deteta: 13-24 meseci- Vrednosti težine za dužinu/visinu deteta su ispod  -3 SD',
+                text: 'Hitno! Vaše dete ima ozbiljan nedostatak težine za dužinu/visinu. Ovo stanje je moglo nastati tokom nekoliko nedelja, stoga razmislite o mogućim neposrednim uzrocima. Neki od mogućih uzroka bi mogli biti: skorašnja bolest, metabolička stanja, hronične bolesti, nedovoljna i nepravilna ishrana, promene u najbližem  okružrnju i dr. Hitno se obratite pedijatru radi ispitivanja uzroka i određivanja načina za nadoknadu nastalog gubitka.',
+                articleId: 3091,
+            },
+            warrningBigHeightText: {
+                name: 'Tipičan rast deteta: 13-24 mesecii- Vrednosti težine za dužinu/visinu deteta su između +2 i +3 SD',
+                text: 'Pažnja! Vaše dete ima umereni višak težine za visinu. Ova prekomerna težina može ugroziti njegovo zdravlje i zato razmislite šta je tome doprinelo: povećan unos energetski bogatije hrane (kao što su slatke i masne namirnice), unos bezvrednih namirnica - takozvane brze hrane, smanjena fizička aktivnost, produženo vreme boravka u sedećem položaju ili boravak ispred ekrana, promene u najbližem okružrnju i dr. Obavezno zakažite pregled kod pedijatra radi dobijanja dodatnih preporuka i određivanja dinamike praćenja rasta vašeg deteta',
+                articleId: 3116,
+            },
+            emergencyBigHeightText: {
+                name: 'Tipičan rast deteta: 13-24 mesecii- Vrednosti težine za dužinu/visinu deteta su iznad +3 SD',                
+                text: 'Hitno! Vaše dete je gojazno, odnosno ima ozbiljan višak težine za visinu. Ova težina može ozbiljno ugroziti zdravlje vašeg deteta. Razmislite šta je tome doprinelo: povećan unos energetski bogatije hrane (kao što su slatke i masne namirnice), unos bezvrednih namirnica- takozvane brze hrane, smanjena fizička aktivnost, produženo vreme boravka u sedećem položaju ili boravak ispred ekrana, promene u najbližem okružrnju i dr. Obavezno zakažite posetu kod pedijatra radi pregleda i dodatnog ispitivanja kao i određivanja dinamike daljeg praćenja rasta!',
+                articleId: 3141
+            }
+        },
+        {
+            predefined_tags: [51,52,53,57,58],
+            goodText: {
+                name: 'Tipičan rast deteta: 25 -72  meseci - težine za dužinu/visinu deteta je između -2SD do +2 SD',
+                text: 'Bravo! Vaše dete dobro raste i njegova težina je u skladu sa njegovom visinom. Nastavite da se pridžavate preporuka za optimalnu  ishranu, fizičku aktivnost i spavanje. Pratite i dalje rast vašeg deteta.',
+                articleId: 3046,
+            },
+            warrningSmallHeightText: {
+                name: 'Tipičan rast deteta: 25-72 meseci- težine za dužinu/visinu deteta su između -2 i -3 SD',
+                text: 'Pažnja! Vaše dete gubi na težini (ili ne dobija u skladu sa visinom) i ima umereni nedostatak težine za dužinu/visinu. Ovo stanje je moglo nastati tokom nekoliko nedelja, stoga razmislite o mogućim neposrednim uzrocima: skorašnja zarazna bolest ili dijarea, hronične bolesti, nedovoljna i vrlo nepravilna ishrana, promene u neposrednom okruženju itd. Obavezno zakažite pregled kod pedijtra radi otkrivanja uzroka, korekcije nastalog gubitka kao i određivanja dinamike daljeg praćenja rasta. Ozbiljno razmislite kako da poboljšate ishranu vašeg detetu.',
+                articleId: 3071
+            },
+            emergencySmallHeightText: {
+                name: 'Tipičan rast deteta: 25-72 meseci- Vrednosti težine za dužinu/visinu deteta su ispod  -3 SD',
+                text: 'Hitno! Vaše dete ima ozbiljan nedostatak težine za dužinu/visinu. Ovo stanje je moglo nastati tokom nekoliko nedelja, stoga razmislite o mogućim neposrednim uzrocima. Neki od mogućih uzroka bi mogli biti: skorašnja bolest, metabolička stanja, hronične bolesti, nedovoljna i nepravilna ishrana, promene u najbližem  okružrnju i dr. Hitno se obratite pedijatru radi ispitivanja uzroka i određivanja načina za nadoknadu nastalog gubitka.',
+                articleId: 3096,
+            },
+            warrningBigHeightText: {
+                name: 'Tipičan rast deteta: 25-72 mesecii- Vrednosti težine za dužinu/visinu deteta su između +2 i +3 SD',
+                text: 'Pažnja! Vaše dete ima umereni višak težine za visinu. Ova prekomerna težina može ugroziti njegovo zdravlje i zato razmislite šta je tome doprinelo: povećan unos energetski bogatije hrane (kao što su slatke i masne namirnice), unos bezvrednih namirnica - takozvane brze hrane, smanjena fizička aktivnost, produženo vreme boravka u sedećem položaju ili boravak ispred ekrana, promene u najbližem okružrnju i dr. Obavezno zakažite pregled kod pedijatra radi dobijanja dodatnih preporuka i određivanja dinamike praćenja rasta vašeg deteta',
+                articleId: 3121,
+            },
+            emergencyBigHeightText: {
+                name: 'Tipičan rast deteta: 25-72 mesecii- Vrednosti težine za dužinu/visinu deteta su iznad +3 SD',                
+                text: 'Hitno! Vaše dete je gojazno, odnosno ima ozbiljan višak težine za visinu. Ova težina može ozbiljno ugroziti zdravlje vašeg deteta. Razmislite šta je tome doprinelo: povećan unos energetski bogatije hrane (kao što su slatke i masne namirnice), unos bezvrednih namirnica- takozvane brze hrane, smanjena fizička aktivnost, produženo vreme boravka u sedećem položaju ili boravak ispred ekrana, promene u najbližem okružrnju i dr. Obavezno zakažite posetu kod pedijatra radi pregleda i dodatnog ispitivanja kao i određivanja dinamike daljeg praćenja rasta!',
+                articleId: 3146
+            }
+        },
+
+    ],
+    interpretationLenghtForAge: [
+        {
+            predefined_tags: [43, 44, 45, 46],
+            goodText: {
+                name: 'Tipičan rast deteta: prvih 6 mesecii- rednost dužine/visine deteta za uzrast je između -2SD do +3D',
+                text: 'Bravo! Vaše dete raste u dužinu/visinu po zacrtanoj liniji ili malo iznad okvira za njegov uzrast i pol. Nastavite da se pridžavate preporuka dobre prakse u ishrani, fizičkoj aktivnosti i spavanju i pratite rast vašeg deteta.',
+                articleId: 3151,
+
+            },
+            warrningSmallLengthText: {
+                name: 'Tipičan rast deteta: prvih 6 meseci- Vrednost dužine/visine deteta za uzrast  je ispod -2 SD',
+                text: 'Pažnja! Vaše dete sporo raste u dužini/visinu i sada je sa umerenim zaostajanjem u rastu. Razmislite da li je neki od mogućih dugoročnih uzroka tome doprineo: hronično nedovoljna ishrana, hronična bolest, endokrini poremećaj i dr. Obavezno zakažite pregled kod pedijatra radi dodatnog ispitivanja, dobijanja dodatnih preporuka i određivanja dinamike daljeg praćenja rasta.',
+                articleId: 3176,
+            },
+            emergencySmallLengthText: {
+                name: 'Tipičan rast deteta: prvih 6 meseci - Vrednost dužine/visine deteta za uzrast  je ispod -3 SD',
+                text: 'Hitno! Rast vašeg deteta u dužinu/visinu ozbiljno zaostaje. Hitno zakažite pregled kod pedijatra radi dodatnog ispitivanja, dobijanja odgovarajućeg tretmana i određivanja dinamike daljeg praćenja rasta!',
+                articleId: 3201,
+            },
+            warrningBigLengthText: {
+                name: 'Tipičan rast deteta: prvih 6 meseci - Vrednost dužine/visine deteta za uzrast  je iznad +3 SD',
+                text: 'Vaše dete je poraslo u visinu znatno iznad okvira uobičajenih za njegov uzrast i pol. Verovatno da je to rezultat njegovih genetskih potencijala ali ipak razgovarajte o tome sa pedijatrom. Nastavite da se pridžavate usvojenih preporuka i pratite rast vašeg deteta u regularnim intervalima.',
+                articleId: 3226
+            },
+        },
+        {
+            predefined_tags: [47],
+            goodText: {
+                name: 'Tipičan rast deteta: 7-9 mesecii- rednost dužine/visine deteta za uzrast je između -2SD do +3D',
+                text: 'Bravo! Vaše dete raste u dužinu/visinu po zacrtanoj liniji ili malo iznad okvira za njegov uzrast i pol. Nastavite da se pridžavate preporuka dobre prakse u ishrani, fizičkoj aktivnosti i spavanju i pratite rast vašeg deteta.',
+                articleId: 3156,
+
+            },
+            warrningSmallLengthText: {
+                name: 'Tipičan rast deteta: 7-9 meseci- Vrednost dužine/visine deteta za uzrast  je ispod -2 SD',
+                text: 'Pažnja! Vaše dete sporo raste u dužini/visinu i sada je sa umerenim zaostajanjem u rastu. Razmislite da li je neki od mogućih dugoročnih uzroka tome doprineo: hronično nedovoljna ishrana, hronična bolest, endokrini poremećaj i dr. Obavezno zakažite pregled kod pedijatra radi dodatnog ispitivanja, dobijanja dodatnih preporuka i određivanja dinamike daljeg praćenja rasta.',
+                articleId: 3181,
+            },
+            emergencySmallLengthText: {
+                name: 'Tipičan rast deteta: 7-9 meseci - Vrednost dužine/visine deteta za uzrast  je ispod -3 SD',
+                text: 'Hitno! Rast vašeg deteta u dužinu/visinu ozbiljno zaostaje. Hitno zakažite pregled kod pedijatra radi dodatnog ispitivanja, dobijanja odgovarajućeg tretmana i određivanja dinamike daljeg praćenja rasta!',
+                articleId: 3206,
+            },
+            warrningBigLengthText: {
+                name: 'Tipičan rast deteta: 7-9 meseci - Vrednost dužine/visine deteta za uzrast  je iznad +3 SD',
+                text: 'Vaše dete je poraslo u visinu znatno iznad okvira uobičajenih za njegov uzrast i pol. Verovatno da je to rezultat njegovih genetskih potencijala ali ipak razgovarajte o tome sa pedijatrom. Nastavite da se pridžavate usvojenih preporuka i pratite rast vašeg deteta u regularnim intervalima.',
+                articleId: 3231
+            },
+        },
+        {
+            predefined_tags: [48],
+            goodText: {
+                name: 'Tipičan rast deteta: 10-12 mesecii- rednost dužine/visine deteta za uzrast je između -2SD do +3D',
+                text: 'Bravo! Vaše dete raste u dužinu/visinu po zacrtanoj liniji ili malo iznad okvira za njegov uzrast i pol. Nastavite da se pridžavate preporuka dobre prakse u ishrani, fizičkoj aktivnosti i spavanju i pratite rast vašeg deteta.',
+                articleId: 3161,
+            },
+            warrningSmallHeightText: {
+                name: 'Tipičan rast deteta: 10-12 meseci- Vrednost dužine/visine deteta za uzrast  je ispod -2 SD',
+                text: 'Pažnja! Vaše dete sporo raste u dužini/visinu i sada je sa umerenim zaostajanjem u rastu. Razmislite da li je neki od mogućih dugoročnih uzroka tome doprineo: hronično nedovoljna ishrana, hronična bolest, endokrini poremećaj i dr. Obavezno zakažite pregled kod pedijatra radi dodatnog ispitivanja, dobijanja dodatnih preporuka i određivanja dinamike daljeg praćenja rasta.',
+                articleId: 3186
+            },
+            emergencySmallHeightText: {
+                name: 'Tipičan rast deteta: 10-12 meseci - Vrednost dužine/visine deteta za uzrast  je ispod -3 SD',
+                text: 'Hitno! Rast vašeg deteta u dužinu/visinu ozbiljno zaostaje. Hitno zakažite pregled kod pedijatra radi dodatnog ispitivanja, dobijanja odgovarajućeg tretmana i određivanja dinamike daljeg praćenja rasta!',
+                articleId: 3211,
+            },
+            warrningBigHeightText: {
+                name: 'Tipičan rast deteta: 10-12 meseci - Vrednost dužine/visine deteta za uzrast  je iznad +3 SD',
+                text: 'Vaše dete je poraslo u visinu znatno iznad okvira uobičajenih za njegov uzrast i pol. Verovatno da je to rezultat njegovih genetskih potencijala ali ipak razgovarajte o tome sa pedijatrom. Nastavite da se pridžavate usvojenih preporuka i pratite rast vašeg deteta u regularnim intervalima.',
+                articleId: 3236
+            },
+        },
+        {
+            predefined_tags: [49,50],
+            goodText: {
+                name: 'Tipičan rast deteta: 13-24 mesecii- rednost dužine/visine deteta za uzrast je između -2SD do +3D',
+                text: 'Bravo! Vaše dete raste u dužinu/visinu po zacrtanoj liniji ili malo iznad okvira za njegov uzrast i pol. Nastavite da se pridžavate preporuka dobre prakse u ishrani, fizičkoj aktivnosti i spavanju i pratite rast vašeg deteta.',
+                articleId: 3166,
+            },
+            warrningSmallHeightText: {
+                name: 'Tipičan rast deteta: 13-24 meseci- Vrednost dužine/visine deteta za uzrast  je ispod -2 SD',
+                text: 'Pažnja! Vaše dete sporo raste u dužini/visinu i sada je sa umerenim zaostajanjem u rastu. Razmislite da li je neki od mogućih dugoročnih uzroka tome doprineo: hronično nedovoljna ishrana, hronična bolest, endokrini poremećaj i dr. Obavezno zakažite pregled kod pedijatra radi dodatnog ispitivanja, dobijanja dodatnih preporuka i određivanja dinamike daljeg praćenja rasta.',
+                articleId: 3191
+            },
+            emergencySmallHeightText: {
+                name: 'Tipičan rast deteta: 13-24 meseci - Vrednost dužine/visine deteta za uzrast  je ispod -3 SD',
+                text: 'Hitno! Rast vašeg deteta u dužinu/visinu ozbiljno zaostaje. Hitno zakažite pregled kod pedijatra radi dodatnog ispitivanja, dobijanja odgovarajućeg tretmana i određivanja dinamike daljeg praćenja rasta!',
+                articleId: 3216,
+            },
+            warrningBigHeightText: {
+                name: 'Tipičan rast deteta: 13-24 meseci - Vrednost dužine/visine deteta za uzrast  je iznad +3 SD',
+                text: 'Vaše dete je poraslo u visinu znatno iznad okvira uobičajenih za njegov uzrast i pol. Verovatno da je to rezultat njegovih genetskih potencijala ali ipak razgovarajte o tome sa pedijatrom. Nastavite da se pridžavate usvojenih preporuka i pratite rast vašeg deteta u regularnim intervalima.',
+                articleId: 3241,
+            },
+        },
+        {
+            predefined_tags: [51,52,53,57,58],
+            goodText: {
+                name: 'Tipičan rast deteta: 25-72 mesecii- rednost dužine/visine deteta za uzrast je između -2SD do +3D',
+                text: 'Bravo! Vaše dete raste u dužinu/visinu po zacrtanoj liniji ili malo iznad okvira za njegov uzrast i pol. Nastavite da se pridžavate preporuka dobre prakse u ishrani, fizičkoj aktivnosti i spavanju i pratite rast vašeg deteta.',
+                articleId: 3171,
+            },
+            warrningSmallHeightText: {
+                name: 'Tipičan rast deteta: 25-72 meseci- Vrednost dužine/visine deteta za uzrast  je ispod -2 SD',
+                text: 'Pažnja! Vaše dete sporo raste u dužini/visinu i sada je sa umerenim zaostajanjem u rastu. Razmislite da li je neki od mogućih dugoročnih uzroka tome doprineo: hronično nedovoljna ishrana, hronična bolest, endokrini poremećaj i dr. Obavezno zakažite pregled kod pedijatra radi dodatnog ispitivanja, dobijanja dodatnih preporuka i određivanja dinamike daljeg praćenja rasta.',
+                articleId: 3196
+            },
+            emergencySmallHeightText: {
+                name: 'Tipičan rast deteta: 25-72 meseci - Vrednost dužine/visine deteta za uzrast  je ispod -3 SD',
+                text: 'Hitno! Rast vašeg deteta u dužinu/visinu ozbiljno zaostaje. Hitno zakažite pregled kod pedijatra radi dodatnog ispitivanja, dobijanja odgovarajućeg tretmana i određivanja dinamike daljeg praćenja rasta!',
+                articleId: 3221,
+            },
+            warrningBigHeightText: {
+                name: 'Tipičan rast deteta: 25-72 meseci - Vrednost dužine/visine deteta za uzrast  je iznad +3 SD',
+                text: 'Vaše dete je poraslo u visinu znatno iznad okvira uobičajenih za njegov uzrast i pol. Verovatno da je to rezultat njegovih genetskih potencijala ali ipak razgovarajte o tome sa pedijatrom. Nastavite da se pridžavate usvojenih preporuka i pratite rast vašeg deteta u regularnim intervalima.',
+                articleId: 3246,
+            },
+        },
+
+    ]
 };
