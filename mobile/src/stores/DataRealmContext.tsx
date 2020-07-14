@@ -49,6 +49,7 @@ export class DataRealmProvider extends React.PureComponent<object, DataRealmProv
     }
 
     public render() {
+        console.log('RENDER: Data realm provider');
         const contextValue: DataRealmContextValue = {
             realm: this.state.realm,
         };

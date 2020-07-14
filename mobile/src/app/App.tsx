@@ -7,10 +7,11 @@ import { ThemeProvider } from '../themes/ThemeContext';
 import { googleAuth } from './googleAuth';
 import { DataRealmProvider } from '../stores/DataRealmContext';
 import { UserRealmProvider } from '../stores/UserRealmContext';
+import { HomeMessagesProvider } from '../stores/HomeMessagesContext';
 import { utils } from './utils';
 import { localize } from './localize';
 // @ts-ignore
-import {decode as atob, encode as btoa} from 'base-64';
+import { decode as atob, encode as btoa } from 'base-64';
 import { apiStore, dataRealmConfig, dataRealmStore } from '../stores';
 
 // ADD GLOBAL POLYFILLS: atob, btoa
@@ -70,11 +71,13 @@ export class App extends React.Component<object> {
                 <PaperProvider>
                     <DataRealmProvider>
                         <UserRealmProvider>
-                            <AppNavigationContainer
-                                ref={(navigatorRef: NavigationContainerComponent) => {
-                                    return navigation.setTopLevelNavigator(navigatorRef);
-                                }}
-                            />
+                            <HomeMessagesProvider>
+                                <AppNavigationContainer
+                                    ref={(navigatorRef: NavigationContainerComponent) => {
+                                        return navigation.setTopLevelNavigator(navigatorRef);
+                                    }}
+                                />
+                            </HomeMessagesProvider>
                         </UserRealmProvider>
                     </DataRealmProvider>
                 </PaperProvider>
