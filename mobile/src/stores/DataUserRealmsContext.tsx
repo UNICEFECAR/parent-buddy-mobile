@@ -19,7 +19,7 @@ const messages: Message[] = [
         button: {
             text: 'Click me',
             type: RoundedButtonType.purple,
-            onPress: () => {}
+            onPress: () => { }
         }
     },
 
@@ -68,21 +68,31 @@ export const DataUserRealmsContext = React.createContext<DataUserRealmsContextVa
 
 export class DataUserRealmsProvider extends React.PureComponent<object, DataUserRealmsProviderState> {
     public state: Readonly<DataUserRealmsProviderState> = {
-        homeMessages: messages,
+        homeMessages: [],
     };
 
     constructor(props: object) {
         super(props);
+        this.loadHomeMessagesWithDebounce = debounce(this.loadHomeMessagesWithDebounce.bind(this), 500);
         this.getContextValue = this.getContextValue.bind(this);
     }
 
     private getContextValue(dataRealm: Realm | null, userRealm: Realm | null): DataUserRealmsContextValue {
-        console.log('getContextValue');
+        this.loadHomeMessagesWithDebounce();
+
         return {
             homeMessages: this.state.homeMessages,
             dataRealm,
             userRealm,
         };
+    }
+
+    private loadHomeMessagesWithDebounce() {
+        // console.log('loadHomeMessages');
+
+        this.setState({
+            homeMessages: messages
+        });
     }
 
     public render() {
