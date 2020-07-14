@@ -7,7 +7,7 @@ import { ThemeProvider } from '../themes/ThemeContext';
 import { googleAuth } from './googleAuth';
 import { DataRealmProvider } from '../stores/DataRealmContext';
 import { UserRealmProvider } from '../stores/UserRealmContext';
-import { HomeMessagesProvider } from '../stores/HomeMessagesContext';
+import { DataUserRealmsProvider } from '../stores/DataUserRealmsContext';
 import { utils } from './utils';
 import { localize } from './localize';
 // @ts-ignore
@@ -71,13 +71,13 @@ export class App extends React.Component<object> {
                 <PaperProvider>
                     <DataRealmProvider>
                         <UserRealmProvider>
-                            <HomeMessagesProvider>
+                            <DataUserRealmsProvider>
                                 <AppNavigationContainer
                                     ref={(navigatorRef: NavigationContainerComponent) => {
                                         return navigation.setTopLevelNavigator(navigatorRef);
                                     }}
                                 />
-                            </HomeMessagesProvider>
+                            </DataUserRealmsProvider>
                         </UserRealmProvider>
                     </DataRealmProvider>
                 </PaperProvider>

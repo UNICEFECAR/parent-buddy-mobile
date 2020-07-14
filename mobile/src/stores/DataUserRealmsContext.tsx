@@ -4,19 +4,19 @@ import { dataRealmStore } from './dataRealmStore';
 import { DataRealmConsumer, DataRealmContextValue } from './DataRealmContext';
 import { UserRealmConsumer, UserRealmContextValue } from './UserRealmContext';
 
-export interface HomeMessagesContextValue {
+export interface DataUserRealmsContextValue {
     dataRealm: Realm | null;
     userRealm: Realm | null;
 }
 
-interface HomeMessagesProviderState {
+interface DataUserRealmsProviderState {
     
 }
 
-export const HomeMessagesContext = React.createContext<HomeMessagesContextValue>({} as HomeMessagesContextValue);
+export const DataUserRealmsContext = React.createContext<DataUserRealmsContextValue>({} as DataUserRealmsContextValue);
 
-export class HomeMessagesProvider extends React.PureComponent<object, HomeMessagesProviderState> {
-    public state: Readonly<HomeMessagesProviderState> = {
+export class DataUserRealmsProvider extends React.PureComponent<object, DataUserRealmsProviderState> {
+    public state: Readonly<DataUserRealmsProviderState> = {
         
     };
 
@@ -25,7 +25,7 @@ export class HomeMessagesProvider extends React.PureComponent<object, HomeMessag
         this.getContextValue = debounce(this.getContextValue.bind(this), 500);
     }
 
-    private getContextValue(dataRealm: Realm | null, userRealm: Realm | null): HomeMessagesContextValue {
+    private getContextValue(dataRealm: Realm | null, userRealm: Realm | null): DataUserRealmsContextValue {
         return {dataRealm, userRealm};
     }
 
@@ -35,7 +35,7 @@ export class HomeMessagesProvider extends React.PureComponent<object, HomeMessag
                 {(dataRealmContext: DataRealmContextValue) => (
                     <UserRealmConsumer>
                         {(userRealmContext: UserRealmContextValue) => (
-                            <HomeMessagesContext.Provider value={this.getContextValue(dataRealmContext.realm, userRealmContext.realm)}>{this.props.children}</HomeMessagesContext.Provider>
+                            <DataUserRealmsContext.Provider value={this.getContextValue(dataRealmContext.realm, userRealmContext.realm)}>{this.props.children}</DataUserRealmsContext.Provider>
                         )}
                     </UserRealmConsumer>
                 )}
@@ -44,4 +44,4 @@ export class HomeMessagesProvider extends React.PureComponent<object, HomeMessag
     }
 }
 
-export const HomeMessagesConsumer = HomeMessagesContext.Consumer;
+export const DataUserRealmsConsumer = DataUserRealmsContext.Consumer;
