@@ -196,6 +196,7 @@ const styles = StyleSheet.create<HomeMessagesStyles>({
         shadowOpacity: 0.2,
         elevation: 2,
         borderRadius: 8,
+        marginBottom: scale(30),
     },
 
     cardWhite: {
