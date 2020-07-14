@@ -149,7 +149,7 @@ class DataRealmStore {
             try {
                 const allVariables = this.realm.objects<VariableEntity>(VariableEntitySchema.name);
                 const variablesWithKey = allVariables.filtered(`key == "${key}"`);
-                console.log(variablesWithKey, 'varaibles with key')
+                // console.log(variablesWithKey, 'varaibles with key')
                 if (variablesWithKey && variablesWithKey.length > 0) {
                     const record = variablesWithKey.find(obj => obj.key === key);
 
@@ -187,7 +187,7 @@ class DataRealmStore {
                     resolve(record);
                 });
             } catch (e) {
-                console.log(e, "USAO U ERRROR NA ", entitySchema.name)
+                if (appConfig.showLog) console.log(e);
                 reject();
             }
         });

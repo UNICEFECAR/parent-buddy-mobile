@@ -5,6 +5,7 @@ import { appConfig } from "./appConfig";
 import { content } from "./content";
 import { navigation } from "../app/Navigators";
 import { BasicPageEntity, BasicPagesEntitySchema } from "../stores/BasicPageEntity";
+import { DailyMessageEntitySchema } from "../stores/DailyMessageEntity";
 
 /**
  * Sync data between API and realm.
@@ -61,6 +62,34 @@ class SyncData {
 
                 if (appConfig.showLog) {
                     console.log('syncData.sync(): Saved all content');
+                };
+            } catch (e) { };
+        }
+
+        // DOWNLOAD ALL DAILY MESSAGES
+        let allDailyMessages: ContentResponse = { total: 0, data: [] };
+
+        try {
+            if (lastSyncTimestamp) {
+                allDailyMessages = await apiStore.getAllDailyMessages(lastSyncTimestamp);
+            } else {
+                allDailyMessages = await apiStore.getAllDailyMessages();
+            };
+        } catch (e) { };
+
+        // Save content
+        if (allDailyMessages?.data && allDailyMessages.data.length > 0) {
+            const promisesCreateOrUpdate: Promise<ContentEntity>[] = [];
+
+            allDailyMessages.data.forEach((value) => {
+                promisesCreateOrUpdate.push( dataRealmStore.createOrUpdate(DailyMessageEntitySchema, value) );
+            });
+
+            try {
+                await Promise.all(promisesCreateOrUpdate);
+
+                if (appConfig.showLog) {
+                    console.log('syncData.sync(): Saved all daily messages');
                 };
             } catch (e) { };
         }
