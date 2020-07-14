@@ -188,7 +188,7 @@ export class GrowthScreen extends Component<Props, State> {
             };
 
             return {
-                height: item.height ? parseFloat(item.height) : 0,
+                height: item.height ? parseFloat(item.height) / 1000 : 0,
                 length: item.length ? parseFloat(item.length) : 0,
                 measurementDate: measurementDateInDays ? measurementDateInDays : 0,
             };
