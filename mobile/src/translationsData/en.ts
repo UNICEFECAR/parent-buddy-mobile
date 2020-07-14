@@ -3,6 +3,7 @@ export const en = {
         {
             period: '1st month',
             name: '1st month – the period of getting to know each other',
+            subtitle: '1. mesec TODO',
             moreAboutPeriodArticleIdMale: 3466,
             moreAboutPeriodArticleIdFemale: 3461,
             description: `
@@ -38,6 +39,7 @@ Watch your baby's behaviour and talk to your paediatrician or visiting nurse if 
         {
             period: '2nd month',
             name: '2nd month – the period of mutual adjustment and establishing routines',
+            subtitle: '2. mesec TODO',
             moreAboutPeriodArticleIdMale: 3476,
             moreAboutPeriodArticleIdFemale: 3471,
             description: `
@@ -78,6 +80,7 @@ Watch your baby's behavior and talk to your paediatrician or visiting nurse if y
             period: '3-4 months',
             name: '3-4 months – the period of diverse experiences',
             moreAboutPeriodArticleIdMale: 3486,
+            subtitle: '3. i 4. mesec TODO',    
             moreAboutPeriodArticleIdFemale: 3481,
             description: `
 <p>
@@ -117,6 +120,7 @@ Watch your baby's behaviour and talk to your paediatrician or visiting nurse if 
             name: '5-6 months – the period of intensive exploration',
             moreAboutPeriodArticleIdMale: 3496,
             moreAboutPeriodArticleIdFemale: 3491,
+            subtitle: '5. i 6. mesec TODO',
             description: `
 <p>
 Your baby can sit, roll and lift and hold her head on his own.
@@ -155,6 +159,7 @@ Watch your baby's behaviour and talk to your paediatrician or visiting nurse if 
             period: '7-9 months',
             name: '7-9 months – the period of new discoveries',
             moreAboutPeriodArticleIdMale: 3511,
+            subtitle: '7. do 9. mesec TODO',
             moreAboutPeriodArticleIdFemale: 3506,
             description: `
 <p>
@@ -196,6 +201,7 @@ Watch your baby’s behaviour and talk to your paediatrician or visiting nurse i
             name: '10-12 months – the period of establishing habits and consistency',
             moreAboutPeriodArticleIdMale: 3521,
             moreAboutPeriodArticleIdFemale: 3516,
+            subtitle: '10. do 12. mesec TODO',
             description: `
 <p>
 Your baby wants to communicate more and more - points, nods, waves...
@@ -233,6 +239,7 @@ Watch your child’s behaviour and talk to your paediatrician if you notice that
             period: '13-18 months',
             name: '13-18 months – first step and first word',
             moreAboutPeriodArticleIdMale: 3531,
+            subtitle: '13. do 18. mesec TODO',
             moreAboutPeriodArticleIdFemale: 3526,
             description: `
 <p>
@@ -274,6 +281,7 @@ Watch your child’s behaviour and talk to your paediatrician if you notice that
             name: '19-24 months – the period of becoming independent',
             moreAboutPeriodArticleIdMale: 3541,
             moreAboutPeriodArticleIdFemale: 3536,
+            subtitle: '19. do 24. mesec TODO',
             description: `
 <p>
 Expect new movements - running, climbing... but also new emotions and new words.
@@ -312,6 +320,7 @@ Follow your child's behaviour and talk to your paediatrician if you notice that 
             period: '25-36 months',
             name: '25-36 months – the period when imagination flourishes',
             moreAboutPeriodArticleIdMale: 3551,
+            subtitle: '25. do 36. mesec TODO',
             moreAboutPeriodArticleIdFemale: 3546,
             description: `
 <p>

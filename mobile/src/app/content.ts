@@ -126,6 +126,7 @@ class Content {
     public getHomeScreenDevelopmentArticles(realm: Realm | null): ArticlesSectionData {
         let isChildInDevelopmentPeriod = false;
 
+
         const rval: ArticlesSectionData = {
             title: translate('developmentArticles'),
             categoryArticles: [],
@@ -162,8 +163,8 @@ class Content {
             if (!isChildInDevelopmentPeriod) {
                 return rval;
             } else {
-
-                let childAgeTagid = dataRealmStore.getChildAgeTagWithArticles()?.id;
+                let diffInMonths = diff.months ? diff.months + 1 : 0;
+                let childAgeTagid = dataRealmStore.getTagIdFromChildAge(diffInMonths);
                 let childGender: ChildGender | undefined = userRealmStore.getChildGender();
                 let oppositeChildGender: ChildGender | undefined = undefined;
 

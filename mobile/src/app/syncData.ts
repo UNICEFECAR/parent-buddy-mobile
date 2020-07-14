@@ -1,10 +1,11 @@
 import { dataRealmStore, apiStore } from "../stores";
-import { ContentResponse, ApiImageData, BasicPagesResponse } from "../stores/apiStore";
+import { ContentResponse, ApiImageData, BasicPagesResponse, MilestonesResponse } from "../stores/apiStore";
 import { ContentEntitySchema, ContentEntity } from "../stores/ContentEntity";
 import { appConfig } from "./appConfig";
 import { content } from "./content";
 import { navigation } from "../app/Navigators";
 import { BasicPageEntity, BasicPagesEntitySchema } from "../stores/BasicPageEntity";
+import { MilestoneEntity, MilestoneEntitySchema } from "../stores/MilestoneEntity";
 
 /**
  * Sync data between API and realm.
@@ -36,6 +37,31 @@ class SyncData {
             }
         }
 
+        // DOWNLOAD DEVELOPMENT MILESTONES 
+        let allMilestones: MilestonesResponse = {total: 0, data: []}
+        try{
+            if(lastSyncTimestamp){
+                allMilestones = await apiStore.getAllMilestones(lastSyncTimestamp)
+            }else{
+                allMilestones = await apiStore.getAllMilestones();
+            }
+        } catch (e){};
+        // Save milestones
+        if(allMilestones?.data && allMilestones.data.length > 0){
+            const milestonesCreateOrUpdate: Promise<MilestoneEntity>[] = [];
+
+            allMilestones.data.forEach((value) => {
+                milestonesCreateOrUpdate.push(dataRealmStore.createOrUpdate(MilestoneEntitySchema, value))
+            });
+
+            try {
+                await Promise.all(milestonesCreateOrUpdate);
+
+                if (appConfig.showLog) {
+                    console.log('syncData.sync(): Saved all milestones');
+                };
+            } catch (e) { };
+        };
 
         // DOWNLOAD ALL CONTENT
         let allContent: ContentResponse = { total: 0, data: [] };

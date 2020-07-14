@@ -74,18 +74,18 @@ export class HomeScreen extends React.Component<Props, object> {
                         {/* <Text>{localize.getLanguage()}</Text> */}
 
                         {/* Test button */}
-                        <Button onPress={() => {this.onTestButtonPress()}}>Test</Button>
-                        <View style={{height:30}} />
+                        <Button onPress={() => { this.onTestButtonPress() }}>Test</Button>
+                        <View style={{ height: 30 }} />
 
                         <DataRealmConsumer>
                             {(dataRealmContext: DataRealmContextValue) => (
                                 <>
-                                {  
-                                    content.getHomeScreenDevelopmentArticles(dataRealmContext.realm).categoryArticles?.length !== 0 ?
-                                    <ArticlesSection data={content.getHomeScreenDevelopmentArticles(dataRealmContext.realm)} />
-                                    : null
-                                }
-                                <ArticlesSection data={content.getHomeScreenArticles(dataRealmContext.realm)} />
+                                    {
+                                        content.getHomeScreenDevelopmentArticles(dataRealmContext.realm).categoryArticles?.length !== 0 ?
+                                            <ArticlesSection data={content.getHomeScreenDevelopmentArticles(dataRealmContext.realm)} />
+                                            : null
+                                    }
+                                    <ArticlesSection data={content.getHomeScreenArticles(dataRealmContext.realm)} />
                                 </>
                             )}
                         </DataRealmConsumer>

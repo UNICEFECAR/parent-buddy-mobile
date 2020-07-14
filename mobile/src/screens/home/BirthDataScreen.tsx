@@ -76,7 +76,6 @@ export class BirthDataScreen extends React.Component<Props, State> {
     }
 
     private submit = () => {
-        console.log('uso u submit')
         const { comment, weight, height, babyRating, plannedTermDate, birthDate } = this.state;
         let childHeight: number | undefined; 
         let childWidth:  number | undefined;

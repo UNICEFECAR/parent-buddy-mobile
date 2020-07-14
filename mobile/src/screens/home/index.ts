@@ -17,6 +17,8 @@ import { HomeScreen } from "./HomeScreen";
 import { ListCard } from "./ListCard";
 import { SearchResultsScreen } from "./SearchResultsScreen";
 import { SettingsScreen } from "./SettingsScreen";
+import {DevelopmentScreen} from '../development/DevelopmentScreen';
+import {EditPeriodScreen} from '../development/EditPeriodScreen';
 
 export { HomeScreen };
 export { CategoryArticlesScreen };
@@ -37,3 +39,5 @@ export {NewMeasurementScreen}
 export {VaccinationScreen}
 export {NewDoctorVisitScreen}
 export {VaccinationDataScreen}
+export {DevelopmentScreen}
+export {EditPeriodScreen}
