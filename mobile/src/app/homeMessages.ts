@@ -1,11 +1,13 @@
 import { Message, IconType } from "../components/HomeMessages";
-import { dataRealmStore, userRealmStore } from "../stores";
+import { dataRealmStore, userRealmStore, ChildEntity } from "../stores";
 import { DailyMessageEntity, DailyMessageEntitySchema } from "../stores/DailyMessageEntity";
 import { appConfig } from "./appConfig";
 import { DateTime } from 'luxon';
 import { translate } from "../translations/translate";
 import { RoundedButtonType } from "../components/RoundedButton";
 import { navigation } from ".";
+import { translateData } from "../translationsData/translateData";
+import { utils } from "./utils";
 
 /**
  * Home messages logic is here.
@@ -17,6 +19,7 @@ import { navigation } from ".";
  * ```
  */
 class HomeMessages {
+    private currentChild: ChildEntity | undefined;
     private static instance: HomeMessages;
 
     private constructor() { }
@@ -31,17 +34,20 @@ class HomeMessages {
     public getMessages(): Message[] {
         let rval: Message[] = [];
 
-        // Daily message
-        const dailyMessage = this.getDailyMessage();
-        if (dailyMessage) rval.push(dailyMessage);
+        // Get current child
+        this.currentChild = userRealmStore.getCurrentChild();
+
+        // Upcomming development period message
+        const upcommingDevelopmentPeriodMessage = this.getUpcommingDevelopmentPeriodMessage();
+        if (upcommingDevelopmentPeriodMessage) rval.push(upcommingDevelopmentPeriodMessage);
 
         // Enter birthday messages
         const enterBirthdayMessages = this.getEnterBirthdayMessages();
         if (enterBirthdayMessages.length > 0) rval = rval.concat(enterBirthdayMessages);
 
-        // Upcomming milestone message
-        const upcommingMilestoneMessage = this.getUpcommingMilestoneMessage();
-        if (upcommingMilestoneMessage) rval.push(upcommingMilestoneMessage);
+        // Daily message
+        const dailyMessage = this.getDailyMessage();
+        if (dailyMessage) rval.push(dailyMessage);
 
         return rval;
     }
@@ -172,16 +178,15 @@ class HomeMessages {
         let rval: Message[] = [];
 
         // Get currentChild
-        const currentChild = userRealmStore.getCurrentChild();
-        if (!currentChild) return [];
+        if (!this.currentChild) return [];
 
-        if (!currentChild.birthDate) {
+        if (!this.currentChild.birthDate) {
             // Message: Child has its profile
             let messageText = translate('homeMessageChildHasItsProfile');
 
             let childName = '';
-            if (currentChild.name) childName = currentChild.name;
-            childName = childName.charAt(0).toUpperCase() + childName.slice(1)
+            if (this.currentChild.name) childName = this.currentChild.name;
+            childName = utils.upperCaseFirstLetter(childName);
 
             messageText = messageText.replace('%CHILD%', childName);
 
@@ -207,8 +212,59 @@ class HomeMessages {
         return rval;
     }
 
-    private getUpcommingMilestoneMessage(): Message | null {
+    private getUpcommingDevelopmentPeriodMessage(): Message | null {
         let rval: Message | null = null;
+
+        if (!this.currentChild || !this.currentChild.birthDate) return null;
+
+        // Set babyBirthday, currentDate
+        const babyBirthDate = DateTime.fromJSDate(this.currentChild.birthDate);
+        const currentDate = DateTime.local();
+
+        // Set babyAgeInDays
+        const diffDate = currentDate.diff(babyBirthDate, 'days');
+        let babyAgeInDays = diffDate.get('days');
+        
+        if (babyAgeInDays < 0) return null;
+        babyAgeInDays = Math.ceil(babyAgeInDays);
+
+        // Get all development periods
+        const developmentPeriods = translateData('developmentPeriods');
+
+        // Find active period
+        let activePeriodHomeMessage: string | null = null;
+
+        // console.log('babyAgeInDays', babyAgeInDays);
+        developmentPeriods?.forEach((value, index) => {
+            // console.log('value.daysStart', value.daysStart);
+            // console.log('value.daysStart - babyAgeInDays > 0', value.daysStart - babyAgeInDays > 0);
+            // console.log('value.daysStart - babyAgeInDays < 10', value.daysStart - babyAgeInDays < 10);
+            // console.log('--------');
+
+            if (
+                (value.daysStart - babyAgeInDays > 0)
+                && (value.daysStart - babyAgeInDays <= 10)
+            ) {
+                if (value.homeMessage) {
+                    activePeriodHomeMessage = value.homeMessage;
+                }
+            }
+        });
+
+        // Add message for active period
+        if (activePeriodHomeMessage) {
+            let homeMessage: string = activePeriodHomeMessage;
+            let childName = this.currentChild.name;
+            childName = utils.upperCaseFirstLetter(childName);
+
+            homeMessage = homeMessage.replace('%CHILD%', childName);
+
+            rval = {
+                text: homeMessage,
+                textStyle: {fontWeight:'bold'},
+                iconType: IconType.celebrate,
+            };
+        }
 
         return rval;
     }
