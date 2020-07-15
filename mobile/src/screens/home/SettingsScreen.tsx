@@ -165,49 +165,6 @@ export class SettingsScreen extends React.Component<Props, State> {
 
                                 {/* TITLE */}
                                 <Typography type={TypographyType.headingSecondary}>
-                                    {translate('settingsTitleImportExport')}
-                                </Typography>
-
-                                <View style={{ height: themeContext.theme.variables?.sizes.verticalPaddingNormal }} />
-
-                                {/* Export all data */}
-                                <View style={{ flexDirection: 'row', width: '85%', alignSelf: 'center' }}>
-                                    <RoundedButton
-                                        text={translate('settingsButtonExport')}
-                                        type={RoundedButtonType.hollowPurple}
-                                        iconName="file-export"
-                                        disabled={this.state.isExportRunning || this.state.isImportRunning}
-                                        onPress={() => { this.exportAllData() }}
-                                        style={{ flex: 1 }}
-                                    />
-
-                                    {this.state.isExportRunning && (
-                                        <ActivityIndicator animating={true} style={{ marginLeft: scale(20) }} />
-                                    )}
-                                </View>
-
-                                <View style={{ height: themeContext.theme.variables?.sizes.verticalPaddingNormal }} />
-
-                                {/* Import all data */}
-                                <View style={{ flexDirection: 'row', width: '85%', alignSelf: 'center' }}>
-                                    <RoundedButton
-                                        text={translate('settingsButtonImport')}
-                                        type={RoundedButtonType.hollowPurple}
-                                        iconName="file-import"
-                                        disabled={this.state.isExportRunning || this.state.isImportRunning}
-                                        onPress={() => { this.importAllData() }}
-                                        style={{ flex: 1 }}
-                                    />
-
-                                    {this.state.isImportRunning && (
-                                        <ActivityIndicator animating={true} style={{ marginLeft: scale(20) }} />
-                                    )}
-                                </View>
-
-                                <Divider style={{ width: '100%', height: 1, marginTop: scale(60), marginBottom: scale(40) }} />
-
-                                {/* TITLE */}
-                                <Typography type={TypographyType.headingSecondary}>
                                     {translate('settingsTitleNotifications')}
                                 </Typography>
 
@@ -300,7 +257,51 @@ export class SettingsScreen extends React.Component<Props, State> {
                                     </Typography>
                                 </View>
 
-                                <View style={{ height: scale(50) }} />
+                                <View style={{ height: themeContext.theme.variables?.sizes.verticalPaddingLarge }} />
+
+                                {/* TITLE */}
+                                <Typography type={TypographyType.headingSecondary}>
+                                    {translate('settingsTitleImportExport')}
+                                </Typography>
+
+                                <View style={{ height: themeContext.theme.variables?.sizes.verticalPaddingNormal }} />
+
+                                {/* Export all data */}
+                                <View style={{ flexDirection: 'row', width: '85%', alignSelf: 'center' }}>
+                                    <RoundedButton
+                                        text={translate('settingsButtonExport')}
+                                        type={RoundedButtonType.hollowPurple}
+                                        iconName="file-export"
+                                        disabled={this.state.isExportRunning || this.state.isImportRunning}
+                                        onPress={() => { this.exportAllData() }}
+                                        style={{ flex: 1 }}
+                                    />
+
+                                    {this.state.isExportRunning && (
+                                        <ActivityIndicator animating={true} style={{ marginLeft: scale(20) }} />
+                                    )}
+                                </View>
+
+                                <View style={{ height: themeContext.theme.variables?.sizes.verticalPaddingNormal }} />
+
+                                {/* Import all data */}
+                                <View style={{ flexDirection: 'row', width: '85%', alignSelf: 'center' }}>
+                                    <RoundedButton
+                                        text={translate('settingsButtonImport')}
+                                        type={RoundedButtonType.hollowPurple}
+                                        iconName="file-import"
+                                        disabled={this.state.isExportRunning || this.state.isImportRunning}
+                                        onPress={() => { this.importAllData() }}
+                                        style={{ flex: 1 }}
+                                    />
+
+                                    {this.state.isImportRunning && (
+                                        <ActivityIndicator animating={true} style={{ marginLeft: scale(20) }} />
+                                    )}
+                                </View>
+
+                                <Divider style={{ width: '100%', height: 1, marginTop: scale(60), marginBottom: scale(40) }} />
+
 
                                 {/* Logout */}
                                 <View style={{ alignSelf: 'center', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
