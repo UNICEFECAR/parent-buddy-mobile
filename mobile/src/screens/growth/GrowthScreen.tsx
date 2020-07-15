@@ -126,6 +126,8 @@ export class GrowthScreen extends Component<Props, State> {
             articleId: 0
         };
 
+        console.log(lastMeasurements, "last")
+
         let chartData: GrowthChart0_2Type = [];
 
         if (gender === "boy") {
@@ -146,7 +148,7 @@ export class GrowthScreen extends Component<Props, State> {
         let length: number = 0;
 
         if (lastMeasurements !== undefined && lastMeasurements.height && lastMeasurements.length) {
-            height = parseFloat(lastMeasurements.height);
+            height = parseFloat(lastMeasurements.height) / 1000;
             length = parseFloat(lastMeasurements.length);
         };
 
@@ -503,8 +505,8 @@ export class GrowthScreen extends Component<Props, State> {
                                                     {/* <NewMeasurements onPress={() => this.goToNewMeasurements()} /> */}
                                                     <LastMeasurements
                                                         measureDate={this.state.lastMeasurementDate ? this.state.lastMeasurementDate : ""}
-                                                        measureLength={this.state.lastMeasuresHeight.toString()}
-                                                        measureMass={this.state.lastMeasuresLength.toString()}
+                                                        measureLength={this.state.lastMeasuresLength.toString()}
+                                                        measureMass={this.state.lastMeasuresHeight.toString()}
                                                         onPress={() => this.goToNewMeasurements()}
                                                     />
                                                 </View>
