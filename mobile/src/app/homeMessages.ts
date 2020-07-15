@@ -161,6 +161,10 @@ class HomeMessages {
             }
         }
 
+        if (rval) {
+            rval.iconType = IconType.heart;
+        }
+
         return rval;
     }
 

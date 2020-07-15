@@ -282,9 +282,6 @@ class ApiStore {
         // URL
         let language = localize.getLanguage();
 
-        // TODO
-        language = 'sr';
-
         let url = `${appConfig.apiUrl}/list-daily-homescreen-message/${language}`;
         url = this.addBasicAuthForIOS(url);
 
