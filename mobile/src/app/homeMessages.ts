@@ -37,7 +37,6 @@ class HomeMessages {
 
         // Enter birthday messages
         const enterBirthdayMessages = this.getEnterBirthdayMessages();
-        console.log('enterBirthdayMessages', enterBirthdayMessages);
         if (enterBirthdayMessages.length > 0) rval = rval.concat(enterBirthdayMessages);
 
         // Upcomming milestone message
