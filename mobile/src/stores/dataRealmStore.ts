@@ -13,6 +13,7 @@ import { BasicPageEntity, BasicPagesEntitySchema } from './BasicPageEntity';
 import { MilestoneEntity, MilestoneEntitySchema } from './MilestoneEntity';
 import { translateData } from '../translationsData/translateData';
 import { MilestoneItem } from '../components/development/MilestoneForm';
+import { DailyMessageVariable } from '../app/homeMessages';
 
 export type Variables = {
     'userEmail': string;
@@ -33,6 +34,7 @@ export type Variables = {
     'lastSyncTimestamp': number;
     'randomNumber': number;
     'vocabulariesAndTerms': VocabulariesAndTermsResponse;
+    'dailyMessage': DailyMessageVariable;
 };
 
 type VariableKey = keyof Variables;
@@ -151,7 +153,7 @@ class DataRealmStore {
             try {
                 const allVariables = this.realm.objects<VariableEntity>(VariableEntitySchema.name);
                 const variablesWithKey = allVariables.filtered(`key == "${key}"`);
-                console.log(variablesWithKey, 'varaibles with key')
+                // console.log(variablesWithKey, 'varaibles with key')
                 if (variablesWithKey && variablesWithKey.length > 0) {
                     const record = variablesWithKey.find(obj => obj.key === key);
 
@@ -189,7 +191,7 @@ class DataRealmStore {
                     resolve(record);
                 });
             } catch (e) {
-                console.log(e)
+                if (appConfig.showLog) console.log(e);
                 reject();
             }
         });

@@ -7,6 +7,7 @@ import URLParser from 'url';
 import { BasicPageEntity } from "./BasicPageEntity";
 import { MilestoneEntity } from "./MilestoneEntity";
 import { Platform } from "react-native";
+import { DailyMessageEntity } from "./DailyMessageEntity";
 
 /**
  * Communication with API.
@@ -380,6 +381,112 @@ class ApiStore {
         return finalContentResponse;
     }
 
+    public async getDailyMessages(args: GetDailyMessagesArgs): Promise<ContentResponse> {
+        // URL
+        let language = localize.getLanguage();
+
+        let url = `${appConfig.apiUrl}/list-daily-homescreen-message/${language}`;
+        url = this.addBasicAuthForIOS(url);
+
+        // URL params
+        const urlParams: any = {};
+
+        urlParams.page = args.page !== undefined ? args.page : 0;
+        urlParams.numberOfItems = args.numberOfItems !== undefined ? args.numberOfItems : 10;
+        if (args.updatedFromDate !== undefined) {
+            urlParams.updatedFromDate = args.updatedFromDate;
+        }
+        urlParams.published = appConfig.showPublishedContent;
+
+        // Get API response
+        let response: ContentResponse = { total: 0, data: [] };
+
+        try {
+            if (appConfig.showLog) {
+                console.log(`apiStore.getDailyMessages(): numberOfItems:${urlParams.numberOfItems}, page:${urlParams.page}, updatedFromDate:${urlParams.updatedFromDate}`);
+                console.log(`apiStore.getDailyMessages(): URL = ${url}`);
+                console.log(`apiStore.getDailyMessages(): URL params = ${JSON.stringify(urlParams, null, 4)}`);
+            }
+
+            let axiosResponse: AxiosResponse = await axios({
+                // API: https://bit.ly/2ZatNfQ
+                url: url,
+                params: urlParams,
+                method: 'GET',
+                responseType: 'json',
+                timeout: appConfig.apiTimeout, // milliseconds
+                maxContentLength: 100000, // bytes
+                auth: {
+                    username: appConfig.apiUsername,
+                    password: appConfig.apiPassword,
+                },
+            });
+
+            let rawResponseJson = axiosResponse.data;
+
+            if (rawResponseJson) {
+                response.total = parseInt(rawResponseJson.total);
+                response.data = rawResponseJson.data.map((rawContent: any): DailyMessageEntity => {
+                    return {
+                        id: parseInt(rawContent.id),
+                        langcode: rawContent.langcode,
+                        title: rawContent.title,
+                        createdAt: new Date(rawContent.created_at * 1000),
+                        updatedAt: new Date(rawContent.updated_at * 1000),
+                    };
+                });
+            }
+        } catch (rejectError) {
+            console.log(rejectError);
+        }
+
+        return response;
+    }
+
+    public async getAllDailyMessages(updatedFromDate?: number): Promise<ContentResponse> {
+        const numberOfItems = appConfig.apiNumberOfItems;
+
+        // Make first request
+        let finalContentResponse = await this.getDailyMessages({
+            page: 0,
+            numberOfItems: numberOfItems,
+            updatedFromDate: updatedFromDate,
+        });
+
+        // If all items are returned in first request
+        if (finalContentResponse.total <= numberOfItems) {
+            if (appConfig.showLog) {
+                console.log(`apiStore.getAllDailyMessages(): updatedFromDate=${updatedFromDate}, total:${finalContentResponse.total}, data length:${finalContentResponse.data?.length}`,);
+            }
+
+            return finalContentResponse;
+        }
+
+        // Make other requests
+        let promises: Promise<any>[] = [];
+
+        for (let page = 1; page < Math.ceil(finalContentResponse.total / numberOfItems); page++) {
+            promises.push(this.getDailyMessages({
+                page: page,
+                numberOfItems: numberOfItems,
+                updatedFromDate: updatedFromDate,
+            }));
+        }
+
+        let allResponses = await Promise.all<ContentResponse>(promises);
+
+        // Combine all responses
+        allResponses.forEach((contentResponse) => {
+            finalContentResponse.data = finalContentResponse.data.concat(contentResponse.data);
+        });
+
+        if (appConfig.showLog) {
+            console.log(`apiStore.getAllDailyMessages(): updatedFromDate=${updatedFromDate}, total:${finalContentResponse.total}, data length:${finalContentResponse.data?.length}`,);
+        }
+
+        return finalContentResponse;
+    }
+
     private getVocabularies(): Vocabulary[] {
         return ['categories', 'keywords', 'predefined_tags'];
     }
@@ -695,7 +802,7 @@ interface GetContentArgs {
     updatedFromDate?: number;
 }
 
-interface GetMilestoneArgs {
+interface GetDailyMessagesArgs {
     /**
      * Defaults to 10
      */

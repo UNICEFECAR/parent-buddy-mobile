@@ -17,6 +17,10 @@ import Orientation from 'react-native-orientation-locker';
 import { getSearchResultsScreenData } from '../../stores/getSearchResultsScreenData';
 import axios, { AxiosResponse } from 'axios';
 import { appConfig } from "../../app/appConfig";
+import { HomeMessages, Message, IconType } from '../../components/HomeMessages';
+import { RoundedButtonType } from '../../components/RoundedButton';
+import { DataUserRealmsConsumer, DataUserRealmsContextValue } from '../../stores/DataUserRealmsContext';
+import { UserRealmConsumer, UserRealmContextValue } from '../../stores/UserRealmContext';
 
 export interface HomeScreenParams {
     showSearchInput?: boolean;
@@ -77,6 +81,18 @@ export class HomeScreen extends React.Component<Props, object> {
                         {/* <Button onPress={() => { this.onTestButtonPress() }}>Test</Button>
                         <View style={{ height: 30 }} /> */}
 
+                        {/* HOME MESSAGES */}
+                        <DataRealmConsumer>
+                            {(dataRealmContext: DataRealmContextValue) => (
+                                <UserRealmConsumer>
+                                    {(userRealmContext: UserRealmContextValue) => (
+                                        <HomeMessages showCloseButton={true}></HomeMessages>
+                                    )}
+                                </UserRealmConsumer>
+                            )}
+                        </DataRealmConsumer>
+
+                        {/* ARTICLES SECTION */}
                         <DataRealmConsumer>
                             {(dataRealmContext: DataRealmContextValue) => (
                                 <>

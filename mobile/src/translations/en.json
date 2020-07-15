@@ -198,5 +198,8 @@
     "viewQuestionnaire": "Pogledajte upitnik o razvoju deteta TODO",
     "fillQuestionnaire": "Popunite upitnik o razvoju deteta TODO",
 
-    "readMore": "Read more"
+    "readMore": "Read more",
+    "homeMessageChildHasItsProfile": "%CHILD% has a profile now!",
+    "homeMessageEnterBabyData": "Enter baby data, so you can see customized content.",
+    "homeMessageEnterBabyDataButton": "Enter baby data"
 }

@@ -70,7 +70,7 @@ class UserRealmStore {
     }
 
     public getCurrentChild = () => {
-        return this.realm?.objects<ChildEntity>(ChildEntitySchema.name).find((record, index, collection) => index === 0);
+        return this.realm?.objects<ChildEntity>(ChildEntitySchema.name).find((record, index) => index === 0);
     }
 
     public getCurrentChildAgeInDays = (birthDay?: number) => {
