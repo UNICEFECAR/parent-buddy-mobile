@@ -172,5 +172,9 @@
     "NewDoctorVisitScreenTitle": "Nova poseta doktoru",
 
     "Iam": "Ja sam",
-    "meetTheParents": "Meet the parents"
+    "meetTheParents": "Meet the parents",
+
+    "homeMessageChildHasItsProfile": "%CHILD% sada ima svoj profil!",
+    "homeMessageEnterBabyData": "Unesite podatke sa bebinog rođenja da biste videli tekstove koji su prilagođeni vašoj bebi.",
+    "homeMessageEnterBabyDataButton": "Dodajte podatke o bebibom rodjenju"
 }

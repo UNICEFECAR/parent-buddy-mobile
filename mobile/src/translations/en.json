@@ -172,5 +172,9 @@
     "NewDoctorVisitScreenTitle": "New health check-up",
 
     "Iam": "I am",
-    "meetTheParents": "Meet the parents"
+    "meetTheParents": "Meet the parents",
+
+    "homeMessageChildHasItsProfile": "%CHILD% has a profile now!",
+    "homeMessageEnterBabyData": "Enter baby data, so you can see customized content.",
+    "homeMessageEnterBabyDataButton": "Enter baby data"
 }

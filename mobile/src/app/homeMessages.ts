@@ -1,8 +1,11 @@
 import { Message, IconType } from "../components/HomeMessages";
-import { dataRealmStore } from "../stores";
+import { dataRealmStore, userRealmStore } from "../stores";
 import { DailyMessageEntity, DailyMessageEntitySchema } from "../stores/DailyMessageEntity";
 import { appConfig } from "./appConfig";
 import { DateTime } from 'luxon';
+import { translate } from "../translations/translate";
+import { RoundedButtonType } from "../components/RoundedButton";
+import { navigation } from ".";
 
 /**
  * Home messages logic is here.
@@ -26,10 +29,20 @@ class HomeMessages {
     }
 
     public getMessages(): Message[] {
-        const rval: Message[] = [];
+        let rval: Message[] = [];
 
+        // Daily message
         const dailyMessage = this.getDailyMessage();
         if (dailyMessage) rval.push(dailyMessage);
+
+        // Enter birthday messages
+        const enterBirthdayMessages = this.getEnterBirthdayMessages();
+        console.log('enterBirthdayMessages', enterBirthdayMessages);
+        if (enterBirthdayMessages.length > 0) rval = rval.concat(enterBirthdayMessages);
+
+        // Upcomming milestone message
+        const upcommingMilestoneMessage = this.getUpcommingMilestoneMessage();
+        if (upcommingMilestoneMessage) rval.push(upcommingMilestoneMessage);
 
         return rval;
     }
@@ -148,6 +161,51 @@ class HomeMessages {
                 }
             }
         }
+
+        return rval;
+    }
+
+    private getEnterBirthdayMessages(): Message[] {
+        let rval: Message[] = [];
+
+        // Get currentChild
+        const currentChild = userRealmStore.getCurrentChild();
+        if (!currentChild) return [];
+
+        if (!currentChild.birthDate) {
+            // Message: Child has its profile
+            let messageText = translate('homeMessageChildHasItsProfile');
+
+            let childName = '';
+            if (currentChild.name) childName = currentChild.name;
+            childName = childName.charAt(0).toUpperCase() + childName.slice(1)
+
+            messageText = messageText.replace('%CHILD%', childName);
+
+            rval.push({
+                text: messageText,
+                textStyle: {fontWeight:'bold'},
+                iconType: IconType.celebrate,
+            });
+
+            // Message: Enter baby data
+            rval.push({
+                text: translate('homeMessageEnterBabyData'),
+                button: {
+                    text: translate('homeMessageEnterBabyDataButton'),
+                    type: RoundedButtonType.purple,
+                    onPress: () => {
+                        navigation.navigate('HomeStackNavigator_BirthDataScreen');
+                    }
+                }
+            });
+        }
+
+        return rval;
+    }
+
+    private getUpcommingMilestoneMessage(): Message | null {
+        let rval: Message | null = null;
 
         return rval;
     }

@@ -28,7 +28,6 @@ export class HomeMessages extends React.Component<Props, State> {
 
     constructor(props: Props) {
         super(props);
-        console.log('CONSTRUCTOR: HomeMessages');
         this.initState();
     }
 
@@ -155,7 +154,7 @@ export class HomeMessages extends React.Component<Props, State> {
 
                         {message.button ? (
                             <RoundedButton
-                                style={{ width: '100%', marginTop: scale(10), marginBottom: scale(10) }}
+                                style={{ width: '100%', marginTop: scale(10), marginBottom: scale(10), marginLeft:moderateScale(11) }}
                                 type={message.button.type}
                                 text={message.button.text}
                                 onPress={() => { if (message.button?.onPress) message.button?.onPress() }}
@@ -163,7 +162,7 @@ export class HomeMessages extends React.Component<Props, State> {
                         ) : null}
 
                         {messages?.length !== (index + 1) ? (
-                            <View style={{ height: scale(10) }} />
+                            <View style={{ height: scale(15) }} />
                         ) : null}
                     </View>
                 ))}

@@ -50,13 +50,13 @@ class UserRealmStore {
         });
     }
 
-    public getCurrentChild = () => {
-        return this.realm?.objects<ChildEntity>(ChildEntitySchema.name).find((record, index, collection) => index === 0);
+    public getCurrentChild() {
+        return this.realm?.objects<ChildEntity>(ChildEntitySchema.name).find((record, index) => index === 0);
     }
 
-    public getChildGender = () => {
-        let child = this.getCurrentChild()
-        return child?.gender
+    public getChildGender() {
+        let child = this.getCurrentChild();
+        return child?.gender;
     }
 
     public async setVariable<T extends VariableKey>(key: T, value: Variables[T] | null): Promise<boolean> {
