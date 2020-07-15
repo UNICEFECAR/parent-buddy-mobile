@@ -20,6 +20,7 @@ import { appConfig } from "../../app/appConfig";
 import { HomeMessages, Message, IconType } from '../../components/HomeMessages';
 import { RoundedButtonType } from '../../components/RoundedButton';
 import { DataUserRealmsConsumer, DataUserRealmsContextValue } from '../../stores/DataUserRealmsContext';
+import { UserRealmConsumer, UserRealmContextValue } from '../../stores/UserRealmContext';
 
 export interface HomeScreenParams {
     showSearchInput?: boolean;
@@ -79,11 +80,15 @@ export class HomeScreen extends React.Component<Props, object> {
                         <View style={{height:30}} /> */}
 
                         {/* HOME MESSAGES */}
-                        <DataUserRealmsConsumer>
-                            {(dataUserRealmsContext: DataUserRealmsContextValue) => (
-                                <HomeMessages showCloseButton={true} messages={dataUserRealmsContext?.homeMessages}></HomeMessages>
+                        <DataRealmConsumer>
+                            {(dataRealmContext: DataRealmContextValue) => (
+                                <UserRealmConsumer>
+                                    {(userRealmContext: UserRealmContextValue) => (
+                                        <HomeMessages showCloseButton={true}></HomeMessages>
+                                    )}
+                                </UserRealmConsumer>
                             )}
-                        </DataUserRealmsConsumer>
+                        </DataRealmConsumer>
 
                         {/* ARTICLES SECTION */}
                         <DataRealmConsumer>

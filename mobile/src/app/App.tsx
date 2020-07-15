@@ -71,13 +71,11 @@ export class App extends React.Component<object> {
                 <PaperProvider>
                     <DataRealmProvider>
                         <UserRealmProvider>
-                            <DataUserRealmsProvider>
-                                <AppNavigationContainer
-                                    ref={(navigatorRef: NavigationContainerComponent) => {
-                                        return navigation.setTopLevelNavigator(navigatorRef);
-                                    }}
-                                />
-                            </DataUserRealmsProvider>
+                            <AppNavigationContainer
+                                ref={(navigatorRef: NavigationContainerComponent) => {
+                                    return navigation.setTopLevelNavigator(navigatorRef);
+                                }}
+                            />
                         </UserRealmProvider>
                     </DataRealmProvider>
                 </PaperProvider>

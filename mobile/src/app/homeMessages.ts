@@ -44,10 +44,10 @@ class HomeMessages {
             try {
                 // Set firstDailyMessageEntity
                 let firstDailyMessageEntity: DailyMessageEntity | null = null;
-                const allRecords = dataRealmStore.realm?.objects<DailyMessageEntity>(DailyMessageEntitySchema.name);
-                const filteredRecords = allRecords?.filtered(`SORT (id ASC) LIMIT(1)`);
+                let allRecords = dataRealmStore.realm?.objects<DailyMessageEntity>(DailyMessageEntitySchema.name)
+                    .sorted('id');
 
-                const justFirstInArray = filteredRecords?.slice(0, 1);
+                const justFirstInArray = allRecords?.slice(0, 1);
                 if (justFirstInArray && justFirstInArray[0]) {
                     firstDailyMessageEntity = justFirstInArray[0];
                 }
@@ -104,10 +104,10 @@ class HomeMessages {
             // Load all daily messages from realm
             let allDailyMessageEntities: DailyMessageEntity[] | undefined = undefined;
 
-            const allRecords = dataRealmStore.realm?.objects<DailyMessageEntity>(DailyMessageEntitySchema.name);
-            const filteredRecords = allRecords?.filtered(`SORT (id ASC)`);
+            const allRecords = dataRealmStore.realm?.objects<DailyMessageEntity>(DailyMessageEntitySchema.name)
+                .sorted('id');
 
-            allDailyMessageEntities = filteredRecords?.map(value => value);
+            allDailyMessageEntities = allRecords?.map(value => value);
 
             if (allDailyMessageEntities) {
                 // Find the index of current daily message
@@ -122,7 +122,7 @@ class HomeMessages {
                 if (currentIndex !== null) {
                     // Find next index
                     let nextIndex = currentIndex + 1;
-                    
+
                     if (nextIndex >= allDailyMessageEntities.length) {
                         nextIndex = 0;
                     }
