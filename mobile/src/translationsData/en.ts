@@ -613,7 +613,7 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
                 text: `Urgently! Your child’s growth in length / height is severely delayed. Make an urgent appointment with a pediatrician for additional examination, obtaining appropriate treatment and determining the dynamics of further growth monitoring!`,
                 articleId: 3211,
             },
-            warrningBigHeightText: {
+            warrningBigLengthText: {
                 name: 'Tipičan rast deteta: 10-12 meseci - Vrednost dužine/visine deteta za uzrast  je iznad +3 SD',
                 text: `Your child has grown to a height well above the normal range for his age and gender. It is probably the result of his genetic potential, but still talk about it with the pediatrician. Continue to follow the adopted recommendations and monitor your child's growth at regular intervals.`,
                 articleId: 3236
@@ -636,7 +636,7 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
                 text: `Urgently! Your child’s growth in length / height is severely delayed. Make an urgent appointment with a pediatrician for additional examination, obtaining appropriate treatment and determining the dynamics of further growth monitoring!`,
                 articleId: 3216,
             },
-            warrningBigHeightText: {
+            warrningBigLengthText: {
                 name: 'Typical growth of a child: 13-24 months- value of the length / height of the child for the age is above + 3 SD',
                 text: `Your child has grown to a height well above the normal range for his age and gender. It is probably the result of his genetic potential, but still talk about it with the pediatrician. Continue to follow the adopted recommendations and monitor your child's growth at regular intervals.`,
                 articleId: 3241,
@@ -659,7 +659,7 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
                 text: `Urgently! Your child’s growth in length / height is severely delayed. Make an urgent appointment with a pediatrician for additional examination, obtaining appropriate treatment and determining the dynamics of further growth monitoring!`,
                 articleId: 3221,
             },
-            warrningBigHeightText: {
+            warrningBigLengthText: {
                 name: `Typical growth of a child: 25-72 months- value of the length / height of the child for the age is above + 3 SD`,
                 text: `Your child has grown to a height well above the normal range for his age and gender. It is probably the result of his genetic potential, but still talk about it with the pediatrician. Continue to follow the adopted recommendations and monitor your child's growth at regular intervals.`,
                 articleId: 3246,

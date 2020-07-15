@@ -4,7 +4,7 @@ import { ObjectSchema } from "realm";
 export type Measures = {
     height: string;
     length: string;
-    measurementDate: Date | undefined;
+    measurementDate: number | undefined;
     titleDateInMonth?: number,
 }
 

@@ -149,7 +149,7 @@
     "lengthForAge": "TODO Visina za uzrast",
     "moreAboutChildGrowth": "TODO Više o rastu deteta",
     "chartMonth": "TODO meseci",
-    "month": "Tmesec",
+    "month": "TODO mesec",
     "onBirthDay": "TODO Rođenje",
     "noMeasurementsTagWarrning": "Entries are not updated",
     "noMeasurementsDescription": "Add data on growth measures to be able to track child's growth through time.",
@@ -184,6 +184,7 @@
     "childMeasuredError": "Please choose one of the two responses",
     "NewDoctorVisitScreenDatePickerLabel": "Date of health check-up",
     "NewDoctorVisitScreenTitle": "New health check-up",
+    "DefaultPeriodInterpretationText": "TODO Karte rasta se odnose na decu uzrasta od 0 do 61. meseca I ne mogu da prikažu vrednosti za decu stariju od ovog uzrasta.  Više o rastu u ovom uzrastu potražite u relevantnim člancima.",
 
     "Iam": "I am",
     "meetTheParents": "Meet the parents",

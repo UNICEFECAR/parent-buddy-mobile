@@ -14,6 +14,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { translate } from '../../translations';
 import Orientation from 'react-native-orientation-locker';
 import { scale, moderateScale } from 'react-native-size-matters';
+import { DateTime } from 'luxon';
 
 const fontFamily = 'SFUIDisplay-Regular';
 const dayLimit = 730;
@@ -23,7 +24,7 @@ export interface Props {
     title: string,
     lineChartData: ChartData[],
     childGender: "male" | "female",
-    childBirthDate: Date,
+    childBirthDate: DateTime,
     showFullscreen: boolean,
     openFullScreen?: Function,
     closeFullScreen?: Function,
@@ -105,10 +106,10 @@ export class GrowthChart extends React.Component<Props, State> {
     }
 
     private getChildAge = () => {
-        var diffMs = Date.now() - this.props.childBirthDate.getTime();
-        var ageDt = new Date(diffMs);
-
-        return (ageDt.getUTCFullYear() - 1970) * 365; // Convert value in days 
+        let dateNow = DateTime.local();
+        let diff = dateNow.diff(this.props.childBirthDate);
+        
+        return diff.days
     }
 
 
