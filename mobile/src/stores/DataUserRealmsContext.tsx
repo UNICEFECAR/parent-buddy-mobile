@@ -4,6 +4,7 @@ import { DataRealmConsumer, DataRealmContextValue } from './DataRealmContext';
 import { UserRealmConsumer, UserRealmContextValue } from './UserRealmContext';
 import { Message, IconType } from '../components/HomeMessages';
 import { RoundedButtonType } from '../components/RoundedButton';
+import { homeMessages } from '../app';
 
 const messages: Message[] = [
     {
@@ -73,12 +74,12 @@ export class DataUserRealmsProvider extends React.PureComponent<object, DataUser
 
     constructor(props: object) {
         super(props);
-        this.loadHomeMessagesWithDebounce = debounce(this.loadHomeMessagesWithDebounce.bind(this), 500);
+        this.loadHomeMessages = this.loadHomeMessages.bind(this);
         this.getContextValue = this.getContextValue.bind(this);
     }
 
     private getContextValue(dataRealm: Realm | null, userRealm: Realm | null): DataUserRealmsContextValue {
-        this.loadHomeMessagesWithDebounce();
+        this.loadHomeMessages();
 
         return {
             homeMessages: this.state.homeMessages,
@@ -87,12 +88,22 @@ export class DataUserRealmsProvider extends React.PureComponent<object, DataUser
         };
     }
 
-    private loadHomeMessagesWithDebounce() {
-        // console.log('loadHomeMessages');
+    private loadHomeMessages() {
+        console.log('loadHomeMessagesWithDebounce');
+        
+        let messages: Message[] = [];
+        
+        try {
+            // messages = homeMessages.getMessages();
+        } catch(e) {
+            console.log(e);
+        }
+        
+        console.log(messages);
 
-        this.setState({
-            homeMessages: messages
-        });
+        // this.setState({
+        //     homeMessages: messages
+        // });
     }
 
     public render() {

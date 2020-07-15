@@ -11,6 +11,7 @@ import { GraphRequest } from 'react-native-fbsdk';
 import { DateTime } from "luxon";
 import { userRealmStore } from './userRealmStore';
 import { BasicPageEntity, BasicPagesEntitySchema } from './BasicPageEntity';
+import { DailyMessageVariable } from '../app/homeMessages';
 
 export type Variables = {
     'userEmail': string;
@@ -31,6 +32,7 @@ export type Variables = {
     'lastSyncTimestamp': number;
     'randomNumber': number;
     'vocabulariesAndTerms': VocabulariesAndTermsResponse;
+    'dailyMessage': DailyMessageVariable;
 };
 
 type VariableKey = keyof Variables;
