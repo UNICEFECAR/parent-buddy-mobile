@@ -6,7 +6,6 @@ import { LastMeasurements } from '../../components/growth/LastMeasurements';
 import { ScrollView } from 'react-native-gesture-handler';
 import { ThemeConsumer, ThemeContextValue } from '../../themes/ThemeContext';
 import { scale, moderateScale } from 'react-native-size-matters';
-import { NewMeasurements } from '../../components/growth/NewMeasurements';
 import { HomeScreenParams } from '../home/HomeScreen';
 import { translate } from '../../translations/translate';
 import { Typography, TextButton } from '../../components';
@@ -20,7 +19,7 @@ import { ChartData as Data, GrowthChart0_2Type, GrowthChartHeightAgeType } from 
 import { TextButtonColor } from '../../components/TextButton';
 import { navigation } from '../../app';
 import { ActivityIndicator } from 'react-native-paper';
-import FastImage from 'react-native-fast-image';
+import { stat } from 'react-native-fs';
 
 export interface GrowthScreenParams {
 
@@ -35,7 +34,7 @@ export interface State {
     measuresData: ChartData[],
     interpretationTexWeightLength: InterpretationTex,
     interpretationTexLenghtAge: InterpretationTex,
-    childBirthDate: Date | null,
+    childBirthDate: DateTime | null,
     childGender: ChildGender,
     lastMeasurementDate: string | undefined,
     isFirstChartLoaded: boolean,
@@ -45,7 +44,7 @@ export interface State {
 export class GrowthScreen extends Component<Props, State> {
     public constructor(props: Props) {
         super(props);
-        this.initState()
+        this.state = this.initState()
         this.setDefaultScreenParams();
     }
 
@@ -211,13 +210,7 @@ export class GrowthScreen extends Component<Props, State> {
         }, 250)
     }
 
-    private update(){
-        this.initState();
-        // this.forceUpdate()
-    }
-
     public initState() {
-        
         // initialize state 
         let state: State = {
             periodIntroductionText: "",
@@ -240,33 +233,44 @@ export class GrowthScreen extends Component<Props, State> {
 
         };
 
-        let childAgeInDays: number = 0;
+        let childAgeInDays: number | null = null;
 
         let measures: Measures[] = [];
         let periodIntroductionText: string = '';
 
         let currentChild = userRealmStore.getCurrentChild();
-
         // if currentChild birthDate is not set return HomeScreen message 
         if (currentChild && currentChild.birthDate) {
-            state.childBirthDate = currentChild.birthDate;
+            state.childBirthDate = DateTime.fromJSDate(currentChild.birthDate);
             let childGender = currentChild?.gender;
 
-            let growthPeriod = translateData('growthPeriods')?.
-                filter((item: any) => (childAgeInDays >= item.dayMin && childAgeInDays <= item.dayMax))[0];
+            childAgeInDays = userRealmStore.getCurrentChildAgeInDays(currentChild.birthDate.getTime())
+            if (childAgeInDays !== null) {
+                let ageInDays = childAgeInDays
 
-            periodIntroductionText = growthPeriod.text;
+                let growthPeriod = translateData('growthPeriods')?.
+                    filter((item: any) => (ageInDays >= item.dayMin && ageInDays <= item.dayMax))[0];
+
+                periodIntroductionText = growthPeriod.text;
+
+            }
 
             // if measures is empty return just box for adding a new measure 
             if (currentChild?.measures !== "" && currentChild.measures !== undefined && currentChild.measures !== null) {
                 measures = JSON.parse(currentChild?.measures);
-                childAgeInDays = userRealmStore.getCurrentChildAgeInDays(currentChild.birthDate);
 
                 let lastMeasurementDate: string | undefined = undefined;
 
                 if (measures[measures.length - 1]?.measurementDate !== undefined) {
-                    let date = new Date(measures[0].measurementDate ? measures[0].measurementDate : "");
-                    lastMeasurementDate = DateTime.fromJSDate(date).toFormat("dd'.'MM'.'yyyy");
+                    let date: DateTime = DateTime.local();
+
+                    let dt = measures[measures.length - 1].measurementDate;
+
+                    if (dt) {
+                        date = DateTime.fromMillis(dt);
+                    }
+
+                    lastMeasurementDate = date.toFormat("dd'.'MM'.'yyyy");
                 }
 
                 let birthDay = new Date(currentChild.birthDate);
@@ -289,7 +293,7 @@ export class GrowthScreen extends Component<Props, State> {
                     interpretationTexWeightLength: interpretationTexWeightLength,
                     interpretationTexLenghtAge: interpretationTexLenghtAge,
                     childGender: childGender,
-                    childBirthDate: currentChild.birthDate,
+                    childBirthDate: DateTime.fromJSDate(currentChild.birthDate),
                     lastMeasurementDate: lastMeasurementDate,
                     isFirstChartLoaded: false,
                     isSecoundChartLoaded: false,
@@ -299,8 +303,7 @@ export class GrowthScreen extends Component<Props, State> {
                 state.periodIntroductionText = periodIntroductionText;
             };
         };
-
-        this.state = state;
+        return state;
     };
 
     private setDefaultScreenParams() {
@@ -316,7 +319,7 @@ export class GrowthScreen extends Component<Props, State> {
     }
 
     private goToNewMeasurements() {
-        this.props.navigation.navigate('HomeStackNavigator_NewMeasurementScreen');
+        this.props.navigation.navigate('HomeStackNavigator_NewMeasurementScreen', { screen: "growth" });
     }
 
     private goToArticle(id: number) {
@@ -401,7 +404,7 @@ export class GrowthScreen extends Component<Props, State> {
                                                         <GrowthChart
                                                             title={translate('heightForLength')}
                                                             chartType={chartTypes.heightLength}
-                                                            childBirthDate={childBirthDate ? childBirthDate : new Date()}
+                                                            childBirthDate={childBirthDate ? childBirthDate : DateTime.local()}
                                                             childGender={childGender === "boy" ? "male" : 'female'}
                                                             lineChartData={measuresData}
                                                             showFullscreen={false}
@@ -414,7 +417,7 @@ export class GrowthScreen extends Component<Props, State> {
                                                 }
 
                                                 {
-                                                    interpretationTexWeightLength.text ?
+                                                    interpretationTexWeightLength?.text ?
                                                         <View style={styles.card}>
                                                             <Typography>
                                                                 {interpretationTexWeightLength.text}
@@ -433,7 +436,7 @@ export class GrowthScreen extends Component<Props, State> {
                                                             <GrowthChart
                                                                 title={translate('lengthForAge')}
                                                                 chartType={chartTypes.lengthAge}
-                                                                childBirthDate={childBirthDate ? childBirthDate : new Date()}
+                                                                childBirthDate={childBirthDate ? childBirthDate : DateTime.local()}
                                                                 childGender={childGender === "boy" ? "male" : 'female'}
                                                                 lineChartData={measuresData}
                                                                 showFullscreen={false}
@@ -444,7 +447,7 @@ export class GrowthScreen extends Component<Props, State> {
                                                 }
 
                                                 {
-                                                    interpretationTexLenghtAge.text ?
+                                                    interpretationTexLenghtAge?.text ?
                                                         <View style={styles.card}>
                                                             <Typography>
                                                                 {interpretationTexLenghtAge.text}

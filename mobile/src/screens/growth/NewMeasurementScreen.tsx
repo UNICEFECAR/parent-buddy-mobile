@@ -17,6 +17,7 @@ import { Measures } from '../../stores/ChildEntity';
 import { navigation } from '../../app';
 import { NavigationStackProp, NavigationStackState } from 'react-navigation-stack';
 import { GrowthScreen } from '../home';
+import { DateTime } from 'luxon';
 
 
 export interface Props {
@@ -24,7 +25,7 @@ export interface Props {
 }
 
 export interface State {
-    measurementDate: Date | undefined,
+    measurementDate: DateTime | undefined,
     measurementDateError: boolean,
     length: string,
     lengthError: boolean,
@@ -72,8 +73,9 @@ export class NewMeasurementScreen extends Component<Props, State> {
     }
 
     private setMeasurementDate = (value: Date) => {
+        let dateTime = DateTime.fromJSDate(value);
         this.setState({
-            measurementDate: value,
+            measurementDate: dateTime,
         })
     }
 
@@ -92,49 +94,74 @@ export class NewMeasurementScreen extends Component<Props, State> {
     private valueCheck() {
         let isValid = true;
 
+        let lengthError = false;
+        let heightError = false;
+        let measurementDateError = false
+
         if (this.state.length === "") {
             isValid = false;
-            this.setState({ lengthError: true })
-        }
+            lengthError = true;
+        };
 
         if (this.state.height === "") {
+            heightError = true;
             isValid = false;
-            this.setState({ heightError: true })
-        }
+        };
 
         if (this.state.measurementDate === undefined) {
+            measurementDateError = true;
             isValid = false;
-            this.setState({ measurementDateError: true })
-        }
+        };
 
-        return isValid;
+        return {
+            isValid: isValid,
+            lengthError: lengthError,
+            heightError: heightError,
+            measurementDateError: measurementDateError
+        };
     }
 
-    private submit() {
+    private async submit() {
         const { comment, length, height, measurementDate } = this.state;
         const currentChild = userRealmStore.getCurrentChild();
         if (!currentChild) return;
 
         let measures: Measures[] = [];
+        let check = this.valueCheck();
 
-        if(this.valueCheck()){
+        if(check.isValid){
             if (currentChild.measures !== null && currentChild.measures !== "") {
                 measures = JSON.parse(currentChild.measures);
-                measures.push({ length: length, height: height, measurementDate: measurementDate })
+                measures.push({ length: length, height: height, measurementDate: measurementDate?.toMillis() })
             } else {
                 measures[0].height = height;
                 measures[0].length = length;
-                measures[0].measurementDate = measurementDate;
+                measures[0].measurementDate = measurementDate?.toMillis();
             }
     
-            userRealmStore.realm?.write(() => {
+            await userRealmStore.realm?.write(() => {
                 currentChild.comment = comment;
                 currentChild.measures = JSON.stringify(measures);
                 // This will just trigger the update of data realm
                 dataRealmStore.setVariable('randomNumber', Math.floor(Math.random() * 6000) + 1);
-                this.props.navigation.goBack();
             });
+
+            if(this.props.navigation.state.params?.screen){
+                // this will triger update on growth screen after measures added 
+                if(this.props.navigation.state.params.screen === "growth"){
+                    this.props.navigation.push('HomeStackNavigator_GrowthScreen')
+                }
+            }else{
+                this.props.navigation.goBack()
+            }
+        }else{
+            this.setState({
+                lengthError: check.lengthError,
+                heightError: check.heightError,
+                measurementDateError: check.measurementDateError
+            })
         }
+     
 
        
     }
@@ -150,7 +177,9 @@ export class NewMeasurementScreen extends Component<Props, State> {
                         <View style={styles.dateTimePickerContainer}>
                             <DateTimePicker
                                 label={translate("newMeasureScreenDatePickerLabel")}
-                                onChange={(date) => this.setMeasurementDate(date)} />
+                                onChange={(date) => this.setMeasurementDate(date)} 
+                                style={this.state.measurementDateError ? {borderWidth: 1, borderColor: 'red'} : null}    
+                            />
                         </View>
                         <View style={styles.measurementPlaceContainer}>
                             <Typography style={{ marginBottom: 22 }}>{translate("newMeasureScreenPlaceTitle")}</Typography>
@@ -170,15 +199,17 @@ export class NewMeasurementScreen extends Component<Props, State> {
                                 label={translate('heightLabel')}
                                 suffix="g"
                                 icon="weight"
-                                style={{ width: 150 }}
+                                style={[{ width: 150 }, this.state.heightError ? {borderColor: 'red', borderWidth: 1} : null ]}
                                 value={this.state.height}
+                                keyboardType="numeric"
                                 onChange={value => this.measureChange(value, 'height')}
                             />
                             <RoundedTextInput
                                 label={translate('lengthLabel')}
                                 suffix="cm"
                                 icon="weight"
-                                style={{ width: 150, marginTop: 8 }}
+                                keyboardType="numeric"
+                                style={[{ width: 150, marginTop: 8 }, this.state.lengthError ? {borderColor: 'red', borderWidth: 1} : null ]}
                                 value={this.state.length}
                                 onChange={value => this.measureChange(value, 'length')}
 

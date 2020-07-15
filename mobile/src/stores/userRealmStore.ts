@@ -55,14 +55,14 @@ class UserRealmStore {
         return this.realm?.objects<ChildEntity>(ChildEntitySchema.name).find((record, index, collection) => index === 0);
     }
 
-    public getCurrentChildAgeInDays = (birthDay?: Date) => {
-        let childBirthDay = birthDay ? birthDay : this.getCurrentChild()?.birthDate;
+    public getCurrentChildAgeInDays = (birthDay?: number) => {
+        let childBirthDay = birthDay ? birthDay : this.getCurrentChild()?.birthDate?.getDate();
 
         const timeNow = DateTime.local();
         let days: number = 0;
 
         if(childBirthDay){
-            let date = DateTime.fromJSDate(childBirthDay);
+            let date = DateTime.fromMillis(childBirthDay);
             let convertInDays = timeNow.diff(date, "days").toObject().days;
 
             if(convertInDays!== undefined) days = convertInDays;
