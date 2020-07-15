@@ -170,6 +170,7 @@
     "childMeasuredError": "Molimo Vas da odaberete jedan od ova dva odgovora.",
     "NewDoctorVisitScreenDatePickerLabel": "Datum posete",
     "NewDoctorVisitScreenTitle": "Nova poseta doktoru",
+    "DefaultPeriodInterpretationText": "Karte rasta se odnose na decu uzrasta od 0 do 61. meseca I ne mogu da prikažu vrednosti za decu stariju od ovog uzrasta.  Više o rastu u ovom uzrastu potražite u relevantnim člancima.",
 
     "Iam": "Ja sam",
     "meetTheParents": "Meet the parents"

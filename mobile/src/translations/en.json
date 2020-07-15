@@ -179,6 +179,7 @@
     "childMeasuredError": "Please choose one of the two responses",
     "NewDoctorVisitScreenDatePickerLabel": "Date of health check-up",
     "NewDoctorVisitScreenTitle": "New health check-up",
+    "DefaultPeriodInterpretationText": "TODO Karte rasta se odnose na decu uzrasta od 0 do 61. meseca I ne mogu da prikažu vrednosti za decu stariju od ovog uzrasta.  Više o rastu u ovom uzrastu potražite u relevantnim člancima.",
 
     "Iam": "I am",
     "meetTheParents": "Meet the parents"

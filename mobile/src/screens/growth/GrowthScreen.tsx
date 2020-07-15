@@ -20,6 +20,7 @@ import { TextButtonColor } from '../../components/TextButton';
 import { navigation } from '../../app';
 import { ActivityIndicator } from 'react-native-paper';
 import { stat } from 'react-native-fs';
+import { color } from 'react-native-reanimated';
 
 export interface GrowthScreenParams {
 
@@ -39,6 +40,10 @@ export interface State {
     lastMeasurementDate: string | undefined,
     isFirstChartLoaded: boolean,
     isSecoundChartLoaded: boolean
+    lastMeasuresHeight: number,
+    lastMeasuresLength: number,
+    defaultMessage: string,
+
 }
 
 export class GrowthScreen extends Component<Props, State> {
@@ -86,10 +91,11 @@ export class GrowthScreen extends Component<Props, State> {
 
             if (convertInDays !== undefined) days = Math.round(convertInDays);
         };
-
+        console.log(days, "DAYS")
         let filteredData = chartData.find(data => data.Day === days);
         let interpretationData = translateData('interpretationLenghtForAge')?.
             find(item => item.predefined_tags.indexOf(childAgeId) !== -1);
+
 
         if (filteredData !== undefined) {
             if (length >= filteredData.SD2neg && length <= filteredData.SD3) {
@@ -103,12 +109,10 @@ export class GrowthScreen extends Component<Props, State> {
             if (length < filteredData.SD3neg) {
                 interpretationTex = interpretationData.emergencySmallLengthText;
             };
-
             if (length > filteredData.SD3) {
                 interpretationTex = interpretationData.warrningBigLengthText;
             };
         };
-
         return interpretationTex;
     };
 
@@ -178,21 +182,29 @@ export class GrowthScreen extends Component<Props, State> {
     private convertMeasuresData(measures: Measures[], childBirthDay: Date) {
         let measurementDateInDays: number | undefined = 0;
 
-        let measuresData = measures.map(item => {
+        let measuresData: ConvertedMeasures[] = [];
+
+        measures.forEach(item => {
+            console.log(item.measurementDate, 'measurement date')
             if (item.measurementDate) {
+                console.log('uso', item.measurementDate)
                 let childAge = DateTime.fromJSDate(childBirthDay)
                 let date = DateTime.fromJSDate(new Date(item.measurementDate));
 
                 measurementDateInDays = date.diff(childAge, "days").toObject().days;
+                console.log(date, 'a')
             };
-
-            return {
-                height: item.height ? parseFloat(item.height) / 1000 : 0,
-                length: item.length ? parseFloat(item.length) : 0,
-                measurementDate: measurementDateInDays ? measurementDateInDays : 0,
+            console.log(measurementDateInDays, "a")
+            if (measurementDateInDays < 1855) {
+                measuresData.push({
+                    height: item.height ? parseFloat(item.height) / 1000 : 0,
+                    length: item.length ? parseFloat(item.length) : 0,
+                    measurementDate: measurementDateInDays ? measurementDateInDays : 0,
+                });
             };
         });
 
+        console.log(measuresData, "MD")
         return measuresData;
     }
 
@@ -220,6 +232,9 @@ export class GrowthScreen extends Component<Props, State> {
             lastMeasurementDate: undefined,
             isFirstChartLoaded: false,
             isSecoundChartLoaded: false,
+            lastMeasuresHeight: 0,
+            lastMeasuresLength: 0,
+            defaultMessage: "",
             interpretationTexWeightLength: {
                 text: "",
                 articleId: 0,
@@ -237,6 +252,7 @@ export class GrowthScreen extends Component<Props, State> {
 
         let measures: Measures[] = [];
         let periodIntroductionText: string = '';
+        let defaultMessage = "";
 
         let currentChild = userRealmStore.getCurrentChild();
         // if currentChild birthDate is not set return HomeScreen message 
@@ -246,12 +262,20 @@ export class GrowthScreen extends Component<Props, State> {
 
             childAgeInDays = userRealmStore.getCurrentChildAgeInDays(currentChild.birthDate.getTime())
             if (childAgeInDays !== null) {
-                let ageInDays = childAgeInDays
+                let ageInDays = 0;
+
+                if(childAgeInDays >= 1885){
+                    ageInDays = 1885;
+                    defaultMessage = translate('DefaultPeriodInterpretationText');
+                }else{
+                    ageInDays = childAgeInDays;
+                    defaultMessage = "";
+                };
 
                 let growthPeriod = translateData('growthPeriods')?.
                     filter((item: any) => (ageInDays >= item.dayMin && ageInDays <= item.dayMax))[0];
 
-                periodIntroductionText = growthPeriod.text;
+                periodIntroductionText = growthPeriod?.text ? growthPeriod.text : "";
 
             }
 
@@ -260,6 +284,8 @@ export class GrowthScreen extends Component<Props, State> {
                 measures = JSON.parse(currentChild?.measures);
 
                 let lastMeasurementDate: string | undefined = undefined;
+                let lastMeasuresHeight: number = 0;
+                let lastMeasuresLength: number = 0;
 
                 if (measures[measures.length - 1]?.measurementDate !== undefined) {
                     let date: DateTime = DateTime.local();
@@ -271,6 +297,8 @@ export class GrowthScreen extends Component<Props, State> {
                     }
 
                     lastMeasurementDate = date.toFormat("dd'.'MM'.'yyyy");
+                    lastMeasuresHeight = measures[measures.length - 1].height ? parseFloat(measures[measures.length - 1].height) / 1000 : 0
+                    lastMeasuresLength = measures[measures.length - 1].length ? parseFloat(measures[measures.length - 1].length) : 0
                 }
 
                 let birthDay = new Date(currentChild.birthDate);
@@ -297,6 +325,9 @@ export class GrowthScreen extends Component<Props, State> {
                     lastMeasurementDate: lastMeasurementDate,
                     isFirstChartLoaded: false,
                     isSecoundChartLoaded: false,
+                    lastMeasuresHeight: lastMeasuresHeight,
+                    defaultMessage: defaultMessage,
+                    lastMeasuresLength: lastMeasuresLength,
                 };
 
             } else {
@@ -417,6 +448,7 @@ export class GrowthScreen extends Component<Props, State> {
                                                 }
 
                                                 {
+                                                    this.state.defaultMessage === "" ? 
                                                     interpretationTexWeightLength?.text ?
                                                         <View style={styles.card}>
                                                             <Typography>
@@ -428,7 +460,8 @@ export class GrowthScreen extends Component<Props, State> {
                                                             >
                                                                 {translate('moreAboutChildGrowth')}
                                                             </TextButton>
-                                                        </View> : null
+                                                        </View> : null 
+                                                        : null
                                                 }
                                                 {
                                                     this.state.isSecoundChartLoaded ?
@@ -447,6 +480,7 @@ export class GrowthScreen extends Component<Props, State> {
                                                 }
 
                                                 {
+                                                    this.state.defaultMessage === "" ?
                                                     interpretationTexLenghtAge?.text ?
                                                         <View style={styles.card}>
                                                             <Typography>
@@ -459,15 +493,19 @@ export class GrowthScreen extends Component<Props, State> {
                                                                 {translate('moreAboutChildGrowth')}
                                                             </TextButton>
                                                         </View> : null
+                                                        : <View style={styles.card}>
+                                                        <Typography>
+                                                            {this.state.defaultMessage}
+                                                        </Typography>
+                                                    </View>
                                                 }
                                                 <View>
                                                     {/* <NewMeasurements onPress={() => this.goToNewMeasurements()} /> */}
                                                     <LastMeasurements
                                                         measureDate={this.state.lastMeasurementDate ? this.state.lastMeasurementDate : ""}
-                                                        measureLength={this.state.measuresData[this.state.measuresData.length - 1].length.toString()}
-                                                        measureMass={this.state.measuresData[this.state.measuresData.length - 1].height.toString()}
+                                                        measureLength={this.state.lastMeasuresHeight.toString()}
+                                                        measureMass={this.state.lastMeasuresLength.toString()}
                                                         onPress={() => this.goToNewMeasurements()}
-
                                                     />
                                                 </View>
                                             </>
@@ -486,6 +524,12 @@ export interface InterpretationTex {
     text: string,
     name: string,
     articleId: number
+}
+
+export interface ConvertedMeasures {
+    height: number,
+    length: number,
+    measurementDate: number,
 }
 
 export interface GrowthScreenStyles {

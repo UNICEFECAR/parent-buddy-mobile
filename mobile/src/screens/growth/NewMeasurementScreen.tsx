@@ -34,6 +34,7 @@ export interface State {
     comment: string,
     measurementPlace: string | undefined,
     isVaccineReceived: string | undefined,
+    defaultMessage: string;
 }
 
 
@@ -132,7 +133,19 @@ export class NewMeasurementScreen extends Component<Props, State> {
         if(check.isValid){
             if (currentChild.measures !== null && currentChild.measures !== "") {
                 measures = JSON.parse(currentChild.measures);
-                measures.push({ length: length, height: height, measurementDate: measurementDate?.toMillis() })
+                let sameDate = false;
+                measures.forEach(item => {
+                    if(item.measurementDate === measurementDate?.toMillis()){
+                        sameDate = true;
+                        item.height = height;
+                        item.length = length;
+                        return;
+                    };
+                });
+
+                if(sameDate === false){
+                    measures.push({ length: length, height: height, measurementDate: measurementDate?.toMillis() });
+                };
             } else {
                 measures[0].height = height;
                 measures[0].length = length;
