@@ -173,13 +173,13 @@ export class GrowthScreen extends Component<Props, State> {
                 let birthDay = new Date(currentChild.birthDate);
 
                 const measuresData = this.convertMeasuresData(measures, birthDay);
-                const interpretationTexWeightLength = userRealmStore.getInterpretationTexWeightForHeight(
+                const interpretationTexWeightLength = userRealmStore.getInterpretationWeightForHeight(
                     childGender,
                     childAgeInDays,
                     measures[measures.length - 1]
                 ).interpretationTex;
 
-                const interpretationTexLenghtAge = userRealmStore.getInterpretationTexLenghtForAge(
+                const interpretationTexLenghtAge = userRealmStore.getInterpretationLenghtForAge(
                     childGender,
                     measures[measures.length - 1]
                 ).interpretationTex;

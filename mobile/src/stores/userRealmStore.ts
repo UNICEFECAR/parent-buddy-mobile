@@ -75,7 +75,7 @@ class UserRealmStore {
         return days;
     };
 
-    public getInterpretationTexLenghtForAge(gender: ChildGender, lastMeasurements: Measures) {
+    public getInterpretationLenghtForAge(gender: ChildGender, lastMeasurements: Measures) {
         const childAgeId = dataRealmStore.getChildAgeTagWithArticles()?.id;
 
         let interpretationTex: InterpretationTex = {
@@ -148,7 +148,7 @@ class UserRealmStore {
         };
     };
 
-    public getInterpretationTexWeightForHeight(gender: ChildGender, childAgeInDays: number, lastMeasurements: Measures) {
+    public getInterpretationWeightForHeight(gender: ChildGender, childAgeInDays: number, lastMeasurements: Measures) {
         const dayLimit = 730; // 0-2 yeast || 2-5 years 
         const childAgeId = dataRealmStore.getChildAgeTagWithArticles()?.id;
 
