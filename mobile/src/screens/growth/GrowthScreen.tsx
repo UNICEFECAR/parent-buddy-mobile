@@ -34,17 +34,16 @@ export interface Props {
 export interface State {
     periodIntroductionText: string,
     measuresData: ChartData[],
-    interpretationTexWeightLength: InterpretationTex,
-    interpretationTexLenghtAge: InterpretationTex,
+    interpretationTextWeightLength: InterpretationText,
+    interpretationTextLenghtAge: InterpretationText,
     childBirthDate: DateTime | null,
     childGender: ChildGender,
     lastMeasurementDate: string | undefined,
     isFirstChartLoaded: boolean,
     isSecoundChartLoaded: boolean
-    lastMeasuresHeight: number,
+    lastMeasuresWeight: number,
     lastMeasuresLength: number,
     defaultMessage: string,
-
 }
 
 export class GrowthScreen extends Component<Props, State> {
@@ -52,131 +51,6 @@ export class GrowthScreen extends Component<Props, State> {
         super(props);
         this.state = this.initState()
         this.setDefaultScreenParams();
-    }
-
-    private getInterpretationTexLenghtForAge(gender: ChildGender, lastMeasurements: Measures) {
-        const childAgeId = dataRealmStore.getChildAgeTagWithArticles()?.id;
-
-        let interpretationTex: InterpretationTex = {
-            name: "",
-            text: "",
-            articleId: 0
-        };
-
-        let chartData: GrowthChartHeightAgeType = [];
-
-        if (gender === "boy") {
-            chartData = Data.Height_age_boys0_5
-        } else {
-            chartData = Data.Height_age_girls0_5
-        }
-
-        let length: number = 0;
-        if (lastMeasurements !== undefined && lastMeasurements.height && lastMeasurements.length) {
-            length = parseFloat(lastMeasurements.length);
-        };
-
-        const childBirthDay = userRealmStore.getCurrentChild()?.birthDate;
-        let measurementDate: DateTime = DateTime.local();
-
-        if (lastMeasurements !== undefined && lastMeasurements.measurementDate) {
-            measurementDate = DateTime.fromJSDate(new Date(lastMeasurements.measurementDate));
-        }
-
-        let days = 0;
-
-        if (childBirthDay) {
-            let date = DateTime.fromJSDate(childBirthDay);
-            let convertInDays = measurementDate.diff(date, "days").toObject().days;
-
-
-            if (convertInDays !== undefined) days = Math.round(convertInDays);
-        };
-        let filteredData = chartData.find(data => data.Day === days);
-        let interpretationData = translateData('interpretationLenghtForAge')?.
-            find(item => item.predefined_tags.indexOf(childAgeId) !== -1);
-
-
-        if (filteredData !== undefined) {
-            if (length >= filteredData.SD2neg && length <= filteredData.SD3) {
-                interpretationTex = interpretationData.goodText;
-            };
-
-            if (length < filteredData.SD2neg && length > filteredData.SD3neg) {
-                interpretationTex = interpretationData.warrningSmallLengthText;
-            };
-
-            if (length < filteredData.SD3neg) {
-                interpretationTex = interpretationData.emergencySmallLengthText;
-            };
-            if (length > filteredData.SD3) {
-                interpretationTex = interpretationData.warrningBigLengthText;
-            };
-        };
-        return interpretationTex;
-    };
-
-    private getInterpretationTexWeightForHeight(gender: ChildGender, childAgeInDays: number, lastMeasurements: Measures) {
-        const dayLimit = 730; // 0-2 yeast || 2-5 years 
-        const childAgeId = dataRealmStore.getChildAgeTagWithArticles()?.id;
-
-        let interpretationTex: InterpretationTex = {
-            name: "",
-            text: "",
-            articleId: 0
-        };
-
-        let chartData: GrowthChart0_2Type = [];
-
-        if (gender === "boy") {
-            if (childAgeInDays <= dayLimit) {
-                chartData = Data.GrowthChartBoys0_2;
-            } else {
-                chartData = Data.GrowthChartBoys2_5;
-            };
-        } else {
-            if (childAgeInDays <= dayLimit) {
-                chartData = Data.GrowthChartGirls0_2;
-            } else {
-                chartData = Data.GrowthChartGirls2_5;
-            };
-        };
-
-        let height: number = 0;
-        let length: number = 0;
-
-        if (lastMeasurements !== undefined && lastMeasurements.height && lastMeasurements.length) {
-            height = parseFloat(lastMeasurements.height) / 1000;
-            length = parseFloat(lastMeasurements.length);
-        };
-
-        let filteredDataForHeight = chartData.find(data => data.Height === length);
-        let interpretationData = translateData('interpretationWeightForHeight')?.
-            find(item => item.predefined_tags.indexOf(childAgeId) !== -1);
-
-        if (filteredDataForHeight) {
-            if (height >= filteredDataForHeight?.SD2neg && height <= filteredDataForHeight.SD2) {
-                interpretationTex = interpretationData.goodText;
-            };
-
-            if (height <= filteredDataForHeight.SD2neg && height >= filteredDataForHeight.SD3neg) {
-                interpretationTex = interpretationData.warrningSmallHeightText;
-            };
-
-            if (height < filteredDataForHeight.SD3neg) {
-                interpretationTex = interpretationData.emergencySmallHeightText;
-            };
-
-            if (height >= filteredDataForHeight.SD2 && height <= filteredDataForHeight.SD3) {
-                interpretationTex = interpretationData.warrningBigHeightText;
-            };
-
-            if (height > filteredDataForHeight.SD3) {
-                interpretationTex = interpretationData.emergencyBigHeightText;
-            };
-        };
-
-        return interpretationTex;
     }
 
     private convertMeasuresData(measures: Measures[], childBirthDay: Date) {
@@ -193,7 +67,7 @@ export class GrowthScreen extends Component<Props, State> {
             };
             if (measurementDateInDays < 1855) {
                 measuresData.push({
-                    height: item.height ? parseFloat(item.height) / 1000 : 0,
+                    weight: item.weight ? parseFloat(item.weight) / 1000 : 0,
                     length: item.length ? parseFloat(item.length) : 0,
                     measurementDate: measurementDateInDays ? measurementDateInDays : 0,
                 });
@@ -227,15 +101,15 @@ export class GrowthScreen extends Component<Props, State> {
             lastMeasurementDate: undefined,
             isFirstChartLoaded: false,
             isSecoundChartLoaded: false,
-            lastMeasuresHeight: 0,
+            lastMeasuresWeight: 0,
             lastMeasuresLength: 0,
             defaultMessage: "",
-            interpretationTexWeightLength: {
+            interpretationTextWeightLength: {
                 text: "",
                 articleId: 0,
                 name: "",
             },
-            interpretationTexLenghtAge: {
+            interpretationTextLenghtAge: {
                 text: "",
                 articleId: 0,
                 name: "",
@@ -263,7 +137,7 @@ export class GrowthScreen extends Component<Props, State> {
                     ageInDays = 1885;
                     defaultMessage = translate('DefaultPeriodInterpretationText');
                 } else {
-                    ageInDays = childAgeInDays;
+                    ageInDays = Math.round(childAgeInDays);
                     defaultMessage = "";
                 };
 
@@ -279,7 +153,7 @@ export class GrowthScreen extends Component<Props, State> {
                 measures = JSON.parse(currentChild?.measures);
 
                 let lastMeasurementDate: string | undefined = undefined;
-                let lastMeasuresHeight: number = 0;
+                let lastMeasuresWeight: number = 0;
                 let lastMeasuresLength: number = 0;
 
                 if (measures[measures.length - 1]?.measurementDate !== undefined) {
@@ -292,35 +166,35 @@ export class GrowthScreen extends Component<Props, State> {
                     }
 
                     lastMeasurementDate = date.toFormat("dd'.'MM'.'yyyy");
-                    lastMeasuresHeight = measures[measures.length - 1].height ? parseFloat(measures[measures.length - 1].height) / 1000 : 0
+                    lastMeasuresWeight = measures[measures.length - 1].weight ? parseFloat(measures[measures.length - 1].weight) / 1000 : 0
                     lastMeasuresLength = measures[measures.length - 1].length ? parseFloat(measures[measures.length - 1].length) : 0
                 }
 
                 let birthDay = new Date(currentChild.birthDate);
 
                 const measuresData = this.convertMeasuresData(measures, birthDay);
-                const interpretationTexWeightLength = this.getInterpretationTexWeightForHeight(
+                const interpretationTextWeightLength = userRealmStore.getInterpretationWeightForHeight(
                     childGender,
                     childAgeInDays,
                     measures[measures.length - 1]
-                );
+                ).interpretationText;
 
-                const interpretationTexLenghtAge = this.getInterpretationTexLenghtForAge(
+                const interpretationTextLenghtAge = userRealmStore.getInterpretationLenghtForAge(
                     childGender,
                     measures[measures.length - 1]
-                )
+                ).interpretationText;
 
                 state = {
                     periodIntroductionText: periodIntroductionText,
                     measuresData: measuresData,
-                    interpretationTexWeightLength: interpretationTexWeightLength,
-                    interpretationTexLenghtAge: interpretationTexLenghtAge,
+                    interpretationTextWeightLength: interpretationTextWeightLength,
+                    interpretationTextLenghtAge: interpretationTextLenghtAge,
                     childGender: childGender,
                     childBirthDate: DateTime.fromJSDate(currentChild.birthDate),
                     lastMeasurementDate: lastMeasurementDate,
                     isFirstChartLoaded: false,
                     isSecoundChartLoaded: false,
-                    lastMeasuresHeight: lastMeasuresHeight,
+                    lastMeasuresWeight: lastMeasuresWeight,
                     defaultMessage: defaultMessage,
                     lastMeasuresLength: lastMeasuresLength,
                 };
@@ -377,10 +251,9 @@ export class GrowthScreen extends Component<Props, State> {
             measuresData,
             childBirthDate,
             childGender,
-            interpretationTexWeightLength,
-            interpretationTexLenghtAge
+            interpretationTextWeightLength,
+            interpretationTextLenghtAge
         } = this.state;
-
         return (
             <ThemeConsumer>
                 {(themeContext: ThemeContextValue) => (
@@ -484,15 +357,14 @@ export class GrowthScreen extends Component<Props, State> {
 
                                                 {
                                                     this.state.defaultMessage === "" ?
-                                                        interpretationTexLenghtAge?.text ?
+                                                        interpretationTextLenghtAge?.text ?
                                                             <View style={styles.card}>
                                                                 <Typography>
-                                                                    {interpretationTexLenghtAge.text}
+                                                                    {interpretationTextLenghtAge.text}
                                                                 </Typography>
                                                                 <TextButton
                                                                     color={TextButtonColor.purple}
-                                                                    onPress={() => this.goToArticle(interpretationTexLenghtAge.articleId)}
-                                                                >
+                                                                    onPress={() => this.goToArticle(interpretationTextLenghtAge.articleId)}
                                                                     {translate('moreAboutChildGrowth')}
                                                                 </TextButton>
                                                             </View> : null
@@ -507,7 +379,7 @@ export class GrowthScreen extends Component<Props, State> {
                                                     <LastMeasurements
                                                         measureDate={this.state.lastMeasurementDate ? this.state.lastMeasurementDate : ""}
                                                         measureLength={this.state.lastMeasuresLength.toString()}
-                                                        measureMass={this.state.lastMeasuresHeight.toString()}
+                                                        measureMass={this.state.lastMeasuresWeight.toString()}
                                                         onPress={() => this.goToNewMeasurements()}
                                                     />
                                                 </View>
@@ -523,14 +395,14 @@ export class GrowthScreen extends Component<Props, State> {
     }
 }
 
-export interface InterpretationTex {
+export interface InterpretationText {
     text: string,
     name: string,
     articleId: number
 }
 
 export interface ConvertedMeasures {
-    height: number,
+    weight: number,
     length: number,
     measurementDate: number,
 }

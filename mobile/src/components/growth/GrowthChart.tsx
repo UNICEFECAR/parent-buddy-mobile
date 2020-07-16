@@ -85,7 +85,7 @@ export class GrowthChart extends React.Component<Props, State> {
 
         /* Create line chart array for type chart */
         this.props.lineChartData.map(item => {
-            chartData.push(this.props.chartType === chartTypes.heightLength ? { x: item.length, y: item.height } : { x: item.measurementDate / 30, y: item.length })
+            chartData.push(this.props.chartType === chartTypes.heightLength ? { x: item.length, y: item.weight } : { x: item.measurementDate / 30, y: item.length })
         })
 
         let orientation: "portrait"  | "landscape" = windowWidth > windowHeight ? 'landscape' : 'portrait';
@@ -447,7 +447,7 @@ export enum chartTypes {
 
 export interface ChartData {
     measurementDate: number,
-    height: number,
+    weight: number,
     length: number,
 }
 

@@ -28,12 +28,12 @@ export interface State {
     plannedTermDate: DateTime | undefined,
     birthDate: DateTime | undefined,
     babyRating: number | undefined,
-    height: string,
+    weight: string,
     length: string,
     comment: string | undefined,
     dateError: boolean,
     lengthError: boolean,
-    heightError: boolean
+    weightError: boolean
 }
 
 export class BirthDataScreen extends React.Component<Props, State> {
@@ -64,16 +64,16 @@ export class BirthDataScreen extends React.Component<Props, State> {
 
         if (currentChild) {
 
-            let height: string = "";
+            let weight: string = "";
             let length: string = "";
 
             if(currentChild.measures && currentChild.measures !== ""){
                 let measures = JSON.parse(currentChild.measures);
                 
-                if(measures[0]?.height === undefined){
-                    height = ""
+                if(measures[0]?.weight === undefined){
+                    weight = ""
                 }else{
-                    height = measures[0].height;
+                    weight = measures[0].weight;
                 }
 
                 if(measures[0]?.length === undefined){
@@ -90,11 +90,11 @@ export class BirthDataScreen extends React.Component<Props, State> {
                 babyRating: currentChild.babyRating,
                 birthDate: birthDate ? birthDate : undefined,
                 comment: currentChild.comment,
-                height: height === undefined ? "" : height.toString(),
+                weight: weight === undefined ? "" : weight.toString(),
                 plannedTermDate: planetBirthDate ? planetBirthDate: undefined,
                 length: length === undefined ? "" : length.toString(),
                 lengthError: false,
-                heightError: false,
+                weightError: false,
                 dateError: false,
             };
 
@@ -113,8 +113,8 @@ export class BirthDataScreen extends React.Component<Props, State> {
             check = false;
         };
 
-        if(this.state.height === ""){
-            this.setState({heightError: true});
+        if(this.state.weight === ""){
+            this.setState({weightError: true});
             check = false;
         };
 
@@ -127,7 +127,7 @@ export class BirthDataScreen extends React.Component<Props, State> {
     };
 
     private submit = () => {
-        const { comment, length, height, babyRating, plannedTermDate, birthDate } = this.state;
+        const { comment, length, weight, babyRating, plannedTermDate, birthDate } = this.state;
 
         const currentChild = userRealmStore.getCurrentChild();
         if (!currentChild) return;
@@ -140,8 +140,8 @@ export class BirthDataScreen extends React.Component<Props, State> {
             if (currentChild.measures !== null && currentChild.measures !== "" && currentChild.measures !== "[]") {
                 measures = JSON.parse(currentChild.measures);
     
-                if(height !== ""){
-                    measures[0] = {...measures[0], height: height}
+                if(weight !== ""){
+                    measures[0] = {...measures[0], weight: weight}
                 }
     
                 if(length !== ""){
@@ -150,8 +150,8 @@ export class BirthDataScreen extends React.Component<Props, State> {
     
                 measures[0].measurementDate = birthDateTimeStamp;
             } else {
-                if(height !== "" && length !== "")
-                    measures.push({ length: length, height: height, measurementDate: birthDateTimeStamp })
+                if(weight !== "" && length !== "")
+                    measures.push({ length: length, weight: weight, measurementDate: birthDateTimeStamp })
             }
     
             userRealmStore.realm?.write(() => {
@@ -191,7 +191,7 @@ export class BirthDataScreen extends React.Component<Props, State> {
 
     private setChildWeight = (value: string) => {
         this.setState({
-            height: value
+            weight: value
         })
     }
 
@@ -270,9 +270,9 @@ export class BirthDataScreen extends React.Component<Props, State> {
                                 label={translate('fieldLabelWeight')}
                                 suffix="g"
                                 icon="weight"
-                                style={[{ width: scale(150) }, this.state.heightError ? {borderWidth: 1, borderColor: "red"} : null]}
+                                style={[{ width: scale(150) }, this.state.weightError ? {borderWidth: 1, borderColor: "red"} : null]}
                                 onChange={(value) => this.setChildWeight(value)}
-                                value={this.state.height}
+                                value={this.state.weight}
                                 keyboardType="numeric"
                             />
 
