@@ -163,8 +163,15 @@ export class BirthDataScreen extends React.Component<Props, State> {
                 // This will just trigger the update of data realm
                 dataRealmStore.setVariable('randomNumber', Math.floor(Math.random() * 6000) + 1);
     
-                this.props.navigation.goBack();
             });
+            const parentRoutes = this.props.navigation?.dangerouslyGetParent()?.state.routes;
+            const measurementParent = parentRoutes?.find(route => route.routeName === "HomeStackNavigator_GrowthScreen");
+            
+            if (measurementParent) {
+                this.props.navigation.push(measurementParent.routeName)
+            } else {
+                this.props.navigation.goBack();
+            };
         }
     }
 

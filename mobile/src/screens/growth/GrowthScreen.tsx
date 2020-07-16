@@ -91,7 +91,6 @@ export class GrowthScreen extends Component<Props, State> {
 
             if (convertInDays !== undefined) days = Math.round(convertInDays);
         };
-        console.log(days, "DAYS")
         let filteredData = chartData.find(data => data.Day === days);
         let interpretationData = translateData('interpretationLenghtForAge')?.
             find(item => item.predefined_tags.indexOf(childAgeId) !== -1);
@@ -125,8 +124,6 @@ export class GrowthScreen extends Component<Props, State> {
             text: "",
             articleId: 0
         };
-
-        console.log(lastMeasurements, "last")
 
         let chartData: GrowthChart0_2Type = [];
 
@@ -187,16 +184,12 @@ export class GrowthScreen extends Component<Props, State> {
         let measuresData: ConvertedMeasures[] = [];
 
         measures.forEach(item => {
-            console.log(item.measurementDate, 'measurement date')
             if (item.measurementDate) {
-                console.log('uso', item.measurementDate)
                 let childAge = DateTime.fromJSDate(childBirthDay)
                 let date = DateTime.fromJSDate(new Date(item.measurementDate));
 
                 measurementDateInDays = date.diff(childAge, "days").toObject().days;
-                console.log(date, 'a')
             };
-            console.log(measurementDateInDays, "a")
             if (measurementDateInDays < 1855) {
                 measuresData.push({
                     height: item.height ? parseFloat(item.height) / 1000 : 0,
@@ -206,7 +199,6 @@ export class GrowthScreen extends Component<Props, State> {
             };
         });
 
-        console.log(measuresData, "MD")
         return measuresData;
     }
 
