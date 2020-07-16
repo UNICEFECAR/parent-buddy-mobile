@@ -137,6 +137,15 @@
     "childProfileAddSibling": "Dodajte sestru ili brata",
 
     "growScreenTitle": "Rast deteta",
+    "allMeasurements": "Sva merenja",
+    "heightLabel": "Težina",
+    "lengthLabel": "Visina",
+    "heightForLength": "Težina za visinu",
+    "lengthForAge": "Visina za uzrast",
+    "moreAboutChildGrowth": "Više o rastu deteta",
+    "chartMonth": "meseci",
+    "month": "mesec",
+    "onBirthDay": "Rođenje",
     "noMeasurementsTagWarrning": "Podaci nisu ažurirani",
     "noMeasurementsDescription": "Dodajte podatke o merama kako biste mogli da pratite detetov rast kroz vreme.",
     "noMeasurementsDescriptionAddMeasureBtn": "Unesite mere deteta",
@@ -170,6 +179,7 @@
     "childMeasuredError": "Molimo Vas da odaberete jedan od ova dva odgovora.",
     "NewDoctorVisitScreenDatePickerLabel": "Datum posete",
     "NewDoctorVisitScreenTitle": "Nova poseta doktoru",
+    "DefaultPeriodInterpretationText": "Karte rasta se odnose na decu uzrasta od 0 do 61. meseca I ne mogu da prikažu vrednosti za decu stariju od ovog uzrasta.  Više o rastu u ovom uzrastu potražite u relevantnim člancima.",
 
     "Iam": "Ja sam",
     "meetTheParents": "Meet the parents",

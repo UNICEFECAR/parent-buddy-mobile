@@ -367,4 +367,314 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
             predefinedTagId: 51,
         },
     ],
+    growthPeriods: [
+        {
+            dayMin: 0,
+            dayMax: 30,
+            text: `During the first 5 days, the newborn will lose up to 10% of his body weight but with appropriate care and nutrition, primarily breastfeeding, they will compensate for this loss by the end of the second week of life. In the following period, the newborn will be gaining 20 to 30 g per day in weight, up to 5 cm monthly in length and 2-2.5 cm in head circumference.`
+        },
+        {
+            dayMin: 31,
+            dayMax: 91,
+            text: `In the second and third month, the child continues to grow at approximately the same pace that it established during the first weeks. S/he will gain 700 to 900 g per month in weight, 2.5 to 4 cm in length and about 1.2 cm in head circumference.`
+        },
+        {
+            dayMin: 92,
+            dayMax: 152,
+            text: `The growth begins to slow down and during the fourth, fifth and sixth month, the child  gains on an average 450-550 g in weight and about 2 cm in length `
+        },
+        {
+            dayMin: 153,
+            dayMax: 183,
+            text: `The child continues to gain 450-550 grams per month in weight and about 2 cm in lenght on an average. By the age of 6 months, the child has already doubled its body weight from birth.`
+        },
+        {
+            dayMin: 184,
+            dayMax: 274,
+            text: `From the seventh to the ninth month, growth continues to slow down. Children grow at different pace but it is important to follow the pattern of growth that is established during the previous months.`,
+        },
+        {
+            dayMin: 275,
+            dayMax: 365,
+            text: `In the last trimester of the first year, the child gains about 1 cm per month while the weight varies and depends on the activity level. During the first year, a child usually triples its weight at birth, grows 25 cm on an average and the head circumference increases by 12.5 cm. `,
+        },
+        {
+            dayMin: 366,
+            dayMax: 730,
+            text: `In the second year, the gradual slowdown in growth continues. During this year, a child grows about 12 cm, gains 2-2.5 kg in weight and the head circumference increases by 2-2.5 cm.`,
+        },
+        {
+            dayMin: 731,
+            dayMax: 2190,
+            text: `The growth from the third years onwards becomes more even. A child gains 5-7.5 cm in height and 2-3 kg in weight per year.`,
+        },
+    ],
+    interpretationWeightForHeight: [
+        {
+            predefined_tags: [43, 44, 45, 46],
+            goodText: {
+                name: 'Typical growth of a child: first 6 months- weight for the length / height of the child is between -2SD to + 2 SD',
+                text: `Bravo! Your child grows well and her/ his weight is in harmonious with her/his height. Continue to follow the recommendations for optimal nutrition, physical activity and sleep. Keep track of your child's growth.`,
+                articleId: 3026,
+
+            },
+            warrningSmallHeightText: {
+                name: `Typical growth of a child: first 6 months- weights for the length / height of the child as between -2 and -3 SD`,
+                text: `Attention! Your child is losing weight (or not gaining weight) and has a moderate lack of weight for length / height.  This situation could have happened in a course of few weeks, hence consider to find out some immediate causes: recent infectious disease or diahorea, some other chronic illness, insufficient and a very improper diet, changes in the immediate environment, etc. Be sure to schedule an examination with a pediatrician to discover the cause, correct the loss and determine the dynamics of further monitoring of growth. You child needs major consideration to have an improved diet.`,
+                articleId: 3051,
+            },
+            emergencySmallHeightText: {
+                name: `Typical growth of a child: first 6 months-weights for the length / height of the child below -3 SD`,
+                text: `Attention! Your child has a serious lack of weight for length / height. This situation could have happened in a course of few weeks, hence consider to find out some possible immediate causes, some causes could be: recent illness, metabolic and chronic diseases, insufficient and improper diet, changes in the immediate environment, etc. Urgently consult a pediatrician to investigate the cause and determine how to compensate for the loss.`,
+                articleId: 3076,
+            },
+            warrningBigHeightText: {
+                name: `Typical growth of a child: first 6 months- weight for length / height of the child are between +2 and +3 SD`,
+                text: `Attention! Your child is moderately overweight for height. This overweight can endanger his/her health, so think about what contributed to that: excess intake of energy-rich foods (such as sweet and oily products), intake of junk foods, reduced physical activity, increased screen time or changes in the immediate environment, etc. Be sure to make an appointment with a pediatrician to get additional recommendations and determine the dynamics of monitoring your child's growth.`,
+                articleId: 3101
+            },
+            emergencyBigHeightText: {
+                name: `Typical growth of a child: first 6 months- weight for length / height of the child are above +3 SD`,
+                text: `Urgent attention! Your child is obese, that is, s/he has a serious excess weight for height. This weight can seriously endanger your child's health. Think about what contributed to that: excess intake of energy-rich foods (such as sweet and oily products), intake of junk foods, reduced physical activity, increased screen time or changes in the immediate environment, etc. Be sure to schedule a visit to the pediatrician for an examination and additional diagnostics, as well as to determine the dynamics of further growth monitoring!`,
+                articleId: 3126
+            }
+
+        },
+        {
+            predefined_tags: [47],
+            goodText: {
+                name: 'Typical growth of a child:7-9  months- weight for the length / height of the child is between -2SD to + 2 SD',
+                text: `Bravo! Your child grows well and her/ his weight is in harmonious with her/his height. Continue to follow the recommendations for optimal nutrition, physical activity and sleep. Keep track of your child's growth.`,
+                articleId: 3031,
+
+            },
+            warrningSmallHeightText: {
+                name: `Typical growth of a child: 7-9 months- weights for the length / height of the child as between -2 and -3 SD`,
+                text: `Attention! Your child is losing weight (or not gaining weight) and has a moderate lack of weight for length / height.  This situation could have happened in a course of few weeks, hence consider to find out some immediate causes: recent infectious disease or diahorea, some other chronic illness, insufficient and a very improper diet, changes in the immediate environment, etc. Be sure to schedule an examination with a pediatrician to discover the cause, correct the loss and determine the dynamics of further monitoring of growth. You child needs major consideration to have an improved diet.`,
+                articleId: 3056,
+            },
+            emergencySmallHeightText: {
+                name: `Typical growth of a child: 7-9 months-weights for the length / height of the child below -3 SD`,
+                text: `Attention! Your child has a serious lack of weight for length / height. This situation could have happened in a course of few weeks, hence consider to find out some possible immediate causes, some causes could be: recent illness, metabolic and chronic diseases, insufficient and improper diet, changes in the immediate environment, etc. Urgently consult a pediatrician to investigate the cause and determine how to compensate for the loss.`,
+                articleId: 3081,
+            },
+            warrningBigHeightText: {
+                name: `Typical growth of a child: 7-9 months- weight for length / height of the child are between +2 and +3 SD`,
+                text: `Attention! Your child is moderately overweight for height. This overweight can endanger his/her health, so think about what contributed to that: excess intake of energy-rich foods (such as sweet and oily products), intake of junk foods, reduced physical activity, increased screen time or changes in the immediate environment, etc. Be sure to make an appointment with a pediatrician to get additional recommendations and determine the dynamics of monitoring your child's growth.`,
+                articleId: 3106
+            },
+            emergencyBigHeightText: {
+                name: 'Tipičan rast deteta: 7-9 mesecii- Vrednosti težine za dužinu/visinu deteta su iznad +3 SD',
+                text: `Urgent attention! Your child is obese, that is, s/he has a serious excess weight for height. This weight can seriously endanger your child's health. Think about what contributed to that: excess intake of energy-rich foods (such as sweet and oily products), intake of junk foods, reduced physical activity, increased screen time or changes in the immediate environment, etc. Be sure to schedule a visit to the pediatrician for an examination and additional diagnostics, as well as to determine the dynamics of further growth monitoring!`,
+                articleId: 3131
+            }
+
+        },
+        {
+            predefined_tags: [48],
+            goodText: {
+                text: `Bravo! Your child grows well and her/ his weight is in harmonious with her/his height. Continue to follow the recommendations for optimal nutrition, physical activity and sleep. Keep track of your child's growth.`,
+                name: `Typical growth of a child:10-12  months- weight for the length / height of the child is between -2SD to + 2 SD`,
+                articleId: 3036,
+            },
+            warrningSmallHeightText: {
+                name: 'Typical growth of a child:10-12 months- weights for the length / height of the child as between -2 and -3 SD',
+                text: `Attention! Your child is losing weight (or not gaining weight) and has a moderate lack of weight for length / height.  This situation could have happened in a course of few weeks, hence consider to find out some immediate causes: recent infectious disease or diahorea, some other chronic illness, insufficient and a very improper diet, changes in the immediate environment, etc. Be sure to schedule an examination with a pediatrician to discover the cause, correct the loss and determine the dynamics of further monitoring of growth. You child needs major consideration to have an improved diet.`,
+                articleId: 3061
+            },
+            emergencySmallHeightText: {
+                name: `Typical growth of a child: 10-12 months-weights for the length / height of the child below -3 SD`,
+                text: `Attention! Your child has a serious lack of weight for length / height. This situation could have happened in a course of few weeks, hence consider to find out some possible immediate causes, some causes could be: recent illness, metabolic and chronic diseases, insufficient and improper diet, changes in the immediate environment, etc. Urgently consult a pediatrician to investigate the cause and determine how to compensate for the loss.`,
+                articleId: 3086,
+            },
+            warrningBigHeightText: {
+                name: `Typical growth of a child: 10-12 months- weight for length / height of the child are between +2 and +3 SD`,
+                text: `Attention! Your child is moderately overweight for height. This overweight can endanger his/her health, so think about what contributed to that: excess intake of energy-rich foods (such as sweet and oily products), intake of junk foods, reduced physical activity, increased screen time or changes in the immediate environment, etc. Be sure to make an appointment with a pediatrician to get additional recommendations and determine the dynamics of monitoring your child's growth.`,
+                articleId: 3111
+            },
+            emergencyBigHeightText: {
+                name: `Typical growth of a child: 10-12 months- weight for length / height of the child are above +3 SD`,                
+                text: `Urgent attention! Your child is obese, that is, s/he has a serious excess weight for height. This weight can seriously endanger your child's health. Think about what contributed to that: excess intake of energy-rich foods (such as sweet and oily products), intake of junk foods, reduced physical activity, increased screen time or changes in the immediate environment, etc. Be sure to schedule a visit to the pediatrician for an examination and additional diagnostics, as well as to determine the dynamics of further growth monitoring!`,
+                articleId: 3136
+            }
+        },
+        {
+            predefined_tags: [49,50],
+            goodText: {
+                name: `Typical growth of a child:13-24  months- weight for the length / height of the child is between -2SD to + 2 SD`,
+                text: `Bravo! Your child grows well and her/ his weight is in harmonious with her/his height. Continue to follow the recommendations for optimal nutrition, physical activity and sleep. Keep track of your child's growth.`,
+                articleId: 3041,
+            },
+            warrningSmallHeightText: {
+                name: `Typical growth of a child:13-24 months- weights for the length / height of the child as between -2 and -3 SD`,
+                text: `Attention! Your child is losing weight (or not gaining weight) and has a moderate lack of weight for length / height.  This situation could have happened in a course of few weeks, hence consider to find out some immediate causes: recent infectious disease or diahorea, some other chronic illness, insufficient and a very improper diet, changes in the immediate environment, etc. Be sure to schedule an examination with a pediatrician to discover the cause, correct the loss and determine the dynamics of further monitoring of growth. You child needs major consideration to have an improved diet.`,
+                articleId: 3066
+            },
+            emergencySmallHeightText: {
+                name: `Typical growth of a child: 13-24 months-weights for the length / height of the child below -3 SD`,
+                text: `Attention! Your child has a serious lack of weight for length / height. This situation could have happened in a course of few weeks, hence consider to find out some possible immediate causes, some causes could be: recent illness, metabolic and chronic diseases, insufficient and improper diet, changes in the immediate environment, etc. Urgently consult a pediatrician to investigate the cause and determine how to compensate for the loss.`,
+                articleId: 3091,
+            },
+            warrningBigHeightText: {
+                name: `Typical growth of a child: 10-12 months- weight for length / height of the child are between +2 and +3 SD`,
+                text: `Attention! Your child is moderately overweight for height. This overweight can endanger his/her health, so think about what contributed to that: excess intake of energy-rich foods (such as sweet and oily products), intake of junk foods, reduced physical activity, increased screen time or changes in the immediate environment, etc. Be sure to make an appointment with a pediatrician to get additional recommendations and determine the dynamics of monitoring your child's growth.`,
+                articleId: 3111
+            },
+            emergencyBigHeightText: {
+                name: `Typical growth of a child: 13-24 months- weight for length / height of the child are above +3 SD`,                
+                text: `Urgent attention! Your child is obese, that is, s/he has a serious excess weight for height. This weight can seriously endanger your child's health. Think about what contributed to that: excess intake of energy-rich foods (such as sweet and oily products), intake of junk foods, reduced physical activity, increased screen time or changes in the immediate environment, etc. Be sure to schedule a visit to the pediatrician for an examination and additional diagnostics, as well as to determine the dynamics of further growth monitoring!`,
+                articleId: 3141
+            }
+        },
+        {
+            predefined_tags: [51,52,53,57,58],
+            goodText: {
+                name: `Typical growth of a child:25-72  months- weight for the length / height of the child is between -2SD to + 2 SD`,
+                text: `Bravo! Your child grows well and her/ his weight is in harmonious with her/his height. Continue to follow the recommendations for optimal nutrition, physical activity and sleep. Keep track of your child's growth.`,
+                articleId: 3046,
+            },
+            warrningSmallHeightText: {
+                name: 'Typical growth of a child:25-72 months- weights for the length / height of the child as between -2 and -3 SD',
+                text: `Attention! Your child is losing weight (or not gaining weight) and has a moderate lack of weight for length / height.  This situation could have happened in a course of few weeks, hence consider to find out some immediate causes: recent infectious disease or diahorea, some other chronic illness, insufficient and a very improper diet, changes in the immediate environment, etc. Be sure to schedule an examination with a pediatrician to discover the cause, correct the loss and determine the dynamics of further monitoring of growth. You child needs major consideration to have an improved diet.`,
+                articleId: 3071
+            },
+            emergencySmallHeightText: {
+                name: `Typical growth of a child: 25-72 months-weights for the length / height of the child below -3 SD`,
+                text: `Attention! Your child has a serious lack of weight for length / height. This situation could have happened in a course of few weeks, hence consider to find out some possible immediate causes, some causes could be: recent illness, metabolic and chronic diseases, insufficient and improper diet, changes in the immediate environment, etc. Urgently consult a pediatrician to investigate the cause and determine how to compensate for the loss.  `,
+                articleId: 3096,
+            },
+            warrningBigHeightText: {
+                name: 'Typical growth of a child: 25-72 months- weight for length / height of the child are between +2 and +3 SD',                
+                text: `Attention! Your child is moderately overweight for height. This overweight can endanger his/her health, so think about what contributed to that: excess intake of energy-rich foods (such as sweet and oily products), intake of junk foods, reduced physical activity, increased screen time or changes in the immediate environment, etc. Be sure to make an appointment with a pediatrician to get additional recommendations and determine the dynamics of monitoring your child's growth.`,
+                articleId: 3121,
+            },
+            emergencyBigHeightText: {
+                name: 'Typical growth of a child: 25-72 months- weight for length / height of the child are above +3 SD',                
+                text: `Urgent attention! Your child is obese, that is, s/he has a serious excess weight for height. This weight can seriously endanger your child's health. Think about what contributed to that: excess intake of energy-rich foods (such as sweet and oily products), intake of junk foods, reduced physical activity, increased screen time or changes in the immediate environment, etc. Be sure to schedule a visit to the pediatrician for an examination and additional diagnostics, as well as to determine the dynamics of further growth monitoring!`,
+                articleId: 3146
+            }
+        },
+
+    ],
+    interpretationLenghtForAge: [
+        {
+            predefined_tags: [43, 44, 45, 46],
+            goodText: {
+                name: `Typical growth of the child: first 6 months - values of the length / height of the child for the age are between -2SD to + 3SD`,
+                text: `Bravo! Your child grows in length / height in line or slightly above the range expected for his age and gender. Continue to follow the recommendations of good practice in nutrition, physical activity and sleep and monitor your child's growth.`,
+                articleId: 3151,
+
+            },
+            warrningSmallLengthText: {
+                name: `Typical growth of a child: first 6 months - value of the length / height of the child for age is below -2 SD`,
+                text: `Attention! Your child’s growth in length / height is slow and is now moderately delayed. Consider whether any of the long term possible causes contributed to it: chronic malnutrition, chronic disease, endocrine disorder, etc. Be sure to schedule an appointment with a pediatrician for additional examination, obtaining additional recommendations and determining the dynamics of further monitoring of growth.`,
+                articleId: 3176,
+            },
+            emergencySmallLengthText: {
+                name: `Typical growth of a child: first 6 months- value of the length / height of the child for age is below -3 SD`,
+                text: `Urgently! Your child’s growth in length / height is severely delayed. Make an urgent appointment with a pediatrician for additional examination, obtaining appropriate treatment and determining the dynamics of further growth monitoring!`,
+                articleId: 3201,
+            },
+            warrningBigLengthText: {
+                name: `Typical growth of a child: first 6 months- value of the length / height of the child for the age is above + 3 SD`,
+                text: `Your child has grown to a height well above the normal range for his age and gender. It is probably the result of his genetic potential, but still talk about it with the pediatrician. Continue to follow the adopted recommendations and monitor your child's growth at regular intervals.`,
+                articleId: 3226
+            },
+        },
+        {
+            predefined_tags: [47],
+            goodText: {
+                name: `Typical growth of the child: 7-9 months - values of the length / height of the child for the age are between -2SD to + 3SD`,
+                text: `Bravo! Your child grows in length / height in line or slightly above the range expected for his age and gender. Continue to follow the recommendations of good practice in nutrition, physical activity and sleep and monitor your child's growth.`,
+                articleId: 3156,
+
+            },
+            warrningSmallLengthText: {
+                name: `Typical growth of a child:7-9 months - value of the length / height of the child for age is below -2 SD`,
+                text: `Attention! Your child’s growth in length / height is slow and is now moderately delayed. Consider whether any of the long term possible causes contributed to it: chronic malnutrition, chronic disease, endocrine disorder, etc. Be sure to schedule an appointment with a pediatrician for additional examination, obtaining additional recommendations and determining the dynamics of further monitoring of growth.`,
+                articleId: 3181,
+            },
+            emergencySmallLengthText: {
+                name: `Typical growth of a child: 7-9 months- value of the length / height of the child for age is below -3 SD`,
+                text: `Urgently! Your child’s growth in length / height is severely delayed. Make an urgent appointment with a pediatrician for additional examination, obtaining appropriate treatment and determining the dynamics of further growth monitoring!`,
+                articleId: 3206,
+            },
+            warrningBigLengthText: {
+                name: `Typical growth of a child: 7-9 months- value of the length / height of the child for the age is above + 3 SD`,
+                text: `Your child has grown to a height well above the normal range for his age and gender. It is probably the result of his genetic potential, but still talk about it with the pediatrician. Continue to follow the adopted recommendations and monitor your child's growth at regular intervals.`,
+                articleId: 3231
+            },
+        },
+        {
+            predefined_tags: [48],
+            goodText: {
+                name: `Typical growth of the child: 10-12 months - values of the length / height of the child for the age are between -2SD to + 3SD`,
+                text: `Bravo! Your child grows in length / height in line or slightly above the range expected for his age and gender. Continue to follow the recommendations of good practice in nutrition, physical activity and sleep and monitor your child's growth.`,
+                articleId: 3161,
+            },
+            warrningSmallHeightText: {
+                name: `Typical growth of a child: 10-12 months - value of the length / height of the child for age is below -2 SD`,
+                text: `Attention! Your child’s growth in length / height is slow and is now moderately delayed. Consider whether any of the long term possible causes contributed to it: chronic malnutrition, chronic disease, endocrine disorder, etc. Be sure to schedule an appointment with a pediatrician for additional examination, obtaining additional recommendations and determining the dynamics of further monitoring of growth.`,
+                articleId: 3186
+            },
+            emergencySmallHeightText: {
+                name: `Typical growth of a child: 10-12 months- value of the length / height of the child for age is below -3 SD`,
+                text: `Urgently! Your child’s growth in length / height is severely delayed. Make an urgent appointment with a pediatrician for additional examination, obtaining appropriate treatment and determining the dynamics of further growth monitoring!`,
+                articleId: 3211,
+            },
+            warrningBigLengthText: {
+                name: 'Tipičan rast deteta: 10-12 meseci - Vrednost dužine/visine deteta za uzrast  je iznad +3 SD',
+                text: `Your child has grown to a height well above the normal range for his age and gender. It is probably the result of his genetic potential, but still talk about it with the pediatrician. Continue to follow the adopted recommendations and monitor your child's growth at regular intervals.`,
+                articleId: 3236
+            },
+        },
+        {
+            predefined_tags: [49,50],
+            goodText: {
+                name: `Typical growth of the child: 13-24 months - values of the length / height of the child for the age are between -2SD to + 3SD`,
+                text: `Bravo! Your child grows in length / height in line or slightly above the range expected for his age and gender. Continue to follow the recommendations of good practice in nutrition, physical activity and sleep and monitor your child's growth.`,
+                articleId: 3166,
+            },
+            warrningSmallHeightText: {
+                name: `Typical growth of a child: 13-24 months - value of the length / height of the child for age is below -2 SD`,
+                text: `Attention! Your child’s growth in length / height is slow and is now moderately delayed. Consider whether any of the long term possible causes contributed to it: chronic malnutrition, chronic disease, endocrine disorder, etc. Be sure to schedule an appointment with a pediatrician for additional examination, obtaining additional recommendations and determining the dynamics of further monitoring of growth.`,
+                articleId: 3191
+            },
+            emergencySmallHeightText: {
+                name: `Typical growth of a child: 13-24 months- value of the length / height of the child for age is below -3 SD`,
+                text: `Urgently! Your child’s growth in length / height is severely delayed. Make an urgent appointment with a pediatrician for additional examination, obtaining appropriate treatment and determining the dynamics of further growth monitoring!`,
+                articleId: 3216,
+            },
+            warrningBigLengthText: {
+                name: 'Typical growth of a child: 13-24 months- value of the length / height of the child for the age is above + 3 SD',
+                text: `Your child has grown to a height well above the normal range for his age and gender. It is probably the result of his genetic potential, but still talk about it with the pediatrician. Continue to follow the adopted recommendations and monitor your child's growth at regular intervals.`,
+                articleId: 3241,
+            },
+        },
+        {
+            predefined_tags: [51,52,53,57,58],
+            goodText: {
+                name: `Typical growth of the child: 25-72 months - values of the length / height of the child for the age are between -2SD to + 3SD`,
+                text: `Bravo! Your child grows in length / height in line or slightly above the range expected for his age and gender. Continue to follow the recommendations of good practice in nutrition, physical activity and sleep and monitor your child's growth.`,
+                articleId: 3171,
+            },
+            warrningSmallHeightText: {
+                name: `Typical growth of a child: 25-72 months - value of the length / height of the child for age is below -2 SD`,
+                text: `Attention! Your child’s growth in length / height is slow and is now moderately delayed. Consider whether any of the long term possible causes contributed to it: chronic malnutrition, chronic disease, endocrine disorder, etc. Be sure to schedule an appointment with a pediatrician for additional examination, obtaining additional recommendations and determining the dynamics of further monitoring of growth.`,
+                articleId: 3196
+            },
+            emergencySmallHeightText: {
+                name: `Typical growth of a child: 25-72 months- value of the length / height of the child for age is below -3 SD`,
+                text: `Urgently! Your child’s growth in length / height is severely delayed. Make an urgent appointment with a pediatrician for additional examination, obtaining appropriate treatment and determining the dynamics of further growth monitoring!`,
+                articleId: 3221,
+            },
+            warrningBigLengthText: {
+                name: `Typical growth of a child: 25-72 months- value of the length / height of the child for the age is above + 3 SD`,
+                text: `Your child has grown to a height well above the normal range for his age and gender. It is probably the result of his genetic potential, but still talk about it with the pediatrician. Continue to follow the adopted recommendations and monitor your child's growth at regular intervals.`,
+                articleId: 3246,
+            },
+        },
+
+    ]
 };
+

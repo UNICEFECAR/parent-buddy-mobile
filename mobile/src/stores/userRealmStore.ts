@@ -3,7 +3,12 @@ import { userRealmConfig } from "./userRealmConfig";
 import { VariableEntity, VariableEntitySchema } from './VariableEntity';
 import { appConfig } from '../app/appConfig';
 import { ChildEntity } from '.';
-import { ChildEntitySchema } from './ChildEntity';
+import { ChildEntitySchema, ChildGender, Measures } from './ChildEntity';
+import { DateTime } from 'luxon';
+import { translateData } from '../translationsData/translateData';
+import { ChartData as Data, GrowthChart0_2Type, GrowthChartHeightAgeType } from '../components/growth/growthChartData';
+import { dataRealmStore } from './dataRealmStore';
+import { InterpretationTex } from '../screens/growth/GrowthScreen';
 
 type Variables = {
     'userChildren': any;
@@ -54,9 +59,171 @@ class UserRealmStore {
         return this.realm?.objects<ChildEntity>(ChildEntitySchema.name).find((record, index) => index === 0);
     }
 
-    public getChildGender() {
-        let child = this.getCurrentChild();
-        return child?.gender;
+    public getCurrentChildAgeInDays = (birthDay?: number) => {
+        let childBirthDay = birthDay ? birthDay : this.getCurrentChild()?.birthDate?.getDate();
+
+        const timeNow = DateTime.local();
+        let days: number = 0;
+
+        if(childBirthDay){
+            let date = DateTime.fromMillis(childBirthDay);
+            let convertInDays = timeNow.diff(date, "days").toObject().days;
+
+            if(convertInDays!== undefined) days = convertInDays;
+        };
+
+        return days;
+    };
+
+    public getInterpretationLenghtForAge(gender: ChildGender, lastMeasurements: Measures) {
+        const childAgeId = dataRealmStore.getChildAgeTagWithArticles()?.id;
+
+        let interpretationTex: InterpretationTex = {
+            name: "",
+            text: "",
+            articleId: 0
+        };
+
+        let goodMeasure: boolean | undefined = false;
+
+        let chartData: GrowthChartHeightAgeType = [];
+
+        if (gender === "boy") {
+            chartData = Data.Height_age_boys0_5
+        } else {
+            chartData = Data.Height_age_girls0_5
+        }
+
+        let length: number = 0;
+        if (lastMeasurements !== undefined && lastMeasurements.height && lastMeasurements.length) {
+            length = parseFloat(lastMeasurements.length);
+        };
+
+        const childBirthDay = userRealmStore.getCurrentChild()?.birthDate;
+        let measurementDate: DateTime = DateTime.local();
+
+        if (lastMeasurements !== undefined && lastMeasurements.measurementDate) {
+            measurementDate = DateTime.fromJSDate(new Date(lastMeasurements.measurementDate));
+        }
+
+        let days = 0;
+
+        if (childBirthDay) {
+            let date = DateTime.fromJSDate(childBirthDay);
+            let convertInDays = measurementDate.diff(date, "days").toObject().days;
+
+
+            if (convertInDays !== undefined) days = Math.round(convertInDays);
+        };
+        let filteredData = chartData.find(data => data.Day === days);
+        let interpretationData = translateData('interpretationLenghtForAge')?.
+            find(item => item.predefined_tags.indexOf(childAgeId) !== -1);
+
+
+        if (filteredData !== undefined) {
+            if (length >= filteredData.SD2neg && length <= filteredData.SD3) {
+                interpretationTex = interpretationData.goodText;
+                goodMeasure = true;
+            };
+
+            if (length < filteredData.SD2neg && length > filteredData.SD3neg) {
+                interpretationTex = interpretationData.warrningSmallLengthText;
+            };
+
+            if (length < filteredData.SD3neg) {
+                interpretationTex = interpretationData.emergencySmallLengthText;
+            };
+            if (length > filteredData.SD3) {
+                interpretationTex = interpretationData.warrningBigLengthText;
+            };
+        };
+
+        if(interpretationTex.name === ""){
+            goodMeasure = undefined
+        }
+
+        return {
+            interpretationTex: interpretationTex,
+            goodMeasure: goodMeasure
+        };
+    };
+
+    public getInterpretationWeightForHeight(gender: ChildGender, childAgeInDays: number, lastMeasurements: Measures) {
+        const dayLimit = 730; // 0-2 yeast || 2-5 years 
+        const childAgeId = dataRealmStore.getChildAgeTagWithArticles()?.id;
+
+        let interpretationTex: InterpretationTex = {
+            name: "",
+            text: "",
+            articleId: 0
+        };
+
+        let goodMeasure: boolean | undefined = false;
+
+        let chartData: GrowthChart0_2Type = [];
+
+        if (gender === "boy") {
+            if (childAgeInDays <= dayLimit) {
+                chartData = Data.GrowthChartBoys0_2;
+            } else {
+                chartData = Data.GrowthChartBoys2_5;
+            };
+        } else {
+            if (childAgeInDays <= dayLimit) {
+                chartData = Data.GrowthChartGirls0_2;
+            } else {
+                chartData = Data.GrowthChartGirls2_5;
+            };
+        };
+
+        let height: number = 0;
+        let length: number = 0;
+
+        if (lastMeasurements !== undefined && lastMeasurements.height && lastMeasurements.length) {
+            height = parseFloat(lastMeasurements.height) / 1000;
+            length = parseFloat(lastMeasurements.length);
+        };
+
+        let filteredDataForHeight = chartData.find(data => data.Height === length);
+        let interpretationData = translateData('interpretationWeightForHeight')?.
+            find(item => item.predefined_tags.indexOf(childAgeId) !== -1);
+
+        if (filteredDataForHeight) {
+            if (height >= filteredDataForHeight?.SD2neg && height <= filteredDataForHeight.SD2) {
+                interpretationTex = interpretationData.goodText;
+                goodMeasure = true;
+            };
+
+            if (height <= filteredDataForHeight.SD2neg && height >= filteredDataForHeight.SD3neg) {
+                interpretationTex = interpretationData.warrningSmallHeightText;
+            };
+
+            if (height < filteredDataForHeight.SD3neg) {
+                interpretationTex = interpretationData.emergencySmallHeightText;
+            };
+
+            if (height >= filteredDataForHeight.SD2 && height <= filteredDataForHeight.SD3) {
+                interpretationTex = interpretationData.warrningBigHeightText;
+            };
+
+            if (height > filteredDataForHeight.SD3) {
+                interpretationTex = interpretationData.emergencyBigHeightText;
+            };
+        };
+
+        if(interpretationTex.name === ""){
+            goodMeasure = undefined
+        }
+
+        return {
+            interpretationTex: interpretationTex,
+            goodMeasure: goodMeasure,
+        };
+    }
+
+    public getChildGender = () => {
+        let child = this.getCurrentChild()
+        return child?.gender
     }
 
     public async setVariable<T extends VariableKey>(key: T, value: Variables[T] | null): Promise<boolean> {

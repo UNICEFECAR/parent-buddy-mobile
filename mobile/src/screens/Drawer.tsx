@@ -147,20 +147,20 @@ export class Drawer extends React.Component<Props> {
 
                         <FancyButton type={FancyButtonType.faq} style={{ flex: 1 }} onPress={() => { this.gotoScreen(FancyButtonType.faq) }} />
 
-                        {/* GROWTH DIARY */}
-                        {/* <Typography type={ TypographyType.headingPrimary } style={{marginTop:scale(20), marginBottom:scale(5)}}>
-                        {translate('drawerTitleGrowthDiary')}
-                    </Typography>
+                        {/* DIARY */}
+                        <Typography type={TypographyType.headingPrimary} style={{ marginTop: scale(20), marginBottom: scale(5) }}>
+                            {translate('drawerTitleGrowthDiary')}
+                        </Typography>
 
-                    <View style={{flexDirection:'row'}}>
-                        <FancyButton type={ FancyButtonType.growth } style={{flex:1}} onPress={ ()=>{this.gotoScreen(FancyButtonType.growth)} } />
-                        <FancyButton type={ FancyButtonType.development } style={{flex:1}} onPress={ ()=>{this.gotoScreen(FancyButtonType.development)} } />
-                    </View>
-            
-                    <View style={{flexDirection:'row'}}>
-                        <FancyButton type={ FancyButtonType.vaccination } style={{flex:1}} onPress={ ()=>{this.gotoScreen(FancyButtonType.vaccination)} } />
-                        <FancyButton type={ FancyButtonType.doctor } style={{flex:1}} onPress={ ()=>{this.gotoScreen(FancyButtonType.doctor)} } />
-                    </View> */}
+                        <View style={{ flexDirection: 'row' }}>
+                            <FancyButton type={FancyButtonType.growth} style={{ flex: 1 }} onPress={() => { this.gotoScreen(FancyButtonType.growth) }} />
+                            <FancyButton type={FancyButtonType.development} style={{ flex: 1 }} onPress={() => { this.gotoScreen(FancyButtonType.development) }} />
+                        </View>
+
+                        {/* <View style={{ flexDirection: 'row' }}>
+                            <FancyButton type={FancyButtonType.vaccination} style={{ flex: 1 }} onPress={() => { this.gotoScreen(FancyButtonType.vaccination) }} />
+                            <FancyButton type={FancyButtonType.doctor} style={{ flex: 1 }} onPress={() => { this.gotoScreen(FancyButtonType.doctor) }} />
+                        </View> */}
 
                         {/* ABOUT US */}
                         <Typography type={TypographyType.headingPrimary} style={{ marginTop: scale(20), marginBottom: scale(5) }}>

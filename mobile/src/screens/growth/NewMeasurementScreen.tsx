@@ -12,19 +12,29 @@ import { Checkbox } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { scale, moderateScale } from 'react-native-size-matters';
 import { translate } from '../../translations/translate';
+import { userRealmStore, dataRealmStore } from '../../stores';
+import { Measures } from '../../stores/ChildEntity';
+import { navigation } from '../../app';
+import { NavigationStackProp, NavigationStackState } from 'react-navigation-stack';
+import { GrowthScreen } from '../home';
+import { DateTime } from 'luxon';
 
 
 export interface Props {
-    // navigation: NavigationStackProp<NavigationStackState, {}>;
+    navigation: NavigationStackProp<NavigationStackState, {}>;
 }
 
 export interface State {
-    measurementDate: string,
-    weight: string,
+    measurementDate: DateTime | undefined,
+    measurementDateError: boolean,
+    length: string,
+    lengthError: boolean,
     height: string,
+    heightError: boolean,
     comment: string,
     measurementPlace: string | undefined,
     isVaccineReceived: string | undefined,
+    defaultMessage: string;
 }
 
 
@@ -37,13 +47,15 @@ export class NewMeasurementScreen extends Component<Props, State> {
 
     private initState = () => {
         let state: State = {
-            measurementDate: "",
-            weight: "",
+            measurementDate: undefined,
+            length: "",
             height: "",
             comment: "",
             isVaccineReceived: "no",
             measurementPlace: "home",
-
+            measurementDateError: false,
+            heightError: false,
+            lengthError: false,
         };
 
         this.state = state;
@@ -51,7 +63,7 @@ export class NewMeasurementScreen extends Component<Props, State> {
 
     private setMeasurementPlace = (value: string | undefined) => {
         this.setState({
-            measurementPlace: value,
+            // measurementPlace: value,
         })
     }
 
@@ -61,22 +73,110 @@ export class NewMeasurementScreen extends Component<Props, State> {
         })
     }
 
-    private setMeasurementDate = (value: string) => {
+    private setMeasurementDate = (value: Date) => {
+        let dateTime = DateTime.fromJSDate(value);
         this.setState({
-            measurementDate: value,
+            measurementDate: dateTime,
         })
     }
 
     private measureChange = (value: string, label: string) => {
-        if (label === "weight") {
+        if (label === "length") {
             this.setState({
-                weight: value
+                length: value
             })
         } else {
             this.setState({
                 height: value
             })
         }
+    }
+
+    private valueCheck() {
+        let isValid = true;
+
+        let lengthError = false;
+        let heightError = false;
+        let measurementDateError = false
+
+        if (this.state.length === "") {
+            isValid = false;
+            lengthError = true;
+        };
+
+        if (this.state.height === "") {
+            heightError = true;
+            isValid = false;
+        };
+
+        if (this.state.measurementDate === undefined) {
+            measurementDateError = true;
+            isValid = false;
+        };
+
+        return {
+            isValid: isValid,
+            lengthError: lengthError,
+            heightError: heightError,
+            measurementDateError: measurementDateError
+        };
+    }
+
+    private async submit() {
+        const { comment, length, height, measurementDate } = this.state;
+        const currentChild = userRealmStore.getCurrentChild();
+        if (!currentChild) return;
+
+        let measures: Measures[] = [];
+        let check = this.valueCheck();
+
+        if(check.isValid){
+            if (currentChild.measures !== null && currentChild.measures !== "") {
+                measures = JSON.parse(currentChild.measures);
+                let sameDate = false;
+                measures.forEach(item => {
+                    if(item.measurementDate === measurementDate?.toMillis()){
+                        sameDate = true;
+                        item.height = height;
+                        item.length = length;
+                        return;
+                    };
+                });
+
+                if(sameDate === false){
+                    measures.push({ length: length, height: height, measurementDate: measurementDate?.toMillis() });
+                };
+            } else {
+                measures[0].height = height;
+                measures[0].length = length;
+                measures[0].measurementDate = measurementDate?.toMillis();
+            }
+    
+            await userRealmStore.realm?.write(() => {
+                currentChild.comment = comment;
+                currentChild.measures = JSON.stringify(measures);
+                // This will just trigger the update of data realm
+                dataRealmStore.setVariable('randomNumber', Math.floor(Math.random() * 6000) + 1);
+            });
+
+            if(this.props.navigation.state.params?.screen){
+                // this will triger update on growth screen after measures added 
+                if(this.props.navigation.state.params.screen === "growth"){
+                    this.props.navigation.push('HomeStackNavigator_GrowthScreen')
+                }
+            }else{
+                this.props.navigation.goBack()
+            }
+        }else{
+            this.setState({
+                lengthError: check.lengthError,
+                heightError: check.heightError,
+                measurementDateError: check.measurementDateError
+            })
+        }
+     
+
+       
     }
 
     render() {
@@ -88,7 +188,11 @@ export class NewMeasurementScreen extends Component<Props, State> {
                         contentContainerStyle={styles.container}
                     >
                         <View style={styles.dateTimePickerContainer}>
-                            <DateTimePicker label={translate("newMeasureScreenDatePickerLabel")} onChange={() => { }} />
+                            <DateTimePicker
+                                label={translate("newMeasureScreenDatePickerLabel")}
+                                onChange={(date) => this.setMeasurementDate(date)} 
+                                style={this.state.measurementDateError ? {borderWidth: 1, borderColor: 'red'} : null}    
+                            />
                         </View>
                         <View style={styles.measurementPlaceContainer}>
                             <Typography style={{ marginBottom: 22 }}>{translate("newMeasureScreenPlaceTitle")}</Typography>
@@ -105,20 +209,22 @@ export class NewMeasurementScreen extends Component<Props, State> {
 
                         <View>
                             <RoundedTextInput
-                                label="Težina"
+                                label={translate('heightLabel')}
                                 suffix="g"
                                 icon="weight"
-                                style={{ width: 150 }}
-                                value={this.state.weight}
-                                onChange={value => this.measureChange(value, 'weight')}
+                                style={[{ width: 150 }, this.state.heightError ? {borderColor: 'red', borderWidth: 1} : null ]}
+                                value={this.state.height}
+                                keyboardType="numeric"
+                                onChange={value => this.measureChange(value, 'height')}
                             />
                             <RoundedTextInput
-                                label="Visina"
+                                label={translate('lengthLabel')}
                                 suffix="cm"
                                 icon="weight"
-                                style={{ width: 150, marginTop: 8 }}
-                                value={this.state.height}
-                                onChange={value => this.measureChange(value, 'height')}
+                                keyboardType="numeric"
+                                style={[{ width: 150, marginTop: 8 }, this.state.lengthError ? {borderColor: 'red', borderWidth: 1} : null ]}
+                                value={this.state.length}
+                                onChange={value => this.measureChange(value, 'length')}
 
                             />
                         </View>
@@ -130,7 +236,7 @@ export class NewMeasurementScreen extends Component<Props, State> {
                                     <Typography style={{ marginBottom: 16 }}>{translate("newMeasureScreenVaccineTitle")}</Typography>
                                     <RadioButtons
                                         value={this.state.isVaccineReceived}
-                                        buttonStyle={{width: 150}}
+                                        buttonStyle={{ width: 150 }}
                                         buttons={[
                                             { text: translate("newMeasureScreenVaccineOptionYes"), value: 'yes' },
                                             { text: translate("newMeasureScreenVaccineOptionNo"), value: 'no' }
@@ -202,7 +308,11 @@ export class NewMeasurementScreen extends Component<Props, State> {
                         </View>
 
                         <View>
-                            <RoundedButton text={translate("newMeasureScreenSaveBtn")} type={RoundedButtonType.purple} />
+                            <RoundedButton
+                                text={translate("newMeasureScreenSaveBtn")}
+                                type={RoundedButtonType.purple}
+                                onPress={() => this.submit()}
+                            />
                         </View>
                     </ScrollView>
                 )}

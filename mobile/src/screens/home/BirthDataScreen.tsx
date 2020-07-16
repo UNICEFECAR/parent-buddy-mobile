@@ -12,8 +12,9 @@ import { RoundedTextInput } from '../../components/RoundedTextInput';
 import { RoundedTextArea } from '../../components/RoundedTextArea';
 import { RoundedButton, RoundedButtonType } from '../../components/RoundedButton';
 import { userRealmStore, dataRealmStore } from '../../stores';
-import { ChildEntitySchema, ChildEntity } from '../../stores/ChildEntity';
-import { parse } from '@babel/core';
+import { Measures } from '../../stores/ChildEntity';
+import { currentLocale } from 'i18n-js';
+import { DateTime } from 'luxon';
 
 export interface BirthDataScreenParams {
 
@@ -24,12 +25,15 @@ export interface Props {
 }
 
 export interface State {
-    plannedTermDate: Date | undefined,
-    birthDate: Date | undefined,
+    plannedTermDate: DateTime | undefined,
+    birthDate: DateTime | undefined,
     babyRating: number | undefined,
-    height: string | undefined,
-    weight: string | undefined,
+    height: string,
+    length: string,
     comment: string | undefined,
+    dateError: boolean,
+    lengthError: boolean,
+    heightError: boolean
 }
 
 export class BirthDataScreen extends React.Component<Props, State> {
@@ -56,82 +60,144 @@ export class BirthDataScreen extends React.Component<Props, State> {
     private initState = () => {
         let state: State;
 
-        const allRecords = userRealmStore.realm?.objects<ChildEntity>(ChildEntitySchema.name);
-        allRecords?.forEach((record, index, collection) => {
+        const currentChild = userRealmStore.getCurrentChild();
+
+        if (currentChild) {
+
+            let height: string = "";
+            let length: string = "";
+
+            if(currentChild.measures && currentChild.measures !== ""){
+                let measures = JSON.parse(currentChild.measures);
+                
+                if(measures[0]?.height === undefined){
+                    height = ""
+                }else{
+                    height = measures[0].height;
+                }
+
+                if(measures[0]?.length === undefined){
+                    length = ""
+                }else{
+                    length = measures[0].length;
+                }
+            };
+
+            let birthDate = currentChild.birthDate ? DateTime.fromJSDate(currentChild.birthDate) : undefined;
+            let planetBirthDate = currentChild.plannedTermDate ? DateTime.fromJSDate(currentChild.plannedTermDate) : undefined;
+
             state = {
-                babyRating: record.babyRating,
-                birthDate: record.birthDate,
-                comment: record.comment,
-                height: record.height?.toString(),
-                plannedTermDate: record.plannedTermDate,
-                weight: record.weight?.toString(),
-            }
+                babyRating: currentChild.babyRating,
+                birthDate: birthDate ? birthDate : undefined,
+                comment: currentChild.comment,
+                height: height === undefined ? "" : height.toString(),
+                plannedTermDate: planetBirthDate ? planetBirthDate: undefined,
+                length: length === undefined ? "" : length.toString(),
+                lengthError: false,
+                heightError: false,
+                dateError: false,
+            };
 
             this.state = state;
-        })
-    }
+        };
+    };
 
     private gotoBack() {
         this.props.navigation.goBack();
-    }
+    };
+
+    private checkData = () => {
+        let check = true;
+        if(!this.state.birthDate){
+            this.setState({dateError: true});
+            check = false;
+        };
+
+        if(this.state.height === ""){
+            this.setState({heightError: true});
+            check = false;
+        };
+
+        if(this.state.length === ""){
+            this.setState({lengthError: true})
+            check = false;
+        };
+
+        return check;
+    };
 
     private submit = () => {
-        // console.log('uso u submit')
-        const { comment, weight, height, babyRating, plannedTermDate, birthDate } = this.state;
-        let childHeight: number | undefined; 
-        let childWidth:  number | undefined;
-
-        if(weight && weight !== ""){
-            childWidth = parseFloat(weight);
-        }else{
-            childWidth = undefined
-        }
-
-        if(height && height !== ""){
-            childHeight = parseFloat(height);
-        }else{
-            childHeight = undefined
-        }
+        const { comment, length, height, babyRating, plannedTermDate, birthDate } = this.state;
 
         const currentChild = userRealmStore.getCurrentChild();
         if (!currentChild) return;
 
-        userRealmStore.realm?.write(() => {
-            currentChild.height = childHeight;
-            currentChild.weight = childWidth;
-            currentChild.comment = comment;
-            currentChild.babyRating = babyRating;
-            currentChild.plannedTermDate = plannedTermDate;
-            currentChild.birthDate = birthDate;
-
-            // This will just trigger the update of data realm
-            dataRealmStore.setVariable('randomNumber', Math.floor(Math.random() * 6000) + 1  );
-
-            this.props.navigation.goBack();
-        });
+        if(this.checkData()){
+            let measures: Measures[] = [];
+            let birthDateTimeStamp = birthDate?.toMillis()
+            let planetBirthDateTimeStamp = plannedTermDate?.toMillis()
+    
+            if (currentChild.measures !== null && currentChild.measures !== "" && currentChild.measures !== "[]") {
+                measures = JSON.parse(currentChild.measures);
+    
+                if(height !== ""){
+                    measures[0] = {...measures[0], height: height}
+                }
+    
+                if(length !== ""){
+                    measures[0] = {...measures[0], length: length};
+                }
+    
+                measures[0].measurementDate = birthDateTimeStamp;
+            } else {
+                if(height !== "" && length !== "")
+                    measures.push({ length: length, height: height, measurementDate: birthDateTimeStamp })
+            }
+    
+            userRealmStore.realm?.write(() => {
+                currentChild.comment = comment;
+                currentChild.babyRating = babyRating;
+                currentChild.plannedTermDate = planetBirthDateTimeStamp ? new Date(planetBirthDateTimeStamp) : new Date();
+                currentChild.birthDate = birthDateTimeStamp ? new Date(birthDateTimeStamp) : new Date();
+                currentChild.measures = JSON.stringify(measures);
+                // This will just trigger the update of data realm
+                dataRealmStore.setVariable('randomNumber', Math.floor(Math.random() * 6000) + 1);
+    
+            });
+            const parentRoutes = this.props.navigation?.dangerouslyGetParent()?.state.routes;
+            const measurementParent = parentRoutes?.find(route => route.routeName === "HomeStackNavigator_GrowthScreen");
+            
+            if (measurementParent) {
+                this.props.navigation.push(measurementParent.routeName)
+            } else {
+                this.props.navigation.goBack();
+            };
+        }
     }
 
     private setPlannedTerm = (date: Date) => {
+        let dateTime = DateTime.fromJSDate(date);
         this.setState({
-            plannedTermDate: date
+            plannedTermDate: dateTime
         })
     }
 
     private setBirthDate = (date: Date) => {
+        let dateTime = DateTime.fromJSDate(date);
         this.setState({
-            birthDate: date
+            birthDate: dateTime
         })
     }
 
     private setChildWeight = (value: string) => {
         this.setState({
-            weight: value
+            height: value
         })
     }
 
     private setChildLength = (value: string) => {
         this.setState({
-            height: value
+            length: value
         })
     }
 
@@ -171,7 +237,7 @@ export class BirthDataScreen extends React.Component<Props, State> {
                             <DateTimePicker
                                 label={translate('fieldLabelPlannedTerm')} type={DateTimePickerType.date}
                                 style={{ alignSelf: 'stretch' }}
-                                value={this.state.plannedTermDate}
+                                value={this.state.plannedTermDate ? new Date(this.state.plannedTermDate?.toString()) : undefined}
                                 onChange={(date) => this.setPlannedTerm(date)}
                             />
 
@@ -180,8 +246,8 @@ export class BirthDataScreen extends React.Component<Props, State> {
                             {/* BIRTH DATE */}
                             <DateTimePicker
                                 label={translate('fieldLabelBirthDate')} type={DateTimePickerType.date}
-                                style={{ alignSelf: 'stretch' }}
-                                value={this.state.birthDate}
+                                style={[{ alignSelf: 'stretch', }, this.state.dateError ? {borderColor: 'red', borderWidth: 1} : null]}
+                                value={this.state.birthDate ? new Date(this.state.birthDate?.toString()) : undefined}
                                 onChange={(date) => this.setBirthDate(date)}
                             />
 
@@ -204,9 +270,9 @@ export class BirthDataScreen extends React.Component<Props, State> {
                                 label={translate('fieldLabelWeight')}
                                 suffix="g"
                                 icon="weight"
-                                style={{ width: scale(150) }}
+                                style={[{ width: scale(150) }, this.state.heightError ? {borderWidth: 1, borderColor: "red"} : null]}
                                 onChange={(value) => this.setChildWeight(value)}
-                                value={this.state.weight}
+                                value={this.state.height}
                                 keyboardType="numeric"
                             />
 
@@ -216,9 +282,9 @@ export class BirthDataScreen extends React.Component<Props, State> {
                                 label={translate('fieldLabelLength')}
                                 suffix="cm"
                                 icon="weight"
-                                style={{ width: scale(150) }}
+                                style={[{ width: scale(150), }, this.state.lengthError ? {borderWidth: 1, borderColor: "red"} : null]}
                                 onChange={(value) => this.setChildLength(value)}
-                                value={this.state.height}
+                                value={this.state.length}
                                 keyboardType="numeric"
 
                             />
@@ -243,7 +309,7 @@ export class BirthDataScreen extends React.Component<Props, State> {
 
                             <View style={{ height: themeContext.theme.variables?.sizes.verticalPaddingLarge }} />
                         </View>
-                
+
                     </KeyboardAwareScrollView>
                 )}
             </ThemeConsumer>

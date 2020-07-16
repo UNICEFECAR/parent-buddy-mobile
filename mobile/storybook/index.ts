@@ -26,7 +26,7 @@ configure(() => {
     require('../src/components/RateAChild.stories');
     require('../src/components/ProfileIcon.stories');
     require('../src/components/SearchInput.stories');
-    require('../src/components/growth/GrowthChart.stories');
+    // require('../src/components/growth/GrowthChart.stories');
     require('../src/components/development/MilestoneCard.stories');
     require('../src/components/development/MilestoneForm.stories');
     require('../src/components/development/DevelopmentInfo.stories');

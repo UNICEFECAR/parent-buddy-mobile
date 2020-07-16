@@ -18,7 +18,7 @@ export interface VaccinationDate {
 export interface Props {
     vaccinationDate?: string,
     title: string,
-    isHorizontalLineVisible?: boolean,
+    isVerticalLineVisible?: boolean,
     vaccineList: VaccinationDate[]
     onPress: Function,
     onPress2: Function,
@@ -141,7 +141,7 @@ export class OneVaccinations extends Component<Props, State> {
                     }
 
                 </View>
-                {this.props.isHorizontalLineVisible ? <View style={styles.horizontalLine} /> : null}
+                {this.props.isVerticalLineVisible ? <View style={styles.verticalLine} /> : null}
             </View >
         )
     }
@@ -158,7 +158,7 @@ export interface OneVaccinationsStyles {
     vaccineItemContent: ViewStyle,
     reminderBtn: ViewStyle,
     iconStyle: IconProps,
-    horizontalLine: ViewStyle,
+    verticalLine: ViewStyle,
     vaccineDateText: TextStyle,
 
 }
@@ -209,7 +209,7 @@ const styles = StyleSheet.create<OneVaccinationsStyles>({
         color: "#2CBA39",
         lineHeight: moderateScale(21),
     },
-    horizontalLine: {
+    verticalLine: {
         width: 3,
         height: moderateScale(24),
         backgroundColor: '#979797',
