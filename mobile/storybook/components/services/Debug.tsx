@@ -54,7 +54,8 @@ export class Debug extends React.Component<object, State> {
     }
 
     private logRealmPath() {
-        console.log( userRealmStore.realm?.path.replace('user.realm', '') );
+        // console.log( userRealmStore.realm?.path.replace('user.realm', '') );
+        console.log( RNFS.DocumentDirectoryPath );
     }
 
     private async syncData() {

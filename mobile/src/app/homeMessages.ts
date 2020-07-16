@@ -49,6 +49,10 @@ class HomeMessages {
         const dailyMessage = this.getDailyMessage();
         if (dailyMessage) rval.push(dailyMessage);
 
+        // Growth messages
+        const growthMessages = this.getGrowthMessages();
+        if (growthMessages.length > 0) rval = rval.concat(growthMessages);
+
         return rval;
     }
 
@@ -264,6 +268,17 @@ class HomeMessages {
                 textStyle: {fontWeight:'bold'},
                 iconType: IconType.celebrate,
             };
+        }
+
+        return rval;
+    }
+
+    private getGrowthMessages(): Message[] {
+        let rval: Message[] = [];
+
+        // Get currentChild
+        if (!this.currentChild || !this.currentChild.birthDate) {
+            return [];
         }
 
         return rval;
