@@ -53,131 +53,6 @@ export class GrowthScreen extends Component<Props, State> {
         this.setDefaultScreenParams();
     }
 
-    private getInterpretationTexLenghtForAge(gender: ChildGender, lastMeasurements: Measures) {
-        const childAgeId = dataRealmStore.getChildAgeTagWithArticles()?.id;
-
-        let interpretationTex: InterpretationTex = {
-            name: "",
-            text: "",
-            articleId: 0
-        };
-
-        let chartData: GrowthChartHeightAgeType = [];
-
-        if (gender === "boy") {
-            chartData = Data.Height_age_boys0_5
-        } else {
-            chartData = Data.Height_age_girls0_5
-        }
-
-        let length: number = 0;
-        if (lastMeasurements !== undefined && lastMeasurements.height && lastMeasurements.length) {
-            length = parseFloat(lastMeasurements.length);
-        };
-
-        const childBirthDay = userRealmStore.getCurrentChild()?.birthDate;
-        let measurementDate: DateTime = DateTime.local();
-
-        if (lastMeasurements !== undefined && lastMeasurements.measurementDate) {
-            measurementDate = DateTime.fromJSDate(new Date(lastMeasurements.measurementDate));
-        }
-
-        let days = 0;
-
-        if (childBirthDay) {
-            let date = DateTime.fromJSDate(childBirthDay);
-            let convertInDays = measurementDate.diff(date, "days").toObject().days;
-
-
-            if (convertInDays !== undefined) days = Math.round(convertInDays);
-        };
-        let filteredData = chartData.find(data => data.Day === days);
-        let interpretationData = translateData('interpretationLenghtForAge')?.
-            find(item => item.predefined_tags.indexOf(childAgeId) !== -1);
-
-
-        if (filteredData !== undefined) {
-            if (length >= filteredData.SD2neg && length <= filteredData.SD3) {
-                interpretationTex = interpretationData.goodText;
-            };
-
-            if (length < filteredData.SD2neg && length > filteredData.SD3neg) {
-                interpretationTex = interpretationData.warrningSmallLengthText;
-            };
-
-            if (length < filteredData.SD3neg) {
-                interpretationTex = interpretationData.emergencySmallLengthText;
-            };
-            if (length > filteredData.SD3) {
-                interpretationTex = interpretationData.warrningBigLengthText;
-            };
-        };
-        return interpretationTex;
-    };
-
-    private getInterpretationTexWeightForHeight(gender: ChildGender, childAgeInDays: number, lastMeasurements: Measures) {
-        const dayLimit = 730; // 0-2 yeast || 2-5 years 
-        const childAgeId = dataRealmStore.getChildAgeTagWithArticles()?.id;
-
-        let interpretationTex: InterpretationTex = {
-            name: "",
-            text: "",
-            articleId: 0
-        };
-
-        let chartData: GrowthChart0_2Type = [];
-
-        if (gender === "boy") {
-            if (childAgeInDays <= dayLimit) {
-                chartData = Data.GrowthChartBoys0_2;
-            } else {
-                chartData = Data.GrowthChartBoys2_5;
-            };
-        } else {
-            if (childAgeInDays <= dayLimit) {
-                chartData = Data.GrowthChartGirls0_2;
-            } else {
-                chartData = Data.GrowthChartGirls2_5;
-            };
-        };
-
-        let height: number = 0;
-        let length: number = 0;
-
-        if (lastMeasurements !== undefined && lastMeasurements.height && lastMeasurements.length) {
-            height = parseFloat(lastMeasurements.height) / 1000;
-            length = parseFloat(lastMeasurements.length);
-        };
-
-        let filteredDataForHeight = chartData.find(data => data.Height === length);
-        let interpretationData = translateData('interpretationWeightForHeight')?.
-            find(item => item.predefined_tags.indexOf(childAgeId) !== -1);
-
-        if (filteredDataForHeight) {
-            if (height >= filteredDataForHeight?.SD2neg && height <= filteredDataForHeight.SD2) {
-                interpretationTex = interpretationData.goodText;
-            };
-
-            if (height <= filteredDataForHeight.SD2neg && height >= filteredDataForHeight.SD3neg) {
-                interpretationTex = interpretationData.warrningSmallHeightText;
-            };
-
-            if (height < filteredDataForHeight.SD3neg) {
-                interpretationTex = interpretationData.emergencySmallHeightText;
-            };
-
-            if (height >= filteredDataForHeight.SD2 && height <= filteredDataForHeight.SD3) {
-                interpretationTex = interpretationData.warrningBigHeightText;
-            };
-
-            if (height > filteredDataForHeight.SD3) {
-                interpretationTex = interpretationData.emergencyBigHeightText;
-            };
-        };
-
-        return interpretationTex;
-    }
-
     private convertMeasuresData(measures: Measures[], childBirthDay: Date) {
         let measurementDateInDays: number | undefined = 0;
 
@@ -298,16 +173,16 @@ export class GrowthScreen extends Component<Props, State> {
                 let birthDay = new Date(currentChild.birthDate);
 
                 const measuresData = this.convertMeasuresData(measures, birthDay);
-                const interpretationTexWeightLength = this.getInterpretationTexWeightForHeight(
+                const interpretationTexWeightLength = userRealmStore.getInterpretationTexWeightForHeight(
                     childGender,
                     childAgeInDays,
                     measures[measures.length - 1]
-                );
+                ).interpretationTex;
 
-                const interpretationTexLenghtAge = this.getInterpretationTexLenghtForAge(
+                const interpretationTexLenghtAge = userRealmStore.getInterpretationTexLenghtForAge(
                     childGender,
                     measures[measures.length - 1]
-                )
+                ).interpretationTex;
 
                 state = {
                     periodIntroductionText: periodIntroductionText,
