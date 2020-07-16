@@ -83,13 +83,14 @@ export class Drawer extends React.Component<Props> {
         }
 
         // temporary 
-        if (fancyButtonType === FancyButtonType.development) {
-            navigation.navigate('HomeStackNavigator_BirthDataScreen');
+        if(fancyButtonType === FancyButtonType.development){
+            navigation.navigate('HomeStackNavigator_DevelopmentScreen');
             navigation.dispatch(DrawerActions.closeDrawer())
         }
 
         if (fancyButtonType === FancyButtonType.settings) {
-            navigation.navigate('HomeStackNavigator_SettingsScreen');
+            // navigation.navigate('HomeStackNavigator_SettingsScreen');
+            navigation.resetStackAndNavigate('RootModalStackNavigator_SettingsScreen');
             navigation.dispatch(DrawerActions.closeDrawer());
         }
 
@@ -111,41 +112,41 @@ export class Drawer extends React.Component<Props> {
     public render() {
         return (
             <ThemeConsumer>
-                {(themeContext: ThemeContextValue) => (
-                    <ScrollView contentContainerStyle={styles.contentContainer}>
-                        {/* ARTICLES */}
-                        <View style={{ marginBottom: scale(5), flexDirection: 'row', alignItems: 'center' }}>
-                            <Typography type={TypographyType.headingPrimary} style={{ flex: 1, marginBottom: 0 }}>
-                                {translate('drawerTitleArticles')}
-                            </Typography>
-                            <BorderlessButton onPress={() => { this.onClosePress() }}>
-                                <Icon
-                                    name={"close"}
-                                    style={{ fontSize: 22, marginRight: scale(5) }}
-                                />
-                            </BorderlessButton>
-                        </View>
+            {(themeContext:ThemeContextValue) => (
+                <ScrollView contentContainerStyle={ styles.contentContainer }>
+                    {/* ARTICLES */}
+                    <View style={{marginBottom:scale(5), flexDirection:'row', alignItems:'center'}}>
+                        <Typography type={ TypographyType.headingPrimary } style={{flex:1, marginBottom:0}}>
+                            {translate('drawerTitleArticles')}
+                        </Typography>
+                        <BorderlessButton onPress={() => {this.onClosePress()}}>
+                            <Icon
+                                name={ "close" }
+                                style={{ fontSize:22, marginRight:scale(5)}}
+                            />
+                        </BorderlessButton>
+                    </View>
 
-                        <View style={{ flexDirection: 'row' }}>
-                            <FancyButton type={FancyButtonType.home} style={{ flex: 1 }} onPress={() => { this.gotoScreen(FancyButtonType.home) }} />
-                        </View>
+                    <View style={{flexDirection:'row'}}>
+                        <FancyButton type={ FancyButtonType.home } style={{flex:1}} onPress={ ()=>{this.gotoScreen(FancyButtonType.home)} } />
+                    </View>
 
-                        <View style={{ flexDirection: 'row' }}>
-                            <FancyButton type={FancyButtonType.games} style={{ flex: 1 }} onPress={() => { this.gotoScreen(FancyButtonType.games) }} />
-                            <FancyButton type={FancyButtonType.health} style={{ flex: 1 }} onPress={() => { this.gotoScreen(FancyButtonType.health) }} />
-                        </View>
+                    <View style={{flexDirection:'row'}}>
+                        <FancyButton type={ FancyButtonType.games } style={{flex:1}} onPress={ ()=>{this.gotoScreen(FancyButtonType.games)} } />
+                        <FancyButton type={ FancyButtonType.health } style={{flex:1}} onPress={ ()=>{this.gotoScreen(FancyButtonType.health)} } />
+                    </View>
+            
+                    <View style={{flexDirection:'row'}}>
+                        <FancyButton type={ FancyButtonType.safety } style={{flex:1}} onPress={ ()=>{this.gotoScreen(FancyButtonType.safety)} } />
+                        <FancyButton type={ FancyButtonType.responsive } style={{flex:1}} onPress={ ()=>{this.gotoScreen(FancyButtonType.responsive)} } />
+                    </View>
+            
+                    <View style={{flexDirection:'row'}}>
+                        <FancyButton type={ FancyButtonType.parents } style={{flex:1}} onPress={ ()=>{this.gotoScreen(FancyButtonType.parents)} } />
+                        <FancyButton type={ FancyButtonType.food } style={{flex:1}} onPress={ ()=>{this.gotoScreen(FancyButtonType.food)} } />
+                    </View>
 
-                        <View style={{ flexDirection: 'row' }}>
-                            <FancyButton type={FancyButtonType.safety} style={{ flex: 1 }} onPress={() => { this.gotoScreen(FancyButtonType.safety) }} />
-                            <FancyButton type={FancyButtonType.responsive} style={{ flex: 1 }} onPress={() => { this.gotoScreen(FancyButtonType.responsive) }} />
-                        </View>
-
-                        <View style={{ flexDirection: 'row' }}>
-                            <FancyButton type={FancyButtonType.parents} style={{ flex: 1 }} onPress={() => { this.gotoScreen(FancyButtonType.parents) }} />
-                            <FancyButton type={FancyButtonType.food} style={{ flex: 1 }} onPress={() => { this.gotoScreen(FancyButtonType.food) }} />
-                        </View>
-
-                        <FancyButton type={FancyButtonType.faq} style={{ flex: 1 }} onPress={() => { this.gotoScreen(FancyButtonType.faq) }} />
+                    <FancyButton type={ FancyButtonType.faq } style={{flex:1}} onPress={ ()=>{this.gotoScreen(FancyButtonType.faq)} } />
 
                         {/* DIARY */}
                         <Typography type={TypographyType.headingPrimary} style={{ marginTop: scale(20), marginBottom: scale(5) }}>

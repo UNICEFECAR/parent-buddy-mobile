@@ -35,7 +35,7 @@ import { ExaminationReminderScreen } from "../screens/home/ExaminationReminderSc
 import { ChildProfileScreen } from "../screens/home/ChildProfileScreen";
 import { GrowthScreen } from "../screens/growth/GrowthScreen";
 import { NewMeasurementScreen } from "../screens/growth/NewMeasurementScreen";
-import { VaccinationScreen, VaccinationDataScreen } from "../screens/home";
+import { VaccinationScreen, VaccinationDataScreen, DevelopmentScreen, EditPeriodScreen } from "../screens/home";
 import { NewDoctorVisitScreen } from "../screens/vaccination/NewDoctorVisitScreen";
 import { AllMeasurementsScreen } from "../screens/growth/AllMeasurementsScreen";
 import { ChartFullScreen } from '../screens/growth/ChartFullScreen';
@@ -189,15 +189,6 @@ const HomeStackNavigator = createStackNavigator({
             }
         }
     },
-    HomeStackNavigator_SettingsScreen: {
-        screen: SettingsScreen,
-        navigationOptions: ({ navigation }: NavigationScreenConfigProps<NavigationStackProp<NavigationStackState, any>>): NavigationStackOptions => {
-            return {
-                title: translate('settingsTitle'),
-                ...secondaryHomeNavigationOptions
-            }
-        }
-    },
     HomeStackNavigator_AppFeedbackScreen: {
         screen: AppFeedbackScreen,
         navigationOptions: ({ navigation }: NavigationScreenConfigProps<NavigationStackProp<NavigationStackState, any>>): NavigationStackOptions => {
@@ -240,6 +231,24 @@ const HomeStackNavigator = createStackNavigator({
             title: translate('growScreenTitle')
         }
     },
+
+    HomeStackNavigator_DevelopmentScreen: {
+        screen: DevelopmentScreen,
+        navigationOptions: {
+            title: translate('childDevelopmentTitle')
+        }
+    },
+
+    HomeStackNavigator_EditPeriodScreen: {
+        screen: EditPeriodScreen,
+        navigationOptions: ({ navigation }: NavigationScreenConfigProps<NavigationStackProp<NavigationStackState, any>>): NavigationStackOptions => {
+            return {
+                title: translate('questionnaireAboutChildDevelopment'),
+                ...secondaryHomeNavigationOptions
+            }
+        }
+    },
+
     HomeStackNavigator_NewMeasurementScreen: {
         screen: NewMeasurementScreen,
         navigationOptions: ({ navigation }: NavigationScreenConfigProps<NavigationStackProp<NavigationStackState, any>>): NavigationStackOptions => {
@@ -497,6 +506,15 @@ const RootModalStackNavigator = createStackNavigator({
         navigationOptions: {
             title: "Video"
         }
+    },
+    RootModalStackNavigator_SettingsScreen: {
+        screen: SettingsScreen,
+        // navigationOptions: ({ navigation }: NavigationScreenConfigProps<NavigationStackProp<NavigationStackState, any>>): NavigationStackOptions => {
+        //     return {
+        //         title: translate('settingsTitle'),
+        //         ...secondaryHomeNavigationOptions
+        //     }
+        // }
     },
     RootModalStackNavigator_ChartFullScreen: {
         screen: ChartFullScreen,

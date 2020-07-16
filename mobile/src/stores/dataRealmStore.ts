@@ -7,10 +7,13 @@ import { ListCardItem } from '../screens/home/ListCard';
 import { ContentEntity } from '.';
 import { ContentEntitySchema } from './ContentEntity';
 import { translate } from '../translations/translate';
-import { GraphRequest } from 'react-native-fbsdk';
 import { DateTime } from "luxon";
 import { userRealmStore } from './userRealmStore';
 import { BasicPageEntity, BasicPagesEntitySchema } from './BasicPageEntity';
+import { MilestoneEntity, MilestoneEntitySchema } from './MilestoneEntity';
+import { translateData } from '../translationsData/translateData';
+import { MilestoneItem } from '../components/development/MilestoneForm';
+import { DailyMessageVariable } from '../app/homeMessages';
 
 export type Variables = {
     'userEmail': string;
@@ -31,6 +34,7 @@ export type Variables = {
     'lastSyncTimestamp': number;
     'randomNumber': number;
     'vocabulariesAndTerms': VocabulariesAndTermsResponse;
+    'dailyMessage': DailyMessageVariable;
 };
 
 type VariableKey = keyof Variables;
@@ -73,7 +77,7 @@ class DataRealmStore {
         });
     }
 
-    public getBasicPage(id: 4516 | 4836){
+    public getBasicPage(id: 4516 | 4836) {
         const basicPageVariable = this.realm?.objects<BasicPageEntity>(BasicPagesEntitySchema.name);
         return basicPageVariable?.filtered(`id == ${id}`).find(item => item);
     }
@@ -149,7 +153,7 @@ class DataRealmStore {
             try {
                 const allVariables = this.realm.objects<VariableEntity>(VariableEntitySchema.name);
                 const variablesWithKey = allVariables.filtered(`key == "${key}"`);
-                console.log(variablesWithKey, 'varaibles with key')
+                // console.log(variablesWithKey, 'varaibles with key')
                 if (variablesWithKey && variablesWithKey.length > 0) {
                     const record = variablesWithKey.find(obj => obj.key === key);
 
@@ -187,14 +191,158 @@ class DataRealmStore {
                     resolve(record);
                 });
             } catch (e) {
-                console.log(e, "USAO U ERRROR NA ", entitySchema.name)
+                if (appConfig.showLog) console.log(e);
                 reject();
             }
         });
-    }
+    };
+    
+    /*
+    *   Return all milestones for given age tag
+    */
+    public getMilestonesFromChildAge(ageTagId: number) {
+        try {
+            const allRecords = this.realm?.objects<MilestoneEntity>(MilestoneEntitySchema.name);
+            return allRecords?.filter((value) => value.predefined_tags.indexOf(ageTagId) !== -1);
+        } catch (e) {
+            if (appConfig.showLog) {
+                console.log(e);
+            };
+            return undefined;
+        };
+    };
+
+    public getDevelopmentPeriods(): DevelopmentPeriodsType[] {
+        let developmentPeriods: DevelopmentPeriodsType[] = [];
+
+        const allPeriods = translateData("developmentPeriods");
+        const childAgeTagId = this.getChildAgeTagWithArticles()?.id;
+        const childGender = userRealmStore.getChildGender();
+
+        if (allPeriods) {
+            // if user didn't set age return all periods
+            if (childAgeTagId === undefined || childAgeTagId === null) {
+                developmentPeriods = allPeriods.map((period: any): DevelopmentPeriodsType => {
+                    return {
+                        body: period.description,
+                        title: period.name,
+                        subtilte: period.subtitle,
+                        finished: undefined,
+                        warningText: period.warningText,
+                        currentPeriod: false,
+                        relatedArticleId: childGender === 'boy' ?
+                            period.moreAboutPeriodArticleIdMale :
+                            period.moreAboutPeriodArticleIdFemale,
+                    };
+                });
+            } else {
+                // if user set age return periods up to current age + featured period
+                developmentPeriods = allPeriods
+                    .filter(period => period.predefinedTagId <= childAgeTagId)
+                    .map((period: any): DevelopmentPeriodsType => {
+
+                        let allMilestones = this.getMilestonesFromChildAge(period.predefinedTagId);
+                        let checkedMilesteones: number[] = userRealmStore.getVariable('checkedMilestones');
+                        
+                        let completed = true;
+                        let currentPeriod = false;
+
+                        // check for current period 
+                        if (period.predefinedTagId === childAgeTagId) {
+                            currentPeriod = true
+                        } else {
+                            currentPeriod = false;
+                        };
+
+                        // Check is period milestones completed 
+                        allMilestones?.forEach(item => {
+                            let checkedMilesteone = checkedMilesteones?.find(id => item.id === id);
+
+                            if (checkedMilesteone === undefined) {
+                                completed = false
+                            };
+                        });
+
+                        return {
+                            body: period.description,
+                            title: period.name,
+                            subtilte: period.subtitle,
+                            finished: completed,
+                            childAgeTagId: period.predefinedTagId,
+                            warningText: period.warningText,
+                            currentPeriod: currentPeriod,
+                            relatedArticleId: childGender === 'boy' ?
+                                period.moreAboutPeriodArticleIdMale :
+                                period.moreAboutPeriodArticleIdFemale,
+                        };
+                    });
+
+                // Get first next period and return for featuredPeriod
+                let featurePeriod = allPeriods?.filter(childAgeTag => childAgeTag.predefinedTagId > childAgeTagId)[0];
+
+                if (featurePeriod) {
+                    developmentPeriods.push({
+                        body: featurePeriod.description,
+                        title: featurePeriod.name,
+                        subtilte: featurePeriod.subtitle,
+                        finished: undefined,
+                        childAgeTagId: featurePeriod.predefinedTagId,
+                        currentPeriod: false,
+                        relatedArticleId: childGender === 'boy' ?
+                            featurePeriod.moreAboutPeriodArticleIdMale :
+                            featurePeriod.moreAboutPeriodArticleIdFemale,
+                    });
+                };
+            };
+        };
+
+        return developmentPeriods;
+    };
+    
+    public getMilestonesForGivenPeriod(ageId: number): { checkedMilestones: MilestoneItem[], uncheckedMilestones: MilestoneItem[] } {
+        let milestones: {
+            checkedMilestones: MilestoneItem[],
+            uncheckedMilestones: MilestoneItem[],
+        };
+
+        milestones = {
+            checkedMilestones: [],
+            uncheckedMilestones: [],
+        };
+
+        let allMilestones = this.getMilestonesFromChildAge(ageId);
+        let checkedItems: number[] = userRealmStore.getVariable('checkedMilestones');
+
+        if (allMilestones) {
+            allMilestones.forEach(milestone => {
+                // true if item exist in checked item array
+                let item = checkedItems?.find(id => id === milestone.id)
+
+                // if item exist, update checkedMilestones else udpate unchecked milestones => Important for split screen logic 
+                if (item) {
+                    milestones.checkedMilestones.push({
+                        checked: true,
+                        html: milestone.body,
+                        id: milestone.id,
+                        title: milestone.title,
+                        relatedArticles: milestone.related_articles,
+                    });
+                } else {
+                    milestones.uncheckedMilestones.push({
+                        checked: false,
+                        html: milestone.body,
+                        relatedArticles: milestone.related_articles,
+                        id: milestone.id,
+                        title: milestone.title
+                    });
+                };
+            });
+        };
+
+        return milestones;
+    };
 
     public getContentFromId(id: number) {
-        console.log(id);
         try {
             const allRecords = this.realm?.objects<ContentEntity>(ContentEntitySchema.name);
             return allRecords?.find((value) => {
@@ -208,7 +356,8 @@ class DataRealmStore {
 
 
 
-    private getTagIdFromChildAge = (months: number): number => {
+
+    public getTagIdFromChildAge = (months: number): number => {
         let id = 58;
         if (months === 1 || months === 0) {
             id = 43;
@@ -261,7 +410,6 @@ class DataRealmStore {
 
         const birthday = userRealmStore.getCurrentChild()?.birthDate;
         const timeNow = DateTime.local();
-
 
         if (birthday === null || birthday === undefined) {
             obj = null;
@@ -487,7 +635,7 @@ class DataRealmStore {
         return isInclude;
     };
 
- 
+
 }
 
 export type FaqScreenDataResponse = FaqScreenArticlesResponseItem[];
@@ -497,6 +645,17 @@ export type FaqScreenArticlesResponseItem = {
     tagType: TagType;
     items: ListCardItem[];
 };
+
+export type DevelopmentPeriodsType = {
+    finished?: boolean,
+    title: string,
+    subtilte: string,
+    body: string,
+    childAgeTagId?: number,
+    currentPeriod: boolean,
+    warningText?: string,
+    relatedArticleId: number,
+}
 
 export enum TagType {
     category = 'category',

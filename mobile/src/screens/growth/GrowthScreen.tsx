@@ -19,9 +19,9 @@ import { ChartData as Data, GrowthChart0_2Type, GrowthChartHeightAgeType } from 
 import { TextButtonColor } from '../../components/TextButton';
 import { navigation } from '../../app';
 import { ActivityIndicator } from 'react-native-paper';
-import { stat } from 'react-native-fs';
-import { color } from 'react-native-reanimated';
+import { DataRealmContext, DataRealmContextValue, DataRealmConsumer } from '../../stores/DataRealmContext';
 import { UserRealmConsumer, UserRealmContextValue } from '../../stores/UserRealmContext';
+import { HomeMessages, Message, IconType } from '../../components/HomeMessages';
 
 export interface GrowthScreenParams {
 
@@ -263,7 +263,15 @@ export class GrowthScreen extends Component<Props, State> {
                     >
                         {
                             this.state.childBirthDate === null ?
-                                <Typography>TODO: NO BIRTH DAY (HOME SCREEN NOTIFICATION)</Typography>
+                                <DataRealmConsumer>
+                                    {(dataRealmContext: DataRealmContextValue) => (
+                                        <UserRealmConsumer>
+                                            {(userRealmContext: UserRealmContextValue) => (
+                                                <HomeMessages showCloseButton={false}></HomeMessages>
+                                            )}
+                                        </UserRealmConsumer>
+                                    )}
+                                </DataRealmConsumer>
                                 :
                                 <View>
                                     <View style={styles.header}>
@@ -317,14 +325,14 @@ export class GrowthScreen extends Component<Props, State> {
 
                                                 {
                                                     this.state.defaultMessage === "" ?
-                                                        interpretationTextWeightLength?.text ?
+                                                        interpretationTexWeightLength?.text ?
                                                             <View style={styles.card}>
                                                                 <Typography>
-                                                                    {interpretationTextWeightLength.text}
+                                                                    {interpretationTexWeightLength.text}
                                                                 </Typography>
                                                                 <TextButton
                                                                     color={TextButtonColor.purple}
-                                                                    onPress={() => this.goToArticle(interpretationTextWeightLength.articleId)}
+                                                                    onPress={() => this.goToArticle(interpretationTexWeightLength.articleId)}
                                                                 >
                                                                     {translate('moreAboutChildGrowth')}
                                                                 </TextButton>
@@ -357,7 +365,6 @@ export class GrowthScreen extends Component<Props, State> {
                                                                 <TextButton
                                                                     color={TextButtonColor.purple}
                                                                     onPress={() => this.goToArticle(interpretationTextLenghtAge.articleId)}
-                                                                >
                                                                     {translate('moreAboutChildGrowth')}
                                                                 </TextButton>
                                                             </View> : null

@@ -17,6 +17,10 @@ import Orientation from 'react-native-orientation-locker';
 import { getSearchResultsScreenData } from '../../stores/getSearchResultsScreenData';
 import axios, { AxiosResponse } from 'axios';
 import { appConfig } from "../../app/appConfig";
+import { HomeMessages, Message, IconType } from '../../components/HomeMessages';
+import { RoundedButtonType } from '../../components/RoundedButton';
+import { DataUserRealmsConsumer, DataUserRealmsContextValue } from '../../stores/DataUserRealmsContext';
+import { UserRealmConsumer, UserRealmContextValue } from '../../stores/UserRealmContext';
 
 export interface HomeScreenParams {
     showSearchInput?: boolean;
@@ -40,6 +44,10 @@ export class HomeScreen extends React.Component<Props, object> {
         Orientation.lockToPortrait();
     }
 
+    public componentWillUnmount() {
+        
+    }
+
     private setDefaultScreenParams() {
         let defaultScreenParams: HomeScreenParams = {
             showSearchInput: false,
@@ -53,12 +61,10 @@ export class HomeScreen extends React.Component<Props, object> {
     }
 
     private async onTestButtonPress() {
-        // let images: any[] = [];
-        // for (let i = 0; i < 320; i++) {
-        //     images.push({srcUrl:'', destFilename:'', destFolder:''},);
-        // }
-
-        // await apiStore.downloadImages(images);
+        const response = await apiStore.setVariable('foo', 'bar');
+        // const response = await apiStore.getVariable('foo');
+        // const response = await apiStore.deleteVariable('foo');
+        console.log(response);
     }
 
     public render() {
@@ -72,18 +78,30 @@ export class HomeScreen extends React.Component<Props, object> {
                         {/* <Text>{localize.getLanguage()}</Text> */}
 
                         {/* Test button */}
-                        {/* <Button onPress={() => {this.onTestButtonPress()}}>Test</Button>
-                        <View style={{height:30}} /> */}
+                        {/* <Button onPress={() => { this.onTestButtonPress() }}>Test</Button>
+                        <View style={{ height: 30 }} /> */}
 
+                        {/* HOME MESSAGES */}
+                        <DataRealmConsumer>
+                            {(dataRealmContext: DataRealmContextValue) => (
+                                <UserRealmConsumer>
+                                    {(userRealmContext: UserRealmContextValue) => (
+                                        <HomeMessages showCloseButton={true}></HomeMessages>
+                                    )}
+                                </UserRealmConsumer>
+                            )}
+                        </DataRealmConsumer>
+
+                        {/* ARTICLES SECTION */}
                         <DataRealmConsumer>
                             {(dataRealmContext: DataRealmContextValue) => (
                                 <>
-                                {  
-                                    content.getHomeScreenDevelopmentArticles(dataRealmContext.realm).categoryArticles?.length !== 0 ?
-                                    <ArticlesSection data={content.getHomeScreenDevelopmentArticles(dataRealmContext.realm)} />
-                                    : null
-                                }
-                                <ArticlesSection data={content.getHomeScreenArticles(dataRealmContext.realm)} />
+                                    {
+                                        content.getHomeScreenDevelopmentArticles(dataRealmContext.realm).categoryArticles?.length !== 0 ?
+                                            <ArticlesSection data={content.getHomeScreenDevelopmentArticles(dataRealmContext.realm)} />
+                                            : null
+                                    }
+                                    <ArticlesSection data={content.getHomeScreenArticles(dataRealmContext.realm)} />
                                 </>
                             )}
                         </DataRealmConsumer>

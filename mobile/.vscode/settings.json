@@ -9,7 +9,7 @@
         "strings": true,
         "other": true
     },
-    "typescript.tsserver.experimental.enableProjectDiagnostics": false,
+    "typescript.tsserver.experimental.enableProjectDiagnostics": true,
     "javascript.preferences.importModuleSpecifier": "relative",
     "typescript.preferences.importModuleSpecifier": "relative",
     "cSpell.enabled": false,

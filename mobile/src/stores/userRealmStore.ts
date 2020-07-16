@@ -13,6 +13,7 @@ import { InterpretationText } from '../screens/growth/GrowthScreen';
 type Variables = {
     'userChildren': any;
     'userData': any;
+    'checkedMilestones': any;
 };
 
 type VariableKey = keyof Variables;
@@ -55,8 +56,25 @@ class UserRealmStore {
         });
     }
 
+    public closeRealm() {
+        if (this.realm) {
+            this.realm.close();
+            delete this.realm;
+        }
+    }
+
+    public isRealmClosed(): boolean {
+        let rval = true;
+
+        if (this.realm) {
+            rval = this.realm.isClosed;
+        }
+
+        return rval;
+    }
+
     public getCurrentChild = () => {
-        return this.realm?.objects<ChildEntity>(ChildEntitySchema.name).find((record, index, collection) => index === 0);
+        return this.realm?.objects<ChildEntity>(ChildEntitySchema.name).find((record, index) => index === 0);
     }
 
     public getCurrentChildAgeInDays = (birthDay?: number) => {
@@ -262,6 +280,8 @@ class UserRealmStore {
         });
     }
 
+    // public async setMilestone(T exte)
+
     public getVariable<T extends VariableKey>(key: T): Variables[T] | null {
         if (!this.realm) return null;
 
@@ -284,6 +304,7 @@ class UserRealmStore {
             return null;
         }
     }
+
 
     public async deleteVariable<T extends VariableKey>(key: T): Promise<void> {
         return new Promise((resolve, reject) => {

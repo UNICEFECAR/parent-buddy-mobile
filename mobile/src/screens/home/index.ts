@@ -19,6 +19,8 @@ import { HomeScreen } from "./HomeScreen";
 import { ListCard } from "./ListCard";
 import { SearchResultsScreen } from "./SearchResultsScreen";
 import { SettingsScreen } from "./SettingsScreen";
+import { DevelopmentScreen } from '../development/DevelopmentScreen';
+import { EditPeriodScreen } from '../development/EditPeriodScreen';
 
 export { HomeScreen };
 export { CategoryArticlesScreen };
@@ -34,9 +36,12 @@ export { AppFeedbackScreen };
 export { BirthDataScreen };
 export { ExaminationReminderScreen };
 export { ChildProfileScreen };
-export {GrowthScreen};
-export {NewMeasurementScreen}
-export {VaccinationScreen}
-export {NewDoctorVisitScreen}
-export {AllMeasurementsScreen}
-export {VaccinationDataScreen}
+export { GrowthScreen };
+export { NewMeasurementScreen }
+export { VaccinationScreen }
+export { NewDoctorVisitScreen }
+export { VaccinationDataScreen }
+export { DevelopmentScreen }
+export { EditPeriodScreen }
+export { AllMeasurementsScreen }
+export { ChartFullScreen }

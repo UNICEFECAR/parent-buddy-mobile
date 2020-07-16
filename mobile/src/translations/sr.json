@@ -8,6 +8,7 @@
     "registerAccount": "Napravite nalog koristeći Email",
     "loginButton": "Login",
     "loginForgotPassword": "Zaboravili ste lozinku?",
+    "loginCanceled": "Otkazali ste log in",
     "createAccount": "Napravite nalog",
     "alreadyHaveAccount": "Vec imate nalog? Ulogujte se",
     "youCreatedAccount": "Napravili ste nalog!",
@@ -100,7 +101,11 @@
     "settingsEnterGrowth": "Želim da pratim rast i da me aplikacija podseća da unosim mere deteta",
     "settingsEnterDevelopment": "Želim da beležim razvojne događaje i da me aplikacija podseća da unosim podatke",
     "settingsEnterDoctorVisits": "Želim da evidentiram posete doktoru i da me aplikacija podseća da unosim podatke",
+    "settingsTitleImportExport": "Uvoz i izvoz sačuvanih podataka",
     "settingsButtonExport": "Izvezite sve sačuvane podatke",
+    "settingsButtonImport": "Uvezite sve sačuvane podatke",
+    "settingsButtonExportError": "Podaci nisu uspesno izvezeni",
+    "settingsButtonImportError": "Backup file ne postoji",
     "settingsButtonDeleteAllData": "Obrišite nalog i izbrišite sve podatke",
     "settingsLogout": "Odjavite se iz aplikacije",
 
@@ -182,5 +187,19 @@
     "DefaultPeriodInterpretationText": "Karte rasta se odnose na decu uzrasta od 0 do 61. meseca I ne mogu da prikažu vrednosti za decu stariju od ovog uzrasta.  Više o rastu u ovom uzrastu potražite u relevantnim člancima.",
 
     "Iam": "Ja sam",
-    "meetTheParents": "Meet the parents"
+    "meetTheParents": "Upoznajmo roditelje",
+
+    "childDevelopmentTitle": "Razvoj deteta",
+    "abilitiesAndSkillsChildAlreadGet": "Sposobnosti i veštine iz ovog perioda koje je dete osvojilo:",
+    "abilitiesAndSkillsChildNeedToGet": "Sposobnosti i veštine iz ovog perioda koje dete treba da osvoji:",
+    "questionnaireAboutChildDevelopment": "Upitnik o razvoju deteta",
+    "moreAboutDevelopmentPeriod": "Više o razvoju u ovom periodu",
+    "updateQuestionnaire": "Ažurirajte upitnik o razvoju deteta",
+    "viewQuestionnaire": "Pogledajte upitnik o razvoju deteta",
+    "fillQuestionnaire": "Popunite upitnik o razvoju deteta",
+
+    "readMore": "Pročitajte više:",
+    "homeMessageChildHasItsProfile": "%CHILD% sada ima svoj profil!",
+    "homeMessageEnterBabyData": "Unesite podatke sa bebinog rođenja da biste videli tekstove koji su prilagođeni vašoj bebi.",
+    "homeMessageEnterBabyDataButton": "Dodajte podatke o bebibom rodjenju"
 }

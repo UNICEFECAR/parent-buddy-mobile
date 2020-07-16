@@ -7,10 +7,10 @@ import IconFontAwesome from 'react-native-vector-icons/FontAwesome';
 import IconFontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { IconButton, Colors } from 'react-native-paper';
 import { TypographyType } from './Typography';
+import { homeMessages } from '../app';
 
 export interface Props {
     cardType?: 'purple' | 'white';
-    messages?: Message[];
     showCloseButton?: boolean;
     style?: StyleProp<ViewStyle>;
     onClosePress?: () => void;
@@ -23,7 +23,6 @@ export interface State {
 export class HomeMessages extends React.Component<Props, State> {
     static defaultProps: Props = {
         cardType: 'white',
-        messages: [],
         showCloseButton: false,
     };
 
@@ -115,7 +114,11 @@ export class HomeMessages extends React.Component<Props, State> {
     }
 
     public render() {
-        if (this.props.messages?.length === 0 || !this.state.showCard) {
+        console.log('RENDER: HomeMessages');
+        
+        const messages = homeMessages.getMessages();
+
+        if (messages.length === 0 || !this.state.showCard) {
             return null;
         }
 
@@ -125,8 +128,8 @@ export class HomeMessages extends React.Component<Props, State> {
                 this.props.cardType === 'white' ? styles.cardWhite : styles.cardPurple,
                 this.props.style
             ]}>
-                {this.props.messages?.map((message, index) => (
-                    <View>
+                {messages?.map((message, index) => (
+                    <View style={{paddingRight:moderateScale(22)}}>
                         <View style={{ flexDirection: 'row' }}>
                             {message.iconType ? (
                                 <IconFontAwesome5
@@ -150,15 +153,15 @@ export class HomeMessages extends React.Component<Props, State> {
 
                         {message.button ? (
                             <RoundedButton
-                                style={{ width: '100%', marginTop: scale(10), marginBottom: scale(10) }}
+                                style={{ width: '100%', marginTop: scale(10), marginBottom: scale(10), marginLeft:moderateScale(11) }}
                                 type={message.button.type}
                                 text={message.button.text}
                                 onPress={() => { if (message.button?.onPress) message.button?.onPress() }}
                             />
                         ) : null}
 
-                        {this.props.messages?.length !== (index + 1) ? (
-                            <View style={{ height: scale(10) }} />
+                        {messages?.length !== (index + 1) ? (
+                            <View style={{ height: scale(15) }} />
                         ) : null}
                     </View>
                 ))}
@@ -196,6 +199,7 @@ const styles = StyleSheet.create<HomeMessagesStyles>({
         shadowOpacity: 0.2,
         elevation: 2,
         borderRadius: 8,
+        marginBottom: scale(30),
     },
 
     cardWhite: {
