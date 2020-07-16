@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import { View, Text, StyleProp, ViewStyle, StyleSheet, TouchableOpacity, TextStyle } from 'react-native';
 import IconAntDesign from 'react-native-vector-icons/AntDesign';
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome';
+import IconFontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import IconMaterialCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
 import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
 import { translate } from '../translations/translate';
@@ -11,6 +12,7 @@ export interface Props {
     type?: RoundedButtonType;
     showArrow?: boolean;
     disabled?: boolean;
+    iconName?: string;
     style?: StyleProp<ViewStyle>;
     textStyle?: StyleProp<TextStyle>;
     iconStyle?: StyleProp<TextStyle>;
@@ -59,7 +61,7 @@ export class RoundedButton extends React.Component<Props, State> {
                 color: '#EB4747',
                 fontFamily: 'SFUIDisplay-Semibold',
             };
-            state.icon = <IconAntDesign name={ "google" } style={ [styles.iconStyle, {color:state.textStyle.color}] } />;
+            state.icon = <IconAntDesign name={"google"} style={[styles.iconStyle, { color: state.textStyle.color }]} />;
         }
 
         // Facebook
@@ -69,7 +71,7 @@ export class RoundedButton extends React.Component<Props, State> {
                 color: '#2672CB',
                 fontFamily: 'SFUIDisplay-Semibold',
             };
-            state.icon = <IconFontAwesome name={ "facebook" } style={ [styles.iconStyle, {color:state.textStyle.color, fontSize:24}] } />;
+            state.icon = <IconFontAwesome name={"facebook"} style={[styles.iconStyle, { color: state.textStyle.color, fontSize: 24 }]} />;
         }
 
         // Purple
@@ -107,6 +109,11 @@ export class RoundedButton extends React.Component<Props, State> {
             };
         }
 
+        // Icon name
+        if (this.props.iconName) {
+            state.icon = <IconFontAwesome5 name={this.props.iconName} style={[styles.iconStyle, { color: state.textStyle?.color, fontSize: 20 }]} />;
+        }
+
         this.state = state;
     }
 
@@ -118,30 +125,30 @@ export class RoundedButton extends React.Component<Props, State> {
 
     public render() {
         let wrapper = this.props.disabled === true ? (
-            (children:JSX.Element) => (
+            (children: JSX.Element) => (
                 <View
-                    style={ [styles.container, this.state.containerStyle, this.props.style, {opacity:0.5}] }
+                    style={[styles.container, this.state.containerStyle, this.props.style, { opacity: 0.5 }]}
                 >
                     {children}
                 </View>
             )
         ) : (
-            (children:JSX.Element) => (
-                <TouchableOpacity
-                    onPress={() => {this.onPress()}}
-                    style={ [styles.container, this.state.containerStyle, this.props.style] }
-                >
-                    {children}
-                </TouchableOpacity>
-            )
-        );
+                (children: JSX.Element) => (
+                    <TouchableOpacity
+                        onPress={() => { this.onPress() }}
+                        style={[styles.container, this.state.containerStyle, this.props.style]}
+                    >
+                        {children}
+                    </TouchableOpacity>
+                )
+            );
 
         return wrapper((
             <Fragment>
                 {this.state.icon}
-                <Text ellipsizeMode="tail" numberOfLines={1} style={ [styles.textStyle, {textAlign:(this.state.icon ? 'left' : 'center')}, this.state.textStyle] }>{this.props.text ? this.props.text : this.state.text}</Text>
+                <Text ellipsizeMode="tail" numberOfLines={1} style={[styles.textStyle, { textAlign: (this.state.icon ? 'left' : 'center') }, this.state.textStyle]}>{this.props.text ? this.props.text : this.state.text}</Text>
                 {this.props.showArrow ? (
-                    <IconMaterialCommunity name={ "chevron-right" } style={ {fontSize:24, paddingTop:2, marginRight:scale(12), color:this.state.textStyle?.color} } />
+                    <IconMaterialCommunity name={"chevron-right"} style={{ fontSize: 24, paddingTop: 2, marginRight: scale(12), color: this.state.textStyle?.color }} />
                 ) : null}
             </Fragment>
         ));

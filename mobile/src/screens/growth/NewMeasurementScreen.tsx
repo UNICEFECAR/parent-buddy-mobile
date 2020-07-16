@@ -29,8 +29,8 @@ export interface State {
     measurementDateError: boolean,
     length: string,
     lengthError: boolean,
-    height: string,
-    heightError: boolean,
+    weight: string,
+    weightError: boolean,
     comment: string,
     measurementPlace: string | undefined,
     isVaccineReceived: string | undefined,
@@ -49,13 +49,14 @@ export class NewMeasurementScreen extends Component<Props, State> {
         let state: State = {
             measurementDate: undefined,
             length: "",
-            height: "",
+            weight: "",
             comment: "",
             isVaccineReceived: "no",
             measurementPlace: "home",
             measurementDateError: false,
-            heightError: false,
+            weightError: false,
             lengthError: false,
+            defaultMessage: "",
         };
 
         this.state = state;
@@ -87,7 +88,7 @@ export class NewMeasurementScreen extends Component<Props, State> {
             })
         } else {
             this.setState({
-                height: value
+                weight: value
             })
         }
     }
@@ -96,7 +97,7 @@ export class NewMeasurementScreen extends Component<Props, State> {
         let isValid = true;
 
         let lengthError = false;
-        let heightError = false;
+        let weightError = false;
         let measurementDateError = false
 
         if (this.state.length === "") {
@@ -104,8 +105,8 @@ export class NewMeasurementScreen extends Component<Props, State> {
             lengthError = true;
         };
 
-        if (this.state.height === "") {
-            heightError = true;
+        if (this.state.weight === "") {
+            weightError = true;
             isValid = false;
         };
 
@@ -117,13 +118,13 @@ export class NewMeasurementScreen extends Component<Props, State> {
         return {
             isValid: isValid,
             lengthError: lengthError,
-            heightError: heightError,
+            weightError: weightError,
             measurementDateError: measurementDateError
         };
     }
 
     private async submit() {
-        const { comment, length, height, measurementDate } = this.state;
+        const { comment, length, weight, measurementDate } = this.state;
         const currentChild = userRealmStore.getCurrentChild();
         if (!currentChild) return;
 
@@ -137,17 +138,17 @@ export class NewMeasurementScreen extends Component<Props, State> {
                 measures.forEach(item => {
                     if(item.measurementDate === measurementDate?.toMillis()){
                         sameDate = true;
-                        item.height = height;
+                        item.weight = weight;
                         item.length = length;
                         return;
                     };
                 });
 
                 if(sameDate === false){
-                    measures.push({ length: length, height: height, measurementDate: measurementDate?.toMillis() });
+                    measures.push({ length: length, weight: weight, measurementDate: measurementDate?.toMillis() });
                 };
             } else {
-                measures[0].height = height;
+                measures[0].weight = weight;
                 measures[0].length = length;
                 measures[0].measurementDate = measurementDate?.toMillis();
             }
@@ -170,7 +171,7 @@ export class NewMeasurementScreen extends Component<Props, State> {
         }else{
             this.setState({
                 lengthError: check.lengthError,
-                heightError: check.heightError,
+                weightError: check.weightError,
                 measurementDateError: check.measurementDateError
             })
         }
@@ -212,8 +213,8 @@ export class NewMeasurementScreen extends Component<Props, State> {
                                 label={translate('heightLabel')}
                                 suffix="g"
                                 icon="weight"
-                                style={[{ width: 150 }, this.state.heightError ? {borderColor: 'red', borderWidth: 1} : null ]}
-                                value={this.state.height}
+                                style={[{ width: 150 }, this.state.weightError ? {borderColor: 'red', borderWidth: 1} : null ]}
+                                value={this.state.weight}
                                 keyboardType="numeric"
                                 onChange={value => this.measureChange(value, 'height')}
                             />

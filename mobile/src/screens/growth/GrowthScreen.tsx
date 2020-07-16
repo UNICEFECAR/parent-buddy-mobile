@@ -19,8 +19,9 @@ import { ChartData as Data, GrowthChart0_2Type, GrowthChartHeightAgeType } from 
 import { TextButtonColor } from '../../components/TextButton';
 import { navigation } from '../../app';
 import { ActivityIndicator } from 'react-native-paper';
-import { stat } from 'react-native-fs';
-import { color } from 'react-native-reanimated';
+import { DataRealmContext, DataRealmContextValue, DataRealmConsumer } from '../../stores/DataRealmContext';
+import { UserRealmConsumer, UserRealmContextValue } from '../../stores/UserRealmContext';
+import { HomeMessages, Message, IconType } from '../../components/HomeMessages';
 
 export interface GrowthScreenParams {
 
@@ -33,17 +34,16 @@ export interface Props {
 export interface State {
     periodIntroductionText: string,
     measuresData: ChartData[],
-    interpretationTexWeightLength: InterpretationTex,
-    interpretationTexLenghtAge: InterpretationTex,
+    interpretationTextWeightLength: InterpretationText,
+    interpretationTextLenghtAge: InterpretationText,
     childBirthDate: DateTime | null,
     childGender: ChildGender,
     lastMeasurementDate: string | undefined,
     isFirstChartLoaded: boolean,
     isSecoundChartLoaded: boolean
-    lastMeasuresHeight: number,
+    lastMeasuresWeight: number,
     lastMeasuresLength: number,
     defaultMessage: string,
-
 }
 
 export class GrowthScreen extends Component<Props, State> {
@@ -67,7 +67,7 @@ export class GrowthScreen extends Component<Props, State> {
             };
             if (measurementDateInDays < 1855) {
                 measuresData.push({
-                    height: item.height ? parseFloat(item.height) / 1000 : 0,
+                    weight: item.weight ? parseFloat(item.weight) / 1000 : 0,
                     length: item.length ? parseFloat(item.length) : 0,
                     measurementDate: measurementDateInDays ? measurementDateInDays : 0,
                 });
@@ -101,15 +101,15 @@ export class GrowthScreen extends Component<Props, State> {
             lastMeasurementDate: undefined,
             isFirstChartLoaded: false,
             isSecoundChartLoaded: false,
-            lastMeasuresHeight: 0,
+            lastMeasuresWeight: 0,
             lastMeasuresLength: 0,
             defaultMessage: "",
-            interpretationTexWeightLength: {
+            interpretationTextWeightLength: {
                 text: "",
                 articleId: 0,
                 name: "",
             },
-            interpretationTexLenghtAge: {
+            interpretationTextLenghtAge: {
                 text: "",
                 articleId: 0,
                 name: "",
@@ -133,11 +133,11 @@ export class GrowthScreen extends Component<Props, State> {
             if (childAgeInDays !== null) {
                 let ageInDays = 0;
 
-                if(childAgeInDays >= 1885){
+                if (childAgeInDays >= 1885) {
                     ageInDays = 1885;
                     defaultMessage = translate('DefaultPeriodInterpretationText');
-                }else{
-                    ageInDays = childAgeInDays;
+                } else {
+                    ageInDays = Math.round(childAgeInDays);
                     defaultMessage = "";
                 };
 
@@ -153,7 +153,7 @@ export class GrowthScreen extends Component<Props, State> {
                 measures = JSON.parse(currentChild?.measures);
 
                 let lastMeasurementDate: string | undefined = undefined;
-                let lastMeasuresHeight: number = 0;
+                let lastMeasuresWeight: number = 0;
                 let lastMeasuresLength: number = 0;
 
                 if (measures[measures.length - 1]?.measurementDate !== undefined) {
@@ -166,35 +166,35 @@ export class GrowthScreen extends Component<Props, State> {
                     }
 
                     lastMeasurementDate = date.toFormat("dd'.'MM'.'yyyy");
-                    lastMeasuresHeight = measures[measures.length - 1].height ? parseFloat(measures[measures.length - 1].height) / 1000 : 0
+                    lastMeasuresWeight = measures[measures.length - 1].weight ? parseFloat(measures[measures.length - 1].weight) / 1000 : 0
                     lastMeasuresLength = measures[measures.length - 1].length ? parseFloat(measures[measures.length - 1].length) : 0
                 }
 
                 let birthDay = new Date(currentChild.birthDate);
 
                 const measuresData = this.convertMeasuresData(measures, birthDay);
-                const interpretationTexWeightLength = userRealmStore.getInterpretationWeightForHeight(
+                const interpretationTextWeightLength = userRealmStore.getInterpretationWeightForHeight(
                     childGender,
                     childAgeInDays,
                     measures[measures.length - 1]
-                ).interpretationTex;
+                ).interpretationText;
 
-                const interpretationTexLenghtAge = userRealmStore.getInterpretationLenghtForAge(
+                const interpretationTextLenghtAge = userRealmStore.getInterpretationLenghtForAge(
                     childGender,
                     measures[measures.length - 1]
-                ).interpretationTex;
+                ).interpretationText;
 
                 state = {
                     periodIntroductionText: periodIntroductionText,
                     measuresData: measuresData,
-                    interpretationTexWeightLength: interpretationTexWeightLength,
-                    interpretationTexLenghtAge: interpretationTexLenghtAge,
+                    interpretationTextWeightLength: interpretationTextWeightLength,
+                    interpretationTextLenghtAge: interpretationTextLenghtAge,
                     childGender: childGender,
                     childBirthDate: DateTime.fromJSDate(currentChild.birthDate),
                     lastMeasurementDate: lastMeasurementDate,
                     isFirstChartLoaded: false,
                     isSecoundChartLoaded: false,
-                    lastMeasuresHeight: lastMeasuresHeight,
+                    lastMeasuresWeight: lastMeasuresWeight,
                     defaultMessage: defaultMessage,
                     lastMeasuresLength: lastMeasuresLength,
                 };
@@ -251,10 +251,9 @@ export class GrowthScreen extends Component<Props, State> {
             measuresData,
             childBirthDate,
             childGender,
-            interpretationTexWeightLength,
-            interpretationTexLenghtAge
+            interpretationTextWeightLength,
+            interpretationTextLenghtAge
         } = this.state;
-
         return (
             <ThemeConsumer>
                 {(themeContext: ThemeContextValue) => (
@@ -264,7 +263,15 @@ export class GrowthScreen extends Component<Props, State> {
                     >
                         {
                             this.state.childBirthDate === null ?
-                                <Typography>TODO: NO BIRTH DAY (HOME SCREEN NOTIFICATION)</Typography>
+                                <DataRealmConsumer>
+                                    {(dataRealmContext: DataRealmContextValue) => (
+                                        <UserRealmConsumer>
+                                            {(userRealmContext: UserRealmContextValue) => (
+                                                <HomeMessages showCloseButton={false}></HomeMessages>
+                                            )}
+                                        </UserRealmConsumer>
+                                    )}
+                                </DataRealmConsumer>
                                 :
                                 <View>
                                     <View style={styles.header}>
@@ -317,19 +324,19 @@ export class GrowthScreen extends Component<Props, State> {
                                                 }
 
                                                 {
-                                                    this.state.defaultMessage === "" ? 
-                                                    interpretationTexWeightLength?.text ?
-                                                        <View style={styles.card}>
-                                                            <Typography>
-                                                                {interpretationTexWeightLength.text}
-                                                            </Typography>
-                                                            <TextButton
-                                                                color={TextButtonColor.purple}
-                                                                onPress={() => this.goToArticle(interpretationTexWeightLength.articleId)}
-                                                            >
-                                                                {translate('moreAboutChildGrowth')}
-                                                            </TextButton>
-                                                        </View> : null 
+                                                    this.state.defaultMessage === "" ?
+                                                        interpretationTexWeightLength?.text ?
+                                                            <View style={styles.card}>
+                                                                <Typography>
+                                                                    {interpretationTexWeightLength.text}
+                                                                </Typography>
+                                                                <TextButton
+                                                                    color={TextButtonColor.purple}
+                                                                    onPress={() => this.goToArticle(interpretationTexWeightLength.articleId)}
+                                                                >
+                                                                    {translate('moreAboutChildGrowth')}
+                                                                </TextButton>
+                                                            </View> : null
                                                         : null
                                                 }
                                                 {
@@ -350,30 +357,29 @@ export class GrowthScreen extends Component<Props, State> {
 
                                                 {
                                                     this.state.defaultMessage === "" ?
-                                                    interpretationTexLenghtAge?.text ?
-                                                        <View style={styles.card}>
-                                                            <Typography>
-                                                                {interpretationTexLenghtAge.text}
-                                                            </Typography>
-                                                            <TextButton
-                                                                color={TextButtonColor.purple}
-                                                                onPress={() => this.goToArticle(interpretationTexLenghtAge.articleId)}
-                                                            >
-                                                                {translate('moreAboutChildGrowth')}
-                                                            </TextButton>
-                                                        </View> : null
+                                                        interpretationTextLenghtAge?.text ?
+                                                            <View style={styles.card}>
+                                                                <Typography>
+                                                                    {interpretationTextLenghtAge.text}
+                                                                </Typography>
+                                                                <TextButton
+                                                                    color={TextButtonColor.purple}
+                                                                    onPress={() => this.goToArticle(interpretationTextLenghtAge.articleId)}
+                                                                    {translate('moreAboutChildGrowth')}
+                                                                </TextButton>
+                                                            </View> : null
                                                         : <View style={styles.card}>
-                                                        <Typography>
-                                                            {this.state.defaultMessage}
-                                                        </Typography>
-                                                    </View>
+                                                            <Typography>
+                                                                {this.state.defaultMessage}
+                                                            </Typography>
+                                                        </View>
                                                 }
                                                 <View>
                                                     {/* <NewMeasurements onPress={() => this.goToNewMeasurements()} /> */}
                                                     <LastMeasurements
                                                         measureDate={this.state.lastMeasurementDate ? this.state.lastMeasurementDate : ""}
                                                         measureLength={this.state.lastMeasuresLength.toString()}
-                                                        measureMass={this.state.lastMeasuresHeight.toString()}
+                                                        measureMass={this.state.lastMeasuresWeight.toString()}
                                                         onPress={() => this.goToNewMeasurements()}
                                                     />
                                                 </View>
@@ -389,14 +395,14 @@ export class GrowthScreen extends Component<Props, State> {
     }
 }
 
-export interface InterpretationTex {
+export interface InterpretationText {
     text: string,
     name: string,
     articleId: number
 }
 
 export interface ConvertedMeasures {
-    height: number,
+    weight: number,
     length: number,
     measurementDate: number,
 }

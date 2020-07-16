@@ -12,7 +12,7 @@ export interface Props {
 export class DevelopmentInfo extends Component<Props> {
     render() {
         return (
-            <View style={{backgroundColor: '#F7F8FA', padding: 24}}>
+            <View style={{backgroundColor: '#F7F8FA', padding: 24, width: '100%'}}>
                 <HTML
                     html={this.props.html}
                     baseFontStyle={{ fontSize: scale(17) }}
@@ -27,8 +27,8 @@ export class DevelopmentInfo extends Component<Props> {
 
 
 const htmlStyles = {
-    p: { marginBottom: 3 },
-    li: {lineHeight: 20, marginBottom: -15, marginLeft: 15 },
+    p: { marginBottom: 3},
+    li: {marginBottom: -15, marginLeft: 0},
     a: { fontWeight: 'bold', textDecorationLine: 'none' },
     blockquote: { backgroundColor: '#F0F1FF', padding: scale(3) },
 };

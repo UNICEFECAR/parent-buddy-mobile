@@ -1,7 +1,7 @@
 // @ts-ignore
 import GDrive from "react-native-google-drive-api-wrapper";
-import RNFS, { DownloadResult } from "react-native-fs";
 import { googleAuth } from "./googleAuth";
+import { appConfig } from "./appConfig";
 
 const FILE_METADATA_FIELDS = 'id,name,mimeType,kind,parents,trashed,version,originalFilename,fileExtension';
 
@@ -11,7 +11,7 @@ const FILE_METADATA_FIELDS = 'id,name,mimeType,kind,parents,trashed,version,orig
 class GoogleDrive {
     private static instance: GoogleDrive;
 
-    private constructor() {}
+    private constructor() { }
 
     static getInstance(): GoogleDrive {
         if (!GoogleDrive.instance) {
@@ -35,18 +35,23 @@ class GoogleDrive {
 
     /**
      * Create file on GDrive and return file ID if it was created.
+     * 
+     * [Google API](https://bit.ly/3atW5DJ)
      */
-    public async createFileMultipart(args:CreateFileMultipartArgs): Promise<string|Error> {
+    public async createFileMultipart(args: CreateFileMultipartArgs): Promise<string | Error> {
         // Default args
         if (!args.contentType) args.contentType = 'text/plain';
-        
+
+        if (args.isBase64 === undefined) {
+            args.isBase64 = false;
+        }
+
         // Set Google access token
         const isAccessTokenSet = await this.setAccessToken();
         if (!isAccessTokenSet) {
             return new ErrorAccessTokenNotSet();
         }
 
-        // Create file
         try {
             // CREATE: https://bit.ly/3atW5DJ
             const response: Response = await GDrive.files.createFileMultipart(
@@ -55,7 +60,8 @@ class GoogleDrive {
                 {
                     parents: [args.parentFolderId],
                     name: args.name
-                }
+                },
+                args.isBase64,
             );
 
             let responseJson = await response.json();
@@ -71,11 +77,65 @@ class GoogleDrive {
     }
 
     /**
+     * Create permissions on a file or folder.
+     * 
+     * [Google API](https://bit.ly/3ejth32)
+     */
+    public async createPermissions(fileId: string, params: CreatePermissionsParams, queryParams?: CreatePermissionsQueryParams): Promise<void | Error> {
+        // Set Google access token
+        const isAccessTokenSet = await this.setAccessToken();
+        if (!isAccessTokenSet) {
+            return new ErrorAccessTokenNotSet();
+        }
+
+        try {
+            // CREATE PERMISSIONS: https://bit.ly/3ejth32
+            const response: Response = await GDrive.permissions.create(
+                fileId,
+                params,
+                queryParams
+            );
+
+            let responseJson = await response.json();
+
+            if (response.status === 200) {
+                return responseJson;
+            } else {
+                return new Error(responseJson?.error?.message);
+            }
+        } catch (e) {
+            if (appConfig.showLog) console.log(e);
+            return new Error('Permissions not created');
+        }
+    }
+
+    public async deleteFile(fileId: string): Promise<boolean | Error> {
+        // Set Google access token
+        const isAccessTokenSet = await this.setAccessToken();
+        if (!isAccessTokenSet) {
+            return new ErrorAccessTokenNotSet();
+        }
+
+        // Delete file
+        try {
+            const response: Response = await GDrive.files.delete(fileId);
+
+            if (response.status >= 200 && response.status < 300) {
+                return true;
+            } else {
+                return new Error('GDrive file was not deleted');
+            }
+        } catch (e) {
+            return new Error('GDrive file was not deleted');
+        }
+    }
+
+    /**
      * Create folder on GDrive and return folder ID if it was created.
      * 
      * If folder exists, it simply returns its id.
      */
-    public async safeCreateFolder(args:SafeCreateFolderArgs): Promise<string|Error> {
+    public async safeCreateFolder(args: SafeCreateFolderArgs): Promise<string | Error> {
         // Set Google access token
         const isAccessTokenSet = await this.setAccessToken();
         if (!isAccessTokenSet) {
@@ -84,7 +144,7 @@ class GoogleDrive {
 
         // Create folder
         try {
-            const id:string = await GDrive.files.safeCreateFolder({
+            const id: string = await GDrive.files.safeCreateFolder({
                 name: args.name,
                 parents: [args.parentFolderId]
             });
@@ -101,9 +161,9 @@ class GoogleDrive {
      * Check what fields can be returned [here](https://bit.ly/3eIpXzG)
      */
     public async getMetadata(
-        fileId:string,
-        fields:string = FILE_METADATA_FIELDS
-    ): Promise<FileMetadata|Error> {
+        fileId: string,
+        fields: string = FILE_METADATA_FIELDS
+    ): Promise<FileMetadata | Error> {
         // Set Google access token
         const isAccessTokenSet = await this.setAccessToken();
         if (!isAccessTokenSet) {
@@ -115,7 +175,7 @@ class GoogleDrive {
             const response = await GDrive.files.get(
                 fileId,
                 // Fields: https://bit.ly/3eIpXzG
-                {'fields':fields}, // query params
+                { 'fields': fields }, // query params
             );
 
             if (response.status === 200) {
@@ -129,7 +189,7 @@ class GoogleDrive {
         }
     }
 
-    public async getId(args:GetIdArgs): Promise<string|Error> {
+    public async getId(args: GetIdArgs): Promise<string | Error> {
         // Default args
         if (args.trashed === undefined) args.trashed = false;
         if (!args.mimeType) args.mimeType = undefined;
@@ -175,7 +235,7 @@ class GoogleDrive {
      * - [Filter](https://bit.ly/3ax8TJI)
      * - [Order by](https://bit.ly/34ZczTf)
      */
-    public async list(args:ListArgs = {}): Promise<FileMetadata[]|Error> {
+    public async list(args: ListArgs = {}): Promise<FileMetadata[] | Error> {
         // Default args
         if (!args.filter) {
             args.filter = `trashed=false`;
@@ -222,7 +282,7 @@ class GoogleDrive {
     /**
      * Download GDrive file to given local path.
      */
-    public async download(args:DownloadArgs): Promise<string|Error> {
+    public async download(args: DownloadArgs): Promise<string | Error> {
         // Set Google access token
         const isAccessTokenSet = await this.setAccessToken();
         if (!isAccessTokenSet) {
@@ -231,21 +291,21 @@ class GoogleDrive {
 
         // Download file
         try {
-            let response: {jobId:number, promise:Promise<DownloadResult>} = GDrive.files.download(
+            let response: { jobId: number, promise: Promise<DownloadResult> } = GDrive.files.download(
                 // File ID
                 args.fileId,
-                
+
                 // Download file options: https://bit.ly/2S5CeEu
                 {
                     toFile: args.filePath
                 },
-                
+
                 // Query params
                 {},
             );
 
             let downloadResult = await response.promise;
-            
+
             if (downloadResult.statusCode === 200) {
                 return args.filePath;
             } else {
@@ -260,7 +320,7 @@ class GoogleDrive {
 class ErrorAccessTokenNotSet extends Error {
     static defaultMessage = 'You need to log in';
 
-    public constructor(message:string = ErrorAccessTokenNotSet.defaultMessage) {
+    public constructor(message: string = ErrorAccessTokenNotSet.defaultMessage) {
         super(message);
     }
 }
@@ -276,6 +336,32 @@ interface CreateFileMultipartArgs {
      * id of parent folder. 'root' has special meaning.
      */
     parentFolderId: string;
+    isBase64?: boolean;
+}
+
+/**
+ * API: https://bit.ly/3fndEsD
+ */
+interface CreatePermissionsParams {
+    role: string;
+    type: string;
+    emailAddress?: string;
+    allowFileDiscovery?: boolean;
+    domain?: string;
+}
+
+/**
+ * API: https://bit.ly/300mTbM
+ */
+interface CreatePermissionsQueryParams {
+    emailMessage?: string;
+    enforceSingleParent?: boolean;
+    fields?: string;
+    moveToNewOwnersRoot?: boolean;
+    sendNotificationEmail?: boolean;
+    supportsAllDrives?: boolean;
+    transferOwnership?: boolean;
+    useDomainAdminAccess?: boolean;
 }
 
 interface SafeCreateFolderArgs {
@@ -284,14 +370,6 @@ interface SafeCreateFolderArgs {
      * id of parent folder. 'root' has special meaning.
      */
     parentFolderId: string;
-}
-
-interface CreateFileMultipartmetadata {
-    /**
-     * ids of parent folders. 'root' has special meaning.
-     */
-    parents: string[];
-    name: string;
 }
 
 interface FileMetadata {

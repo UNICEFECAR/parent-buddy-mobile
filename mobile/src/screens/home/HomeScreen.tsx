@@ -44,6 +44,10 @@ export class HomeScreen extends React.Component<Props, object> {
         Orientation.lockToPortrait();
     }
 
+    public componentWillUnmount() {
+        
+    }
+
     private setDefaultScreenParams() {
         let defaultScreenParams: HomeScreenParams = {
             showSearchInput: false,
@@ -57,12 +61,10 @@ export class HomeScreen extends React.Component<Props, object> {
     }
 
     private async onTestButtonPress() {
-        // let images: any[] = [];
-        // for (let i = 0; i < 320; i++) {
-        //     images.push({srcUrl:'', destFilename:'', destFolder:''},);
-        // }
-
-        // await apiStore.downloadImages(images);
+        const response = await apiStore.setVariable('foo', 'bar');
+        // const response = await apiStore.getVariable('foo');
+        // const response = await apiStore.deleteVariable('foo');
+        console.log(response);
     }
 
     public render() {
@@ -76,8 +78,8 @@ export class HomeScreen extends React.Component<Props, object> {
                         {/* <Text>{localize.getLanguage()}</Text> */}
 
                         {/* Test button */}
-                        {/* <Button onPress={() => {this.onTestButtonPress()}}>Test</Button>
-                        <View style={{height:30}} /> */}
+                        {/* <Button onPress={() => { this.onTestButtonPress() }}>Test</Button>
+                        <View style={{ height: 30 }} /> */}
 
                         {/* HOME MESSAGES */}
                         <DataRealmConsumer>

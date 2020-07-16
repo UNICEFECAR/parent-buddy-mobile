@@ -8,11 +8,12 @@ import { DateTime } from 'luxon';
 import { translateData } from '../translationsData/translateData';
 import { ChartData as Data, GrowthChart0_2Type, GrowthChartHeightAgeType } from '../components/growth/growthChartData';
 import { dataRealmStore } from './dataRealmStore';
-import { InterpretationTex } from '../screens/growth/GrowthScreen';
+import { InterpretationText } from '../screens/growth/GrowthScreen';
 
 type Variables = {
     'userChildren': any;
     'userData': any;
+    'checkedMilestones': any;
 };
 
 type VariableKey = keyof Variables;
@@ -55,7 +56,24 @@ class UserRealmStore {
         });
     }
 
-    public getCurrentChild() {
+    public closeRealm() {
+        if (this.realm) {
+            this.realm.close();
+            delete this.realm;
+        }
+    }
+
+    public isRealmClosed(): boolean {
+        let rval = true;
+
+        if (this.realm) {
+            rval = this.realm.isClosed;
+        }
+
+        return rval;
+    }
+
+    public getCurrentChild = () => {
         return this.realm?.objects<ChildEntity>(ChildEntitySchema.name).find((record, index) => index === 0);
     }
 
@@ -78,7 +96,7 @@ class UserRealmStore {
     public getInterpretationLenghtForAge(gender: ChildGender, lastMeasurements: Measures) {
         const childAgeId = dataRealmStore.getChildAgeTagWithArticles()?.id;
 
-        let interpretationTex: InterpretationTex = {
+        let interpretationText: InterpretationText = {
             name: "",
             text: "",
             articleId: 0
@@ -122,28 +140,27 @@ class UserRealmStore {
 
         if (filteredData !== undefined) {
             if (length >= filteredData.SD2neg && length <= filteredData.SD3) {
-                interpretationTex = interpretationData.goodText;
+                interpretationText = interpretationData.goodText;
                 goodMeasure = true;
             };
 
             if (length < filteredData.SD2neg && length > filteredData.SD3neg) {
-                interpretationTex = interpretationData.warrningSmallLengthText;
+                interpretationText = interpretationData.warrningSmallLengthText;
             };
 
             if (length < filteredData.SD3neg) {
-                interpretationTex = interpretationData.emergencySmallLengthText;
+                interpretationText = interpretationData.emergencySmallLengthText;
             };
             if (length > filteredData.SD3) {
-                interpretationTex = interpretationData.warrningBigLengthText;
+                interpretationText = interpretationData.warrningBigLengthText;
             };
         };
-
-        if(interpretationTex.name === ""){
+        if(interpretationText && interpretationText.name === ""){
             goodMeasure = undefined
         }
 
         return {
-            interpretationTex: interpretationTex,
+            interpretationText: interpretationText,
             goodMeasure: goodMeasure
         };
     };
@@ -152,7 +169,7 @@ class UserRealmStore {
         const dayLimit = 730; // 0-2 yeast || 2-5 years 
         const childAgeId = dataRealmStore.getChildAgeTagWithArticles()?.id;
 
-        let interpretationTex: InterpretationTex = {
+        let interpretationText: InterpretationText = {
             name: "",
             text: "",
             articleId: 0
@@ -190,33 +207,33 @@ class UserRealmStore {
 
         if (filteredDataForHeight) {
             if (height >= filteredDataForHeight?.SD2neg && height <= filteredDataForHeight.SD2) {
-                interpretationTex = interpretationData.goodText;
+                interpretationText = interpretationData.goodText;
                 goodMeasure = true;
             };
 
             if (height <= filteredDataForHeight.SD2neg && height >= filteredDataForHeight.SD3neg) {
-                interpretationTex = interpretationData.warrningSmallHeightText;
+                interpretationText = interpretationData.warrningSmallHeightText;
             };
 
             if (height < filteredDataForHeight.SD3neg) {
-                interpretationTex = interpretationData.emergencySmallHeightText;
+                interpretationText = interpretationData.emergencySmallHeightText;
             };
 
             if (height >= filteredDataForHeight.SD2 && height <= filteredDataForHeight.SD3) {
-                interpretationTex = interpretationData.warrningBigHeightText;
+                interpretationText = interpretationData.warrningBigHeightText;
             };
 
             if (height > filteredDataForHeight.SD3) {
-                interpretationTex = interpretationData.emergencyBigHeightText;
+                interpretationText = interpretationData.emergencyBigHeightText;
             };
         };
 
-        if(interpretationTex.name === ""){
+        if(interpretationText.name === ""){
             goodMeasure = undefined
         }
 
         return {
-            interpretationTex: interpretationTex,
+            interpretationText: interpretationText,
             goodMeasure: goodMeasure,
         };
     }
@@ -263,6 +280,8 @@ class UserRealmStore {
         });
     }
 
+    // public async setMilestone(T exte)
+
     public getVariable<T extends VariableKey>(key: T): Variables[T] | null {
         if (!this.realm) return null;
 
@@ -285,6 +304,7 @@ class UserRealmStore {
             return null;
         }
     }
+
 
     public async deleteVariable<T extends VariableKey>(key: T): Promise<void> {
         return new Promise((resolve, reject) => {

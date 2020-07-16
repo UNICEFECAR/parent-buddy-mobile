@@ -8,6 +8,7 @@
     "registerAccount": "Register account using Email",
     "loginButton": "Login",
     "loginForgotPassword": "Forgot your password?",
+    "loginCanceled": "You canceled log in",
     "createAccount": "Create account",
     "alreadyHaveAccount": "Already have account? Log in",
     "youCreatedAccount": "You created account",
@@ -100,7 +101,11 @@
     "settingsEnterGrowth": "I want to track child growth and receive reminders to enter the growth measures of my child",
     "settingsEnterDevelopment": "I want to track developmental milestones and receive reminders to enter the data",
     "settingsEnterDoctorVisits": "I want to make records about health check-ups and receive reminders to enter the data",
+    "settingsTitleImportExport": "Data export / import",
     "settingsButtonExport": "Export all saved data",
+    "settingsButtonImport": "Import all saved data",
+    "settingsButtonExportError": "Export failed",
+    "settingsButtonImportError": "There is no backup file",
     "settingsButtonDeleteAllData": "Delete account and erase all data",
     "settingsLogout": "Logout",
 
@@ -184,6 +189,16 @@
     "Iam": "I am",
     "meetTheParents": "Meet the parents",
 
+    "childDevelopmentTitle": "Razvoj deteta TODO",
+    "abilitiesAndSkillsChildAlreadGet": "Sposobnosti i veštine iz ovog perioda koje je dete osvojilo: TODO",
+    "abilitiesAndSkillsChildNeedToGet": "Sposobnosti i veštine iz ovog perioda koje dete treba da osvoji: TODO",
+    "questionnaireAboutChildDevelopment": "Upitnik o razvoju deteta TODO",
+    "moreAboutDevelopmentPeriod": "Više o razvoju u ovom periodu TODO",
+    "updateQuestionnaire": "Ažurirajte upitnik o razvoju deteta TODO",
+    "viewQuestionnaire": "Pogledajte upitnik o razvoju deteta TODO",
+    "fillQuestionnaire": "Popunite upitnik o razvoju deteta TODO",
+
+    "readMore": "Read more",
     "homeMessageChildHasItsProfile": "%CHILD% has a profile now!",
     "homeMessageEnterBabyData": "Enter baby data, so you can see customized content.",
     "homeMessageEnterBabyDataButton": "Enter baby data"

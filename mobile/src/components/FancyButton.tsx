@@ -243,7 +243,7 @@ export class FancyButton extends React.Component<Props, State> {
             >
                 <View style={{flexDirection:(this.state.iconPosition === FancyButtonIconPosition.top ? 'column' : 'row'), justifyContent: 'center',alignItems: 'center',}}>
                     {this.state.iconComponent}
-                    <Text style={ [this.state.textStyle, this.props.textStyle] }>{ this.props.title ? this.props.title : this.state.text }</Text>
+                    <Text style={ [{textAlign:'center'}, this.state.textStyle, this.props.textStyle] }>{ this.props.title ? this.props.title : this.state.text }</Text>
                 </View>
             </RectButton>
         );

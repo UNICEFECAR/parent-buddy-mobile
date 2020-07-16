@@ -6,6 +6,8 @@ import { scale, moderateScale } from 'react-native-size-matters';
 import { ContentEntity } from '../../stores';
 import { TextButton } from '..';
 import { TextButtonColor } from '../TextButton';
+import Icon from "react-native-vector-icons/FontAwesome";
+
 // @ts-ignore
 import HTML from 'react-native-render-html';
 
@@ -13,19 +15,53 @@ export interface Props {
     title?: string
     subTitle?: string
     html?: string
-    roundedButton?: { title: string, onPress: Function }
-    textButton?: { title: string, onPress: Function }
-    articles?: ContentEntity[]
+    roundedButton?: { title: string, onPress: Function, roundedButtonType?: RoundedButtonType, } | null
+    textButton?: { title: string, onPress: Function, }
+    articles?: ContentEntity[],
+    completed?: boolean,
+    isCurrentPeriod: boolean,
 }
 
+
 export class MilestoneCard extends Component<Props> {
+    
+    private renderIcon = (complete: boolean) => {
+        if (complete) {
+            return "check-circle"
+        } else {
+            return "exclamation-circle"
+        }
+    }
+
+    private iconColor = () => {
+        if(this.props.completed){
+            return "#2CBA39"
+        }else{
+            if(this.props.isCurrentPeriod){
+                return "#2BABEE"
+            }else{
+                return "#EB4747"
+            }
+        }
+    }
+
     render() {
         return (
             <View style={styles.container}>
-
-                {this.props.title && (<Typography type={TypographyType.headingPrimary} style={styles.headerStyle}>{this.props.title}</Typography>)}
-                {this.props.subTitle && (<Typography type={TypographyType.headingSecondary} style={styles.subHeaderStyle}>{this.props.subTitle}</Typography>)}
-
+                <View style={{flexDirection: 'row'}}>
+                    {
+                        this.props.completed !== undefined ?
+                        <Icon
+                            name={this.renderIcon(this.props.completed)}
+                            style={[styles.iconStyle, { color: this.iconColor()}]}
+                        /> : null
+                    }
+                   
+                    <View>
+                    {this.props.title && (<Typography type={TypographyType.headingPrimary} style={styles.headerStyle}>{this.props.title}</Typography>)}
+                    {this.props.subTitle && (<Typography type={TypographyType.headingSecondary} style={styles.subHeaderStyle}>{this.props.subTitle}</Typography>)}
+                    </View>
+                </View>
                 {this.props.html && (
                     <View style={styles.contentStyle}>
                         <HTML
@@ -41,7 +77,7 @@ export class MilestoneCard extends Component<Props> {
                     this.props.roundedButton && (
                         <RoundedButton
                             text={this.props.roundedButton.title}
-                            type={RoundedButtonType.purple}
+                            type={this.props.roundedButton.roundedButtonType}
                             showArrow={true}
                             style={styles.buttonStyle}
                             onPress={this.props.roundedButton.onPress}
@@ -99,7 +135,8 @@ const styles = StyleSheet.create<MilestoneCardStyles>({
     headerStyle: {
         marginBottom: 0,
         fontSize: moderateScale(22),
-        lineHeight: moderateScale(31)
+        lineHeight: moderateScale(31),
+        paddingRight: 20
     },
     subHeaderStyle: {
         fontSize: moderateScale(17)
@@ -114,6 +151,12 @@ const styles = StyleSheet.create<MilestoneCardStyles>({
     textButtonStyle: {
         justifyContent: "center",
         marginBottom: scale(20)
+    },
+    iconStyle: {
+        marginRight: scale(10),
+        marginTop: scale(3),
+        fontSize: moderateScale(26),
+        color: "#2CBA39",
     },
     articleLinkStyle: {
         marginTop: scale(10)
