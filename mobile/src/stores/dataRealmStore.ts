@@ -238,7 +238,8 @@ class DataRealmStore {
                 developmentPeriods = allPeriods
                     .filter(period => period.predefinedTagId <= childAgeTagId)
                     .map((period: any): DevelopmentPeriodsType => {
-
+                        console.log(period.predefinedTagId, "TAG ID ");
+                        console.log(childAgeTagId, "CHILD AGE TAG ID")
                         let allMilestones = this.getMilestonesFromChildAge(period.predefinedTagId);
                         let checkedMilesteones: number[] = userRealmStore.getVariable('checkedMilestones');
                         
@@ -276,21 +277,24 @@ class DataRealmStore {
                     });
 
                 // Get first next period and return for featuredPeriod
-                let featurePeriod = allPeriods?.filter(childAgeTag => childAgeTag.predefinedTagId > childAgeTagId)[0];
+                let featurePeriod = allPeriods?.filter(childAgeTag => childAgeTag.predefinedTagId > childAgeTagId);
 
-                if (featurePeriod) {
-                    developmentPeriods.push({
-                        body: featurePeriod.description,
-                        title: featurePeriod.name,
-                        subtilte: featurePeriod.subtitle,
-                        finished: undefined,
-                        childAgeTagId: featurePeriod.predefinedTagId,
-                        currentPeriod: false,
-                        relatedArticleId: childGender === 'boy' ?
-                            featurePeriod.moreAboutPeriodArticleIdMale :
-                            featurePeriod.moreAboutPeriodArticleIdFemale,
-                    });
-                };
+                featurePeriod.forEach(item => {
+                    if (featurePeriod) {
+                        developmentPeriods.push({
+                            body: item.description,
+                            title: item.name,
+                            subtilte: item.subtitle,
+                            finished: undefined,
+                            childAgeTagId: item.predefinedTagId,
+                            currentPeriod: false,
+                            relatedArticleId: childGender === 'boy' ?
+                                item.moreAboutPeriodArticleIdMale :
+                                item.moreAboutPeriodArticleIdFemale,
+                        });
+                    };
+                })
+               
             };
         };
 
@@ -387,16 +391,15 @@ class DataRealmStore {
         if (months >= 37 && months <= 48) {
             id = 52;
         }
-        if (months >= 15 && months <= 26) {
-            id = 53;
-        }
+        // if (months >= 15 && months <= 26) {
+        //     id = 53;
+        // }
         if (months >= 49 && months <= 60) {
             id = 57;
         }
         if (months >= 61) {
             id = 58;
         }
-
         return id
     }
 
