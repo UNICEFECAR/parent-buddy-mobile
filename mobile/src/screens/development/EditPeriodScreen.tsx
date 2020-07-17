@@ -28,6 +28,7 @@ export interface Props {
 export interface State {
     uncheckedMilestones: MilestoneItem[],
     checkedMilestones: MilestoneItem[],
+    milestonesForCheck: MilestoneItem[],
 };
 
 export class EditPeriodScreen extends Component<Props, State> {
@@ -49,6 +50,7 @@ export class EditPeriodScreen extends Component<Props, State> {
         let state: State = {
             checkedMilestones: milestones.checkedMilestones,
             uncheckedMilestones: milestones.uncheckedMilestones,
+            milestonesForCheck: [],
         };
 
         this.state = state;
@@ -105,12 +107,17 @@ export class EditPeriodScreen extends Component<Props, State> {
 
         this.setState({
             uncheckedMilestones: uncheckedMilestones,
+            milestonesForCheck: uncheckedMilestones.filter(item => item.checked === true)
         });
 
-        this.filterItems(id);
     };
 
     private save() {
+
+        this.state.milestonesForCheck.forEach(item => {
+            this.filterItems(item.id);
+        })
+
         if (this.props.navigation.state?.params?.id) {
             let milestones = dataRealmStore.getMilestonesForGivenPeriod(this.props.navigation.state.params.id);
 
@@ -163,7 +170,7 @@ export class EditPeriodScreen extends Component<Props, State> {
                                     <Typography type={TypographyType.headingSecondary}>
                                         {this.props.navigation.state?.params?.title}
                                     </Typography>
-                                    <Typography style={{ marginTop: -5 }}>
+                                    <Typography style={{ marginTop: -5, fontSize: moderateScale(18)}}>
                                         {this.props.navigation.state?.params?.subtitle}
                                     </Typography>
                                 </View>
@@ -231,6 +238,7 @@ const styles = StyleSheet.create<EditPeriodScreenStyles>({
     },
     headerView: {
         flexDirection: 'row',
-        marginBottom: 24
+        marginBottom: 24,
+        paddingRight: 20
     }
 });
