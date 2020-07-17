@@ -129,7 +129,8 @@ export class GrowthScreen extends Component<Props, State> {
             state.childBirthDate = DateTime.fromJSDate(currentChild.birthDate);
             let childGender = currentChild?.gender;
 
-            childAgeInDays = userRealmStore.getCurrentChildAgeInDays(currentChild.birthDate.getTime())
+            childAgeInDays = userRealmStore.getCurrentChildAgeInDays(currentChild.birthDate.getTime());
+
             if (childAgeInDays !== null) {
                 let ageInDays = 0;
 
@@ -155,6 +156,7 @@ export class GrowthScreen extends Component<Props, State> {
                 let lastMeasurementDate: string | undefined = undefined;
                 let lastMeasuresWeight: number = 0;
                 let lastMeasuresLength: number = 0;
+                let lastMeasurementDateObject: DateTime = DateTime.local();
 
                 if (measures[measures.length - 1]?.measurementDate !== undefined) {
                     let date: DateTime = DateTime.local();
@@ -164,18 +166,21 @@ export class GrowthScreen extends Component<Props, State> {
                     if (dt) {
                         date = DateTime.fromMillis(dt);
                     }
-
+                    
+                    lastMeasurementDateObject = date;
                     lastMeasurementDate = date.toFormat("dd'.'MM'.'yyyy");
                     lastMeasuresWeight = measures[measures.length - 1].weight ? parseFloat(measures[measures.length - 1].weight) / 1000 : 0
                     lastMeasuresLength = measures[measures.length - 1].length ? parseFloat(measures[measures.length - 1].length) : 0
                 }
 
-                let birthDay = new Date(currentChild.birthDate);
+                let birthDay = new Date(currentChild.birthDate);                
+
+                let ageInDaysLastMeasurement = lastMeasurementDateObject.diff(DateTime.fromJSDate(birthDay), "days").days;
 
                 const measuresData = this.convertMeasuresData(measures, birthDay);
                 const interpretationTextWeightLength = userRealmStore.getInterpretationWeightForHeight(
                     childGender,
-                    childAgeInDays,
+                    ageInDaysLastMeasurement,
                     measures[measures.length - 1]
                 ).interpretationText;
 

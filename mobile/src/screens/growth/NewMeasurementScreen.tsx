@@ -136,12 +136,14 @@ export class NewMeasurementScreen extends Component<Props, State> {
                 measures = JSON.parse(currentChild.measures);
                 let sameDate = false;
                 measures.forEach(item => {
-                    if(item.measurementDate === measurementDate?.toMillis()){
-                        sameDate = true;
-                        item.weight = weight;
-                        item.length = length;
-                        return;
-                    };
+                    if(item.measurementDate && measurementDate){
+                        if(Math.round(DateTime.fromMillis(item.measurementDate).diff(measurementDate, "days").days) === 0){
+                            sameDate = true;
+                            item.weight = weight;
+                            item.length = length;
+                            return;
+                        };
+                    }
                 });
 
                 if(sameDate === false){
@@ -164,7 +166,7 @@ export class NewMeasurementScreen extends Component<Props, State> {
                 // this will triger update on growth screen after measures added 
                 if(this.props.navigation.state.params.screen === "growth"){
                     this.props.navigation.push('HomeStackNavigator_GrowthScreen')
-                }
+                };
             }else{
                 this.props.navigation.goBack()
             }
