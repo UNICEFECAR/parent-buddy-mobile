@@ -276,6 +276,11 @@ class HomeMessages {
     private getGrowthMessages(): Message[] {
         let rval: Message[] = [];
 
+        // TODO
+        const currentChildAgeInDays = userRealmStore.getCurrentChildAgeInDays();
+        console.log('currentChildAgeInDays', currentChildAgeInDays);
+        console.log( 'shouldGrowthMessageBeShown', this.shouldGrowthMessageBeShown(currentChildAgeInDays) );
+
         // Get currentChild
         if (!this.currentChild || !this.currentChild.birthDate) {
             return [];
@@ -287,15 +292,20 @@ class HomeMessages {
     /**
      * Growth message should be shown if child age is between healthCheckPeriods.showGrowthMessageInDays
      */
-    private shouldGrowthMessageBeShown(childEntity: ChildEntity): boolean {
+    private shouldGrowthMessageBeShown(childAgeInDays: number): boolean {
         let rval = false;
 
         // Set healthCheckPeriods
         let healthCheckPeriods = translateData('healthCheckPeriods') as (TranslateDataHealthCheckPeriods | null);
 
-        if (healthCheckPeriods && healthCheckPeriods.length > 0) {
-            // Now I can use: healthCheckPeriods[0].showGrowthMessageInDays
+        if (!healthCheckPeriods || healthCheckPeriods.length === 0) {
+            return false;
         }
+
+        // Go over all healthCheckPeriods
+        healthCheckPeriods.forEach((period) => {
+
+        });
 
         return rval;
     }
