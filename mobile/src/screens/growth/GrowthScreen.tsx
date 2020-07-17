@@ -325,14 +325,14 @@ export class GrowthScreen extends Component<Props, State> {
 
                                                 {
                                                     this.state.defaultMessage === "" ?
-                                                        interpretationTexWeightLength?.text ?
+                                                        interpretationTextWeightLength?.text ?
                                                             <View style={styles.card}>
                                                                 <Typography>
-                                                                    {interpretationTexWeightLength.text}
+                                                                    {interpretationTextWeightLength.text}
                                                                 </Typography>
                                                                 <TextButton
                                                                     color={TextButtonColor.purple}
-                                                                    onPress={() => this.goToArticle(interpretationTexWeightLength.articleId)}
+                                                                    onPress={() => this.goToArticle(interpretationTextWeightLength.articleId)}
                                                                 >
                                                                     {translate('moreAboutChildGrowth')}
                                                                 </TextButton>
@@ -365,6 +365,7 @@ export class GrowthScreen extends Component<Props, State> {
                                                                 <TextButton
                                                                     color={TextButtonColor.purple}
                                                                     onPress={() => this.goToArticle(interpretationTextLenghtAge.articleId)}
+                                                                >
                                                                     {translate('moreAboutChildGrowth')}
                                                                 </TextButton>
                                                             </View> : null

@@ -228,7 +228,7 @@ class UserRealmStore {
             };
         };
 
-        if(interpretationText.name === ""){
+        if(interpretationText && interpretationText.name === ""){
             goodMeasure = undefined
         }
 
