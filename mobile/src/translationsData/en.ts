@@ -418,6 +418,73 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
             text: `The growth from the third years onwards becomes more even. A child gains 5-7.5 cm in height and 2-3 kg in weight per year.`,
         },
     ],
+    healthCheckPeriods: [
+        {
+            period: 'On birth',
+            childAgeInDays: {from:0, to:30},
+            showGrowthMessageInDays: {from:25, to:40},
+        },
+        {
+            period: '1 month',
+            childAgeInDays: {from:31, to:60},
+            showGrowthMessageInDays: {from:55, to:70},
+        },
+        {
+            period: '2 months',
+            childAgeInDays: {from:61, to:91},
+            showGrowthMessageInDays: {from:86, to:101},
+        },
+        {
+            period: '3-5 months',
+            childAgeInDays: {from:92, to:122},
+            showGrowthMessageInDays: {from:115, to:130},
+        },
+        {
+            period: '5 months',
+            childAgeInDays: {from:152, to:182},
+            showGrowthMessageInDays: {from:177, to:192},
+        },
+        {
+            period: '6 months',
+            childAgeInDays: {from:183, to:213},
+            showGrowthMessageInDays: {from:208, to:223},
+        },
+        {
+            period: '9 months',
+            childAgeInDays: {from:273, to:305},
+            showGrowthMessageInDays: {from:298, to:313},
+        },
+        {
+            period: '12-15 monts',
+            childAgeInDays: {from:365, to:460},
+            showGrowthMessageInDays: {from:450, to:465},
+        },
+        {
+            period: '18 months',
+            childAgeInDays: {from:545, to:577},
+            showGrowthMessageInDays: {from:572, to:587},
+        },
+        {
+            period: '24-30 months',
+            childAgeInDays: {from:730, to:915},
+            showGrowthMessageInDays: {from:907, to:922},
+        },
+        {
+            period: '30-36 months',
+            childAgeInDays: {from:916, to:1095},
+            showGrowthMessageInDays: {from:1090, to:1105},
+        },
+        {
+            period: '36-48 months',
+            childAgeInDays: {from:1091, to:1460},
+            showGrowthMessageInDays: {from:1455, to:1470},
+        },
+        {
+            period: '48-61 months',
+            childAgeInDays: {from:1456, to:1856},
+            showGrowthMessageInDays: {from:1851, to:1866},
+        },
+    ],
     interpretationWeightForHeight: [
         {
             predefined_tags: [43, 44, 45, 46],

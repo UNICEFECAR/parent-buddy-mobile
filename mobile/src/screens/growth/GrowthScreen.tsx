@@ -365,6 +365,7 @@ export class GrowthScreen extends Component<Props, State> {
                                                                 <TextButton
                                                                     color={TextButtonColor.purple}
                                                                     onPress={() => this.goToArticle(interpretationTextLenghtAge.articleId)}
+                                                                    >
                                                                     {translate('moreAboutChildGrowth')}
                                                                 </TextButton>
                                                             </View> : null

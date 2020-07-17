@@ -398,6 +398,73 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
             text: 'Dete od treće godine ujednačeno raste. Dete u visini dobija  5-7,5 cm, a u težini 2-3 kg godišnje. ',
         },
     ],
+    healthCheckPeriods: [
+        {
+            period: 'Na rodjenju',
+            childAgeInDays: {from:0, to:30},
+            showGrowthMessageInDays: {from:25, to:40},
+        },
+        {
+            period: '1 mesec',
+            childAgeInDays: {from:31, to:60},
+            showGrowthMessageInDays: {from:55, to:70},
+        },
+        {
+            period: '2 meseca',
+            childAgeInDays: {from:61, to:91},
+            showGrowthMessageInDays: {from:86, to:101},
+        },
+        {
+            period: '3-5 meseci',
+            childAgeInDays: {from:92, to:122},
+            showGrowthMessageInDays: {from:115, to:130},
+        },
+        {
+            period: '5 meseci',
+            childAgeInDays: {from:152, to:182},
+            showGrowthMessageInDays: {from:177, to:192},
+        },
+        {
+            period: '6 meseci',
+            childAgeInDays: {from:183, to:213},
+            showGrowthMessageInDays: {from:208, to:223},
+        },
+        {
+            period: '9 meseci',
+            childAgeInDays: {from:273, to:305},
+            showGrowthMessageInDays: {from:298, to:313},
+        },
+        {
+            period: '12-15 meseci',
+            childAgeInDays: {from:365, to:460},
+            showGrowthMessageInDays: {from:450, to:465},
+        },
+        {
+            period: '18 meseci',
+            childAgeInDays: {from:545, to:577},
+            showGrowthMessageInDays: {from:572, to:587},
+        },
+        {
+            period: '24-30 meseci',
+            childAgeInDays: {from:730, to:915},
+            showGrowthMessageInDays: {from:907, to:922},
+        },
+        {
+            period: '30-36 meseci',
+            childAgeInDays: {from:916, to:1095},
+            showGrowthMessageInDays: {from:1090, to:1105},
+        },
+        {
+            period: '36-48 meseci',
+            childAgeInDays: {from:1091, to:1460},
+            showGrowthMessageInDays: {from:1455, to:1470},
+        },
+        {
+            period: '48-61 meseci',
+            childAgeInDays: {from:1456, to:1856},
+            showGrowthMessageInDays: {from:1851, to:1866},
+        },
+    ],
     interpretationWeightForHeight: [
         {
             predefined_tags: [43, 44, 45, 46],

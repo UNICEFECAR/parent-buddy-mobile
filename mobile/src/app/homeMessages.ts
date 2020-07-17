@@ -283,6 +283,15 @@ class HomeMessages {
 
         return rval;
     }
+
+    /**
+     * Growth message should be shown if 
+     */
+    private shouldGrowthMessageBeShown(childEntity: ChildEntity): boolean {
+        let rval = false;
+
+        return rval;
+    }
 }
 
 export interface DailyMessageVariable {
