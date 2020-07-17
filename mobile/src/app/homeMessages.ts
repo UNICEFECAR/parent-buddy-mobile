@@ -8,6 +8,7 @@ import { RoundedButtonType } from "../components/RoundedButton";
 import { navigation } from ".";
 import { translateData, TranslateDataHealthCheckPeriods } from "../translationsData/translateData";
 import { utils } from "./utils";
+import { Measures } from "../stores/ChildEntity";
 
 /**
  * Home messages logic is here.
@@ -278,32 +279,29 @@ class HomeMessages {
     private getGrowthMessages(): Message[] {
         let rval: Message[] = [];
 
-        // TODO
-        console.log('currentChildAgeInDays', this.childAgeInDays);
-        console.log('shouldGrowthMessageBeShown', this.shouldGrowthMessageBeShown());
+        // Set currentHealthCheckPeriod
+        const currentHealthCheckPeriod = this.getCurrentHealthCheckPeriod();
 
-        // Get currentChild
-        if (!this.currentChild || !this.currentChild.birthDate) {
+        if (!currentHealthCheckPeriod) {
             return [];
         }
+
+
 
         return rval;
     }
 
-    /**
-     * Growth message should be shown if child age is between healthCheckPeriods.showGrowthMessageInDays
-     */
-    private shouldGrowthMessageBeShown(): boolean {
-        let rval = false;
+    private getCurrentHealthCheckPeriod(): HealthCheckPeriod | null {
+        let rval: HealthCheckPeriod | null = null;
 
         // Validation
-        if (this.childAgeInDays === undefined) return false;
+        if (this.childAgeInDays === undefined) return null;
 
         // Set healthCheckPeriods
         let healthCheckPeriods = translateData('healthCheckPeriods') as (TranslateDataHealthCheckPeriods | null);
 
         if (!healthCheckPeriods || healthCheckPeriods.length === 0) {
-            return false;
+            return null;
         }
 
         // Go over all healthCheckPeriods
@@ -314,11 +312,15 @@ class HomeMessages {
                 childAgeInDays >= period.showGrowthMessageInDays.from
                 && childAgeInDays <= period.showGrowthMessageInDays.to
             ) {
-                rval = true;
+                rval = period;
             }
         });
 
         return rval;
+    }
+
+    private getMeasurementsForHealthCheckPeriod(healthCheckPeriod: HealthCheckPeriod | null): Measures | null {
+        return null;
     }
 }
 
@@ -328,6 +330,12 @@ export interface DailyMessageVariable {
     day: number;
     month: number;
     year: number;
+}
+
+export interface HealthCheckPeriod {
+    period: string;
+    childAgeInDays: {from:number, to:number};
+    showGrowthMessageInDays: {from:number, to:number};
 }
 
 export const homeMessages = HomeMessages.getInstance();
