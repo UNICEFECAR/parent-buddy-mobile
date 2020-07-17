@@ -92,8 +92,6 @@ export class DevelopmentScreen extends Component<Props, State> {
         };
     };
 
-
-
     render() {
         return (
             <ThemeConsumer>
