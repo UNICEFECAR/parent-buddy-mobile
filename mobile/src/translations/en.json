@@ -201,5 +201,10 @@
     "readMore": "Read more",
     "homeMessageChildHasItsProfile": "%CHILD% has a profile now!",
     "homeMessageEnterBabyData": "Enter baby data, so you can see customized content.",
-    "homeMessageEnterBabyDataButton": "Enter baby data"
+    "homeMessageEnterBabyDataButton": "Enter baby data",
+    "homeMessageGrowthMeasurementNotEntered": "Child measures are NOT up to date.",
+    "homeMessageGrowthMeasurementEntered": "Child measures are up to date.",
+    "homeMessageGrowthAddMeasurementButton": "Add child measures",
+    "homeMessageGrowthMeasurementsOk": "Congratulations. %CHILD% is growing successfully",
+    "homeMessageGrowthMeasurementsBad": "Check growth recommendations and consult doctor"
 }

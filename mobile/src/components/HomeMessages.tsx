@@ -114,7 +114,7 @@ export class HomeMessages extends React.Component<Props, State> {
     }
 
     public render() {
-        console.log('RENDER: HomeMessages');
+        // console.log('RENDER: HomeMessages');
         
         const messages = homeMessages.getMessages();
 

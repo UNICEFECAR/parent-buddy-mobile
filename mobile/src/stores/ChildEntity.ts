@@ -2,8 +2,17 @@ import { ObjectSchema } from "realm";
 
 
 export type Measures = {
+    /**
+     * Grams.
+     */
     weight: string;
+    /**
+     * Centimeters.
+     */
     length: string;
+    /**
+     * Timestamp in milliseconds.
+     */
     measurementDate: number | undefined;
     titleDateInMonth?: number,
 }
