@@ -170,7 +170,7 @@ export class EditPeriodScreen extends Component<Props, State> {
                                     <Typography type={TypographyType.headingSecondary}>
                                         {this.props.navigation.state?.params?.title}
                                     </Typography>
-                                    <Typography style={{ marginTop: -5 }}>
+                                    <Typography style={{ marginTop: -5, fontSize: moderateScale(18)}}>
                                         {this.props.navigation.state?.params?.subtitle}
                                     </Typography>
                                 </View>
@@ -238,6 +238,7 @@ const styles = StyleSheet.create<EditPeriodScreenStyles>({
     },
     headerView: {
         flexDirection: 'row',
-        marginBottom: 24
+        marginBottom: 24,
+        paddingRight: 20
     }
 });
