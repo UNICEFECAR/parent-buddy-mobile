@@ -10,7 +10,7 @@ import { HomeScreenParams } from '../home/HomeScreen';
 import { translate } from '../../translations/translate';
 import { Typography, TextButton } from '../../components';
 import { TypographyType } from '../../components/Typography';
-import { translateData } from '../../translationsData/translateData';
+import { translateData, TranslateDataGrowthPeriods } from '../../translationsData/translateData';
 import { dataRealmStore, userRealmStore } from '../../stores';
 import { chartTypes, GrowthChart, ChartData } from '../../components/growth/GrowthChart';
 import { ChildGender, Measures } from '../../stores/ChildEntity';
@@ -54,7 +54,7 @@ export class GrowthScreen extends Component<Props, State> {
     }
 
     private convertMeasuresData(measures: Measures[], childBirthDay: Date) {
-        let measurementDateInDays: number | undefined = 0;
+        let measurementDateInDays: number = 0;
 
         let measuresData: ConvertedMeasures[] = [];
 
@@ -63,8 +63,11 @@ export class GrowthScreen extends Component<Props, State> {
                 let childAge = DateTime.fromJSDate(childBirthDay)
                 let date = DateTime.fromJSDate(new Date(item.measurementDate));
 
-                measurementDateInDays = date.diff(childAge, "days").toObject().days;
+                let days = date.diff(childAge, "days").toObject().days
+
+                measurementDateInDays = days ? days : 0;
             };
+            
             if (measurementDateInDays < 1855) {
                 measuresData.push({
                     weight: item.weight ? parseFloat(item.weight) / 1000 : 0,
@@ -142,8 +145,13 @@ export class GrowthScreen extends Component<Props, State> {
                     defaultMessage = "";
                 };
 
-                let growthPeriod = translateData('growthPeriods')?.
-                    filter((item: any) => (ageInDays >= item.dayMin && ageInDays <= item.dayMax))[0];
+                
+                let allPeriods = translateData('growthPeriods') as (TranslateDataGrowthPeriods | null)
+
+                allPeriods?.filter(item => (ageInDays >= item.dayMin && ageInDays <= item.dayMax))[0]
+
+                let growthPeriod = allPeriods?.
+                    filter(item => (ageInDays >= item.dayMin && ageInDays <= item.dayMax))[0];
 
                 periodIntroductionText = growthPeriod?.text ? growthPeriod.text : "";
 
@@ -192,8 +200,8 @@ export class GrowthScreen extends Component<Props, State> {
                 state = {
                     periodIntroductionText: periodIntroductionText,
                     measuresData: measuresData,
-                    interpretationTextWeightLength: interpretationTextWeightLength,
-                    interpretationTextLenghtAge: interpretationTextLenghtAge,
+                    interpretationTextWeightLength: interpretationTextWeightLength ? interpretationTextWeightLength : state.interpretationTextWeightLength,
+                    interpretationTextLenghtAge: interpretationTextLenghtAge ? interpretationTextLenghtAge : state.interpretationTextLenghtAge,
                     childGender: childGender,
                     childBirthDate: DateTime.fromJSDate(currentChild.birthDate),
                     lastMeasurementDate: lastMeasurementDate,
@@ -224,7 +232,7 @@ export class GrowthScreen extends Component<Props, State> {
     }
 
     private goToNewMeasurements() {
-        this.props.navigation.navigate('HomeStackNavigator_NewMeasurementScreen', { screen: "growth" });
+        this.props.navigation.push('HomeStackNavigator_NewMeasurementScreen', { screen: "growth" });
     }
 
     private goToArticle(id: number) {

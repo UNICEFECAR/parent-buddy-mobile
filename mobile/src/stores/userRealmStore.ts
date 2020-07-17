@@ -5,7 +5,7 @@ import { appConfig } from '../app/appConfig';
 import { ChildEntity } from '.';
 import { ChildEntitySchema, ChildGender, Measures } from './ChildEntity';
 import { DateTime } from 'luxon';
-import { translateData } from '../translationsData/translateData';
+import { translateData, TranslateDataInterpretationLenghtForAge, TranslateDataInterpretationWeightForHeight } from '../translationsData/translateData';
 import { ChartData as Data, GrowthChart0_2Type, GrowthChartHeightAgeType } from '../components/growth/growthChartData';
 import { dataRealmStore } from './dataRealmStore';
 import { InterpretationText } from '../screens/growth/GrowthScreen';
@@ -96,7 +96,7 @@ class UserRealmStore {
     public getInterpretationLenghtForAge(gender: ChildGender, lastMeasurements: Measures) {
         const childAgeId = dataRealmStore.getChildAgeTagWithArticles()?.id;
 
-        let interpretationText: InterpretationText = {
+        let interpretationText: InterpretationText | undefined = {
             name: "",
             text: "",
             articleId: 0
@@ -134,25 +134,29 @@ class UserRealmStore {
             if (convertInDays !== undefined) days = Math.round(convertInDays);
         };
         let filteredData = chartData.find(data => data.Day === days);
-        let interpretationData = translateData('interpretationLenghtForAge')?.
-            find(item => item.predefined_tags.indexOf(childAgeId) !== -1);
 
+        let allinterpretationData = translateData('interpretationLenghtForAge') as (TranslateDataInterpretationLenghtForAge | null)
 
+        
+        let interpretationData = allinterpretationData?.
+            find(item => item.predefined_tags.indexOf(childAgeId ? childAgeId : 0) !== -1);
+
+        
         if (filteredData !== undefined) {
             if (length >= filteredData.SD2neg && length <= filteredData.SD3) {
-                interpretationText = interpretationData.goodText;
+                interpretationText = interpretationData?.goodText;
                 goodMeasure = true;
             };
 
             if (length < filteredData.SD2neg && length > filteredData.SD3neg) {
-                interpretationText = interpretationData.warrningSmallLengthText;
+                interpretationText = interpretationData?.warrningSmallLengthText;
             };
 
             if (length < filteredData.SD3neg) {
-                interpretationText = interpretationData.emergencySmallLengthText;
+                interpretationText = interpretationData?.emergencySmallLengthText;
             };
             if (length > filteredData.SD3) {
-                interpretationText = interpretationData.warrningBigLengthText;
+                interpretationText = interpretationData?.warrningBigLengthText;
             };
         };
         if(interpretationText && interpretationText.name === ""){
@@ -169,7 +173,7 @@ class UserRealmStore {
         const dayLimit = 730; // 0-2 yeast || 2-5 years 
         const childAgeId = dataRealmStore.getChildAgeTagWithArticles()?.id;
 
-        let interpretationText: InterpretationText = {
+        let interpretationText: InterpretationText | undefined = {
             name: "",
             text: "",
             articleId: 0
@@ -190,7 +194,6 @@ class UserRealmStore {
                 chartData = Data.GrowthChartGirls0_2;
             } else {
                 chartData = Data.GrowthChartGirls2_5;
-                console.log("USO")
             };
         };
 
@@ -203,29 +206,32 @@ class UserRealmStore {
         };
 
         let filteredDataForHeight = chartData.find(data => data.Height === length);
-        let interpretationData = translateData('interpretationWeightForHeight')?.
-            find(item => item.predefined_tags.indexOf(childAgeId) !== -1);
+
+        let allInterpretationData = translateData('interpretationWeightForHeight') as (TranslateDataInterpretationWeightForHeight | null) 
+
+        let interpretationData = allInterpretationData?.
+            find(item => item.predefined_tags.indexOf(childAgeId ? childAgeId : 0) !== -1);
 
         if (filteredDataForHeight) {
             if (height >= filteredDataForHeight?.SD2neg && height <= filteredDataForHeight.SD2) {
-                interpretationText = interpretationData.goodText;
+                interpretationText = interpretationData?.goodText;
                 goodMeasure = true;
             };
 
             if (height <= filteredDataForHeight.SD2neg && height >= filteredDataForHeight.SD3neg) {
-                interpretationText = interpretationData.warrningSmallHeightText;
+                interpretationText = interpretationData?.warrningSmallHeightText;
             };
 
             if (height < filteredDataForHeight.SD3neg) {
-                interpretationText = interpretationData.emergencySmallHeightText;
+                interpretationText = interpretationData?.emergencySmallHeightText;
             };
 
             if (height >= filteredDataForHeight.SD2 && height <= filteredDataForHeight.SD3) {
-                interpretationText = interpretationData.warrningBigHeightText;
+                interpretationText = interpretationData?.warrningBigHeightText;
             };
 
             if (height > filteredDataForHeight.SD3) {
-                interpretationText = interpretationData.emergencyBigHeightText;
+                interpretationText = interpretationData?.emergencyBigHeightText;
             };
         };
 

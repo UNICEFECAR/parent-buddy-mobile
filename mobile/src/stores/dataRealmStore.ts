@@ -11,7 +11,7 @@ import { DateTime } from "luxon";
 import { userRealmStore } from './userRealmStore';
 import { BasicPageEntity, BasicPagesEntitySchema } from './BasicPageEntity';
 import { MilestoneEntity, MilestoneEntitySchema } from './MilestoneEntity';
-import { translateData } from '../translationsData/translateData';
+import { translateData, TranslateDataDevelopmentPeriods } from '../translationsData/translateData';
 import { MilestoneItem } from '../components/development/MilestoneForm';
 import { DailyMessageVariable } from '../app/homeMessages';
 
@@ -215,8 +215,12 @@ class DataRealmStore {
     public getDevelopmentPeriods(): DevelopmentPeriodsType[] {
         let developmentPeriods: DevelopmentPeriodsType[] = [];
 
-        const allPeriods = translateData("developmentPeriods");
-        const childAgeTagId = this.getChildAgeTagWithArticles()?.id;
+        const allPeriods = translateData("developmentPeriods") as (TranslateDataDevelopmentPeriods | null);
+
+        const childAge = userRealmStore.getCurrentChild()?.birthDate;
+        let childAgeMonths = DateTime.local().diff(DateTime.fromJSDate(childAge ? childAge : new Date()), "months",).months;
+
+        const childAgeTagId = this.getTagIdFromChildAge(parseInt(childAgeMonths.toString()) + 1);
         const childGender = userRealmStore.getChildGender();
 
         if (allPeriods) {
@@ -240,8 +244,6 @@ class DataRealmStore {
                 developmentPeriods = allPeriods
                     .filter(period => period.predefinedTagId <= childAgeTagId)
                     .map((period: any): DevelopmentPeriodsType => {
-                        console.log(period.predefinedTagId, "TAG ID ");
-                        console.log(childAgeTagId, "CHILD AGE TAG ID")
                         let allMilestones = this.getMilestonesFromChildAge(period.predefinedTagId);
                         let checkedMilesteones: number[] = userRealmStore.getVariable('checkedMilestones');
                         

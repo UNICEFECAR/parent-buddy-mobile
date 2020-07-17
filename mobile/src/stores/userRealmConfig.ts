@@ -1,6 +1,6 @@
 import Realm from 'realm';
 import { VariableEntitySchema } from './VariableEntity';
-import { ChildEntitySchema, MeasuresEntity } from './ChildEntity';
+import { ChildEntitySchema } from './ChildEntity';
 
 export const userRealmConfig: Realm.Configuration = {
     // API: https://bit.ly/36WypWV

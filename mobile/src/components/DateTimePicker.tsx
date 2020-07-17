@@ -122,7 +122,7 @@ export class DateTimePicker extends React.Component<Props, State> {
                         isVisible={this.state.isDateTimePickerVisible}
                         date={this.state.value}
                         mode={ this.props.type }
-                        headerTextIOS=""
+                        removeClippedSubviews={true}
                         is24Hour={ true }
                         onConfirm={(date) => {this.onDateTimePickerConfirm(date)}}
                         onCancel={() => {this.onDateTimePickerCancel()}}
