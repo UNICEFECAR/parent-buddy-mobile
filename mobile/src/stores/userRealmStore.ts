@@ -77,8 +77,8 @@ class UserRealmStore {
         return this.realm?.objects<ChildEntity>(ChildEntitySchema.name).find((record, index) => index === 0);
     }
 
-    public getCurrentChildAgeInDays = (birthDay?: number) => {
-        let childBirthDay = birthDay ? birthDay : this.getCurrentChild()?.birthDate?.getDate();
+    public getCurrentChildAgeInDays = (birthDayMilisecounds?: number) => {
+        let childBirthDay = birthDayMilisecounds ? birthDayMilisecounds : this.getCurrentChild()?.birthDate?.getTime();
 
         const timeNow = DateTime.local();
         let days: number = 0;
