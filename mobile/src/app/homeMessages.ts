@@ -19,7 +19,8 @@ import { utils } from "./utils";
  * ```
  */
 class HomeMessages {
-    private currentChild: ChildEntity | undefined;
+    private currentChild?: ChildEntity;
+    private childAgeInDays?: number;
     private static instance: HomeMessages;
 
     private constructor() { }
@@ -34,8 +35,9 @@ class HomeMessages {
     public getMessages(): Message[] {
         let rval: Message[] = [];
 
-        // Get current child
+        // Set properties
         this.currentChild = userRealmStore.getCurrentChild();
+        this.childAgeInDays = userRealmStore.getCurrentChildAgeInDays();
 
         // Upcomming development period message
         const upcommingDevelopmentPeriodMessage = this.getUpcommingDevelopmentPeriodMessage();
@@ -196,7 +198,7 @@ class HomeMessages {
 
             rval.push({
                 text: messageText,
-                textStyle: {fontWeight:'bold'},
+                textStyle: { fontWeight: 'bold' },
                 iconType: IconType.celebrate,
             });
 
@@ -228,7 +230,7 @@ class HomeMessages {
         // Set babyAgeInDays
         const diffDate = currentDate.diff(babyBirthDate, 'days');
         let babyAgeInDays = diffDate.get('days');
-        
+
         if (babyAgeInDays < 0) return null;
         babyAgeInDays = Math.ceil(babyAgeInDays);
 
@@ -239,7 +241,7 @@ class HomeMessages {
         let activePeriodHomeMessage: string | null = null;
 
         // console.log('babyAgeInDays', babyAgeInDays);
-        developmentPeriods?.forEach((value:any, index:any) => {
+        developmentPeriods?.forEach((value: any, index: any) => {
             // console.log('value.daysStart', value.daysStart);
             // console.log('value.daysStart - babyAgeInDays > 0', value.daysStart - babyAgeInDays > 0);
             // console.log('value.daysStart - babyAgeInDays < 10', value.daysStart - babyAgeInDays < 10);
@@ -265,7 +267,7 @@ class HomeMessages {
 
             rval = {
                 text: homeMessage,
-                textStyle: {fontWeight:'bold'},
+                textStyle: { fontWeight: 'bold' },
                 iconType: IconType.celebrate,
             };
         }
@@ -277,9 +279,8 @@ class HomeMessages {
         let rval: Message[] = [];
 
         // TODO
-        const currentChildAgeInDays = userRealmStore.getCurrentChildAgeInDays();
-        console.log('currentChildAgeInDays', currentChildAgeInDays);
-        console.log( 'shouldGrowthMessageBeShown', this.shouldGrowthMessageBeShown(currentChildAgeInDays) );
+        console.log('currentChildAgeInDays', this.childAgeInDays);
+        console.log('shouldGrowthMessageBeShown', this.shouldGrowthMessageBeShown());
 
         // Get currentChild
         if (!this.currentChild || !this.currentChild.birthDate) {
@@ -292,8 +293,11 @@ class HomeMessages {
     /**
      * Growth message should be shown if child age is between healthCheckPeriods.showGrowthMessageInDays
      */
-    private shouldGrowthMessageBeShown(childAgeInDays: number): boolean {
+    private shouldGrowthMessageBeShown(): boolean {
         let rval = false;
+
+        // Validation
+        if (this.childAgeInDays === undefined) return false;
 
         // Set healthCheckPeriods
         let healthCheckPeriods = translateData('healthCheckPeriods') as (TranslateDataHealthCheckPeriods | null);
@@ -303,8 +307,15 @@ class HomeMessages {
         }
 
         // Go over all healthCheckPeriods
-        healthCheckPeriods.forEach((period) => {
+        const childAgeInDays = this.childAgeInDays;
 
+        healthCheckPeriods.forEach((period) => {
+            if (
+                childAgeInDays >= period.showGrowthMessageInDays.from
+                && childAgeInDays <= period.showGrowthMessageInDays.to
+            ) {
+                rval = true;
+            }
         });
 
         return rval;
