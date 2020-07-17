@@ -113,7 +113,7 @@ class UserRealmStore {
         }
 
         let length: number = 0;
-        if (lastMeasurements !== undefined && lastMeasurements.height && lastMeasurements.length) {
+        if (lastMeasurements !== undefined && lastMeasurements.weight && lastMeasurements.length) {
             length = parseFloat(lastMeasurements.length);
         };
 
@@ -190,14 +190,15 @@ class UserRealmStore {
                 chartData = Data.GrowthChartGirls0_2;
             } else {
                 chartData = Data.GrowthChartGirls2_5;
+                console.log("USO")
             };
         };
 
         let height: number = 0;
         let length: number = 0;
 
-        if (lastMeasurements !== undefined && lastMeasurements.height && lastMeasurements.length) {
-            height = parseFloat(lastMeasurements.height) / 1000;
+        if (lastMeasurements !== undefined && lastMeasurements.weight && lastMeasurements.length) {
+            height = parseFloat(lastMeasurements.weight) / 1000;
             length = parseFloat(lastMeasurements.length);
         };
 
@@ -231,7 +232,7 @@ class UserRealmStore {
         if(interpretationText && interpretationText.name === ""){
             goodMeasure = undefined
         }
-
+        console.log(interpretationText, "IT")
         return {
             interpretationText: interpretationText,
             goodMeasure: goodMeasure,
