@@ -6,7 +6,7 @@ import { DateTime } from 'luxon';
 import { translate } from "../translations/translate";
 import { RoundedButtonType } from "../components/RoundedButton";
 import { navigation } from ".";
-import { translateData } from "../translationsData/translateData";
+import { translateData, TranslateDataHealthCheckPeriods } from "../translationsData/translateData";
 import { utils } from "./utils";
 
 /**
@@ -239,7 +239,7 @@ class HomeMessages {
         let activePeriodHomeMessage: string | null = null;
 
         // console.log('babyAgeInDays', babyAgeInDays);
-        developmentPeriods?.forEach((value, index) => {
+        developmentPeriods?.forEach((value:any, index:any) => {
             // console.log('value.daysStart', value.daysStart);
             // console.log('value.daysStart - babyAgeInDays > 0', value.daysStart - babyAgeInDays > 0);
             // console.log('value.daysStart - babyAgeInDays < 10', value.daysStart - babyAgeInDays < 10);
@@ -285,10 +285,17 @@ class HomeMessages {
     }
 
     /**
-     * Growth message should be shown if 
+     * Growth message should be shown if child age is between healthCheckPeriods.showGrowthMessageInDays
      */
     private shouldGrowthMessageBeShown(childEntity: ChildEntity): boolean {
         let rval = false;
+
+        // Set healthCheckPeriods
+        let healthCheckPeriods = translateData('healthCheckPeriods') as (TranslateDataHealthCheckPeriods | null);
+
+        if (healthCheckPeriods && healthCheckPeriods.length > 0) {
+            // Now I can use: healthCheckPeriods[0].showGrowthMessageInDays
+        }
 
         return rval;
     }

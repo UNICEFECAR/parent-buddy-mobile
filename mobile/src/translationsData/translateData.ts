@@ -19,7 +19,20 @@ export function translateData(key: TranslateDataKey): TranslateDataValue {
 
 let languageCode: string | null = null;
 type TranslateDataKey = keyof typeof en;
-type TranslateDataValue = typeof en[TranslateDataKey] | null;
+
+export type TranslateDataDevelopmentPeriods = typeof en['developmentPeriods'];
+export type TranslateDataGrowthPeriods = typeof en['growthPeriods'];
+export type TranslateDataHealthCheckPeriods = typeof en['healthCheckPeriods'];
+export type TranslateDataInterpretationWeightForHeight = typeof en['interpretationWeightForHeight'];
+export type TranslateDataInterpretationLenghtForAge = typeof en['interpretationLenghtForAge'];
+
+type TranslateDataValue =
+    TranslateDataDevelopmentPeriods
+    | TranslateDataGrowthPeriods
+    | TranslateDataHealthCheckPeriods
+    | TranslateDataInterpretationWeightForHeight
+    | TranslateDataInterpretationLenghtForAge
+    | null;
 
 function getLanguageCode() {
     return dataRealmStore.getVariable('languageCode');
