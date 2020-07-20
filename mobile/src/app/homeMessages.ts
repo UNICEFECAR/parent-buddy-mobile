@@ -40,7 +40,7 @@ class HomeMessages {
         this.currentChild = userRealmStore.getCurrentChild();
         this.childAgeInDays = userRealmStore.getCurrentChildAgeInDays();
 
-        console.log('this.childAgeInDays', this.childAgeInDays);
+        // console.log('this.childAgeInDays', this.childAgeInDays);
 
         // Upcomming development period message
         const upcommingDevelopmentPeriodMessage = this.getUpcommingDevelopmentPeriodMessage();
