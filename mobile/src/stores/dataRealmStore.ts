@@ -35,6 +35,7 @@ export type Variables = {
     'randomNumber': number;
     'vocabulariesAndTerms': VocabulariesAndTermsResponse;
     'dailyMessage': DailyMessageVariable;
+    'hideHomeMessages': boolean;
 };
 
 type VariableKey = keyof Variables;

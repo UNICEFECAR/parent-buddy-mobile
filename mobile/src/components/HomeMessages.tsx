@@ -1,13 +1,16 @@
 import React from 'react';
-import { View, Text, StyleProp, StyleSheet, ViewStyle, TextStyle, ImageStyle } from 'react-native';
+import { View, Text, StyleProp, StyleSheet, ViewStyle, TextStyle, ImageStyle, LayoutAnimation, LayoutAnimationConfig } from 'react-native';
 import { RoundedButtonType } from './RoundedButton';
 import { scale, moderateScale } from 'react-native-size-matters';
-import { Typography, RoundedButton } from '.';
+import { Typography, RoundedButton, TextButton } from '.';
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome';
 import IconFontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { IconButton, Colors } from 'react-native-paper';
 import { TypographyType } from './Typography';
 import { homeMessages } from '../app';
+import { translate } from "../translations/translate";
+import { TextButtonColor } from './TextButton';
+import { dataRealmStore } from '../stores/dataRealmStore';
 
 export interface Props {
     cardType?: 'purple' | 'white';
@@ -17,7 +20,7 @@ export interface Props {
 }
 
 export interface State {
-    showCard: boolean;
+    messagesAreHidden: boolean;
 }
 
 export class HomeMessages extends React.Component<Props, State> {
@@ -32,8 +35,11 @@ export class HomeMessages extends React.Component<Props, State> {
     }
 
     private initState() {
+        let hideHomeMessages = dataRealmStore.getVariable('hideHomeMessages');
+        if (hideHomeMessages === null) hideHomeMessages = false;
+
         let state: State = {
-            showCard: true,
+            messagesAreHidden: hideHomeMessages,
         };
 
         this.state = state;
@@ -104,22 +110,46 @@ export class HomeMessages extends React.Component<Props, State> {
     }
 
     private onCloseButtonPress() {
+        let layoutAnimationConfig: LayoutAnimationConfig = {
+            duration: 200,
+            update: {
+                springDamping: 0.4,
+                type: LayoutAnimation.Types.easeInEaseOut,
+            }
+        };
+
+        LayoutAnimation.configureNext(layoutAnimationConfig);
+
         this.setState({
-            showCard: false,
+            messagesAreHidden: true,
         }, () => {
             if (this.props.onClosePress) {
                 this.props.onClosePress();
             }
         });
+
+        dataRealmStore.setVariable('hideHomeMessages', true);
+    }
+
+    private onShowMessagesPress() {
+        LayoutAnimation.spring();
+
+        this.setState({
+            messagesAreHidden: false,
+        });
+
+        dataRealmStore.setVariable('hideHomeMessages', false);
     }
 
     public render() {
         // console.log('RENDER: HomeMessages');
-        
+
         const messages = homeMessages.getMessages();
 
-        if (messages.length === 0 || !this.state.showCard) {
-            return null;
+        if (this.state.messagesAreHidden) {
+            return (
+                <TextButton onPress={() => { this.onShowMessagesPress() }} style={{ justifyContent: 'center', marginBottom: scale(15) }} color={TextButtonColor.purple}>{translate('showHomeMessages')}</TextButton>
+            );
         }
 
         return (
@@ -129,31 +159,33 @@ export class HomeMessages extends React.Component<Props, State> {
                 this.props.style
             ]}>
                 {messages?.map((message, index) => (
-                    <View style={{paddingRight:moderateScale(22)}}>
-                        <View style={{ flexDirection: 'row' }}>
-                            {message.iconType ? (
-                                <IconFontAwesome5
-                                    name={this.getIconName(message)}
-                                    style={this.getIconStyle(message)}
-                                />
-                            ) : null}
-
-                            <View style={{flex:1}}>
-                                <Typography style={[this.getTextStyle(), message.textStyle]}>
-                                    {message.text}
-                                </Typography>
-
-                                {message.subText ? (
-                                    <Typography style={{fontSize:moderateScale(14), color:(this.props.cardType === 'white' ? 'grey' : 'white')}} type={TypographyType.bodyRegular}>
-                                        {message.subText}
-                                    </Typography>
+                    <View style={{ paddingRight: moderateScale(22) }}>
+                        {message.text && (
+                            <View style={{ flexDirection: 'row' }}>
+                                {message.iconType ? (
+                                    <IconFontAwesome5
+                                        name={this.getIconName(message)}
+                                        style={this.getIconStyle(message)}
+                                    />
                                 ) : null}
+
+                                <View style={{ flex: 1 }}>
+                                    <Typography style={[this.getTextStyle(), message.textStyle]}>
+                                        {message.text}
+                                    </Typography>
+
+                                    {message.subText ? (
+                                        <Typography style={{ fontSize: moderateScale(14), color: (this.props.cardType === 'white' ? 'grey' : 'white') }} type={TypographyType.bodyRegular}>
+                                            {message.subText}
+                                        </Typography>
+                                    ) : null}
+                                </View>
                             </View>
-                        </View>
+                        )}
 
                         {message.button ? (
                             <RoundedButton
-                                style={{ width: '100%', marginTop: scale(10), marginBottom: scale(10), marginLeft:moderateScale(11) }}
+                                style={{ width: '100%', marginTop: message.text ? scale(10) : 0, marginBottom: scale(10), marginLeft: moderateScale(11) }}
                                 type={message.button.type}
                                 text={message.button.text}
                                 onPress={() => { if (message.button?.onPress) message.button?.onPress() }}
