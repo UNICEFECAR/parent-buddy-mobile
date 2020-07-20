@@ -24,6 +24,8 @@ export interface State {
 }
 
 export class HomeMessages extends React.Component<Props, State> {
+    private oldMessages: Message[] | null = null;
+
     static defaultProps: Props = {
         cardType: 'white',
         showCloseButton: false,
@@ -144,8 +146,21 @@ export class HomeMessages extends React.Component<Props, State> {
     public render() {
         // console.log('RENDER: HomeMessages');
 
+        // Get new messages
         const messages = homeMessages.getMessages();
 
+        // Decide whether to unhide messages
+        if (this.oldMessages !== null && this.state.messagesAreHidden) {
+            if (JSON.stringify(this.oldMessages) !== JSON.stringify(messages)) {
+                this.setState({
+                    messagesAreHidden: false,
+                });
+                dataRealmStore.setVariable('hideHomeMessages', false);
+            }
+        }
+        this.oldMessages = messages;
+
+        // Sre messages hidden?
         if (this.state.messagesAreHidden) {
             return (
                 <TextButton onPress={() => { this.onShowMessagesPress() }} style={{ justifyContent: 'center', marginBottom: scale(15) }} color={TextButtonColor.purple}>{translate('showHomeMessages')}</TextButton>
