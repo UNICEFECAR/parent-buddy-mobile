@@ -40,7 +40,7 @@ class HomeMessages {
         this.currentChild = userRealmStore.getCurrentChild();
         this.childAgeInDays = userRealmStore.getCurrentChildAgeInDays();
 
-        console.log('this.childAgeInDays', this.childAgeInDays);
+        // console.log('this.childAgeInDays', this.childAgeInDays);
 
         // Upcomming development period message
         const upcommingDevelopmentPeriodMessage = this.getUpcommingDevelopmentPeriodMessage();
@@ -63,11 +63,11 @@ class HomeMessages {
         if (growthMessages.length > 0) rval = rval.concat(growthMessages);
 
         // Encourage child development message
-        const encourageChildDevelopmentMessage = this.encourageChildDevelopmentMessage();
+        const encourageChildDevelopmentMessage = this.getEncourageChildDevelopmentMessage();
         if (encourageChildDevelopmentMessage) rval.push(encourageChildDevelopmentMessage);
 
         // Update milestones message
-        const updateMilestonesMessage = this.updateMilestonesMessage();
+        const updateMilestonesMessage = this.getUpdateMilestonesMessage();
         if (updateMilestonesMessage) rval.push(updateMilestonesMessage);
 
         return rval;
@@ -339,7 +339,7 @@ class HomeMessages {
         let rval: Message[] = [];
 
         // Set currentHealthCheckPeriod
-        const currentHealthCheckPeriod = this.getCurrentHealthCheckPeriod();
+        const currentHealthCheckPeriod = this.currentHealthCheckPeriod();
 
         // Is child currently in helath check period?
         if (!currentHealthCheckPeriod) {
@@ -347,7 +347,7 @@ class HomeMessages {
         }
 
         // Set measuresForHealthCheckPeriod
-        const measuresForHealthCheckPeriod = this.getMeasuresForHealthCheckPeriod(currentHealthCheckPeriod);
+        const measuresForHealthCheckPeriod = this.measuresForHealthCheckPeriod(currentHealthCheckPeriod);
 
         // Show "Measurement data is NOT entered"
         if (!measuresForHealthCheckPeriod) {
@@ -385,7 +385,7 @@ class HomeMessages {
         return rval;
     }
 
-    private encourageChildDevelopmentMessage(): Message | null {
+    private getEncourageChildDevelopmentMessage(): Message | null {
         let rval: Message | null = null;
 
         // Validation
@@ -408,7 +408,7 @@ class HomeMessages {
         return rval;
     }
 
-    private updateMilestonesMessage(): Message | null {
+    private getUpdateMilestonesMessage(): Message | null {
         let rval: Message | null = null;
 
         // Validation
@@ -450,7 +450,7 @@ class HomeMessages {
         return rval;
     }
 
-    private getCurrentHealthCheckPeriod(): HealthCheckPeriod | null {
+    private currentHealthCheckPeriod(): HealthCheckPeriod | null {
         let rval: HealthCheckPeriod | null = null;
 
         // Validation
@@ -478,7 +478,7 @@ class HomeMessages {
         return rval;
     }
 
-    private getMeasuresForHealthCheckPeriod(healthCheckPeriod: HealthCheckPeriod | null): Measures | null {
+    private measuresForHealthCheckPeriod(healthCheckPeriod: HealthCheckPeriod | null): Measures | null {
         let rval: Measures | null = null;
 
         // Validation
