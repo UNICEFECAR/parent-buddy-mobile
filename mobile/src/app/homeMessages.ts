@@ -40,7 +40,7 @@ class HomeMessages {
         this.currentChild = userRealmStore.getCurrentChild();
         this.childAgeInDays = userRealmStore.getCurrentChildAgeInDays();
 
-        // console.log('this.childAgeInDays', this.childAgeInDays);
+        console.log('this.childAgeInDays', this.childAgeInDays);
 
         // Upcomming development period message
         const upcommingDevelopmentPeriodMessage = this.getUpcommingDevelopmentPeriodMessage();
@@ -61,6 +61,10 @@ class HomeMessages {
         // Growth messages
         const growthMessages = this.getGrowthMessages();
         if (growthMessages.length > 0) rval = rval.concat(growthMessages);
+
+        // Encourage child development message
+        const encourageChildDevelopmentMessage = this.encourageChildDevelopmentMessage();
+        if (encourageChildDevelopmentMessage) rval.push(encourageChildDevelopmentMessage);
 
         return rval;
     }
@@ -455,6 +459,29 @@ class HomeMessages {
         // Return the latest measure
         if (importantMeasures && importantMeasures.length > 0) {
             rval = importantMeasures[0];
+        }
+
+        return rval;
+    }
+
+    private encourageChildDevelopmentMessage(): Message | null {
+        let rval: Message | null = null;
+
+        // Validation
+        if (this.childAgeInDays === undefined) return null;
+
+        // Set showMessage
+        const showMessage = (this.childAgeInDays % 30) <= 10;
+
+        // Copose message
+        if (showMessage) {
+            rval = {
+                button: {
+                    text: translate('homeMessageEncourageChildDevelopment'),
+                    type: RoundedButtonType.purple,
+                    onPress: () => {navigation.navigate('HomeStackNavigator_EditPeriodScreen')}
+                }
+            };
         }
 
         return rval;
