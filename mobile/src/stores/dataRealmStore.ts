@@ -212,6 +212,31 @@ class DataRealmStore {
         };
     };
 
+
+    /*
+    *   Return checked status for all previous peroiods 
+    *   If one period.finished === false => return false 
+    */
+    public areAllPreviousMilestonesEntered(){
+
+        let isFinished = true;
+
+        const childAge = userRealmStore.getCurrentChild()?.birthDate;
+        let childAgeMonths = DateTime.local().diff(DateTime.fromJSDate(childAge ? childAge : new Date()), "months",).months;
+
+        const childAgeTagId = this.getTagIdFromChildAge(parseInt(childAgeMonths.toString()) + 1);
+
+        let allPeriods = this.getDevelopmentPeriods().filter(item => item.childAgeTagId ? item.childAgeTagId < childAgeTagId : null);
+
+        for(let i = 0; i < allPeriods.length; i++){
+            if(allPeriods[i].finished === false){
+                return false
+            };
+        };
+
+        return isFinished;
+    };
+
     public getDevelopmentPeriods(): DevelopmentPeriodsType[] {
         let developmentPeriods: DevelopmentPeriodsType[] = [];
 
@@ -317,6 +342,7 @@ class DataRealmStore {
         };
 
         let allMilestones = this.getMilestonesFromChildAge(ageId);
+        
         let checkedItems: number[] = userRealmStore.getVariable('checkedMilestones');
 
         if (allMilestones) {

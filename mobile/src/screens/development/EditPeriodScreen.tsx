@@ -11,6 +11,7 @@ import { TypographyType } from '../../components/Typography';
 import Icon from "react-native-vector-icons/FontAwesome";
 import { DevelopmentInfo } from '../../components/development/DevelopmentInfo';
 import { translate } from '../../translations';
+import { DateTime } from 'luxon';
 
 export interface EditPeriodScreenParams {
     id: number,
@@ -41,9 +42,9 @@ export class EditPeriodScreen extends Component<Props, State> {
     private initState() {
         let id: number = 0;
 
-        if (this.props.navigation.state.params) {
+        if (this.props.navigation.state.params?.id) {
             id = this.props.navigation.state.params.id
-        };
+        }
 
         let milestones = dataRealmStore.getMilestonesForGivenPeriod(id);
 
@@ -57,13 +58,20 @@ export class EditPeriodScreen extends Component<Props, State> {
     };
 
     private setDefaultScreenParams() {
+
+        const childAge = userRealmStore.getCurrentChild()?.birthDate;
+        let childAgeMonths = DateTime.local().diff(DateTime.fromJSDate(childAge ? childAge : new Date()), "months",).months;
+        const childAgeTagId = dataRealmStore.getTagIdFromChildAge(parseInt(childAgeMonths.toString()) + 1);
+
+        let currentPeriod = dataRealmStore.getDevelopmentPeriods().filter(item => item.childAgeTagId === childAgeTagId)[0];
+
         let defaultScreenParams: EditPeriodScreenParams = {
-            id: 0,
-            isCurrenPeriod: false,
-            onGoBack: () => { },
-            subtitle: '',
-            title: '',
-            warningText: '',
+            id: childAgeTagId,
+            isCurrenPeriod: true,
+            onGoBack: () => this.props.navigation.goBack(),
+            subtitle: currentPeriod.subtilte,
+            title: currentPeriod.title,
+            warningText: currentPeriod.warningText ? currentPeriod.warningText : "",
         };
 
         if (this.props.navigation.state.params) {
