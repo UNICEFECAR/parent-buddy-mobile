@@ -40,9 +40,15 @@ class HomeMessages {
         this.currentChild = userRealmStore.getCurrentChild();
         this.childAgeInDays = userRealmStore.getCurrentChildAgeInDays();
 
+        // console.log('this.childAgeInDays', this.childAgeInDays);
+
         // Upcomming development period message
         const upcommingDevelopmentPeriodMessage = this.getUpcommingDevelopmentPeriodMessage();
         if (upcommingDevelopmentPeriodMessage) rval.push(upcommingDevelopmentPeriodMessage);
+
+        // Ongoing development period message
+        const ongoingDevelopmentPeriodMessage = this.getOngoingDevelopmentPeriodMessage();
+        if (ongoingDevelopmentPeriodMessage) rval.push(ongoingDevelopmentPeriodMessage);
 
         // Enter birthday messages
         const enterBirthdayMessages = this.getEnterBirthdayMessages();
@@ -241,19 +247,64 @@ class HomeMessages {
         // Find active period
         let activePeriodHomeMessage: string | null = null;
 
-        // console.log('babyAgeInDays', babyAgeInDays);
         developmentPeriods?.forEach((value: any, index: any) => {
-            // console.log('value.daysStart', value.daysStart);
-            // console.log('value.daysStart - babyAgeInDays > 0', value.daysStart - babyAgeInDays > 0);
-            // console.log('value.daysStart - babyAgeInDays < 10', value.daysStart - babyAgeInDays < 10);
-            // console.log('--------');
-
             if (
                 (value.daysStart - babyAgeInDays > 0)
                 && (value.daysStart - babyAgeInDays <= 10)
             ) {
-                if (value.homeMessage) {
-                    activePeriodHomeMessage = value.homeMessage;
+                if (value.homeMessageBefore) {
+                    activePeriodHomeMessage = value.homeMessageBefore;
+                }
+            }
+        });
+
+        // Add message for active period
+        if (activePeriodHomeMessage) {
+            let homeMessage: string = activePeriodHomeMessage;
+            let childName = this.currentChild.name;
+            childName = utils.upperCaseFirstLetter(childName);
+
+            homeMessage = homeMessage.replace('%CHILD%', childName);
+
+            rval = {
+                text: homeMessage,
+                textStyle: { fontWeight: 'bold' },
+                iconType: IconType.celebrate,
+            };
+        }
+
+        return rval;
+    }
+
+    private getOngoingDevelopmentPeriodMessage(): Message | null {
+        let rval: Message | null = null;
+
+        if (!this.currentChild || !this.currentChild.birthDate) return null;
+
+        // Set babyBirthday, currentDate
+        const babyBirthDate = DateTime.fromJSDate(this.currentChild.birthDate);
+        const currentDate = DateTime.local();
+
+        // Set babyAgeInDays
+        const diffDate = currentDate.diff(babyBirthDate, 'days');
+        let babyAgeInDays = diffDate.get('days');
+
+        if (babyAgeInDays < 0) return null;
+        babyAgeInDays = Math.ceil(babyAgeInDays);
+
+        // Get all development periods
+        const developmentPeriods = translateData('developmentPeriods');
+
+        // Find active period
+        let activePeriodHomeMessage: string | null = null;
+
+        developmentPeriods?.forEach((value: any, index: any) => {
+            if (
+                (babyAgeInDays - value.daysStart >= 0)
+                && (babyAgeInDays - value.daysStart <= 10)
+            ) {
+                if (value.homeMessageAfter) {
+                    activePeriodHomeMessage = value.homeMessageAfter;
                 }
             }
         });
@@ -312,7 +363,7 @@ class HomeMessages {
 
             let intepretationText: string = '';
             if (measureIsGood) {
-                intepretationText = translate('homeMessageGrowthMeasurementsOk').replace('%CHILD%', utils.upperCaseFirstLetter( this.currentChild.name ));
+                intepretationText = translate('homeMessageGrowthMeasurementsOk').replace('%CHILD%', utils.upperCaseFirstLetter(this.currentChild.name));
             } else {
                 intepretationText = translate('homeMessageGrowthMeasurementsBad');
             }
@@ -381,7 +432,7 @@ class HomeMessages {
                 && currentMesaureDateTimestampMills
                 && currentMesaureDateTimestampMills >= childBirtDateTimestampMills
             ) {
-                const measureChildAgeInDays = Math.ceil( (currentMesaureDateTimestampMills/1000 - childBirtDateTimestampMills/1000) / (60*60*24) );
+                const measureChildAgeInDays = Math.ceil((currentMesaureDateTimestampMills / 1000 - childBirtDateTimestampMills / 1000) / (60 * 60 * 24));
 
                 if (
                     measureChildAgeInDays >= healthCheckPeriod?.childAgeInDays.from
