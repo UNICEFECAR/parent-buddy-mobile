@@ -207,5 +207,6 @@
     "homeMessageGrowthAddMeasurementButton": "Ažurirajte podatke o merama deteta",
     "homeMessageGrowthMeasurementsOk": "Bravo. %CHILD% raste u skladu sa uzrastom",
     "homeMessageGrowthMeasurementsBad": "Obratite pažnju na preporuke o rastu i konsultujte lekara",
-    "homeMessageEncourageChildDevelopment": "Pratite detetov razvoj"
+    "homeMessageEncourageChildDevelopment": "Pratite detetov razvoj",
+    "homeMessageGrowthAddMilestoneButton": "Ažurirajte podatke o razvoju deteta"
 }

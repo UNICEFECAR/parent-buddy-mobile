@@ -207,5 +207,6 @@
     "homeMessageGrowthAddMeasurementButton": "Add child measures",
     "homeMessageGrowthMeasurementsOk": "Congratulations. %CHILD% is growing successfully",
     "homeMessageGrowthMeasurementsBad": "Check growth recommendations and consult doctor",
-    "homeMessageEncourageChildDevelopment": "Follow child development"
+    "homeMessageEncourageChildDevelopment": "Follow child development",
+    "homeMessageGrowthAddMilestoneButton": "Update milestone data"
 }

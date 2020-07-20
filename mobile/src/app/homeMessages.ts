@@ -6,7 +6,7 @@ import { DateTime } from 'luxon';
 import { translate } from "../translations/translate";
 import { RoundedButtonType } from "../components/RoundedButton";
 import { navigation } from ".";
-import { translateData, TranslateDataHealthCheckPeriods, HealthCheckPeriod } from "../translationsData/translateData";
+import { translateData, TranslateDataHealthCheckPeriods, HealthCheckPeriod, TranslateDataDevelopmentPeriods } from "../translationsData/translateData";
 import { utils } from "./utils";
 import { Measures } from "../stores/ChildEntity";
 
@@ -65,6 +65,10 @@ class HomeMessages {
         // Encourage child development message
         const encourageChildDevelopmentMessage = this.encourageChildDevelopmentMessage();
         if (encourageChildDevelopmentMessage) rval.push(encourageChildDevelopmentMessage);
+
+        // Update milestones message
+        const updateMilestonesMessage = this.updateMilestonesMessage();
+        if (updateMilestonesMessage) rval.push(updateMilestonesMessage);
 
         return rval;
     }
@@ -381,6 +385,71 @@ class HomeMessages {
         return rval;
     }
 
+    private encourageChildDevelopmentMessage(): Message | null {
+        let rval: Message | null = null;
+
+        // Validation
+        if (this.childAgeInDays === undefined) return null;
+
+        // Set showMessage
+        const showMessage = (this.childAgeInDays % 30) <= 10;
+
+        // Copose message
+        if (showMessage) {
+            rval = {
+                button: {
+                    text: translate('homeMessageEncourageChildDevelopment'),
+                    type: RoundedButtonType.purple,
+                    onPress: () => {navigation.navigate('HomeStackNavigator_EditPeriodScreen')}
+                }
+            };
+        }
+
+        return rval;
+    }
+
+    private updateMilestonesMessage(): Message | null {
+        let rval: Message | null = null;
+
+        // Validation
+        if (!this.currentChild || !this.currentChild.birthDate) return null;
+        if (this.childAgeInDays === undefined) return null;
+
+        // Get all development periods
+        const developmentPeriods = translateData('developmentPeriods') as TranslateDataDevelopmentPeriods;
+
+        // Set isTenDaysBefore
+        let isTenDaysBefore: boolean = false;
+        const childAgeInDays = this.childAgeInDays;
+
+        developmentPeriods?.forEach((period) => {
+            const difference = period.daysStart - childAgeInDays;
+            if (difference >= 0 && difference <= 10) {
+                isTenDaysBefore = true;
+            }
+        });
+
+        // Set message
+        if (isTenDaysBefore) {
+            // Set arePreviousMilestonesSet
+            const arePreviousMilestonesSet = dataRealmStore.areAllPreviousMilestonesEntered();
+
+            if (!arePreviousMilestonesSet) {
+                rval = {
+                    button: {
+                        text: translate('homeMessageGrowthAddMilestoneButton'),
+                        type: RoundedButtonType.purple,
+                        onPress: () => {
+                            navigation.navigate('HomeStackNavigator_DevelopmentScreen')
+                        }
+                    }
+                };
+            }
+        }
+
+        return rval;
+    }
+
     private getCurrentHealthCheckPeriod(): HealthCheckPeriod | null {
         let rval: HealthCheckPeriod | null = null;
 
@@ -459,29 +528,6 @@ class HomeMessages {
         // Return the latest measure
         if (importantMeasures && importantMeasures.length > 0) {
             rval = importantMeasures[0];
-        }
-
-        return rval;
-    }
-
-    private encourageChildDevelopmentMessage(): Message | null {
-        let rval: Message | null = null;
-
-        // Validation
-        if (this.childAgeInDays === undefined) return null;
-
-        // Set showMessage
-        const showMessage = (this.childAgeInDays % 30) <= 10;
-
-        // Copose message
-        if (showMessage) {
-            rval = {
-                button: {
-                    text: translate('homeMessageEncourageChildDevelopment'),
-                    type: RoundedButtonType.purple,
-                    onPress: () => {navigation.navigate('HomeStackNavigator_EditPeriodScreen')}
-                }
-            };
         }
 
         return rval;
