@@ -36,19 +36,26 @@ class HomeMessages {
     public getMessages(): Message[] {
         let rval: Message[] = [];
 
+        // console.log('this.childAgeInDays', this.childAgeInDays);
+
         // Set properties
         this.currentChild = userRealmStore.getCurrentChild();
         this.childAgeInDays = userRealmStore.getCurrentChildAgeInDays();
 
-        // console.log('this.childAgeInDays', this.childAgeInDays);
+        const settingsNotificationsApp = dataRealmStore.getVariable('notificationsApp');
+        const settingsFollowGrowth = dataRealmStore.getVariable('followGrowth');
+        const settingsFollowDevelopment = dataRealmStore.getVariable('followDevelopment');
+        const settingsFollowDoctorVisits = dataRealmStore.getVariable('followDoctorVisits');
 
-        // Upcomming development period message
-        const upcommingDevelopmentPeriodMessage = this.getUpcommingDevelopmentPeriodMessage();
-        if (upcommingDevelopmentPeriodMessage) rval.push(upcommingDevelopmentPeriodMessage);
+        if (settingsFollowDevelopment) {
+            // Upcomming development period message
+            const upcommingDevelopmentPeriodMessage = this.getUpcommingDevelopmentPeriodMessage();
+            if (upcommingDevelopmentPeriodMessage) rval.push(upcommingDevelopmentPeriodMessage);
 
-        // Ongoing development period message
-        const ongoingDevelopmentPeriodMessage = this.getOngoingDevelopmentPeriodMessage();
-        if (ongoingDevelopmentPeriodMessage) rval.push(ongoingDevelopmentPeriodMessage);
+            // Ongoing development period message
+            const ongoingDevelopmentPeriodMessage = this.getOngoingDevelopmentPeriodMessage();
+            if (ongoingDevelopmentPeriodMessage) rval.push(ongoingDevelopmentPeriodMessage);
+        }
 
         // Enter birthday messages
         const enterBirthdayMessages = this.getEnterBirthdayMessages();
@@ -59,16 +66,20 @@ class HomeMessages {
         if (dailyMessage) rval.push(dailyMessage);
 
         // Growth messages
-        const growthMessages = this.getGrowthMessages();
-        if (growthMessages.length > 0) rval = rval.concat(growthMessages);
+        if (settingsFollowGrowth) {
+            const growthMessages = this.getGrowthMessages();
+            if (growthMessages.length > 0) rval = rval.concat(growthMessages);
+        }
 
-        // Encourage child development message
-        const encourageChildDevelopmentMessage = this.getEncourageChildDevelopmentMessage();
-        if (encourageChildDevelopmentMessage) rval.push(encourageChildDevelopmentMessage);
+        if (settingsFollowDevelopment) {
+            // Encourage child development message
+            const encourageChildDevelopmentMessage = this.getEncourageChildDevelopmentMessage();
+            if (encourageChildDevelopmentMessage) rval.push(encourageChildDevelopmentMessage);
 
-        // Update milestones message
-        const updateMilestonesMessage = this.getUpdateMilestonesMessage();
-        if (updateMilestonesMessage) rval.push(updateMilestonesMessage);
+            // Update milestones message
+            const updateMilestonesMessage = this.getUpdateMilestonesMessage();
+            if (updateMilestonesMessage) rval.push(updateMilestonesMessage);
+        }
 
         return rval;
     }
@@ -400,7 +411,7 @@ class HomeMessages {
                 button: {
                     text: translate('homeMessageEncourageChildDevelopment'),
                     type: RoundedButtonType.purple,
-                    onPress: () => {navigation.navigate('HomeStackNavigator_EditPeriodScreen')}
+                    onPress: () => { navigation.navigate('HomeStackNavigator_EditPeriodScreen') }
                 }
             };
         }
