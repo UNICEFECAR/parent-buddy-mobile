@@ -161,7 +161,18 @@ export class NewMeasurementScreen extends Component<Props, State> {
                 // This will just trigger the update of data realm
                 dataRealmStore.setVariable('randomNumber', Math.floor(Math.random() * 6000) + 1);
             });
-
+            this.setState({
+                measurementDate: undefined,
+                length: "",
+                weight: "",
+                comment: "",
+                isVaccineReceived: "no",
+                measurementPlace: "home",
+                measurementDateError: false,
+                weightError: false,
+                lengthError: false,
+                defaultMessage: "",
+            })
             if(this.props.navigation.state.params?.screen){
                 // this will triger update on growth screen after measures added 
                 if(this.props.navigation.state.params.screen === "growth"){

@@ -8,10 +8,11 @@ import { Typography } from "../../components";
 import Orientation from "react-native-orientation-locker";
 import { View, Dimensions } from "react-native";
 import { ActivityIndicator } from "react-native-paper";
+import { DateTime } from "luxon";
 
 interface State {
     chartType: chartTypes,
-    childBirthDate: Date,
+    childBirthDate: DateTime,
     childGender: "male" | "female",
     lineChartData: ChartData[],
     isChartVisible: boolean
