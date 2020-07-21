@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { SafeAreaView, View, Text, Button, StyleSheet, ViewStyle } from 'react-native';
 import { NavigationStackProp, NavigationStackState, NavigationStackOptions } from 'react-navigation-stack';
 import { ThemeContextValue, ThemeConsumer } from '../../themes/ThemeContext';
@@ -13,6 +13,10 @@ import { RoundedTextInput } from '../../components/RoundedTextInput';
 import { RoundedTextArea } from '../../components/RoundedTextArea';
 import { RoundedButton, RoundedButtonType } from '../../components/RoundedButton';
 import FastImage from 'react-native-fast-image';
+import { ChildGender, ChildEntity, ChildEntitySchema } from '../../stores/ChildEntity';
+import { userRealmStore, dataRealmStore } from '../../stores';
+import { DateTime } from 'luxon';
+import { UserRealmConsumer, UserRealmContextValue } from '../../stores/UserRealmContext';
 
 export interface ChildProfileScreenParams {
 
@@ -23,16 +27,15 @@ export interface Props {
 }
 
 export interface State {
-
+    allChilds: Child[]
 }
 
 export class ChildProfileScreen extends React.Component<Props, State> {
 
     public constructor(props: Props) {
         super(props);
-
         this.setDefaultScreenParams();
-    }
+    };
 
     private setDefaultScreenParams() {
         let defaultScreenParams: ChildProfileScreenParams = {
@@ -43,12 +46,17 @@ export class ChildProfileScreen extends React.Component<Props, State> {
             this.props.navigation.state.params = Object.assign({}, defaultScreenParams, this.props.navigation.state.params);
         } else {
             this.props.navigation.state.params = defaultScreenParams;
-        }
-    }
+        };
+    };
 
     private gotoBack() {
         this.props.navigation.goBack();
-    }
+    };
+
+    private setActiveChildId(id: string) {
+        dataRealmStore.setVariable('currentActiveChildId', id);
+        this.props.navigation.goBack();
+    };
 
     public render() {
         const screenParams = this.props.navigation.state.params!;
@@ -60,49 +68,83 @@ export class ChildProfileScreen extends React.Component<Props, State> {
                         style={[styles.container]}
                         contentContainerStyle={{ alignItems: 'center', padding: themeContext.theme.screenContainer?.padding }}
                     >
-                        <View style={{ height: scale(40) }} />
+                        <UserRealmConsumer>
+                            {
+                                (userRealmContext: UserRealmContextValue) => (
+                                    <Fragment>
+                                        {
+                                            userRealmStore.getAllChilds(userRealmContext.realm?.objects<ChildEntity>(ChildEntitySchema.name)).map((child) => (
+                                                <View style={[child.isCurrentActive ? { backgroundColor: 'rgba(216,216,216,0.42)' } : {}, { width: "90%", alignContent: 'center', alignItems: "center" }]}>
+                                                    <View style={{ height: scale(40) }} />
+                                                    {child.isCurrentActive ? <Typography style={{ marginBottom: 15 }}>Aktivan profil deteta</Typography> : null}
+                                                    {/* PHOTO */}
+                                                    <FastImage
+                                                        style={styles.photo}
+                                                        source={{
+                                                            uri: child.photo,
+                                                            priority: FastImage.priority.normal,
+                                                        }}
+                                                        resizeMode={FastImage.resizeMode.cover}
+                                                    />
 
-                        {/* PHOTO */}
-                        <FastImage
-                            style={styles.photo}
-                            source={{
-                                uri: 'https://i.ytimg.com/vi/F9wbogYwTVM/maxresdefault.jpg',
-                                priority: FastImage.priority.normal,
-                            }}
-                            resizeMode={FastImage.resizeMode.cover}
-                        />
+                                                    <View style={{ height: themeContext.theme.variables?.sizes.verticalPaddingNormal }} />
+                                                    {/* NAME */}
+                                                    <Typography type={TypographyType.headingPrimary} style={{ marginBottom: scale(5) }}>
+                                                        {child.name}
+                                                    </Typography>
 
-                        <View style={{height:themeContext.theme.variables?.sizes.verticalPaddingNormal}} />
+                                                    {/* BIRTH DATE */}
+                                                    <Typography type={TypographyType.bodyRegular} style={{ fontSize: moderateScale(15), color: 'grey' }}>
+                                                        {child.gender === "girl" ? translate('childProfileBirthDateGirl') : translate('childProfileBirthDateBoy')}
+                                                        {child.birthDay}
+                                                    </Typography>
 
-                        {/* NAME */}
-                        <Typography type={TypographyType.headingPrimary} style={{marginBottom:scale(5)}}>
-                            Gvozden
-                        </Typography>
+                                                    <View style={{ height: themeContext.theme.variables?.sizes.verticalPaddingNormal }} />
+                                                    {
+                                                        child.isCurrentActive === false ?
+                                                            <RoundedButton
+                                                                text="Aktivirajte"
+                                                                type={RoundedButtonType.hollowPurple}
+                                                                style={{ width: 193, marginBottom: 15 }}
+                                                                onPress={() => this.setActiveChildId(child.childId)}
+                                                            />
+                                                            : null
+                                                    }
+                                                    {/* EDIT PROFILE */}
+                                                    <TextButton color={TextButtonColor.purple} onPress={() => { this.props.navigation.navigate('AccountStackNavigator_AddChildrenScreen', { screenParam: "EditChild", id: child.id }) }}>
+                                                        {translate('childProfileChange')}
+                                                    </TextButton>
 
-                        {/* BIRTH DATE */}
-                        <Typography type={TypographyType.bodyRegular} style={{fontSize:moderateScale(15), color:'grey'}}>
-                            { translate('childProfileBirthday') } 10.02.2019.
-                        </Typography>
+                                                    <View style={{ height: themeContext.theme.variables?.sizes.verticalPaddingLarge }} />
 
-                        <View style={{height:themeContext.theme.variables?.sizes.verticalPaddingNormal}} />
+                                                    {/* ADD SIBLING */}
+                                                </View>
+                                            ))
+                                        }
+                                    </Fragment>
+                                )
+                            }
+                        </UserRealmConsumer>
 
-                        {/* EDIT PROFILE */}
-                        <TextButton color={TextButtonColor.purple} onPress={ () => {} }>
-                            { translate('childProfileChange') }
-                        </TextButton>
-
-                        <View style={{height:themeContext.theme.variables?.sizes.verticalPaddingLarge}} />
-
-                        {/* ADD SIBLING */}
-                        <TextButton color={TextButtonColor.purple} onPress={ () => {} }>
-                            + { translate('childProfileAddSibling') }
+                        <TextButton color={TextButtonColor.purple} onPress={() => { this.props.navigation.navigate('AccountStackNavigator_AddChildrenScreen', { screenParam: "NewChild" }) }}>
+                            + {translate('childProfileAddSibling')}
                         </TextButton>
 
                     </ScrollView>
                 )}
             </ThemeConsumer>
         );
-    }
+    };
+};
+
+export interface Child {
+    childId: string,
+    birthDay: string,
+    name: string,
+    photo: string | undefined,
+    gender: ChildGender,
+    isCurrentActive: boolean
+    id: string
 }
 
 export interface ChildProfileScreenStyles {

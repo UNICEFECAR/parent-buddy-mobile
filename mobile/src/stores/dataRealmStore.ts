@@ -4,7 +4,7 @@ import { VariableEntity, VariableEntitySchema } from './VariableEntity';
 import { appConfig } from '../app/appConfig';
 import { VocabulariesAndTermsResponse, TermChildren, BasicPagesResponse } from './apiStore';
 import { ListCardItem } from '../screens/home/ListCard';
-import { ContentEntity } from '.';
+import { ContentEntity, ChildEntity } from '.';
 import { ContentEntitySchema } from './ContentEntity';
 import { translate } from '../translations/translate';
 import { DateTime } from "luxon";
@@ -14,6 +14,7 @@ import { MilestoneEntity, MilestoneEntitySchema } from './MilestoneEntity';
 import { translateData, TranslateDataDevelopmentPeriods } from '../translationsData/translateData';
 import { MilestoneItem } from '../components/development/MilestoneForm';
 import { DailyMessageVariable } from '../app/homeMessages';
+import { ChildEntitySchema } from './ChildEntity';
 
 export type Variables = {
     'userEmail': string;
@@ -35,6 +36,7 @@ export type Variables = {
     'randomNumber': number;
     'vocabulariesAndTerms': VocabulariesAndTermsResponse;
     'dailyMessage': DailyMessageVariable;
+    'currentActiveChildId': string;
 };
 
 type VariableKey = keyof Variables;
@@ -242,12 +244,18 @@ class DataRealmStore {
 
         const allPeriods = translateData("developmentPeriods") as (TranslateDataDevelopmentPeriods | null);
 
+        let childAgeMonths: number = 0;
+        let childAgeTagId: number = 0;
+
         const childAge = userRealmStore.getCurrentChild()?.birthDate;
-        let childAgeMonths = DateTime.local().diff(DateTime.fromJSDate(childAge ? childAge : new Date()), "months",).months;
-
-        const childAgeTagId = this.getTagIdFromChildAge(parseInt(childAgeMonths.toString()) + 1);
+        
+        if(childAge){
+            childAgeMonths = DateTime.local().diff(DateTime.fromJSDate(childAge ? childAge : new Date()), "months",).months;
+            childAgeTagId = this.getTagIdFromChildAge(parseInt(childAgeMonths.toString()) + 1);
+        };
+        
         const childGender = userRealmStore.getChildGender();
-
+        
         if (allPeriods) {
             // if user didn't set age return all periods
             if (childAgeTagId === undefined || childAgeTagId === null) {
@@ -266,11 +274,15 @@ class DataRealmStore {
                 });
             } else {
                 // if user set age return periods up to current age + featured period
+                let index = userRealmStore.getCurrentChild()?.uuid ? userRealmStore.getCurrentChild()?.uuid : "";
+                let user = userRealmStore.realm?.objects<ChildEntity>(ChildEntitySchema.name).find(item => item.uuid === index);
+                
+                let checkedMilesteones: number[] = user?.checkedMilestones ? user?.checkedMilestones : []
+
                 developmentPeriods = allPeriods
                     .filter(period => period.predefinedTagId <= childAgeTagId)
                     .map((period: any): DevelopmentPeriodsType => {
                         let allMilestones = this.getMilestonesFromChildAge(period.predefinedTagId);
-                        let checkedMilesteones: number[] = userRealmStore.getVariable('checkedMilestones');
                         
                         let completed = true;
                         let currentPeriod = false;
@@ -343,7 +355,10 @@ class DataRealmStore {
 
         let allMilestones = this.getMilestonesFromChildAge(ageId);
         
-        let checkedItems: number[] = userRealmStore.getVariable('checkedMilestones');
+        let index = userRealmStore.getCurrentChild()?.uuid ? userRealmStore.getCurrentChild()?.uuid : "";
+        let user = userRealmStore.realm?.objects<ChildEntity>(ChildEntitySchema.name).find(item => item.uuid === index);
+                
+        let checkedItems: number[] = user?.checkedMilestones ? user?.checkedMilestones : []
 
         if (allMilestones) {
             allMilestones.forEach(milestone => {

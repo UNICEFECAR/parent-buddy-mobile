@@ -9,6 +9,9 @@ import { translateData, TranslateDataInterpretationLenghtForAge, TranslateDataIn
 import { ChartData as Data, GrowthChart0_2Type, GrowthChartHeightAgeType } from '../components/growth/growthChartData';
 import { dataRealmStore } from './dataRealmStore';
 import { InterpretationText } from '../screens/growth/GrowthScreen';
+import { Child } from '../screens/home/ChildProfileScreen';
+import RNFS from 'react-native-fs';
+import { UserRealmContextValue } from './UserRealmContext';
 
 type Variables = {
     'userChildren': any;
@@ -74,7 +77,18 @@ class UserRealmStore {
     }
 
     public getCurrentChild = () => {
-        return this.realm?.objects<ChildEntity>(ChildEntitySchema.name).find((record, index) => index === 0);
+        let childId = dataRealmStore.getVariable('currentActiveChildId');
+        if(childId){
+            return this.realm?.objects<ChildEntity>(ChildEntitySchema.name).filtered(`uuid == '${childId}'`).map(item => item)[0];
+        }else{
+            let child = this.realm?.objects<ChildEntity>(ChildEntitySchema.name).find((record, index) => index === 0);
+            if(child){
+                dataRealmStore.setVariable('currentActiveChildId', child.uuid);
+                return child;
+            }
+        }
+        
+
     }
 
     public getCurrentChildAgeInDays = (birthDayMilisecounds?: number) => {
@@ -249,6 +263,42 @@ class UserRealmStore {
         let child = this.getCurrentChild()
         return child?.gender
     }
+
+    public getAllChilds(userRealmContext: ChildEntity[] | undefined): Child[]{
+        let allChilds = userRealmContext;
+        let currentChild = this.getCurrentChild()?.uuid;
+
+        let a: Child[] = [];
+
+        if(allChilds){
+
+             a = allChilds?.map(child => {
+                let birthDay = child.birthDate ? DateTime.fromJSDate(child.birthDate).toFormat("dd'.'MM'.'yyyy") : "not entered";
+                let imgUrl = `${RNFS.DocumentDirectoryPath}/${child.photoUri}`;
+                
+                let isCurrentActive = false;
+                
+                if(currentChild){
+                    if(currentChild === child.uuid){
+                        isCurrentActive = true;
+                    }
+                }
+
+                return {
+                    childId: child.uuid,
+                    birthDay: birthDay,
+                    name: child.name,
+                    photo: imgUrl,
+                    gender: child.gender,
+                    isCurrentActive: isCurrentActive,
+                    id: child.uuid,
+                };
+            });
+        }
+  
+
+        return a;
+    };
 
     public async setVariable<T extends VariableKey>(key: T, value: Variables[T] | null): Promise<boolean> {
         return new Promise((resolve, reject) => {

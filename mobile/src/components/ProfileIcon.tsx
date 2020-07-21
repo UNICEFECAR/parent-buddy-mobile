@@ -46,9 +46,8 @@ export class ProfileIcon extends React.Component<Props, State> {
 
     public render() {
         const colors = themes.getCurrentTheme().theme.variables?.colors;
-
         let icon: JSX.Element;
-
+        
         if (this.props.image) {
             // WITH PHOTO
             icon = (
@@ -57,7 +56,7 @@ export class ProfileIcon extends React.Component<Props, State> {
                     onPress={ this.onPhotoIconPress }
                 >
                     <Image
-                        source={ {uri: this.props.image} }
+                        source={ {uri: this.props.image }}
                         style={{ width:'100%', height:'100%' }}
                         resizeMode="cover"
                     />

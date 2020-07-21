@@ -206,5 +206,8 @@
     "homeMessageGrowthMeasurementEntered": "Podaci o merama deteta su ažurirani.",
     "homeMessageGrowthAddMeasurementButton": "Ažurirajte podatke o merama deteta",
     "homeMessageGrowthMeasurementsOk": "Bravo. %CHILD% raste u skladu sa uzrastom",
-    "homeMessageGrowthMeasurementsBad": "Obratite pažnju na preporuke o rastu i konsultujte lekara"
+    "homeMessageGrowthMeasurementsBad": "Obratite pažnju na preporuke o rastu i konsultujte lekara",
+    
+    "childProfileBirthDateGirl": "Devojčica rođena ",
+    "childProfileBirthDateBoy": "Dečak rođen "
 }

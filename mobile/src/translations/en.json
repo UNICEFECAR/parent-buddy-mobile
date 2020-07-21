@@ -206,5 +206,8 @@
     "homeMessageGrowthMeasurementEntered": "Child measures are up to date.",
     "homeMessageGrowthAddMeasurementButton": "Add child measures",
     "homeMessageGrowthMeasurementsOk": "Congratulations. %CHILD% is growing successfully",
-    "homeMessageGrowthMeasurementsBad": "Check growth recommendations and consult doctor"
+    "homeMessageGrowthMeasurementsBad": "Check growth recommendations and consult doctor",
+
+    "childProfileBirthDateGirl": "Devojčica rođena ",
+    "childProfileBirthDateBoy": "Dečak rođen "
 }
