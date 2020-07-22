@@ -238,7 +238,7 @@ class UserRealmStore {
         if(interpretationText && interpretationText.name === ""){
             goodMeasure = undefined
         }
-        console.log(interpretationText, "IT")
+
         return {
             interpretationText: interpretationText,
             goodMeasure: goodMeasure,

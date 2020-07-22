@@ -117,7 +117,7 @@ export class DevelopmentScreen extends Component<Props, State> {
             return null
         } else {
             return (
-                <HomeMessages showCloseButton={false}></HomeMessages>
+                <HomeMessages showCloseButton={true}></HomeMessages>
             );
         };
     };
@@ -170,8 +170,7 @@ export class DevelopmentScreen extends Component<Props, State> {
                                                 }} />
                                         </View>
                                     )))
-                            }
-                            }
+                            }}
                         </DataRealmConsumer>
                     </ScrollView>
                 )}
