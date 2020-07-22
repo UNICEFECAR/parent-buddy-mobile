@@ -20,8 +20,8 @@
     "notValidEmail": "E-mail is not valid.",
     "passwordToShort": "Password must have at least 6 characters.",
     "passwordDosntMatch": "Passwords don’t match.",
-    "syncScreenText": "Changing diapers",
-    "syncScreenSubText": "... and syncing data",
+    "syncScreenText": "Loading data",
+    "syncScreenSubText": "and getting content",
 
     "accountTitle": "Introduce your child",
     "accountGirl": "Girl",

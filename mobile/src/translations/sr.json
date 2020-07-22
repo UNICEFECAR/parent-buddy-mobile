@@ -20,8 +20,8 @@
     "notValidEmail": "E-mail nije validan.",
     "passwordToShort": "Lozinka mora imati najmanje 6 karaktera.",
     "passwordDosntMatch": "Lozinke se ne podudaraju.",
-    "syncScreenText": "Menjamo pelene",
-    "syncScreenSubText": "... i skidamo podatke",
+    "syncScreenText": "Učitavamo podatke",
+    "syncScreenSubText": "i pripremamo sadrżaj",
 
     "accountTitle": "Upoznajmo Vaše dete",
     "accountGirl": "Devojčica",
