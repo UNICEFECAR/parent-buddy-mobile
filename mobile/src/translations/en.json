@@ -136,10 +136,16 @@
     "examReminderTime": "Time",
     "buttonAddExamReminder": "Add reminder for the check-up",
 
-    "childProfileTitle": "Child's profile",
+    "childProfileTitle": "TODO Profil Deteta i roditelja",
     "childProfileBirthday": "Birthday",
     "childProfileChange": "Change profile",
     "childProfileAddSibling": "Add sister or brother",
+    "childProfileBirthDateGirl": "TODO Devojčica rođena ",
+    "childProfileBirthDateBoy": "TODO Dečak rođen ",
+    "activeChildProfile": "TODO Aktivan profil deteta",
+    "activateChildProfile": "TODO Aktivirajte profil",
+    "childProfileParent": "TODO Roditelj",
+    "childProfileEditChildTitle": "TODO Izmena profila deteta",
 
     "growScreenTitle": "Child growht",
     "allMeasurements": "TODO Sva merenja",
@@ -206,8 +212,6 @@
     "homeMessageGrowthMeasurementEntered": "Child measures are up to date.",
     "homeMessageGrowthAddMeasurementButton": "Add child measures",
     "homeMessageGrowthMeasurementsOk": "Congratulations. %CHILD% is growing successfully",
-    "homeMessageGrowthMeasurementsBad": "Check growth recommendations and consult doctor",
+    "homeMessageGrowthMeasurementsBad": "Check growth recommendations and consult doctor"
 
-    "childProfileBirthDateGirl": "Devojčica rođena ",
-    "childProfileBirthDateBoy": "Dečak rođen "
 }

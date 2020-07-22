@@ -50,11 +50,11 @@ export class ChildProfileScreen extends React.Component<Props, State> {
                 parentName: parentName,
                 parentRole: parentRole,
                 isSnackbarVisible: false,
-            }
+            };
 
             this.state = state;
-        }
-    }
+        };
+    };
 
     private setDefaultScreenParams() {
         let defaultScreenParams: ChildProfileScreenParams = {
@@ -118,7 +118,7 @@ export class ChildProfileScreen extends React.Component<Props, State> {
                 <View style={{ height: scale(40) }} />
                 {child.isCurrentActive ?
                     <Typography style={{ marginBottom: moderateScale(15) }}>
-                        Aktivan profil deteta
+                        {translate('activeChildProfile')}
                     </Typography>
                     : null}
 
@@ -153,7 +153,7 @@ export class ChildProfileScreen extends React.Component<Props, State> {
                 <View style={{ height: themeContext.theme.variables?.sizes.verticalPaddingNormal }} />
                 {child.isCurrentActive === false ?
                     <RoundedButton
-                        text="Aktivirajte"
+                        text={translate('activateChildProfile')}
                         type={RoundedButtonType.hollowPurple}
                         style={{ width: moderateScale(193), marginBottom: 15 }}
                         onPress={() => this.setActiveChildId(child.childId)}
@@ -177,7 +177,6 @@ export class ChildProfileScreen extends React.Component<Props, State> {
 
     public render() {
         const screenParams = this.props.navigation.state.params!;
-
         return (
             <ThemeConsumer>
                 {(themeContext: ThemeContextValue) => (
@@ -188,7 +187,7 @@ export class ChildProfileScreen extends React.Component<Props, State> {
                         <UserRealmConsumer>
                             {(userRealmContext: UserRealmContextValue) => (
                                 <Fragment>
-                                    {userRealmStore.getAllChilds(userRealmContext.realm?.objects<ChildEntity>(ChildEntitySchema.name)).map((child) => (
+                                    {userRealmStore.getAllChilds(userRealmContext).map((child) => (
                                         this.renderChildList(child, themeContext)
                                     ))}
                                 </Fragment>
@@ -204,7 +203,7 @@ export class ChildProfileScreen extends React.Component<Props, State> {
 
                         {/* User profile change */}
                         <View style={styles.userEditContainer}>
-                            <Typography style={styles.userEditHeader}>Roditelj</Typography>
+                            <Typography style={styles.userEditHeader}>{translate('childProfileParent')}</Typography>
                             <RadioButtons
                                 value={this.state.parentRole}
                                 buttons={
@@ -222,7 +221,7 @@ export class ChildProfileScreen extends React.Component<Props, State> {
                             />
                             <RoundedButton
                                 style={{ marginBottom: 30 }} type={RoundedButtonType.purple}
-                                onPress={() => this.changeParentData()} text="Sacuvaj podatke"
+                                onPress={() => this.changeParentData()} text={translate('newMeasureScreenSaveBtn')}
                             />
                         </View>
 

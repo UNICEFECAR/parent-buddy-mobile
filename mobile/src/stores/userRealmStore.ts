@@ -252,7 +252,6 @@ class UserRealmStore {
         if(interpretationText && interpretationText.name === ""){
             goodMeasure = undefined
         }
-        console.log(interpretationText, "IT")
         return {
             interpretationText: interpretationText,
             goodMeasure: goodMeasure,
@@ -264,8 +263,8 @@ class UserRealmStore {
         return child?.gender
     }
 
-    public getAllChilds(userRealmContext: ChildEntity[] | undefined): Child[]{
-        let allChilds = userRealmContext;
+    public getAllChilds(userRealmContext: UserRealmContextValue): Child[]{
+        let allChilds = userRealmContext.realm?.objects<ChildEntity>(ChildEntitySchema.name).map(child => child);
         let currentChild = this.getCurrentChild()?.uuid;
 
         let allChildsList: Child[] = [];
@@ -274,7 +273,7 @@ class UserRealmStore {
 
             allChildsList = allChilds?.map(child => {
                 let birthDay = child.birthDate ? 
-                    DateTime.fromJSDate(child.birthDate).toFormat("dd'.'MM'.'yyyy") : "not entered";
+                    DateTime.fromJSDate(child.birthDate).toFormat("dd'.'MM'.'yyyy") : "TODO (Nije unet)";
                 
                 let imgUrl = child.photoUri ? `${RNFS.DocumentDirectoryPath}/${child.photoUri}` : null;
                 let isCurrentActive = false;

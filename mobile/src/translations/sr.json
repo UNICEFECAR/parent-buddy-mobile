@@ -136,10 +136,16 @@
     "examReminderTime": "Vreme",
     "buttonAddExamReminder": "Dodajte podsetnik za pregled",
 
-    "childProfileTitle": "Profil deteta",
+    "childProfileTitle": "Profil Deteta i roditelja",
     "childProfileBirthday": "Rodjendan",
     "childProfileChange": "Izmenite profil",
     "childProfileAddSibling": "Dodajte sestru ili brata",
+    "childProfileBirthDateGirl": "Devojčica rođena ",
+    "childProfileBirthDateBoy": "Dečak rođen ",
+    "activeChildProfile": "Aktivan profil deteta",
+    "activateChildProfile": "TODO Aktivirajte profil",
+    "childProfileParent": "Roditelj",
+    "childProfileEditChildTitle": "TODO Izmena profila deteta",
 
     "growScreenTitle": "Rast deteta",
     "allMeasurements": "Sva merenja",
@@ -208,6 +214,4 @@
     "homeMessageGrowthMeasurementsOk": "Bravo. %CHILD% raste u skladu sa uzrastom",
     "homeMessageGrowthMeasurementsBad": "Obratite pažnju na preporuke o rastu i konsultujte lekara",
     
-    "childProfileBirthDateGirl": "Devojčica rođena ",
-    "childProfileBirthDateBoy": "Dečak rođen "
 }

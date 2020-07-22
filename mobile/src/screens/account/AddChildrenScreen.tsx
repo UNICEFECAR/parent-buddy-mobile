@@ -19,11 +19,9 @@ import { ChildEntity, ChildEntitySchema, ChildGender } from '../../stores/ChildE
 import { UserRealmConsumer, UserRealmContextValue } from '../../stores/UserRealmContext';
 import { translate } from '../../translations/translate';
 import Orientation from 'react-native-orientation-locker';
-import { last } from 'lodash';
 
 export interface Props {
     navigation: NavigationStackProp<NavigationStackState>;
-
 }
 
 export interface State {
@@ -56,6 +54,10 @@ export class AddChildrenScreen extends React.Component<Props, State> {
             screenType = screenParam;
         };
 
+        if (screenType === "EditChild") {
+
+        }
+
         const state: State = {
             isSnackbarVisible: false,
             snackbarMessage: '',
@@ -87,21 +89,25 @@ export class AddChildrenScreen extends React.Component<Props, State> {
         };
     }
 
-    private onChildGenderChange(child: ChildEntity, newGender: ChildGender) {
-        userRealmStore.realm?.write(() => {
-            child.gender = newGender;
-            child.updatedAt = new Date();
-        });
-    }
+    private onChildGenderChange(child: ChildEntity | undefined, newGender: ChildGender) {
+        if (child) {
+            userRealmStore.realm?.write(() => {
+                child.gender = newGender;
+                child.updatedAt = new Date();
+            });
+        };
+    };
 
-    private onChildNameChange(child: ChildEntity, newName: string) {
-        userRealmStore.realm?.write(() => {
-            child.name = newName;
-            child.updatedAt = new Date();
-        });
-    }
+    private onChildNameChange(child: ChildEntity | undefined, newName: string) {
+        if (child) {
+            userRealmStore.realm?.write(() => {
+                child.name = newName;
+                child.updatedAt = new Date();
+            });
+        };
+    };
 
-    private async onChildPhotoChange(child: ChildEntity, image: ImageObject) {
+    private async onChildPhotoChange(child: ChildEntity | undefined, image: ImageObject) {
         // Create Documents/children folder if it doesnt exist
         if (!(await exists(`${DocumentDirectoryPath}/children`))) {
             mkdir(`${DocumentDirectoryPath}/children`);
@@ -114,30 +120,32 @@ export class AddChildrenScreen extends React.Component<Props, State> {
         let extension: string | null = null;
         if (parts.length > 1) {
             extension = parts[parts.length - 1].toLowerCase();
-        }
+        };
 
-        if (extension) {
-            newFilename = `${child.uuid}.${extension}`;
-        } else {
-            newFilename = child.uuid;
-        }
+        if (child) {
+            if (extension) {
+                newFilename = `${child.uuid}.${extension}`;
+            } else {
+                newFilename = child.uuid;
+            };
 
-        // Set destPath
-        let destPath = `${DocumentDirectoryPath}/children/${newFilename}`;
+            // Set destPath
+            let destPath = `${DocumentDirectoryPath}/children/${newFilename}`;
 
-        // Delete image if it exists
-        if (await exists(destPath)) {
-            await unlink(destPath);
-        }
+            // Delete image if it exists
+            if (await exists(destPath)) {
+                await unlink(destPath);
+            };
 
-        // Copy image
-        await copyFile(image.path, destPath);
+            // Copy image
+            await copyFile(image.path, destPath);
 
-        // Save imageUri to realm
-        userRealmStore.realm?.write(() => {
-            child.photoUri = destPath.replace(DocumentDirectoryPath, '');
-        });
-    }
+            // Save imageUri to realm
+            userRealmStore.realm?.write(() => {
+                child.photoUri = destPath.replace(DocumentDirectoryPath, '');
+            });
+        };
+    };
 
     private async addAnotherChild() {
         await userRealmStore.create<ChildEntity>(ChildEntitySchema, this.getNewChild());
@@ -154,14 +162,19 @@ export class AddChildrenScreen extends React.Component<Props, State> {
     private gotoAddParentsScreen() {
         if (this.validate()) {
             dataRealmStore.setVariable('userEnteredChildData', true);
-            this.props.navigation.navigate('AccountStackNavigator_AddParentsScreen');
+
+            if(this.state.screenType !== ""){
+                this.props.navigation.navigate('HomeStackNavigator_ChildProfileScreen');
+            }else{
+                this.props.navigation.navigate('AccountStackNavigator_AddParentsScreen');
+            };
         } else {
             this.setState({
                 isSnackbarVisible: true,
                 snackbarMessage: translate('accountErrorAllNamesMustBeGiven'),
             });
-        }
-    }
+        };
+    };
 
     private validate(): boolean {
         let rval = true;
@@ -181,7 +194,8 @@ export class AddChildrenScreen extends React.Component<Props, State> {
                     rval = false;
                 };
             });
-        }
+        };
+
         return rval;
     };
 
@@ -194,13 +208,13 @@ export class AddChildrenScreen extends React.Component<Props, State> {
             let match = finalPath.match(re);
             if (!match) {
                 finalPath = 'file://' + finalPath;
-            }
-        }
+            };
+        };
 
         return finalPath;
-    }
+    };
 
-    private renderClasicScreen(userRealmContext: UserRealmContextValue) {
+    private renderDefaultScreen(userRealmContext: UserRealmContextValue) {
         return (
             <Fragment>
                 {userRealmContext.realm?.objects<ChildEntity>(ChildEntitySchema.name).map((child, childIndex) => (
@@ -260,8 +274,8 @@ export class AddChildrenScreen extends React.Component<Props, State> {
                     </View>
                 ))}
             </Fragment>
-        )
-    }
+        );
+    };
 
     private renderOtherScreens(userRealmContext: UserRealmContextValue) {
         let allChilds = userRealmContext.realm?.objects<ChildEntity>(ChildEntitySchema.name).map((child) => child);
@@ -279,7 +293,7 @@ export class AddChildrenScreen extends React.Component<Props, State> {
                             {/* CHILD HEADER */}
                             <View style={{ height: scale(45), paddingLeft: scale(10), backgroundColor: '#F8F8F8', flexDirection: 'row', alignItems: 'center' }}>
                                 <Text style={{ flex: 1, fontSize: moderateScale(16), fontWeight: 'bold' }}>
-                                    {translate('accountSisterOrBrother')}
+                                    {this.state.screenType === "EditChild" ? null : translate('accountSisterOrBrother')}
                                 </Text>
 
                                 <IconButton
@@ -320,15 +334,14 @@ export class AddChildrenScreen extends React.Component<Props, State> {
                             </View>
                         </View>
                     </Fragment>
-                )
-            }
-
-        }
-    }
+                );
+            };
+        };
+    };
 
     private renderScreen(userRealmContext: UserRealmContextValue) {
         if (this.state.screenType === "") {
-            return this.renderClasicScreen(userRealmContext);
+            return this.renderDefaultScreen(userRealmContext);
         } else {
             return this.renderOtherScreens(userRealmContext);
         };
@@ -336,7 +349,6 @@ export class AddChildrenScreen extends React.Component<Props, State> {
 
     public render() {
         return (
-
             <SafeAreaView style={[styles.container]}>
                 <KeyboardAwareScrollView
                     ref={this.scrollView}
@@ -344,7 +356,7 @@ export class AddChildrenScreen extends React.Component<Props, State> {
                     contentContainerStyle={{ backgroundColor: 'white', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'stretch' }}>
                     {/* TITLE */}
                     <Typography style={{ margin: scale(30) }} type={TypographyType.headingPrimary}>
-                        {translate('accountTitle')}
+                        {this.state.screenType === "EditChild" ? translate('childProfileEditChildTitle') : translate('accountTitle')}
                     </Typography>
 
                     {/* CHILDREN */}
@@ -364,7 +376,7 @@ export class AddChildrenScreen extends React.Component<Props, State> {
                                 text={"Save"}
                                 type={RoundedButtonType.purple}
                                 style={{ marginHorizontal: scale(30) }}
-                                onPress={() => { this.props.navigation.navigate('HomeStackNavigator_ChildProfileScreen') }}
+                                onPress={() => { this.gotoAddParentsScreen() }}
                             />
                             :
                             <RoundedButton
@@ -399,15 +411,14 @@ export class AddChildrenScreen extends React.Component<Props, State> {
                 </Snackbar>
             </SafeAreaView>
         );
-    }
-
-}
+    };
+};
 
 export type ScreenTypes = "NewChild" | "EditChild" | "";
 
 export interface AddChildrenScreenStyles {
     container?: ViewStyle;
-}
+};
 
 const styles = StyleSheet.create<AddChildrenScreenStyles>({
     container: {
