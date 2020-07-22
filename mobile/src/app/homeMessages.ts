@@ -6,7 +6,7 @@ import { DateTime } from 'luxon';
 import { translate } from "../translations/translate";
 import { RoundedButtonType } from "../components/RoundedButton";
 import { navigation } from ".";
-import { translateData, TranslateDataHealthCheckPeriods } from "../translationsData/translateData";
+import { translateData, TranslateDataHealthCheckPeriods, HealthCheckPeriod } from "../translationsData/translateData";
 import { utils } from "./utils";
 import { Measures } from "../stores/ChildEntity";
 
@@ -282,11 +282,46 @@ class HomeMessages {
         // Set currentHealthCheckPeriod
         const currentHealthCheckPeriod = this.getCurrentHealthCheckPeriod();
 
+        // Is child currently in helath check period?
         if (!currentHealthCheckPeriod) {
             return [];
         }
 
+        // Set measuresForHealthCheckPeriod
+        const measuresForHealthCheckPeriod = this.getMeasuresForHealthCheckPeriod(currentHealthCheckPeriod);
 
+        // Show "Measurement data is NOT entered"
+        if (!measuresForHealthCheckPeriod) {
+            rval.push({
+                text: translate('homeMessageGrowthMeasurementNotEntered'),
+                iconType: IconType.growth,
+                button: {
+                    text: translate('homeMessageGrowthAddMeasurementButton'),
+                    type: RoundedButtonType.purple,
+                    onPress: () => { navigation.navigate('HomeStackNavigator_NewMeasurementScreen'); }
+                }
+            });
+        }
+
+        // Show "Measurement data is entered"
+        if (measuresForHealthCheckPeriod && this.currentChild?.gender && this.childAgeInDays) {
+            const interpretationLengthForAge = userRealmStore.getInterpretationLenghtForAge(this.currentChild?.gender, measuresForHealthCheckPeriod);
+            const interpretationWeightForHeight = userRealmStore.getInterpretationWeightForHeight(this.currentChild?.gender, this.childAgeInDays, measuresForHealthCheckPeriod);
+
+            const measureIsGood = interpretationLengthForAge.goodMeasure && interpretationWeightForHeight.goodMeasure;
+
+            let intepretationText: string = '';
+            if (measureIsGood) {
+                intepretationText = translate('homeMessageGrowthMeasurementsOk').replace('%CHILD%', utils.upperCaseFirstLetter( this.currentChild.name ));
+            } else {
+                intepretationText = translate('homeMessageGrowthMeasurementsBad');
+            }
+
+            rval.push({
+                text: translate('homeMessageGrowthMeasurementEntered') + ' ' + intepretationText,
+                iconType: IconType.growth,
+            });
+        }
 
         return rval;
     }
@@ -319,8 +354,59 @@ class HomeMessages {
         return rval;
     }
 
-    private getMeasurementsForHealthCheckPeriod(healthCheckPeriod: HealthCheckPeriod | null): Measures | null {
-        return null;
+    private getMeasuresForHealthCheckPeriod(healthCheckPeriod: HealthCheckPeriod | null): Measures | null {
+        let rval: Measures | null = null;
+
+        // Validation
+        if (!this.currentChild || !this.currentChild.measures) {
+            return null;
+        }
+
+        if (!healthCheckPeriod || !healthCheckPeriod.childAgeInDays.from || !healthCheckPeriod.childAgeInDays.to) {
+            return null;
+        }
+
+        // Set allMesaures
+        const allMeasures = JSON.parse(this.currentChild.measures) as Measures[];
+
+        // Set importantMeasures
+        const importantMeasures: Measures[] = [];
+
+        allMeasures.forEach((measure) => {
+            const childBirtDateTimestampMills = this.currentChild?.birthDate?.getTime();
+            const currentMesaureDateTimestampMills = measure.measurementDate;
+
+            if (
+                childBirtDateTimestampMills
+                && currentMesaureDateTimestampMills
+                && currentMesaureDateTimestampMills >= childBirtDateTimestampMills
+            ) {
+                const measureChildAgeInDays = Math.ceil( (currentMesaureDateTimestampMills/1000 - childBirtDateTimestampMills/1000) / (60*60*24) );
+
+                if (
+                    measureChildAgeInDays >= healthCheckPeriod?.childAgeInDays.from
+                    && measureChildAgeInDays <= healthCheckPeriod?.childAgeInDays.to
+                ) {
+                    importantMeasures.push(measure);
+                }
+            }
+        });
+
+        // Set newestImportantMeasure
+        importantMeasures.sort((a, b) => {
+            if (!a.measurementDate || !b.measurementDate) return 0;
+            if (a.measurementDate > b.measurementDate) return -1;
+            if (a.measurementDate < b.measurementDate) return 1;
+            if (a.measurementDate == b.measurementDate) return 0;
+            return 0;
+        });
+
+        // Return the latest measure
+        if (importantMeasures && importantMeasures.length > 0) {
+            rval = importantMeasures[0];
+        }
+
+        return rval;
     }
 }
 
@@ -330,12 +416,6 @@ export interface DailyMessageVariable {
     day: number;
     month: number;
     year: number;
-}
-
-export interface HealthCheckPeriod {
-    period: string;
-    childAgeInDays: {from:number, to:number};
-    showGrowthMessageInDays: {from:number, to:number};
 }
 
 export const homeMessages = HomeMessages.getInstance();

@@ -201,5 +201,10 @@
     "readMore": "Pročitajte više:",
     "homeMessageChildHasItsProfile": "%CHILD% sada ima svoj profil!",
     "homeMessageEnterBabyData": "Unesite podatke sa bebinog rođenja da biste videli tekstove koji su prilagođeni vašoj bebi.",
-    "homeMessageEnterBabyDataButton": "Dodajte podatke o bebibom rodjenju"
+    "homeMessageEnterBabyDataButton": "Dodajte podatke o bebibom rodjenju",
+    "homeMessageGrowthMeasurementNotEntered": "Podaci o merama deteta nisu ažurirani.",
+    "homeMessageGrowthMeasurementEntered": "Podaci o merama deteta su ažurirani.",
+    "homeMessageGrowthAddMeasurementButton": "Ažurirajte podatke o merama deteta",
+    "homeMessageGrowthMeasurementsOk": "Bravo. %CHILD% raste u skladu sa uzrastom",
+    "homeMessageGrowthMeasurementsBad": "Obratite pažnju na preporuke o rastu i konsultujte lekara"
 }
