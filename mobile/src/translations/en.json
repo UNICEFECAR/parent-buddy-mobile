@@ -96,7 +96,7 @@
     "settingsTitleNotifications": "Notifications",
     "settingsNotificationsWithApp": "I want to receive notifications through the application",
     "settingsNotificationsWithEmail": "I want to receive notifications through the email",
-    "settingsNotificationsHelp": "Notifications are published once per week. Reminders about health check-ups are published five days before the check-up, one day before and on the day of the check-up.",
+    "settingsNotificationsHelp": "Notifications are published with different frequency, from daily to monthly and are integral part of the app functionality. You can decide to hide notifications on your home screen. You can also fully disable this function at any point in the app settings what will result in limited app functionality.",
     "settingsTitleNotificationsDetails": "Data records and notifications",
     "settingsEnterGrowth": "I want to track child growth and receive reminders to enter the growth measures of my child",
     "settingsEnterDevelopment": "I want to track developmental milestones and receive reminders to enter the data",

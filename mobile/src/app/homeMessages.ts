@@ -47,12 +47,14 @@ class HomeMessages {
         const settingsFollowDevelopment = dataRealmStore.getVariable('followDevelopment');
         const settingsFollowDoctorVisits = dataRealmStore.getVariable('followDoctorVisits');
 
-        if (settingsFollowDevelopment) {
-            // Upcomming development period message
+        // Upcomming development period message
+        if (settingsNotificationsApp && settingsFollowDevelopment) {
             const upcommingDevelopmentPeriodMessage = this.getUpcommingDevelopmentPeriodMessage();
             if (upcommingDevelopmentPeriodMessage) rval.push(upcommingDevelopmentPeriodMessage);
+        }
 
-            // Ongoing development period message
+        // Ongoing development period message
+        if (settingsNotificationsApp && settingsFollowDevelopment) {
             const ongoingDevelopmentPeriodMessage = this.getOngoingDevelopmentPeriodMessage();
             if (ongoingDevelopmentPeriodMessage) rval.push(ongoingDevelopmentPeriodMessage);
         }
@@ -66,17 +68,19 @@ class HomeMessages {
         if (dailyMessage) rval.push(dailyMessage);
 
         // Growth messages
-        if (settingsFollowGrowth) {
+        if (settingsNotificationsApp && settingsFollowGrowth) {
             const growthMessages = this.getGrowthMessages();
             if (growthMessages.length > 0) rval = rval.concat(growthMessages);
         }
 
-        if (settingsFollowDevelopment) {
-            // Encourage child development message
+        // Encourage child development message
+        if (settingsNotificationsApp && settingsFollowDevelopment) {
             const encourageChildDevelopmentMessage = this.getEncourageChildDevelopmentMessage();
             if (encourageChildDevelopmentMessage) rval.push(encourageChildDevelopmentMessage);
+        }
 
-            // Update milestones message
+        // Update milestones message
+        if (settingsNotificationsApp && settingsFollowDevelopment) {
             const updateMilestonesMessage = this.getUpdateMilestonesMessage();
             if (updateMilestonesMessage) rval.push(updateMilestonesMessage);
         }
