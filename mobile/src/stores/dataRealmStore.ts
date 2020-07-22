@@ -247,10 +247,10 @@ class DataRealmStore {
 
         const childAgeTagId = this.getTagIdFromChildAge(parseInt(childAgeMonths.toString()) + 1);
         const childGender = userRealmStore.getChildGender();
-
+        
         if (allPeriods) {
             // if user didn't set age return all periods
-            if (childAgeTagId === undefined || childAgeTagId === null) {
+            if (childAge === undefined || childAge === null) {
                 developmentPeriods = allPeriods.map((period: any): DevelopmentPeriodsType => {
                     return {
                         body: period.description,
@@ -285,7 +285,6 @@ class DataRealmStore {
                         // Check is period milestones completed 
                         allMilestones?.forEach(item => {
                             let checkedMilesteone = checkedMilesteones?.find(id => item.id === id);
-
                             if (checkedMilesteone === undefined) {
                                 completed = false
                             };
