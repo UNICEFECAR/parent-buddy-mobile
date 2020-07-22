@@ -268,21 +268,22 @@ class UserRealmStore {
         let allChilds = userRealmContext;
         let currentChild = this.getCurrentChild()?.uuid;
 
-        let a: Child[] = [];
+        let allChildsList: Child[] = [];
 
         if(allChilds){
 
-             a = allChilds?.map(child => {
-                let birthDay = child.birthDate ? DateTime.fromJSDate(child.birthDate).toFormat("dd'.'MM'.'yyyy") : "not entered";
-                let imgUrl = `${RNFS.DocumentDirectoryPath}/${child.photoUri}`;
+            allChildsList = allChilds?.map(child => {
+                let birthDay = child.birthDate ? 
+                    DateTime.fromJSDate(child.birthDate).toFormat("dd'.'MM'.'yyyy") : "not entered";
                 
+                let imgUrl = child.photoUri ? `${RNFS.DocumentDirectoryPath}/${child.photoUri}` : null;
                 let isCurrentActive = false;
                 
                 if(currentChild){
                     if(currentChild === child.uuid){
                         isCurrentActive = true;
                     }
-                }
+                };
 
                 return {
                     childId: child.uuid,
@@ -294,10 +295,10 @@ class UserRealmStore {
                     id: child.uuid,
                 };
             });
-        }
+        };
   
 
-        return a;
+        return allChildsList;
     };
 
     public async setVariable<T extends VariableKey>(key: T, value: Variables[T] | null): Promise<boolean> {
