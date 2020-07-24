@@ -85,7 +85,6 @@ const styles = StyleSheet.create<WalkthroughBackgroundStyles>({
     },
 
     contentWrapper: {
-        flex: 1,
         paddingLeft: 15,
         paddingRight: 15,
     },

@@ -122,7 +122,6 @@ class SyncData {
 
         // DOWNLOAD BASIC PAGES 
         const basicPages = await apiStore.getBasicPages();
-
         // save basic pages 
         if (basicPages?.data && basicPages.data.length > 0) {
             const basicPageCreateOrUpdate: Promise<BasicPageEntity>[] = [];
@@ -130,7 +129,7 @@ class SyncData {
             basicPages.data.forEach((value) => {
                 basicPageCreateOrUpdate.push(dataRealmStore.createOrUpdate(BasicPagesEntitySchema, value));
             });
-
+            
             try {
                 await Promise.all(basicPageCreateOrUpdate);
                 if (appConfig.showLog) {
