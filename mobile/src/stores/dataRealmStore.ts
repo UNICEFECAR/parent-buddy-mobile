@@ -37,6 +37,7 @@ export type Variables = {
     'vocabulariesAndTerms': VocabulariesAndTermsResponse;
     'dailyMessage': DailyMessageVariable;
     'currentActiveChildId': string;
+    'hideHomeMessages': boolean;
 };
 
 type VariableKey = keyof Variables;
@@ -79,7 +80,7 @@ class DataRealmStore {
         });
     }
 
-    public getBasicPage(id: 4516 | 4836) {
+    public getBasicPage(id: 4516 | 4836 | 5911) {
         const basicPageVariable = this.realm?.objects<BasicPageEntity>(BasicPagesEntitySchema.name);
         return basicPageVariable?.filtered(`id == ${id}`).find(item => item);
     }
@@ -258,7 +259,7 @@ class DataRealmStore {
         
         if (allPeriods) {
             // if user didn't set age return all periods
-            if (childAgeTagId === undefined || childAgeTagId === null) {
+            if (childAge === undefined || childAge === null) {
                 developmentPeriods = allPeriods.map((period: any): DevelopmentPeriodsType => {
                     return {
                         body: period.description,
@@ -297,7 +298,6 @@ class DataRealmStore {
                         // Check is period milestones completed 
                         allMilestones?.forEach(item => {
                             let checkedMilesteone = checkedMilesteones?.find(id => item.id === id);
-
                             if (checkedMilesteone === undefined) {
                                 completed = false
                             };

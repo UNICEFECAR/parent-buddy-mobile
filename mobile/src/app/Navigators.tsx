@@ -41,10 +41,11 @@ import { AllMeasurementsScreen } from "../screens/growth/AllMeasurementsScreen";
 import { ChartFullScreen } from '../screens/growth/ChartFullScreen';
 import { userRealmStore } from "../stores";
 import RNFS from 'react-native-fs';
- /**
- * Use it to [navigate screens](https://reactnavigation.org/docs/en/navigating-without-navigation-prop.html)
- * from anywhere in the code.
- */
+import { PrivacyPolocyScreen } from "../screens/login/PrivacyPolicyScreen";
+/**
+* Use it to [navigate screens](https://reactnavigation.org/docs/en/navigating-without-navigation-prop.html)
+* from anywhere in the code.
+*/
 class Navigation {
     private navigator?: NavigationContainerComponent;
     private static instance: Navigation;
@@ -161,6 +162,13 @@ const HomeStackNavigator = createStackNavigator({
             title: "Search results"
         }
     },
+    HomeStackNavigator_TermsScreen: {
+        screen: TermsScreen,
+        navigationOptions: {
+            
+            title: translate('termsAndConditionsTitle'),
+        }
+    },
     HomeStackNavigator_FaqScreenScreen: {
         screen: FaqScreen,
         navigationOptions: {
@@ -182,15 +190,7 @@ const HomeStackNavigator = createStackNavigator({
             }
         }
     },
-    HomeStackNavigator_TermsScreen: {
-        screen: TermsScreen,
-        navigationOptions: ({ navigation }: NavigationScreenConfigProps<NavigationStackProp<NavigationStackState, any>>): NavigationStackOptions => {
-            return {
-                title: translate('termsAndConditionsTitle'),
-                ...secondaryHomeNavigationOptions
-            }
-        }
-    },
+
     HomeStackNavigator_AppFeedbackScreen: {
         screen: AppFeedbackScreen,
         navigationOptions: ({ navigation }: NavigationScreenConfigProps<NavigationStackProp<NavigationStackState, any>>): NavigationStackOptions => {
@@ -342,7 +342,7 @@ const HomeStackNavigator = createStackNavigator({
                 let headerTitle: JSX.Element | null = null;
 
                 if (!screenParams.showSearchInput) {
-                    headerTitle = (<Text onLongPress={(event) => {}} style={themes.getCurrentTheme().theme.headerTitle}>{translate('appName')}</Text>);
+                    headerTitle = (<Text onLongPress={(event) => { }} style={themes.getCurrentTheme().theme.headerTitle}>{translate('appName')}</Text>);
                 }
 
                 return headerTitle;
@@ -351,9 +351,9 @@ const HomeStackNavigator = createStackNavigator({
             headerRight: () => {
                 const screenParams = navigation.state.params!;
                 let images = null;
-                if(userRealmStore.getCurrentChild()){
-                    if(userRealmStore.getCurrentChild()?.photoUri){
-                        images = {image: `${RNFS.DocumentDirectoryPath}/${userRealmStore.getCurrentChild()?.photoUri}`}
+                if (userRealmStore.getCurrentChild()) {
+                    if (userRealmStore.getCurrentChild()?.photoUri) {
+                        images = { image: `${RNFS.DocumentDirectoryPath}/${userRealmStore.getCurrentChild()?.photoUri}` }
                     }
                 }
 
@@ -379,7 +379,7 @@ const HomeStackNavigator = createStackNavigator({
                                     onPress={() => { toggleSearchInput() }}
                                 />
                             )}
-                        <ProfileIcon onPress={openBirthDataScreen} {...images}/>
+                        <ProfileIcon onPress={openBirthDataScreen} {...images} />
                     </View>
                 );
             },
@@ -509,6 +509,15 @@ const RootModalStackNavigator = createStackNavigator({
         screen: SyncingScreen,
         navigationOptions: {
             title: "Title"
+        }
+    },
+    RootModalStackNavigator_PrivacyPolicyScreen: {
+        screen: PrivacyPolocyScreen,
+        navigationOptions: ({ navigation }: NavigationScreenConfigProps<NavigationStackProp<NavigationStackState, any>>): NavigationStackOptions => {
+            return {
+                title: translate('termsAndConditionsTitle'),
+                ...secondaryHomeNavigationOptions
+            }
         }
     },
     RootModalStackNavigator_VideoScreen: {

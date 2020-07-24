@@ -186,7 +186,7 @@ export class SettingsScreen extends React.Component<Props, State> {
                                 <View style={{ height: themeContext.theme.variables?.sizes.verticalPaddingLarge }} />
 
                                 {/* state.notificationsEmail */}
-                                <View style={{ alignSelf: 'stretch', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
+                                {/* <View style={{ alignSelf: 'stretch', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
                                     <Switch
                                         value={this.state.notificationsEmail}
                                         color={themeContext.theme.variables?.colors?.switchColor}
@@ -198,7 +198,7 @@ export class SettingsScreen extends React.Component<Props, State> {
                                     </Typography>
                                 </View>
 
-                                <View style={{ height: themeContext.theme.variables?.sizes.verticalPaddingLarge }} />
+                                <View style={{ height: themeContext.theme.variables?.sizes.verticalPaddingLarge }} /> */}
 
                                 {/* Notifications help */}
                                 <Caption style={{ fontSize: moderateScale(14) }}>

@@ -1,24 +1,25 @@
 import React from 'react';
 import { ScrollView, ViewStyle, StyleSheet, Linking, Dimensions, View } from 'react-native';
 import { NavigationStackProp, NavigationStackState, NavigationStackOptions } from 'react-navigation-stack';
-import { ThemeContextValue, ThemeConsumer } from '../themes/ThemeContext';
-import { translate } from '../translations/translate';
+import { ThemeContextValue, ThemeConsumer } from '../../themes/ThemeContext';
+import { translate } from '../../translations/translate';
 import { scale } from 'react-native-size-matters';
-import { TextButton, TextButtonColor } from '../components/TextButton';
-import { TermsScreenParams } from './login/TermsScreen';
-import { dataRealmStore } from '../stores';
+import { TextButton, TextButtonColor } from '../../components/TextButton';
 // @ts-ignore
 import HTML from 'react-native-render-html';
-import { RoundedButton } from '../components';
-import { RoundedButtonType } from '../components/RoundedButton';
-import { navigation } from '../app';
+import { dataRealmStore } from '../../stores';
+import { Typography } from '../../components';
+import { TypographyType } from '../../components/Typography';
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { themes } from '../../themes';
 
-export interface AboutScreenParams {
+
+export interface PrivacyPolocyScreenParams {
     showSearchInput?: boolean;
 }
 
 export interface Props {
-    navigation: NavigationStackProp<NavigationStackState, AboutScreenParams>;
+    navigation: NavigationStackProp<NavigationStackState, PrivacyPolocyScreenParams>;
 }
 
 export interface State {
@@ -30,7 +31,7 @@ export interface State {
 /**
  * Describes who created the application.
  */
-export class AboutScreen extends React.Component<Props, State> {
+export class PrivacyPolocyScreen extends React.Component<Props, State> {
 
     public constructor(props: Props) {
         super(props);
@@ -39,12 +40,12 @@ export class AboutScreen extends React.Component<Props, State> {
     }
 
     private initState() {
-        const aboutPageData = dataRealmStore.getBasicPage(4516);    
+        const privacyData = dataRealmStore.getBasicPage(5911);
 
-        if (aboutPageData) {
+        if (privacyData) {
             let state: State = {
-                title: aboutPageData.title,
-                body: aboutPageData.body,
+                title: privacyData.title,
+                body: privacyData.body,
             };
 
             this.state = state;
@@ -52,7 +53,7 @@ export class AboutScreen extends React.Component<Props, State> {
     };
 
     private setDefaultScreenParams() {
-        let defaultScreenParams: AboutScreenParams = {
+        let defaultScreenParams: PrivacyPolocyScreenParams = {
             showSearchInput: false,
         };
 
@@ -67,26 +68,6 @@ export class AboutScreen extends React.Component<Props, State> {
         this.props.navigation.goBack();
     }
 
-    private sendEmail() {
-        Linking.openURL(`mailto:${translate('appEmail')}`).catch(() => { });
-    }
-
-    private callPhone() {
-        Linking.openURL(`tel:${translate('appPhone')}`).catch(() => { });
-    }
-
-    private openWebsite() {
-        Linking.openURL('https://www.halobeba.rs/');
-    }
-
-    private gotoTermsScreen() {
-        let screenParams: TermsScreenParams = {
-            hideCheckboxes: true,
-            showBackButton: true
-        };
-        this.props.navigation.navigate('HomeStackNavigator_TermsScreen', screenParams);
-    }
-    
     public render() {
         return (
             <ThemeConsumer>
@@ -95,6 +76,17 @@ export class AboutScreen extends React.Component<Props, State> {
                         style={{ flex: 1, backgroundColor: 'white' }}
                         contentContainerStyle={[styles.container, { padding: themeContext.theme.screenContainer?.padding }]}
                     >
+                        <View style={{ width: '100%', marginTop: 30, flexDirection: 'row', alignItems: 'center' }}  >
+                            <Typography type={TypographyType.headingPrimary} style={{ textAlign: 'center', marginTop: 30 }}>
+                                {this.state.title}
+                            </Typography>
+                            <Icon
+                                name={"close"}
+                                onPress={() => this.props.navigation.goBack()}
+                                style={{ paddingLeft: 5, fontSize: 26, marginTop: 20, textAlign: "right", position: "absolute", right: 10, top: 20 }}
+                            />
+
+                        </View>
                         <HTML
                             html={this.state.body}
                             baseFontStyle={{ fontSize: scale(18) }}
@@ -106,16 +98,7 @@ export class AboutScreen extends React.Component<Props, State> {
                             }}
                         />
 
-                        <View>
-                            <RoundedButton type={RoundedButtonType.purple} text="Zelim da da dsa dasda" onPress={() => {}} />
-                            <TextButton 
-                                style={{marginTop: scale(20), marginBottom: scale(20)}} 
-                                color={TextButtonColor.purple}
-                                onPress={() => this.props.navigation.push('HomeStackNavigator_TermsScreen', {hideCheckboxes: true})}
-                            >
-                                    Uslovi korišćenja aplikacije
-                            </TextButton>
-                        </View>
+
                     </ScrollView>
                 )}
             </ThemeConsumer>
@@ -124,19 +107,19 @@ export class AboutScreen extends React.Component<Props, State> {
 
 }
 
-export interface AboutScreenStyles {
+export interface PrivacyPolocyScreenStyles {
     container?: ViewStyle;
 }
 
-const styles = StyleSheet.create<AboutScreenStyles>({
+const styles = StyleSheet.create<PrivacyPolocyScreenStyles>({
     container: {
         // flex: 1,
     },
 });
 const htmlStyles = {
-    p: { marginBottom: 15},
-    ol: {display: 'flex', flexDirection: "column"},
-    li: {width: '100%'},
+    p: { marginBottom: 15 },
+    ol: { display: 'flex', flexDirection: "column" },
+    li: { width: '100%' },
     a: { fontWeight: 'bold', textDecorationLine: 'none' },
     blockquote: { backgroundColor: '#F0F1FF', padding: scale(15) },
 };
