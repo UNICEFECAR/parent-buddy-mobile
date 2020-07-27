@@ -163,18 +163,16 @@ export class Drawer extends React.Component<Props> {
                             <FancyButton type={FancyButtonType.doctor} style={{ flex: 1 }} onPress={() => { this.gotoScreen(FancyButtonType.doctor) }} />
                         </View> */}
 
-                        {/* ABOUT US */}
+                        {/* APP RELATED BUTTONS  */}
                         <Typography type={TypographyType.headingPrimary} style={{ marginTop: scale(20), marginBottom: scale(5) }}>
                             {translate('appName')}
                         </Typography>
 
                         <View style={{ flexDirection: 'row' }}>
                             <FancyButton title={translate('drawerButtonAboutUs')} style={{ flex: 1 }} onPress={() => { this.gotoScreen(FancyButtonType.aboutUs) }} />
-                            <FancyButton title={translate('drawerButtonContact')} style={{ flex: 1 }} onPress={() => { this.gotoScreen(FancyButtonType.contact) }} />
+                            <FancyButton type={FancyButtonType.settings} iconPosition={FancyButtonIconPosition.left} style={{ flex: 1 }} onPress={() => { this.gotoScreen(FancyButtonType.settings) }} />
+                            {/* <FancyButton title={translate('drawerButtonContact')} style={{ flex: 1 }} onPress={() => { this.gotoScreen(FancyButtonType.contact) }} /> */}
                         </View>
-
-                        {/* Settings */}
-                        <FancyButton type={FancyButtonType.settings} iconPosition={FancyButtonIconPosition.left} style={{ flex: 1 }} onPress={() => { this.gotoScreen(FancyButtonType.settings) }} />
                     </ScrollView>
                 )}
             </ThemeConsumer>
