@@ -280,7 +280,7 @@ export class GrowthScreen extends Component<Props, State> {
                                     {(dataRealmContext: DataRealmContextValue) => (
                                         <UserRealmConsumer>
                                             {(userRealmContext: UserRealmContextValue) => (
-                                                <HomeMessages showCloseButton={false}></HomeMessages>
+                                                <HomeMessages showCloseButton={true}></HomeMessages>
                                             )}
                                         </UserRealmConsumer>
                                     )}
