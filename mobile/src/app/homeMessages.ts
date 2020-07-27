@@ -378,7 +378,7 @@ class HomeMessages {
         }
 
         // Show "Measurement data is entered"
-        if (measuresForHealthCheckPeriod && this.currentChild?.gender && this.childAgeInDays) {
+        if (measuresForHealthCheckPeriod && this.currentChild?.gender && this.childAgeInDays && this.childAgeInDays != 0) {
             const interpretationLengthForAge = userRealmStore.getInterpretationLenghtForAge(this.currentChild?.gender, measuresForHealthCheckPeriod);
             const interpretationWeightForHeight = userRealmStore.getInterpretationWeightForHeight(this.currentChild?.gender, this.childAgeInDays, measuresForHealthCheckPeriod);
 
@@ -404,7 +404,7 @@ class HomeMessages {
         let rval: Message | null = null;
 
         // Validation
-        if (this.childAgeInDays === undefined) return null;
+        if (this.childAgeInDays === undefined || this.childAgeInDays == 0) return null;
 
         // Set showMessage
         const showMessage = (this.childAgeInDays % 30) <= 10;
@@ -428,7 +428,7 @@ class HomeMessages {
 
         // Validation
         if (!this.currentChild || !this.currentChild.birthDate) return null;
-        if (this.childAgeInDays === undefined) return null;
+        if (this.childAgeInDays === undefined || this.childAgeInDays == 0) return null;
 
         // Get all development periods
         const developmentPeriods = translateData('developmentPeriods') as TranslateDataDevelopmentPeriods;
@@ -469,7 +469,7 @@ class HomeMessages {
         let rval: HealthCheckPeriod | null = null;
 
         // Validation
-        if (this.childAgeInDays === undefined) return null;
+        if (this.childAgeInDays === undefined || this.childAgeInDays == 0) return null;
 
         // Set healthCheckPeriods
         let healthCheckPeriods = translateData('healthCheckPeriods') as (TranslateDataHealthCheckPeriods | null);
