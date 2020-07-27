@@ -1,13 +1,14 @@
 import React from 'react';
-import { SafeAreaView, StyleSheet, ViewStyle } from 'react-native';
+import { SafeAreaView, StyleSheet, ViewStyle, View } from 'react-native';
 import { NavigationStackProp, NavigationStackState } from 'react-navigation-stack';
 import { Typography } from '../components';
 import { TypographyType } from '../components/Typography';
 import { utils, syncData } from '../app';
 import { appConfig } from '../app/appConfig';
 import { translate } from '../translations';
-import LottieView from 'lottie-react-native';
-import lottieAnimation from './lottie-animation.json';
+import { ActivityIndicator } from 'react-native-paper';
+import { scale } from 'react-native-size-matters';
+import FastImage from 'react-native-fast-image';
 
 export interface Props {
     navigation: NavigationStackProp<NavigationStackState>;
@@ -33,18 +34,24 @@ export class SyncingScreen extends React.Component<Props, object> {
     public render() {
         return (
             <SafeAreaView style={styles.container}>
-                <LottieView
-                    style={{ width:'70%' }}
-                    source={lottieAnimation}
-                    autoPlay loop
+                <View style={{ flex: 0, marginTop: scale(20) }}>
+                    <Typography type={TypographyType.headingPrimary} style={{ marginBottom: 0 }}>
+                        {translate('syncScreenText')}
+                    </Typography>
+                    <Typography type={TypographyType.headingSecondary}>
+                        {translate('syncScreenSubText')}
+                    </Typography>
+                </View>
+
+                <FastImage
+                    source={ require('../themes/assets/sync_data.png') }
+                    style={{ flex:1, width:'100%' }}
+                    resizeMode="cover"
                 />
 
-                <Typography type={TypographyType.headingPrimary}>
-                    {translate('syncScreenText')}
-                </Typography>
-                <Typography type={TypographyType.headingSecondary} style={{ color: 'grey' }}>
-                    {translate('syncScreenSubText')}
-                </Typography>
+                <View style={{ flex: 0, marginBottom: scale(20) }}>
+                    <ActivityIndicator size="large" />
+                </View>
             </SafeAreaView>
         );
     }

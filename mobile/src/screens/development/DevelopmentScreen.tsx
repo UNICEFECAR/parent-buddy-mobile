@@ -6,19 +6,24 @@ import { ThemeConsumer, ThemeContextValue } from '../../themes/ThemeContext';
 import { scale } from 'react-native-size-matters';
 import { HomeScreenParams } from '../home/HomeScreen';
 import { translate } from '../../translations/translate';
-import { dataRealmStore } from '../../stores';
+import { dataRealmStore, userRealmStore, ChildEntity } from '../../stores';
 import { MilestoneCard } from '../../components/development/MilestoneCard';
 import { navigation } from '../../app';
 import { RoundedButtonType } from '../../components/RoundedButton';
 import { StackActions } from 'react-navigation';
 import { DevelopmentPeriodsType } from '../../stores/dataRealmStore';
+import { DataRealmConsumer, DataRealmContextValue } from '../../stores/DataRealmContext';
+import { UserRealmConsumer, UserRealmContextValue } from '../../stores/UserRealmContext';
+import { HomeMessages } from '../../components';
+import { ChildEntitySchema } from '../../stores/ChildEntity';
 
 export interface DevelopmentScreenParams {
 
 };
 
 export interface State {
-    data: DevelopmentPeriodsType[]
+    data: DevelopmentPeriodsType[],
+    childBirthDate: Date | null
 }
 
 export interface Props {
@@ -28,8 +33,20 @@ export interface Props {
 export class DevelopmentScreen extends Component<Props, State> {
     public constructor(props: Props) {
         super(props);
+        this.initState();
         this.setDefaultScreenParams();
     };
+
+    private initState() {
+        let childBirthDate = userRealmStore.getCurrentChild()?.birthDate;
+
+        let state: State = {
+            data: [],
+            childBirthDate: childBirthDate ? childBirthDate : null
+        }
+
+        this.state = state;
+    }
 
     private setDefaultScreenParams() {
         let defaultScreenParams: DevelopmentScreenParams = {
@@ -92,6 +109,19 @@ export class DevelopmentScreen extends Component<Props, State> {
         };
     };
 
+    private renderHomeMessage(userRealm: UserRealmContextValue) {
+        let id = userRealmStore.getCurrentChild()?.uuid ? userRealmStore.getCurrentChild()?.uuid : "";
+        let user = userRealm.realm?.objects<ChildEntity>(ChildEntitySchema.name).find(item => item.uuid === id);
+
+        if (user?.birthDate) {
+            return null
+        } else {
+            return (
+                <HomeMessages showCloseButton={true}></HomeMessages>
+            );
+        };
+    };
+
     render() {
         return (
             <ThemeConsumer>
@@ -101,32 +131,47 @@ export class DevelopmentScreen extends Component<Props, State> {
                         contentContainerStyle={styles.container}
                     >
                         {
-                            dataRealmStore.getDevelopmentPeriods().map(item => (
-                                <View style={{ marginTop: 20 }}>
-                                    <MilestoneCard
-                                        title={item.title}
-                                        completed={item.finished}
-                                        isCurrentPeriod={item.currentPeriod}
-                                        subTitle={item.subtilte}
-                                        html={item.body}
-                                        roundedButton={item.finished !== undefined ? {
-                                            onPress: () => this.goToPeriodMilestones(
-                                                item.childAgeTagId ? item.childAgeTagId : 0,
-                                                item.title,
-                                                item.subtilte,
-                                                item.currentPeriod,
-                                                item.warningText || "",
-                                            ),
-                                            title: this.roundedButtonProperty(item.finished, item.currentPeriod).buttonText,
-                                            roundedButtonType: this.roundedButtonProperty(item.finished, item.currentPeriod).buttonType
-                                        } : null}
-                                        textButton={{
-                                            title: translate('moreAboutDevelopmentPeriod'),
-                                            onPress: () => this.goToPeriodArticle(item.relatedArticleId)
-                                        }} />
-                                </View>
-                            ))
+                            this.state.childBirthDate === null ?
+                                <DataRealmConsumer>
+                                    {(dataRealmContext: DataRealmContextValue) => (
+                                        <UserRealmConsumer>
+                                            {(userRealmContext: UserRealmContextValue) => (
+                                                this.renderHomeMessage(userRealmContext)
+                                            )}
+                                        </UserRealmConsumer>
+                                    )}
+                                </DataRealmConsumer> : null
                         }
+                        <DataRealmConsumer>
+                            {(dataRealmContext: DataRealmContextValue) => {
+                                return (
+                                    dataRealmStore.getDevelopmentPeriods().map(item => (
+                                        <View style={{ marginTop: 20 }}>
+                                            <MilestoneCard
+                                                title={item.title}
+                                                completed={item.finished}
+                                                isCurrentPeriod={item.currentPeriod}
+                                                subTitle={item.subtilte}
+                                                html={item.body}
+                                                roundedButton={item.finished !== undefined ? {
+                                                    onPress: () => this.goToPeriodMilestones(
+                                                        item.childAgeTagId ? item.childAgeTagId : 0,
+                                                        item.title,
+                                                        item.subtilte,
+                                                        item.currentPeriod,
+                                                        item.warningText || "",
+                                                    ),
+                                                    title: this.roundedButtonProperty(item.finished, item.currentPeriod).buttonText,
+                                                    roundedButtonType: this.roundedButtonProperty(item.finished, item.currentPeriod).buttonType
+                                                } : null}
+                                                textButton={{
+                                                    title: translate('moreAboutDevelopmentPeriod'),
+                                                    onPress: () => this.goToPeriodArticle(item.relatedArticleId)
+                                                }} />
+                                        </View>
+                                    )))
+                            }}
+                        </DataRealmConsumer>
                     </ScrollView>
                 )}
             </ThemeConsumer>
