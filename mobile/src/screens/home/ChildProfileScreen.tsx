@@ -286,7 +286,7 @@ const styles = StyleSheet.create<ChildProfileScreenStyles>({
     },
     defaultImg: {
         fontSize: moderateScale(150),
-        color: '#EBEBEB',
+        color: '#B8B8B8',
         paddingTop: 5
     },
     childList: {
