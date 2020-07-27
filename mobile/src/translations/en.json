@@ -102,7 +102,7 @@
     "settingsEnterDevelopment": "I want to track developmental milestones and receive reminders to enter the data",
     "settingsEnterDoctorVisits": "I want to make records about health check-ups and receive reminders to enter the data",
     "settingsTitleImportExport": "Data export / import TODO",
-    "settingsButtonExport": "Export all saved data",
+    "settingsButtonExport": "Export all saved data TODO",
     "settingsButtonImport": "Import all saved data TODO",
     "settingsButtonExportError": "Export failed TODO",
     "settingsButtonImportError": "There is no backup file TODO",

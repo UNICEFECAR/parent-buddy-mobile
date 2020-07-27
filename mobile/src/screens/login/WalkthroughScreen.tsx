@@ -60,9 +60,9 @@ export class WalkthroughScreen extends React.Component<Props, State> {
         const followDoctorVisits = dataRealmStore.getVariable('followDoctorVisits');
 
         let state: State = {
-            followGrowth: followGrowth ? followGrowth : false,
-            followDevelopment: followDevelopment ? followDevelopment : false,
-            followDoctorVisits: followDoctorVisits ? followDoctorVisits : false,
+            followGrowth: followGrowth !== null ? followGrowth : false,
+            followDevelopment: followDevelopment !== null ? followDevelopment : false,
+            followDoctorVisits: followDoctorVisits !== null ? followDoctorVisits : false,
         };
 
         this.state = state;
