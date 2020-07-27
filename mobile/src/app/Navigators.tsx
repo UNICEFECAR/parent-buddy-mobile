@@ -39,6 +39,8 @@ import { VaccinationScreen, VaccinationDataScreen, DevelopmentScreen, EditPeriod
 import { NewDoctorVisitScreen } from "../screens/vaccination/NewDoctorVisitScreen";
 import { AllMeasurementsScreen } from "../screens/growth/AllMeasurementsScreen";
 import { ChartFullScreen } from '../screens/growth/ChartFullScreen';
+import { userRealmStore } from "../stores";
+import RNFS from 'react-native-fs';
  /**
  * Use it to [navigate screens](https://reactnavigation.org/docs/en/navigating-without-navigation-prop.html)
  * from anywhere in the code.
@@ -321,7 +323,8 @@ const HomeStackNavigator = createStackNavigator({
         }
 
         function openBirthDataScreen() {
-            navigation.navigate('HomeStackNavigator_BirthDataScreen');
+            // navigation.navigate('HomeStackNavigator_BirthDataScreen');
+            navigation.navigate('HomeStackNavigator_ChildProfileScreen')
         }
 
         return {
@@ -347,6 +350,13 @@ const HomeStackNavigator = createStackNavigator({
             headerRightContainerStyle: { width: '80%' },
             headerRight: () => {
                 const screenParams = navigation.state.params!;
+                let images = null;
+                if(userRealmStore.getCurrentChild()){
+                    if(userRealmStore.getCurrentChild()?.photoUri){
+                        images = {image: `${RNFS.DocumentDirectoryPath}/${userRealmStore.getCurrentChild()?.photoUri}`}
+                    }
+                }
+
                 return (
                     <View style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center', paddingRight: moderateScale(10) }}>
                         {(screenParams && screenParams.showSearchInput) ? (
@@ -369,7 +379,7 @@ const HomeStackNavigator = createStackNavigator({
                                     onPress={() => { toggleSearchInput() }}
                                 />
                             )}
-                        <ProfileIcon onPress={openBirthDataScreen} />
+                        <ProfileIcon onPress={openBirthDataScreen} {...images}/>
                     </View>
                 );
             },

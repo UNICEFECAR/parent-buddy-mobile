@@ -29,6 +29,7 @@ export type ChildEntity = {
     babyRating?: number;
     measures: string;
     comment?: string;
+    checkedMilestones?: number[]
 };
 
 /**
@@ -55,6 +56,7 @@ export const ChildEntitySchema: ObjectSchema = {
         babyRating: {type: 'int', optional: true},
         measures: {type: 'string', optional: true},
         comment: {type: 'string', optional: true},
+        checkedMilestones: {type: 'int[]', optional: true}
     }
 };
 
