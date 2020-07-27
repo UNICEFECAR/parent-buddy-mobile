@@ -25,6 +25,6 @@ export const appConfig = {
     // DEVELOPMENT
     // Set to true only during development
     showLog: false, 
-    preventSync: false,
+    preventSync: true,
     deleteRealmFilesBeforeOpen: false,
 };

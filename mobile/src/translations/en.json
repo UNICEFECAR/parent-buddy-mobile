@@ -136,10 +136,16 @@
     "examReminderTime": "Time",
     "buttonAddExamReminder": "Add reminder for the check-up",
 
-    "childProfileTitle": "Child's profile",
+    "childProfileTitle": "TODO Profil Deteta i roditelja",
     "childProfileBirthday": "Birthday",
     "childProfileChange": "Change profile",
     "childProfileAddSibling": "Add sister or brother",
+    "childProfileBirthDateGirl": "TODO Devojčica rođena ",
+    "childProfileBirthDateBoy": "TODO Dečak rođen ",
+    "activeChildProfile": "TODO Aktivan profil deteta",
+    "activateChildProfile": "TODO Aktivirajte profil",
+    "childProfileParent": "TODO Roditelj",
+    "childProfileEditChildTitle": "TODO Izmena profila deteta",
 
     "growScreenTitle": "Child growth",
     "allMeasurements": "TODO Sva merenja",
@@ -197,7 +203,7 @@
     "updateQuestionnaire": "Ažurirajte upitnik o razvoju deteta TODO",
     "viewQuestionnaire": "Pogledajte upitnik o razvoju deteta TODO",
     "fillQuestionnaire": "Popunite upitnik o razvoju deteta TODO",
-
+  
     "readMore": "Read more TODO",
     "showHomeMessages": "Show messages TODO",
     "homeMessageChildHasItsProfile": "%CHILD% has a profile now! TODO",

@@ -9,13 +9,14 @@ import { Switch, Caption, Divider } from 'react-native-paper';
 import { Typography, TypographyType } from '../../components/Typography';
 import { TextButton, TextButtonColor } from '../../components/TextButton';
 import { RoundedButton, RoundedButtonType } from '../../components/RoundedButton';
-import { dataRealmStore, VariableEntity, userRealmStore } from '../../stores';
+import { dataRealmStore, VariableEntity, userRealmStore, ChildEntity } from '../../stores';
 import { Variables } from '../../stores/dataRealmStore';
 import { navigation, backup, googleDrive } from '../../app';
 import { VariableEntitySchema } from '../../stores/VariableEntity';
 import { variables } from '../../themes/defaultTheme/variables';
 import { ActivityIndicator, Snackbar, Colors, Appbar } from 'react-native-paper';
 import { appConfig } from '../../app/appConfig';
+import { ChildEntitySchema } from '../../stores/ChildEntity';
 
 export interface SettingsScreenParams {
     searchTerm?: string;
@@ -113,7 +114,7 @@ export class SettingsScreen extends React.Component<Props, State> {
             dataRealmStore.deleteVariable(key)
         })
         navigation.navigate('LoginStackNavigator_LoginScreen');
-    }
+    };
 
     private async exportAllData() {
         this.setState({ isExportRunning: true, });
@@ -125,8 +126,29 @@ export class SettingsScreen extends React.Component<Props, State> {
                 isSnackbarVisible: true,
                 snackbarMessage: translate('settingsButtonExportError'),
             });
-        }
-    }
+        };
+    };
+
+    private deleteAccount() {
+        const allVariables = dataRealmStore.realm?.objects<VariableEntity>(VariableEntitySchema.name);
+        const userRealm = userRealmStore.realm?.objects<ChildEntity>(ChildEntitySchema.name);
+        const variables: string[] = [];
+
+        userRealmStore.delete(userRealm);
+
+        allVariables?.forEach((record, index, collection) => {
+            if (record.key) {
+                variables.push(record.key)
+            };
+        });
+
+        variables.map(item => {
+            let key = item as keyof Variables;
+
+            dataRealmStore.deleteVariable(key);
+            navigation.navigate('LoginStackNavigator_LoginScreen');
+        })
+    };
 
     private async importAllData() {
         this.setState({ isImportRunning: true, });
@@ -333,7 +355,7 @@ export class SettingsScreen extends React.Component<Props, State> {
                                         iconStyle={{ color: '#AA40BF' }}
                                         textStyle={{ fontSize: scale(16) }}
                                         // color={TextButtonColor.purple}
-                                        onPress={() => { }}
+                                        onPress={() => this.deleteAccount()}
                                     >
                                         {translate('settingsButtonDeleteAllData')}
                                     </TextButton>

@@ -4,7 +4,7 @@ import { NavigationStackProp, NavigationStackState } from 'react-navigation-stac
 import { ScrollView } from 'react-native-gesture-handler';
 import { ThemeConsumer, ThemeContextValue } from '../../themes/ThemeContext';
 import { scale, moderateScale } from 'react-native-size-matters';
-import { dataRealmStore, userRealmStore } from '../../stores';
+import { dataRealmStore, userRealmStore, ChildEntity } from '../../stores';
 import { MilestoneForm, MilestoneItem } from '../../components/development/MilestoneForm';
 import { Typography } from '../../components';
 import { TypographyType } from '../../components/Typography';
@@ -12,6 +12,7 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import { DevelopmentInfo } from '../../components/development/DevelopmentInfo';
 import { translate } from '../../translations';
 import { DateTime } from 'luxon';
+import { ChildEntitySchema } from '../../stores/ChildEntity';
 
 export interface EditPeriodScreenParams {
     id: number,
@@ -84,23 +85,26 @@ export class EditPeriodScreen extends Component<Props, State> {
     /*
     * Delete milestone from unchecked and push in checked milestones array
     */
-    private filterItems(id: number) {
-        let milestones: number[] = userRealmStore.getVariable('checkedMilestones');
+    private filterItems() {
+        let index = userRealmStore.getCurrentChild()?.uuid ? userRealmStore.getCurrentChild()?.uuid : "";
+        let user = userRealmStore.realm?.objects<ChildEntity>(ChildEntitySchema.name).find(item => item.uuid === index);
+
+        let milestones = user ? user.checkedMilestones : [];
         let milestonesIds: number[] = [];
 
-        if (!milestones) {
-            userRealmStore.setVariable('checkedMilestones', []);
-        } else {
-            milestonesIds = milestones;
-            if (milestonesIds?.indexOf(id) === -1) {
-                milestonesIds.push(id);
-            } else {
-                milestonesIds?.splice(milestonesIds.indexOf(id), 1);
-            };
+        if (milestones) {
+            milestonesIds = [...milestones];
+            this.state.milestonesForCheck.map(item => {
+                if (milestonesIds?.indexOf(item.id) === -1) {
+                    milestonesIds.push(item.id);
+                } else {
+                    milestonesIds?.splice(milestonesIds.indexOf(item.id), 1);
+                };
+            });
+
         };
 
-        userRealmStore.setVariable('checkedMilestones', milestonesIds);
-
+        return milestonesIds;
     };
 
     private onCheckBoxPress(id: number) {
@@ -122,9 +126,18 @@ export class EditPeriodScreen extends Component<Props, State> {
 
     private save() {
 
-        this.state.milestonesForCheck.forEach(item => {
-            this.filterItems(item.id);
-        })
+        let allCheckedMilestones = this.filterItems();
+
+        let us = userRealmStore?.realm?.objects<ChildEntity>(ChildEntitySchema.name);
+        let index = userRealmStore.getCurrentChild()?.uuid ? userRealmStore.getCurrentChild()?.uuid : "";
+
+        us?.forEach(item => {
+            if (item.uuid === index) {
+                userRealmStore.realm?.write(() => {
+                    item.checkedMilestones = allCheckedMilestones;
+                });
+            };
+        });
 
         if (this.props.navigation.state?.params?.id) {
             let milestones = dataRealmStore.getMilestonesForGivenPeriod(this.props.navigation.state.params.id);
@@ -137,7 +150,7 @@ export class EditPeriodScreen extends Component<Props, State> {
 
         if (this.props.navigation.state.params?.onGoBack) {
             this.props.navigation.state.params.onGoBack();
-        }
+        };
     };
 
     private renderIcon = () => {
@@ -178,7 +191,7 @@ export class EditPeriodScreen extends Component<Props, State> {
                                     <Typography type={TypographyType.headingSecondary}>
                                         {this.props.navigation.state?.params?.title}
                                     </Typography>
-                                    <Typography style={{ marginTop: -5, fontSize: moderateScale(18)}}>
+                                    <Typography style={{ marginTop: -5, fontSize: moderateScale(18) }}>
                                         {this.props.navigation.state?.params?.subtitle}
                                     </Typography>
                                 </View>
