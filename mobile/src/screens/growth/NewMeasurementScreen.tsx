@@ -223,7 +223,7 @@ export class NewMeasurementScreen extends Component<Props, State> {
 
                         <View>
                             <RoundedTextInput
-                                label={translate('heightLabel')}
+                                label={translate('weightLabel')}
                                 suffix="g"
                                 icon="weight"
                                 style={[{ width: 150 }, this.state.weightError ? {borderColor: 'red', borderWidth: 1} : null ]}

@@ -322,7 +322,7 @@ export class GrowthScreen extends Component<Props, State> {
                                                 {this.state.isFirstChartLoaded ?
                                                     <View style={styles.chartCard}>
                                                         <GrowthChart
-                                                            title={translate('heightForLength')}
+                                                            title={translate('weightForLength')}
                                                             chartType={chartTypes.heightLength}
                                                             childBirthDate={childBirthDate ? childBirthDate : DateTime.local()}
                                                             childGender={childGender === "boy" ? "male" : 'female'}
