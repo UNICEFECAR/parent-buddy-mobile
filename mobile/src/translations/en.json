@@ -1,6 +1,6 @@
 {
     "appName": "Parent Buddy",
-    "appEmail": "",
+    "appEmail": "example@gmail.com",
     "appPhone": "",
 
     "loginGoogle":  "Login with Google account",
@@ -8,7 +8,7 @@
     "registerAccount": "Register account using Email",
     "loginButton": "Login",
     "loginForgotPassword": "Forgot your password?",
-    "loginCanceled": "You canceled log in TODO",
+    "loginCanceled": "You canceled log in",
     "createAccount": "Create account",
     "alreadyHaveAccount": "Already have account? Log in",
     "youCreatedAccount": "You created account",

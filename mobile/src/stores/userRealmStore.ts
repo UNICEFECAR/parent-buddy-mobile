@@ -274,7 +274,7 @@ class UserRealmStore {
 
             allChildsList = allChilds?.map(child => {
                 let birthDay = child.birthDate ? 
-                    DateTime.fromJSDate(child.birthDate).toFormat("dd'.'MM'.'yyyy") : "TODO (Nije unet)";
+                    DateTime.fromJSDate(child.birthDate).toFormat("dd'.'MM'.'yyyy") : "";
                 
                 let imgUrl = child.photoUri ? `${RNFS.DocumentDirectoryPath}/${child.photoUri}` : null;
                 let isCurrentActive = false;
