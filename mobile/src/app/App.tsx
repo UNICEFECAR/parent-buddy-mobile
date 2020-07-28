@@ -56,10 +56,12 @@ export class App extends React.Component<object> {
     }
 
     private async initOnboarding() {
+        const notificationsApp = dataRealmStore.getVariable('notificationsApp');
         const followGrowth = dataRealmStore.getVariable('followGrowth');
         const followDevelopment = dataRealmStore.getVariable('followDevelopment');
         const followDoctorVisits = dataRealmStore.getVariable('followDoctorVisits');
 
+        if (notificationsApp === null) await dataRealmStore.setVariable('notificationsApp', true);
         if (followGrowth === null) await dataRealmStore.setVariable('followGrowth', true);
         if (followDevelopment === null) await dataRealmStore.setVariable('followDevelopment', true);
         if (followDoctorVisits === null) await dataRealmStore.setVariable('followDoctorVisits', true);
