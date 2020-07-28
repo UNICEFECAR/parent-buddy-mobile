@@ -149,9 +149,9 @@
 
     "growScreenTitle": "Child growth",
     "allMeasurements": "All measurements",
-    "heightLabel": "Weight",
+    "weightLabel": "Weight",
     "lengthLabel": "Hight",
-    "heightForLength": "Weight for hight",
+    "weightForLength": "Weight for hight",
     "lengthForAge": "Hight for age",
     "moreAboutChildGrowth": "More about child growth",
     "chartMonth": "months",

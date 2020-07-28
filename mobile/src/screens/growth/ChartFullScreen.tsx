@@ -64,7 +64,7 @@ export class ChartFullScreen extends Component<Props, State>{
 
     render() {
         const { chartType, childBirthDate, childGender, lineChartData } = this.state;
-        const title = chartType === chartTypes.heightLength ? translate('heightForLength') : translate('lengthForAge');
+        const title = chartType === chartTypes.heightLength ? translate('weightForLength') : translate('lengthForAge');
 
         return (
             <View style={{width: Dimensions.get('window').width, height: Dimensions.get('window').height, flex: 1}}>
