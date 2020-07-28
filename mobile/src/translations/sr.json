@@ -149,9 +149,9 @@
 
     "growScreenTitle": "Rast deteta",
     "allMeasurements": "Sva merenja",
-    "heightLabel": "Težina",
+    "weightLabel": "Težina",
     "lengthLabel": "Visina",
-    "heightForLength": "Težina za visinu",
+    "weightForLength": "Težina za visinu",
     "lengthForAge": "Visina za uzrast",
     "moreAboutChildGrowth": "Više o rastu deteta",
     "chartMonth": "meseci",
