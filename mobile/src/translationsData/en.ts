@@ -4,7 +4,7 @@ export const en = {
             period: '1st month',
             daysStart: 30,
             name: '1st month – the period of getting to know each other',
-            subtitle: '1. mesec TODO',
+            subtitle: '1. mesec',
             homeMessageBefore: '%CHILD% will soon have 1 month',
             homeMessageAfter: '%CHILD% has 1 month',
             moreAboutPeriodArticleIdMale: 3466,
@@ -43,7 +43,7 @@ Watch your baby's behaviour and talk to your paediatrician or visiting nurse if 
             period: '2nd month',
             daysStart: 60,
             name: '2nd month – the period of mutual adjustment and establishing routines',
-            subtitle: '2. mesec TODO',
+            subtitle: '2. mesec',
             homeMessageBefore: '%CHILD% will soon have 2 months',
             homeMessageAfter: '%CHILD% has 2 months',
             moreAboutPeriodArticleIdMale: 3476,
@@ -89,7 +89,7 @@ Watch your baby's behavior and talk to your paediatrician or visiting nurse if y
             homeMessageBefore: '%CHILD% will soon have 3 months',
             homeMessageAfter: '%CHILD% has 3 months',
             moreAboutPeriodArticleIdMale: 3486,
-            subtitle: '3. i 4. mesec TODO',    
+            subtitle: '3. i 4. mesec',    
             moreAboutPeriodArticleIdFemale: 3481,
             description: `
 <p>
@@ -132,7 +132,7 @@ Watch your baby's behaviour and talk to your paediatrician or visiting nurse if 
             homeMessageAfter: '%CHILD% has 5 months',
             moreAboutPeriodArticleIdMale: 3496,
             moreAboutPeriodArticleIdFemale: 3491,
-            subtitle: '5. i 6. mesec TODO',
+            subtitle: '5. i 6. mesec',
             description: `
 <p>
 Your baby can sit, roll and lift and hold her head on his own.
@@ -174,7 +174,7 @@ Watch your baby's behaviour and talk to your paediatrician or visiting nurse if 
             homeMessageBefore: '%CHILD% will soon have 7 months',
             homeMessageAfter: '%CHILD% has 7 months',
             moreAboutPeriodArticleIdMale: 3511,
-            subtitle: '7. do 9. mesec TODO',
+            subtitle: '7. do 9. mesec',
             moreAboutPeriodArticleIdFemale: 3506,
             description: `
 <p>
@@ -219,7 +219,7 @@ Watch your baby’s behaviour and talk to your paediatrician or visiting nurse i
             homeMessageAfter: '%CHILD% has 10 months',
             moreAboutPeriodArticleIdMale: 3521,
             moreAboutPeriodArticleIdFemale: 3516,
-            subtitle: '10. do 12. mesec TODO',
+            subtitle: '10. do 12. mesec',
             description: `
 <p>
 Your baby wants to communicate more and more - points, nods, waves...
@@ -260,7 +260,7 @@ Watch your child’s behaviour and talk to your paediatrician if you notice that
             homeMessageBefore: '%CHILD% will soon have 13 months',
             homeMessageAfter: '%CHILD% has 13 months',
             moreAboutPeriodArticleIdMale: 3531,
-            subtitle: '13. do 18. mesec TODO',
+            subtitle: '13. do 18. mesec',
             moreAboutPeriodArticleIdFemale: 3526,
             description: `
 <p>
@@ -305,7 +305,7 @@ Watch your child’s behaviour and talk to your paediatrician if you notice that
             homeMessageAfter: '%CHILD% has 19 months',
             moreAboutPeriodArticleIdMale: 3541,
             moreAboutPeriodArticleIdFemale: 3536,
-            subtitle: '19. do 24. mesec TODO',
+            subtitle: '19. do 24. mesec',
             description: `
 <p>
 Expect new movements - running, climbing... but also new emotions and new words.
@@ -347,7 +347,7 @@ Follow your child's behaviour and talk to your paediatrician if you notice that 
             homeMessageBefore: '%CHILD% will soon have 25 months',
             homeMessageAfter: '%CHILD% has 25 months',
             moreAboutPeriodArticleIdMale: 3551,
-            subtitle: '25. do 36. mesec TODO',
+            subtitle: '25. do 36. mesec',
             moreAboutPeriodArticleIdFemale: 3546,
             description: `
 <p>

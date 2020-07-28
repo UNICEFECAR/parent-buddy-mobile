@@ -145,10 +145,12 @@ export class ChildProfileScreen extends React.Component<Props, State> {
                 </Typography>
 
                 {/* BIRTH DATE */}
-                <Typography type={TypographyType.bodyRegular} style={{ fontSize: moderateScale(15), color: 'grey' }}>
-                    {child.gender === "girl" ? translate('childProfileBirthDateGirl') : translate('childProfileBirthDateBoy')}
-                    {child.birthDay}
-                </Typography>
+                {child.birthDay ? (
+                    <Typography type={TypographyType.bodyRegular} style={{ fontSize: moderateScale(15), color: 'grey' }}>
+                        {child.gender === "girl" ? translate('childProfileBirthDateGirl') : translate('childProfileBirthDateBoy')}
+                        {' ' + child.birthDay}
+                    </Typography>
+                ) : null}
 
                 <View style={{ height: themeContext.theme.variables?.sizes.verticalPaddingNormal }} />
                 {child.isCurrentActive === false ?

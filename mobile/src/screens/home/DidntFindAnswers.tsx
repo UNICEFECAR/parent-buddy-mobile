@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { View, Linking, StyleProp, StyleSheet, ViewStyle, TextStyle, ImageStyle } from 'react-native';
 import { ThemeContextValue, ThemeConsumer } from '../../themes/ThemeContext';
 import { translate } from '../../translations/translate';
@@ -15,7 +15,7 @@ export interface Props {
  */
 export class DidntFindAnswers extends React.Component<Props> {
     static defaultProps: Props = {
-        
+
     };
 
     constructor(props: Props) {
@@ -23,52 +23,56 @@ export class DidntFindAnswers extends React.Component<Props> {
     }
 
     private sendEmail() {
-        Linking.openURL(`mailto:${translate('appEmail')}`).catch(() => {});
+        Linking.openURL(`mailto:${translate('appEmail')}`).catch(() => { });
     }
 
     private callPhone() {
-        Linking.openURL(`tel:${translate('appPhone')}`).catch(() => {});
+        Linking.openURL(`tel:${translate('appPhone')}`).catch(() => { });
     }
 
     public render() {
         return (
             <ThemeConsumer>
-            {(themeContext:ThemeContextValue) => (
-                <View style={ [styles.container, this.props.style] }>
-                    <Typography style={{marginBottom:scale(25)}} type={TypographyType.headingSecondary}>
-                            { translate('didntFindAnswerInSearchResults') }
-                    </Typography>
+                {(themeContext: ThemeContextValue) => (
+                    <View style={[styles.container, this.props.style]}>
+                        <Typography style={{ marginBottom: scale(25) }} type={TypographyType.headingSecondary}>
+                            {translate('didntFindAnswerInSearchResults')}
+                        </Typography>
 
-                    <Typography style={{fontWeight:'bold'}} type={TypographyType.bodyRegular}>
-                        { translate('writeUsEmail') }
-                    </Typography>
+                        <Typography style={{ fontWeight: 'bold' }} type={TypographyType.bodyRegular}>
+                            {translate('writeUsEmail')}
+                        </Typography>
 
-                    <View style={{height:scale(5)}} />
+                        <View style={{ height: scale(5) }} />
 
-                    <TextButton onPress={() => {this.sendEmail()}} icon="envelope" color={TextButtonColor.purple}>
-                        { translate('appEmail') }
-                    </TextButton>
+                        <TextButton onPress={() => { this.sendEmail() }} icon="envelope" color={TextButtonColor.purple}>
+                            {translate('appEmail')}
+                        </TextButton>
 
-                    <View style={{height:scale(20)}} />
+                        <View style={{ height: scale(20) }} />
 
-                    <Typography style={{fontWeight:'bold'}} type={TypographyType.bodyRegular}>
-                        { translate('callUs') }
-                    </Typography>
+                        {translate('appPhone') != '' ? (
+                            <Fragment>
+                                <Typography style={{ fontWeight: 'bold' }} type={TypographyType.bodyRegular}>
+                                    {translate('callUs')}
+                                </Typography>
 
-                    <View style={{height:scale(5)}} />
+                                <View style={{ height: scale(5) }} />
 
-                    <TextButton onPress={() => {this.callPhone()}} icon="phone" color={TextButtonColor.purple}>
-                        { translate('appPhone') }
-                    </TextButton>
-                </View>
-            )}
+                                <TextButton onPress={() => { this.callPhone() }} icon="phone" color={TextButtonColor.purple}>
+                                    {translate('appPhone')}
+                                </TextButton>
+                            </Fragment>
+                        ) : null}
+                    </View>
+                )}
             </ThemeConsumer>
         );
     }
 }
 
 export interface DidntFindAnswersStyles {
-    [index:string]: ViewStyle | TextStyle | ImageStyle;
+    [index: string]: ViewStyle | TextStyle | ImageStyle;
     container: ViewStyle;
 }
 
