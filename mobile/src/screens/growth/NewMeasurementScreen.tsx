@@ -198,7 +198,7 @@ export class NewMeasurementScreen extends Component<Props, State> {
             <ThemeConsumer>
                 {(themeContext: ThemeContextValue) => (
                     <ScrollView
-                        style={{ backgroundColor: themeContext.theme.screenContainer?.backgroundColor }}
+                        style={{ backgroundColor: 'white' }}
                         contentContainerStyle={styles.container}
                     >
                         <View style={styles.dateTimePickerContainer}>
