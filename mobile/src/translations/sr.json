@@ -215,5 +215,10 @@
     "homeMessageGrowthMeasurementsOk": "Bravo. %CHILD% raste u skladu sa uzrastom",
     "homeMessageGrowthMeasurementsBad": "Obratite pažnju na preporuke o rastu i konsultujte lekara",
     "homeMessageEncourageChildDevelopment": "Pratite detetov razvoj",
-    "homeMessageGrowthAddMilestoneButton": "Ažurirajte podatke o razvoju deteta"
+    "homeMessageGrowthAddMilestoneButton": "Ažurirajte podatke o razvoju deteta",
+
+    "alertNoFunctionalityTitle": "Izabrali ste da ne koristite ovu funkcionalnost",
+    "alertNoFunctionalityBody": "Da li želite da promenite podešavanja aplikacije i aktivirate ovu funkcionalnost?",
+    "alertNoFunctionalityGotoSettings": "Podešavanja",
+    "alertNoFunctionalityCancel": "Otkaži"
 }
