@@ -215,5 +215,10 @@
     "homeMessageGrowthMeasurementsOk": "Congratulations. %CHILD% grows well",
     "homeMessageGrowthMeasurementsBad": "Check growth recommendations and consult a doctor",
     "homeMessageEncourageChildDevelopment": "Follow child development",
-    "homeMessageGrowthAddMilestoneButton": "Update child milestones"
+    "homeMessageGrowthAddMilestoneButton": "Update child milestones",
+
+    "alertNoFunctionalityTitle": "You choose not to use this functionality",
+    "alertNoFunctionalityBody": "Do you want to activate this functionality in the settings?",
+    "alertNoFunctionalityGotoSettings": "Settings",
+    "alertNoFunctionalityCancel": "Cancel"
 }
