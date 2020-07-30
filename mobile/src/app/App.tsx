@@ -1,7 +1,7 @@
 import React from 'react';
 import { navigation, AppNavigationContainer } from './Navigators';
 import { NavigationContainerComponent } from 'react-navigation';
-import { YellowBox, Platform, UIManager } from 'react-native';
+import { YellowBox, Platform, UIManager, Alert } from 'react-native';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { ThemeProvider } from '../themes/ThemeContext';
 import { googleAuth } from './googleAuth';
@@ -53,6 +53,15 @@ export class App extends React.Component<object> {
         googleAuth.configure();
         localize.setLocalesIfNotSet();
         this.initOnboarding();
+
+        Alert.alert(
+            'SRECAN RODJOS !!!!',
+            'Srecan rodjos Milose! 🎂🥳🍷🎉 Da si ziv i zdrav jos milion komita :-) \n\n~~~ Anastasija i Misha ~~~',
+            [
+                {text:'Hvala :-)'},
+                {text:'Psss bre krijem godine :-('},
+            ]
+        );
     }
 
     private async initOnboarding() {
