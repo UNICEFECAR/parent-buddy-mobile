@@ -418,13 +418,13 @@ const WalkthroughStackNavigator = createStackNavigator({
     WalkthroughStackNavigator_WalkthroughScreen: {
         screen: WalkthroughScreen,
         navigationOptions: {
-            title: "Title"
+            // title: "Title"
         }
     },
     WalkthroughStackNavigator_TermsScreen: {
         screen: TermsScreen,
         navigationOptions: {
-            title: "Title"
+            // title: "Title"
         }
     }
 }, {
