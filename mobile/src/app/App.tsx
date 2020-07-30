@@ -53,15 +53,6 @@ export class App extends React.Component<object> {
         googleAuth.configure();
         localize.setLocalesIfNotSet();
         this.initOnboarding();
-
-        Alert.alert(
-            'SRECAN RODJOS !!!!',
-            'Srecan rodjos Milose! 🎂🥳🍷🎉 Da si ziv i zdrav jos milion komita :-) \n\n~~~ Anastasija i Misha ~~~',
-            [
-                {text:'Hvala :-)'},
-                {text:'Psss bre krijem godine :-('},
-            ]
-        );
     }
 
     private async initOnboarding() {
