@@ -264,15 +264,15 @@ class UserRealmStore {
         return child?.gender
     }
 
-    public getAllChilds(userRealmContext: UserRealmContextValue): Child[]{
-        let allChilds = userRealmContext.realm?.objects<ChildEntity>(ChildEntitySchema.name).map(child => child);
+    public getAllChildren(userRealmContext: UserRealmContextValue): Child[]{
+        let allChildren = userRealmContext.realm?.objects<ChildEntity>(ChildEntitySchema.name).map(child => child);
         let currentChild = this.getCurrentChild()?.uuid;
 
-        let allChildsList: Child[] = [];
+        let allChildrenList: Child[] = [];
 
-        if(allChilds){
+        if(allChildren){
 
-            allChildsList = allChilds?.map(child => {
+            allChildrenList = allChildren?.map(child => {
                 let birthDay = child.birthDate ? 
                     DateTime.fromJSDate(child.birthDate).toFormat("dd'.'MM'.'yyyy") : "";
                 
@@ -298,7 +298,7 @@ class UserRealmStore {
         };
   
 
-        return allChildsList;
+        return allChildrenList;
     };
 
     public async setVariable<T extends VariableKey>(key: T, value: Variables[T] | null): Promise<boolean> {

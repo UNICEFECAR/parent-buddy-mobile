@@ -278,13 +278,13 @@ export class AddChildrenScreen extends React.Component<Props, State> {
     };
 
     private renderOtherScreens(userRealmContext: UserRealmContextValue) {
-        let allChilds = userRealmContext.realm?.objects<ChildEntity>(ChildEntitySchema.name).map((child) => child);
+        let allChildren = userRealmContext.realm?.objects<ChildEntity>(ChildEntitySchema.name).map((child) => child);
         let uuid = this.props.navigation.state.params?.id ? this.props.navigation.state.params?.id : ""
 
-        if (allChilds) {
+        if (allChildren) {
             let child = this.state.screenType === "NewChild" ?
-                allChilds[allChilds.length - 1] :
-                allChilds.find(item => item.uuid === uuid);
+                allChildren[allChildren.length - 1] :
+                allChildren.find(item => item.uuid === uuid);
 
             if (child) {
                 return (
