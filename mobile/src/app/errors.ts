@@ -1,6 +1,7 @@
 import { Linking, Alert } from "react-native";
 import { dataRealmStore, userRealmStore } from "../stores";
 import { UserRealmContextValue } from "../stores/UserRealmContext";
+import { navigation } from "./Navigators";
 
 /**
  * Redefines global error handler.
@@ -37,6 +38,11 @@ export function sendErrorReportWithEmail(error: any) {
     // Message
     let mailBody = `${unknownError.name}: ${unknownError.message}\n\n`;
 
+    // Navigation screen state
+    try {
+        mailBody += `NAVIGATION SCREEN:\n${JSON.stringify(navigation.navigator?.state, null, 4)}\n\n`;
+    } catch (e) { }
+
     // Data realm variables
     try {
         if (dataRealmStore && dataRealmStore.realm && !dataRealmStore.realm.isClosed) {
@@ -48,10 +54,10 @@ export function sendErrorReportWithEmail(error: any) {
                 'loginMethod': dataRealmStore.getVariable('loginMethod'),
                 'userEmail': dataRealmStore.getVariable('userEmail'),
             };
-    
+
             mailBody += 'DATA REALM VARIABLES:\n' + JSON.stringify(dataRealmVariables, null, 4) + '\n\n';
         }
-    } catch(e) {};
+    } catch (e) { };
 
     // User realm variables
     try {
@@ -61,21 +67,21 @@ export function sendErrorReportWithEmail(error: any) {
                 'userChildren': userRealmStore.getVariable('userChildren'),
                 'checkedMilestones': userRealmStore.getVariable('checkedMilestones'),
             };
-    
+
             mailBody += 'USER REALM VARIABLES:\n' + JSON.stringify(userRealmVariables, null, 4) + '\n\n';
         }
-    } catch(e) {}
+    } catch (e) { }
 
     // Children
     try {
-        let allChildren = userRealmStore.getAllChilds({realm:userRealmStore.realm} as UserRealmContextValue);
+        let allChildren = userRealmStore.getAllChilds({ realm: userRealmStore.realm } as UserRealmContextValue);
         mailBody += `CHILDREN:\n${JSON.stringify(allChildren, null, 4)}\n\n`;
-    } catch(e) {}
+    } catch (e) { }
 
     // Stack
     try {
         mailBody += (unknownError.stack ? 'ERROR STACK:\n' + unknownError.stack : 'Please describe error here');
-    } catch(e) {}
+    } catch (e) { }
 
     const mailUrl = `mailto:office@byteout.com?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
 

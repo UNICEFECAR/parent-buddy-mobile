@@ -46,7 +46,7 @@ import RNFS from 'react-native-fs';
  * from anywhere in the code.
  */
 class Navigation {
-    private navigator?: NavigationContainerComponent;
+    public navigator?: NavigationContainerComponent;
     private static instance: Navigation;
 
     private constructor() {
