@@ -68,7 +68,7 @@ export function sendErrorReportWithEmail(error: any) {
 
     // Children
     try {
-        let allChildren = userRealmStore.getAllChilds({realm:userRealmStore.realm} as UserRealmContextValue);
+        let allChildren = userRealmStore.getAllChildren({realm:userRealmStore.realm} as UserRealmContextValue);
         mailBody += `CHILDREN:\n${JSON.stringify(allChildren, null, 4)}\n\n`;
     } catch(e) {}
 
