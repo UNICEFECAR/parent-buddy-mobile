@@ -60,11 +60,8 @@ export class HomeScreen extends React.Component<Props, object> {
         }
     }
 
-    private async onTestButtonPress() {
-        const response = await apiStore.setVariable('foo', 'bar');
-        // const response = await apiStore.getVariable('foo');
-        // const response = await apiStore.deleteVariable('foo');
-        console.log(response);
+    private onTestButtonPress() {
+        throw new Error('Greska');
     }
 
     public render() {
