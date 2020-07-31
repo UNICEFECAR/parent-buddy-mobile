@@ -13,7 +13,9 @@ import { localize } from './localize';
 // @ts-ignore
 import { decode as atob, encode as btoa } from 'base-64';
 import { apiStore, dataRealmConfig, dataRealmStore } from '../stores';
-import { initGlobalErrorHandler } from './errors';
+import { initGlobalErrorHandler, sendErrorReportWithCrashlytics } from './errors';
+import { ErrorBoundary } from 'react-error-boundary';
+import { ErrorFallback } from '../components/ErrorFallback';
 
 // ADD GLOBAL POLYFILLS: atob, btoa
 if (!(global as any).btoa) (global as any).btoa = btoa;
@@ -82,19 +84,21 @@ export class App extends React.Component<object> {
 
     public render() {
         return (
-            <ThemeProvider>
-                <PaperProvider>
-                    <DataRealmProvider>
-                        <UserRealmProvider>
-                            <AppNavigationContainer
-                                ref={(navigatorRef: NavigationContainerComponent) => {
-                                    return navigation.setTopLevelNavigator(navigatorRef);
-                                }}
-                            />
-                        </UserRealmProvider>
-                    </DataRealmProvider>
-                </PaperProvider>
-            </ThemeProvider>
+            <ErrorBoundary FallbackComponent={ErrorFallback} onError={sendErrorReportWithCrashlytics}>
+                <ThemeProvider>
+                    <PaperProvider>
+                        <DataRealmProvider>
+                            <UserRealmProvider>
+                                <AppNavigationContainer
+                                    ref={(navigatorRef: NavigationContainerComponent) => {
+                                        return navigation.setTopLevelNavigator(navigatorRef);
+                                    }}
+                                />
+                            </UserRealmProvider>
+                        </DataRealmProvider>
+                    </PaperProvider>
+                </ThemeProvider>
+            </ErrorBoundary>
         );
     }
 }

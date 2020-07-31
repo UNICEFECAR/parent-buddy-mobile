@@ -342,7 +342,7 @@ const HomeStackNavigator = createStackNavigator({
                 let headerTitle: JSX.Element | null = null;
 
                 if (!screenParams.showSearchInput) {
-                    headerTitle = (<Text onLongPress={(event) => {}} style={themes.getCurrentTheme().theme.headerTitle}>{translate('appName')}</Text>);
+                    headerTitle = (<Text onLongPress={(event) => {throw(new Error('Example error'))}} style={themes.getCurrentTheme().theme.headerTitle}>{translate('appName')}</Text>);
                 }
 
                 return headerTitle;
