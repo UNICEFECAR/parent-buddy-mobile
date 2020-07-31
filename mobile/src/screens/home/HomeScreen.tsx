@@ -61,7 +61,10 @@ export class HomeScreen extends React.Component<Props, object> {
     }
 
     private onTestButtonPress() {
-        throw new Error('Greska');
+        const navigation = this.props.navigation;
+        // throw new Error('Greska');
+
+        console.log(JSON.stringify(navigation.state, null, 4));
     }
 
     public render() {
