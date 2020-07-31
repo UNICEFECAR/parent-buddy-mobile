@@ -19,8 +19,8 @@ export function initGlobalErrorHandler() {
 
         // Give user an option to send bug report
         Alert.alert(
-            'ERROR HAPPENED',
-            'Send report to Byteout',
+            'ERROR',
+            'SEND REPORT TO BYTEOUT',
             [
                 { text: 'Ok', onPress: () => { sendErrorReportWithEmail(error) } },
                 { text: 'Cancel', style: 'cancel', },
