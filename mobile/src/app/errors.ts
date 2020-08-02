@@ -1,7 +1,8 @@
-import { Linking, Alert } from "react-native";
+import { Linking, Alert, Platform, Dimensions } from "react-native";
 import { dataRealmStore, userRealmStore } from "../stores";
 import { UserRealmContextValue } from "../stores/UserRealmContext";
 import { navigation } from "./Navigators";
+import DeviceInfo from 'react-native-device-info';
 
 /**
  * Redefines global error handler.
@@ -9,7 +10,7 @@ import { navigation } from "./Navigators";
 export function initGlobalErrorHandler() {
     // During development, RN doesn't crash the app when error happens.
     // It shows the LogBox, and we will not change that.
-    if (__DEV__) {
+    if (!__DEV__) {
         return;
     }
 
@@ -30,13 +31,31 @@ export function initGlobalErrorHandler() {
     });
 }
 
-export function sendErrorReportWithEmail(error: any) {
+export async function sendErrorReportWithEmail(error: any) {
     const unknownError = new UnknownError(error);
 
     const mailSubject = `HaloBeba bug report`;
 
     // Message
-    let mailBody = `${unknownError.name}: ${unknownError.message}\n\n`;
+    let mailBody = `ERROR:\n${unknownError.name}: ${unknownError.message}\n\n`;
+
+    // Device
+    try {
+        mailBody += `DEVICE:
+OS: ${Platform.OS} (${DeviceInfo.getSystemVersion()})
+App version: ${DeviceInfo.getVersion()}
+Build number: ${DeviceInfo.getBuildNumber()}
+Screen size: ${Math.round(Dimensions.get('window').width)} / ${Math.round(Dimensions.get('window').height)}
+Bundle ID: ${DeviceInfo.getBundleId()}
+Manufecturer: ${await DeviceInfo.getManufacturer()}
+Brand: ${DeviceInfo.getBrand()}
+Model: ${DeviceInfo.getModel()}
+Device: ${await DeviceInfo.getDevice()}
+Device name: ${await DeviceInfo.getDeviceName()}
+Device ID: ${DeviceInfo.getDeviceId()}
+Device type: ${DeviceInfo.getDeviceType()}
+\n`;
+    } catch (e) { }
 
     // Navigation screen state
     try {
@@ -74,7 +93,7 @@ export function sendErrorReportWithEmail(error: any) {
 
     // Children
     try {
-        let allChildren = userRealmStore.getAllChildren({realm:userRealmStore.realm} as UserRealmContextValue);
+        let allChildren = userRealmStore.getAllChildren({ realm: userRealmStore.realm } as UserRealmContextValue);
         mailBody += `CHILDREN:\n${JSON.stringify(allChildren, null, 4)}\n\n`;
     } catch (e) { }
 
