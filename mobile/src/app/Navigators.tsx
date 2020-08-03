@@ -41,6 +41,7 @@ import { AllMeasurementsScreen } from "../screens/growth/AllMeasurementsScreen";
 import { ChartFullScreen } from '../screens/growth/ChartFullScreen';
 import { userRealmStore } from "../stores";
 import RNFS from 'react-native-fs';
+import { ResetPasswordScreen } from "../screens/login";
  /**
  * Use it to [navigate screens](https://reactnavigation.org/docs/en/navigating-without-navigation-prop.html)
  * from anywhere in the code.
@@ -408,6 +409,12 @@ const LoginStackNavigator = createStackNavigator({
         screen: RegisterScreen,
         navigationOptions: {
             title: "Tab 02"
+        }
+    },
+    LoginStackNavigator_ResetPasswordScreen: {
+        screen: ResetPasswordScreen,
+        navigationOptions: {
+            title: "Tab 03"
         }
     }
 }, {

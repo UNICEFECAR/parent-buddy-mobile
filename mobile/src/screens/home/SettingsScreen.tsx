@@ -9,7 +9,7 @@ import { Switch, Caption, Divider } from 'react-native-paper';
 import { Typography, TypographyType } from '../../components/Typography';
 import { TextButton, TextButtonColor } from '../../components/TextButton';
 import { RoundedButton, RoundedButtonType } from '../../components/RoundedButton';
-import { dataRealmStore, VariableEntity, userRealmStore, ChildEntity } from '../../stores';
+import { dataRealmStore, VariableEntity, userRealmStore, ChildEntity, apiStore } from '../../stores';
 import { Variables } from '../../stores/dataRealmStore';
 import { navigation, backup, googleDrive } from '../../app';
 import { VariableEntitySchema } from '../../stores/VariableEntity';
@@ -108,7 +108,7 @@ export class SettingsScreen extends React.Component<Props, State> {
                 variables.push(record.key)
             }
         })
-
+ 
         variables.map(item => {
             let key = item as keyof Variables;
             dataRealmStore.deleteVariable(key)
@@ -129,25 +129,30 @@ export class SettingsScreen extends React.Component<Props, State> {
         };
     };
 
-    private deleteAccount() {
-        const allVariables = dataRealmStore.realm?.objects<VariableEntity>(VariableEntitySchema.name);
-        const userRealm = userRealmStore.realm?.objects<ChildEntity>(ChildEntitySchema.name);
-        const variables: string[] = [];
+    private async deleteAccount() {
 
-        userRealmStore.delete(userRealm);
+        const deleteAcc = await apiStore.deleteAccount();
 
-        allVariables?.forEach((record, index, collection) => {
-            if (record.key) {
-                variables.push(record.key)
-            };
-        });
-
-        variables.map(item => {
-            let key = item as keyof Variables;
-
-            dataRealmStore.deleteVariable(key);
-            navigation.navigate('LoginStackNavigator_LoginScreen');
-        })
+        if(deleteAcc.deleteAccountSuccess){
+            const allVariables = dataRealmStore.realm?.objects<VariableEntity>(VariableEntitySchema.name);
+            const userRealm = userRealmStore.realm?.objects<ChildEntity>(ChildEntitySchema.name);
+            const variables: string[] = [];
+    
+            userRealmStore.delete(userRealm);
+    
+            allVariables?.forEach((record, index, collection) => {
+                if (record.key) {
+                    variables.push(record.key)
+                };
+            });
+    
+            variables.map(item => {
+                let key = item as keyof Variables;
+    
+                dataRealmStore.deleteVariable(key);
+                navigation.navigate('LoginStackNavigator_LoginScreen');
+            });
+        };
     };
 
     private async importAllData() {
