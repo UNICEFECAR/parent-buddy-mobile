@@ -17,6 +17,7 @@ import { variables } from '../../themes/defaultTheme/variables';
 import { ActivityIndicator, Snackbar, Colors, Appbar } from 'react-native-paper';
 import { appConfig } from '../../app/appConfig';
 import { ChildEntitySchema } from '../../stores/ChildEntity';
+import { UserRealmConsumer, UserRealmContextValue } from '../../stores/UserRealmContext';
 
 export interface SettingsScreenParams {
     searchTerm?: string;
@@ -150,9 +151,9 @@ export class SettingsScreen extends React.Component<Props, State> {
         })
     };
 
-    private async importAllData() {
+    private async importAllData(userRealmContext: UserRealmContextValue) {
         this.setState({ isImportRunning: true, });
-        const importResponse = await backup.import();
+        const importResponse = await backup.import(userRealmContext);
         this.setState({ isImportRunning: false, });
 
         if (importResponse instanceof Error) {
@@ -308,14 +309,18 @@ export class SettingsScreen extends React.Component<Props, State> {
 
                                 {/* Import all data */}
                                 <View style={{ flexDirection: 'row', width: '85%', alignSelf: 'center' }}>
-                                    <RoundedButton
-                                        text={translate('settingsButtonImport')}
-                                        type={RoundedButtonType.hollowPurple}
-                                        iconName="file-import"
-                                        disabled={this.state.isExportRunning || this.state.isImportRunning}
-                                        onPress={() => { this.importAllData() }}
-                                        style={{ flex: 1 }}
-                                    />
+                                    <UserRealmConsumer>
+                                        {(userRealmContext: UserRealmContextValue) => (
+                                            <RoundedButton
+                                                text={translate('settingsButtonImport')}
+                                                type={RoundedButtonType.hollowPurple}
+                                                iconName="file-import"
+                                                disabled={this.state.isExportRunning || this.state.isImportRunning}
+                                                onPress={() => { this.importAllData(userRealmContext) }}
+                                                style={{ flex: 1 }}
+                                            />
+                                        )}
+                                    </UserRealmConsumer>
 
                                     {this.state.isImportRunning && (
                                         <ActivityIndicator animating={true} style={{ marginLeft: scale(20) }} />

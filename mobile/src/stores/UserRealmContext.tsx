@@ -4,13 +4,15 @@ import { userRealmStore } from './userRealmStore';
 
 export interface UserRealmContextValue {
     realm: Realm | null;
+    openRealm: Function;
+    closeRealm: Function;
 }
 
 interface UserRealmProviderState {
     realm: Realm | null;
 }
 
-export const UserRealmContext = React.createContext<UserRealmContextValue>( {} as UserRealmContextValue );
+export const UserRealmContext = React.createContext<UserRealmContextValue>({} as UserRealmContextValue);
 
 export class UserRealmProvider extends React.PureComponent<object, UserRealmProviderState> {
     public state: Readonly<UserRealmProviderState> = {
@@ -27,11 +29,20 @@ export class UserRealmProvider extends React.PureComponent<object, UserRealmProv
         const realm = await userRealmStore.openRealm();
 
         if (realm) {
-            this.setState({realm});
+            this.setState({ realm });
             realm.addListener('change', this.onRealmChange);
         } else {
             console.warn('UserRealmProvider was not able to open realm');
         }
+    }
+
+    private closeRealm() {
+        if (this.state.realm) {
+            this.state.realm.removeAllListeners();
+        }
+
+        userRealmStore.closeRealm();
+        this.setState({ realm: null });
     }
 
     private onRealmChange() {
@@ -41,7 +52,7 @@ export class UserRealmProvider extends React.PureComponent<object, UserRealmProv
     public componentWillUnmount() {
         if (this.state.realm) {
             this.state.realm.removeListener('change', this.onRealmChange);
-            
+
             if (!this.state.realm.isClosed) {
                 this.state.realm.close();
             }
@@ -51,6 +62,8 @@ export class UserRealmProvider extends React.PureComponent<object, UserRealmProv
     public render() {
         const contextValue: UserRealmContextValue = {
             realm: this.state.realm,
+            openRealm: this.openRealm.bind(this),
+            closeRealm: this.closeRealm.bind(this),
         };
 
         return (
