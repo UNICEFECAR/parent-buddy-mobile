@@ -10,7 +10,7 @@ import DeviceInfo from 'react-native-device-info';
 export function initGlobalErrorHandler() {
     // During development, RN doesn't crash the app when error happens.
     // It shows the LogBox, and we will not change that.
-    if (!__DEV__) {
+    if (__DEV__) {
         return;
     }
 
