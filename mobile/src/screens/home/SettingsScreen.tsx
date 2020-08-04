@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, View, Text, Button, StyleSheet, ViewStyle, ScrollView } from 'react-native';
+import { SafeAreaView, View, Text, Button, StyleSheet, ViewStyle, ScrollView, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { NavigationStackProp, NavigationStackState, NavigationStackOptions } from 'react-navigation-stack';
 import { ThemeContextValue, ThemeConsumer } from '../../themes/ThemeContext';
@@ -80,7 +80,7 @@ export class SettingsScreen extends React.Component<Props, State> {
         };
 
         this.state = state;
-    }
+    };
 
     private gotoBack() {
         this.props.navigation.goBack();
@@ -100,20 +100,41 @@ export class SettingsScreen extends React.Component<Props, State> {
     }
 
     private logout() {
+
         const allVariables = dataRealmStore.realm?.objects<VariableEntity>(VariableEntitySchema.name);
         const variables: string[] = [];
 
         allVariables?.forEach((record, index, collection) => {
-            if (record.key !== "lastSyncTimestamp" && record.key !== "vocabulariesAndTerms" && record.key !== "languageCode" && record.key !== "countryCode") {
+            if (record.key === "userEmail" ||
+                record.key === "userIsLoggedIn" ||
+                record.key === "loginMethod" ||
+                record.key === "userEnteredChildData" ||
+                record.key === "userParentalRole" ||
+                record.key === "userName" ||
+                record.key === "currentActiveChildId"
+            ) {
                 variables.push(record.key)
             }
-        })
- 
-        variables.map(item => {
-            let key = item as keyof Variables;
-            dataRealmStore.deleteVariable(key)
-        })
-        navigation.navigate('LoginStackNavigator_LoginScreen');
+        });
+
+        Alert.alert(
+            translate('logoutAlert'),
+            translate('logoutDataForDelete'),
+            [{
+                text: translate('settingsLogout'), onPress: () => {
+                    variables.map(item => {
+                        let key = item as keyof Variables;
+                        dataRealmStore.deleteVariable(key)
+                    });
+                    userRealmStore.deleteAll(ChildEntitySchema);
+                    navigation.navigate('LoginStackNavigator_LoginScreen');
+                }
+            },
+            {
+                text: translate('logoutCancel'),
+                onPress: () => { }
+            }
+            ]);
     };
 
     private async exportAllData() {
@@ -129,30 +150,58 @@ export class SettingsScreen extends React.Component<Props, State> {
         };
     };
 
-    private async deleteAccount() {
+    private deleteAccountFromLocal() {
+        const allVariables = dataRealmStore.realm?.objects<VariableEntity>(VariableEntitySchema.name);
+        const userRealm = userRealmStore.realm?.objects<ChildEntity>(ChildEntitySchema.name);
+        const variables: string[] = [];
 
+        userRealmStore.delete(userRealm);
+
+        allVariables?.forEach((record, index, collection) => {
+            if (record.key) {
+                variables.push(record.key)
+            };
+        });
+
+        variables.map(item => {
+            let key = item as keyof Variables;
+
+            dataRealmStore.deleteVariable(key);
+            navigation.navigate('LoginStackNavigator_LoginScreen');
+        });
+    }
+
+    private async deleteAccountCms() {
         const deleteAcc = await apiStore.deleteAccount();
 
-        if(deleteAcc.deleteAccountSuccess){
-            const allVariables = dataRealmStore.realm?.objects<VariableEntity>(VariableEntitySchema.name);
-            const userRealm = userRealmStore.realm?.objects<ChildEntity>(ChildEntitySchema.name);
-            const variables: string[] = [];
-    
-            userRealmStore.delete(userRealm);
-    
-            allVariables?.forEach((record, index, collection) => {
-                if (record.key) {
-                    variables.push(record.key)
-                };
-            });
-    
-            variables.map(item => {
-                let key = item as keyof Variables;
-    
-                dataRealmStore.deleteVariable(key);
-                navigation.navigate('LoginStackNavigator_LoginScreen');
-            });
+        if (deleteAcc.deleteAccountSuccess) {
+            this.deleteAccountFromLocal()
         };
+    }
+
+    private async deleteAccount() {
+
+        const loginMethod = dataRealmStore.getVariable('loginMethod');
+
+        Alert.alert(
+            translate('deleteAccAlert'),
+            translate('deleteAccAlertMsg'),
+            [
+                {
+                    text: translate('deleteAcc'),
+                    onPress: () => {
+                        if (loginMethod === "cms") {
+                            this.deleteAccountCms()
+                        } else {
+                            this.deleteAccountFromLocal();
+                        }
+                    }
+                },
+                {
+                    text: translate('logoutCancel'),
+                }
+            ]
+        );
     };
 
     private async importAllData() {

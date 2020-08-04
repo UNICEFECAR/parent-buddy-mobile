@@ -113,6 +113,12 @@
     "settingsButtonImportError": "There is no backup file",
     "settingsButtonDeleteAllData": "Delete account and erase all data",
     "settingsLogout": "Logout",
+    "logoutDataForDelete": "TODO Email, Podaci o detetu, Username",
+    "logoutAlert": "TODO Sledeci podaci bice izbrisani: ",
+    "logoutCancel": "TODO Odustani",
+    "deleteAccAlert": "TODO Brisanje naloga.",
+    "deleteAccAlertMsg": "TODO Svi podaci ce biti obrisani!",
+    "deleteAcc": "TODO Obrisi nalog",
 
     "appFeedbackHeaderTitle": "Application improvements",
     "appFeedbackTitle": "Thank you for participating",
