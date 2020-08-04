@@ -264,7 +264,7 @@ class UserRealmStore {
         return child?.gender
     }
 
-    public getAllChildren(userRealmContext: UserRealmContextValue): Child[]{
+    public getAllChildren(): Child[]{
         let allChildren = this.realm?.objects<ChildEntity>(ChildEntitySchema.name).map(child => child);
         let currentChild = this.getCurrentChild()?.uuid;
 
