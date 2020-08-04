@@ -15,7 +15,7 @@ import { Dimensions, Linking } from 'react-native';
 // @ts-ignore
 import HTML from 'react-native-render-html';
 import { ContentEntity } from '../../stores/ContentEntity';
-import { content } from '../../app';
+import { content, utils } from '../../app';
 import { DataRealmContext, DataRealmContextValue, DataRealmConsumer } from '../../stores/DataRealmContext';
 import { Media } from '../../components';
 import { VideoType } from '../../components/Media';
@@ -63,6 +63,15 @@ export class ArticleScreen extends React.Component<Props, object> {
         } else {
             this.props.navigation.state.params = defaultScreenParams;
         }
+
+        let date = new Date();
+        const payload = {
+            eventName: "articleHasOpened",
+            articleId: this.props.navigation.state.params.article.id,
+            categoryName: this.props.navigation.state.params.categoryName,
+            timestampMilisecounds: date.getTime(),
+        }
+        utils.logAnalitic("articleHasOpened", payload);
     }
 
     private gotoBack() {

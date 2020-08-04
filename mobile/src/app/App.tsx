@@ -1,7 +1,7 @@
 import React from 'react';
 import { navigation, AppNavigationContainer } from './Navigators';
 import { NavigationContainerComponent } from 'react-navigation';
-import { YellowBox, Platform, UIManager, Alert } from 'react-native';
+import { YellowBox, Platform, UIManager, AppState } from 'react-native';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { ThemeProvider } from '../themes/ThemeContext';
 import { googleAuth } from './googleAuth';
@@ -51,7 +51,18 @@ export class App extends React.Component<object> {
         super(props);
     }
 
-    public componentDidMount() {
+    public async componentDidMount() {
+        // crashlytics().log(‘APP MOUNTED’);
+        AppState.addEventListener("change", state => {
+            if (state === "active") {
+                utils.logAnalitic("appHasOpened", {eventName: "appHasOpened"});
+            } else if (state === "background") {
+                console.log("BACKGROUND")
+            } else if (state === "inactive") {
+                utils.logAnalitic("ExitApp", {eventName: "ExitApp"})
+            }
+        });
+
         this.addItemsToDevMenu();
         googleAuth.configure();
         localize.setLocalesIfNotSet();

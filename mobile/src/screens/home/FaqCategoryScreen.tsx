@@ -8,6 +8,7 @@ import { Typography, TypographyType } from '../../components/Typography';
 import { TextButton, TextButtonColor } from '../../components/TextButton';
 import { ListCard, ListCardMode, ListCardItem } from './ListCard';
 import { DidntFindAnswers } from './DidntFindAnswers';
+import { utils } from '../../app';
 
 export interface FaqCategoryScreenParams {
     title: string;
@@ -34,6 +35,10 @@ export class FaqCategoryScreen extends React.Component<Props, object> {
 
         if (this.props.navigation.state.params) {
             this.props.navigation.state.params = Object.assign({}, defaultScreenParams, this.props.navigation.state.params);
+            utils.logAnalitic('faqHasOpened', {
+                eventName: 'faqHasOpened',
+                categoryName: this.props.navigation.state.params.title,
+            });
         } else {
             this.props.navigation.state.params = defaultScreenParams;
         }
