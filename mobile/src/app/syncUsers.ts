@@ -36,6 +36,9 @@ class SyncUsers {
             if (!user) return false;
         }
 
+        // Delete previous sync
+        this.deleteApiSyncData(receiverGmail);
+
         // Get userRealmPath
         const userRealmPath = userRealmStore.realm?.path;
         if (!userRealmPath) return false;
@@ -103,6 +106,23 @@ class SyncUsers {
         }
 
         return true;
+    }
+
+    public async isThereDataForImport(receiverGmail:string): Promise<boolean> {
+        let rval = false;
+
+        const apiResponse: {donwloaded:boolean} | null = await apiStore.getVariable(`importData_${receiverGmail}`);
+        if (apiResponse === null || !apiResponse) return false;
+
+        if (apiResponse.donwloaded === false) {
+            return true;
+        }
+
+        return rval;
+    }
+
+    public async deleteApiSyncData(receiverGmail:string): Promise<boolean> {
+        return await apiStore.deleteVariable(`importData_${receiverGmail}`);
     }
 }
 

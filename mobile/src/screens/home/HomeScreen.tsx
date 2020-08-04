@@ -62,8 +62,17 @@ export class HomeScreen extends React.Component<Props, object> {
     }
 
     private async onTestButtonPress() {
+        const email = 'halobebaapp@gmail.com';
+
         // EXPORT DATA
-        const response = await syncUsers.exportData('halobebaapp@gmail.com');
+        // const response = await syncUsers.exportData(email);
+
+        // IS THERE EXPORT?
+        const response = await syncUsers.isThereDataForImport(email);
+
+        // DELETE SYNC DATA
+        // const response = await syncUsers.deleteApiSyncData(email);
+
         console.log('Final response', response);
     }
 
