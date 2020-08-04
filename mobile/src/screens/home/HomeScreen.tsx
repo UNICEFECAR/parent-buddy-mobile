@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import Realm from 'realm';
 import { ScrollView, StyleSheet, View, ViewStyle, Alert, Text } from 'react-native';
 import { Button } from 'react-native-paper';
@@ -11,7 +11,7 @@ import { ContentEntity, ContentEntitySchema } from '../../stores/ContentEntity';
 import { CategoryArticlesViewEntity } from '../../stores/CategoryArticlesViewEntity';
 import { dataRealmStore, apiStore } from '../../stores';
 import { translate } from '../../translations/translate';
-import { content, localize, utils } from '../../app';
+import { content, localize, utils, googleDrive } from '../../app';
 import { Media } from '../../components';
 import Orientation from 'react-native-orientation-locker';
 import { getSearchResultsScreenData } from '../../stores/getSearchResultsScreenData';
@@ -46,7 +46,7 @@ export class HomeScreen extends React.Component<Props, object> {
     }
 
     public componentWillUnmount() {
-        
+
     }
 
     private setDefaultScreenParams() {
@@ -61,19 +61,27 @@ export class HomeScreen extends React.Component<Props, object> {
         }
     }
 
-    private async onTestButtonPress() {
+    private async onTestButtonPress(userRealmContext: UserRealmContextValue) {
         const email = 'halobebaapp@gmail.com';
 
         // EXPORT DATA
         // const response = await syncUsers.exportData(email);
 
         // IS THERE EXPORT?
-        const response = await syncUsers.isThereDataForImport(email);
+        // const response = await syncUsers.isThereDataForImport(email);
 
         // DELETE SYNC DATA
         // const response = await syncUsers.deleteApiSyncData(email);
 
-        console.log('Final response', response);
+        // IMPORT DATA
+        // const response = await syncUsers.importData(userRealmContext, email);
+
+        // LIST
+        const response = await googleDrive.list({
+            filter: `trashed=false`,
+        });
+
+        console.log('Final response2', JSON.stringify(response, null, 4));
     }
 
     public render() {
@@ -87,8 +95,14 @@ export class HomeScreen extends React.Component<Props, object> {
                         {/* <Text>{localize.getLanguage()}</Text> */}
 
                         {/* Test button */}
-                        <Button onPress={() => { this.onTestButtonPress() }}>Test</Button>
-                        <View style={{ height: 30 }} />
+                        <UserRealmConsumer>
+                            {(userRealmContext: UserRealmContextValue) => (
+                                <Fragment>
+                                    <Button onPress={() => { this.onTestButtonPress(userRealmContext) }}>Test</Button>
+                                    <View style={{ height: 30 }} />
+                                </Fragment>
+                            )}
+                        </UserRealmConsumer>
 
                         {/* HOME MESSAGES */}
                         <DataRealmConsumer>

@@ -3,7 +3,9 @@ import { googleDrive } from "./googleDrive";
 import { userRealmStore } from "../stores/userRealmStore";
 import { appConfig } from "./appConfig";
 import RNFS from 'react-native-fs';
-import { apiStore } from "../stores";
+import { apiStore, dataRealmStore } from "../stores";
+import { UserRealmContextValue } from "../stores/UserRealmContext";
+import { translate } from "../translations/translate";
 
 /**
  * Sync user data between users with GDrive.
@@ -20,7 +22,7 @@ class SyncUsers {
         return SyncUsers.instance;
     }
 
-    public async exportData(receiverGmail:string) {
+    public async exportData(receiverGmail:string): Promise<boolean> {
         const tokens = await googleAuth.getTokens();
 
         // Validate
@@ -88,7 +90,7 @@ class SyncUsers {
         // Set permissions on a file
         const permissionsResponse = await googleDrive.createPermissions(newFileId, {
             emailAddress: receiverGmail,
-            role: 'reader',
+            role: 'writer',
             type: 'user',
         })
         
@@ -123,6 +125,77 @@ class SyncUsers {
 
     public async deleteApiSyncData(receiverGmail:string): Promise<boolean> {
         return await apiStore.deleteVariable(`importData_${receiverGmail}`);
+    }
+
+    public async importData(userRealmContext: UserRealmContextValue, receiverGmail:string): Promise<void|Error> {
+        const tokens = await googleAuth.getTokens();
+
+        // Sign in if neccessary
+        if (!tokens) {
+            const user = await googleAuth.signIn();
+            if (!user) return new Error(translate('loginCanceled'));
+        }
+
+        // Validate
+        if (!receiverGmail || receiverGmail == '') {
+            return new Error('importData requires email');
+        }
+
+        const exportFilename = `${receiverGmail}.export`;
+
+        // // Get backupFolderId
+        // let backupFolderId = await googleDrive.safeCreateFolder({
+        //     name: appConfig.backupGDriveFolderName,
+        //     parentFolderId: 'root'
+        // });
+
+        // if (backupFolderId instanceof Error) {
+        //     return new Error('Backup folder doesnt exist on GDrive');
+        // }
+
+        // Get backup file ID if exists on GDrive
+        let backupFileId: string | null = null;
+
+        const backupFiles = await googleDrive.list({
+            filter: `trashed=false and (name contains '${exportFilename}') and sharedWithMe`,
+        });
+
+        if (Array.isArray(backupFiles) && backupFiles.length > 0) {
+            backupFileId = backupFiles[0].id;
+        }
+
+        if (!backupFileId) {
+            return new Error(translate('settingsButtonImportError'));
+        }
+
+        // Close user realm
+        userRealmContext.closeRealm();
+
+        // Download file from GDrive
+        await googleDrive.download({
+            fileId: backupFileId,
+            filePath: RNFS.DocumentDirectoryPath + '/' + 'user.realm',
+        });
+
+        // Open user realm
+        await userRealmContext.openRealm();
+
+        // Set current child to first child
+        const allChildren = userRealmStore.getAllChildren();
+        if (allChildren) {
+            dataRealmStore.setVariable('currentActiveChildId', allChildren[0].id);
+        }
+
+        // Set variable on apiStore
+        const setApiVariableResponse = await apiStore.setVariable(`importData_${receiverGmail}`, {
+            donwloaded: true,
+        });
+
+        if (!setApiVariableResponse) {
+            return new Error('importData could not set apiStore variable');
+        }
+
+        return;
     }
 }
 
