@@ -129,9 +129,9 @@ export class TermsScreen extends React.Component<Props, State> {
                         {/* OTHER PARAGRAPHS */}
                         <Typography type={ TypographyType.bodyRegular } style={{marginTop:scale(14), flex:1, textAlign:'left'}}>
                             Sadržaj ove aplikacije nije zamena za lekarske preglede i dijagnoze. Ukoliko brinete za svoje i zdravlje svoje bebe, preporučujemo Vam da se obavezno konsultujete sa svojim lekarom.
-                            
-                            <Text style={{lineHeight:scale(14)}}>{"\n"}{"\n"}</Text>
-                            
+                        </Typography>
+
+                        <Typography type={ TypographyType.bodyRegular } style={{marginTop:scale(14), flex:1, textAlign:'left'}}>
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
                         </Typography>
 
