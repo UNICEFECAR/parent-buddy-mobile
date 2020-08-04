@@ -1,5 +1,5 @@
 /**
- * Sync user data between users with GDrive.
+ * Sync user data between users with GDrive. XXX
  */
 class SyncUsers {
     private static instance: SyncUsers;
