@@ -45,7 +45,7 @@ export interface State {
     lastMeasuresLength: number,
     defaultMessage: string,
 }
-
+// git check
 export class GrowthScreen extends Component<Props, State> {
     public constructor(props: Props) {
         super(props);
