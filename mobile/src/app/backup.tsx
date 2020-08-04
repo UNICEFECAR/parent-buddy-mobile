@@ -1,6 +1,6 @@
 import { googleAuth } from "./googleAuth";
 import { googleDrive } from "./googleDrive";
-import { userRealmStore } from "../stores";
+import { userRealmStore, dataRealmStore } from "../stores";
 import { appConfig } from "./appConfig";
 import { utils } from ".";
 import { translate } from "../translations/translate";
@@ -126,6 +126,12 @@ class Backup {
 
         // Open user realm
         await userRealmContext.openRealm();
+
+        // Set current child to first child
+        const allChildren = userRealmStore.getAllChildren();
+        if (allChildren) {
+            dataRealmStore.setVariable('currentActiveChildId', allChildren[0].id);
+        }
 
         return;
     }
