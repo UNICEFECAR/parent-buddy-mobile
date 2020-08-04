@@ -17,7 +17,7 @@ import { ChildGender, Measures } from '../../stores/ChildEntity';
 import { DateTime } from 'luxon';
 import { ChartData as Data, GrowthChart0_2Type, GrowthChartHeightAgeType } from '../../components/growth/growthChartData';
 import { TextButtonColor } from '../../components/TextButton';
-import { navigation } from '../../app';
+import { navigation, utils } from '../../app';
 import { ActivityIndicator } from 'react-native-paper';
 import { DataRealmContext, DataRealmContextValue, DataRealmConsumer } from '../../stores/DataRealmContext';
 import { UserRealmConsumer, UserRealmContextValue } from '../../stores/UserRealmContext';
@@ -50,6 +50,7 @@ export class GrowthScreen extends Component<Props, State> {
     public constructor(props: Props) {
         super(props);
         this.state = this.initState()
+        utils.logAnalitic("mainMenuItemClick", {eventName: "mainMenuItemClick", screen: "Growth"});
         this.setDefaultScreenParams();
     }
 

@@ -19,6 +19,7 @@ import { ChildEntity, ChildEntitySchema, ChildGender } from '../../stores/ChildE
 import { UserRealmConsumer, UserRealmContextValue } from '../../stores/UserRealmContext';
 import { translate } from '../../translations/translate';
 import Orientation from 'react-native-orientation-locker';
+import { utils } from '../../app';
 
 export interface Props {
     navigation: NavigationStackProp<NavigationStackState>;
@@ -96,6 +97,7 @@ export class AddChildrenScreen extends React.Component<Props, State> {
                 child.updatedAt = new Date();
             });
         };
+        utils.logAnalitic("onChildGenderSave", {eventName: "onChildGenderSave"});
     };
 
     private onChildNameChange(child: ChildEntity | undefined, newName: string) {
@@ -149,7 +151,7 @@ export class AddChildrenScreen extends React.Component<Props, State> {
 
     private async addAnotherChild() {
         await userRealmStore.create<ChildEntity>(ChildEntitySchema, this.getNewChild());
-
+        utils.logAnalitic('onAdditionalChildEntered', {eventName: "onAdditionalChildEntered"});
         setTimeout(() => {
             this.scrollView.current?.scrollToEnd();
         }, 0);

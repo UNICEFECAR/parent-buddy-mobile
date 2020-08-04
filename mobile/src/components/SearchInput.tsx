@@ -4,6 +4,7 @@ import { ThemeContextValue, ThemeConsumer } from '../themes/ThemeContext';
 import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { BorderlessButton } from "react-native-gesture-handler";
+import { utils } from '../app';
 
 export interface Props {
     value?: string;
@@ -11,9 +12,9 @@ export interface Props {
     size?: SearchInputSize;
     alwaysShowClear?: boolean;
     style?: StyleProp<ViewStyle>;
-    onChange?: (value:string)=>void;
-    onClearPress?: ()=>void;
-    onSubmitEditing?: (value:string)=>void;
+    onChange?: (value: string) => void;
+    onClearPress?: () => void;
+    onSubmitEditing?: (value: string) => void;
 }
 
 export interface State {
@@ -61,18 +62,18 @@ export class SearchInput extends React.Component<Props, State> {
         this.state = state;
     }
 
-    private onTextChange(event:NativeSyntheticEvent<TextInputChangeEventData>) {
+    private onTextChange(event: NativeSyntheticEvent<TextInputChangeEventData>) {
         const value = event.nativeEvent.text;
 
-        this.setState({value});
-        
+        this.setState({ value });
+
         if (this.props.onChange) {
             this.props.onChange(value);
         }
     }
 
     private onClearButtonPress() {
-        this.setState({value:''}, () => {
+        this.setState({ value: '' }, () => {
             if (this.props.onClearPress) {
                 this.props.onClearPress();
             }
@@ -81,44 +82,45 @@ export class SearchInput extends React.Component<Props, State> {
 
     private onSubmitEditing() {
         if (this.props.onSubmitEditing) {
-            this.props.onSubmitEditing( this.state.value );
+            this.props.onSubmitEditing(this.state.value);
+            utils.logAnalitic("logSearch", { eventName: "logSearch", query: this.state.value })
         }
     }
 
     public render() {
         return (
             <ThemeConsumer>
-            {(themeContext:ThemeContextValue) => (
-                <View style={ [styles.container, this.state.containerStyle, this.props.style] }>
-                    {/* SEARCH ICON */}
-                    <Icon
-                        name={ "magnify" }
-                        style={ [styles.searchIconStyle, this.props.size === SearchInputSize.small ? {fontSize: scale(20)}:{}] }
-                    />
+                {(themeContext: ThemeContextValue) => (
+                    <View style={[styles.container, this.state.containerStyle, this.props.style]}>
+                        {/* SEARCH ICON */}
+                        <Icon
+                            name={"magnify"}
+                            style={[styles.searchIconStyle, this.props.size === SearchInputSize.small ? { fontSize: scale(20) } : {}]}
+                        />
 
-                    {/* TEXT INPUT */}
-                    <TextInput
-                        value={this.state.value}
-                        placeholder={this.props.placeholder}
-                        onChange={ (event) => {this.onTextChange(event)} }
-                        style={ styles.textInputStyle }
-                        autoCapitalize="none"
-                        autoCorrect={false}
-                        placeholderTextColor="#848588"
-                        onSubmitEditing={() => { this.onSubmitEditing() }}
-                    />
+                        {/* TEXT INPUT */}
+                        <TextInput
+                            value={this.state.value}
+                            placeholder={this.props.placeholder}
+                            onChange={(event) => { this.onTextChange(event) }}
+                            style={styles.textInputStyle}
+                            autoCapitalize="none"
+                            autoCorrect={false}
+                            placeholderTextColor="#848588"
+                            onSubmitEditing={() => { this.onSubmitEditing() }}
+                        />
 
-                    {/* CLEAR ICON */}
-                    {this.state.value || this.props.alwaysShowClear ? (
-                        <BorderlessButton onPress={ ()=>{this.onClearButtonPress()} }>
-                            <Icon
-                                name={ "close" }
-                                style={ styles.clearIconStyle }
-                            />
-                        </BorderlessButton>
-                    ) : null}
-                </View>
-            )}
+                        {/* CLEAR ICON */}
+                        {this.state.value || this.props.alwaysShowClear ? (
+                            <BorderlessButton onPress={() => { this.onClearButtonPress() }}>
+                                <Icon
+                                    name={"close"}
+                                    style={styles.clearIconStyle}
+                                />
+                            </BorderlessButton>
+                        ) : null}
+                    </View>
+                )}
             </ThemeConsumer>
         );
     }
@@ -143,17 +145,17 @@ const styles = StyleSheet.create<SearchInputStyles>({
     searchIconStyle: {
         fontSize: scale(26),
         color: '#8E8F90',
-        marginTop:Platform.OS === 'ios' ? scale(5) : 0, marginBottom:0, marginLeft:0, marginRight:scale(16),
+        marginTop: Platform.OS === 'ios' ? scale(5) : 0, marginBottom: 0, marginLeft: 0, marginRight: scale(16),
     },
 
     clearIconStyle: {
         fontSize: scale(20),
         color: '#8E8F90',
-        marginTop:0, marginBottom:0, marginLeft:scale(5), marginRight:0,
+        marginTop: 0, marginBottom: 0, marginLeft: scale(5), marginRight: 0,
     },
 
     textInputStyle: {
-        padding:0,
+        padding: 0,
         flex: 1,
         fontSize: moderateScale(16),
         alignSelf: 'stretch',

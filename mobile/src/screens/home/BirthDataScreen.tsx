@@ -15,6 +15,7 @@ import { userRealmStore, dataRealmStore } from '../../stores';
 import { Measures } from '../../stores/ChildEntity';
 import { currentLocale } from 'i18n-js';
 import { DateTime } from 'luxon';
+import { utils } from '../../app';
 
 export interface BirthDataScreenParams {
 
@@ -164,6 +165,7 @@ export class BirthDataScreen extends React.Component<Props, State> {
                 dataRealmStore.setVariable('randomNumber', Math.floor(Math.random() * 6000) + 1);
     
             });
+            utils.logAnalitic('onChildAgeSave', {eventName: 'onChildAgeSave'});
             const parentRoutes = this.props.navigation?.dangerouslyGetParent()?.state.routes;
             const measurementParent = parentRoutes?.find(route => route.routeName === "HomeStackNavigator_GrowthScreen");
             
