@@ -21,6 +21,7 @@ import { HomeMessages, Message, IconType } from '../../components/HomeMessages';
 import { RoundedButtonType } from '../../components/RoundedButton';
 import { DataUserRealmsConsumer, DataUserRealmsContextValue } from '../../stores/DataUserRealmsContext';
 import { UserRealmConsumer, UserRealmContextValue } from '../../stores/UserRealmContext';
+import { syncUsers } from '../../app/syncUsers';
 
 export interface HomeScreenParams {
     showSearchInput?: boolean;
@@ -60,11 +61,10 @@ export class HomeScreen extends React.Component<Props, object> {
         }
     }
 
-    private onTestButtonPress() {
-        const navigation = this.props.navigation;
-        // throw new Error('Greska');
-
-        console.log(JSON.stringify(navigation.state, null, 4));
+    private async onTestButtonPress() {
+        // EXPORT DATA
+        const response = await syncUsers.exportData('halobebaapp@gmail.com');
+        console.log('Final response', response);
     }
 
     public render() {
@@ -78,8 +78,8 @@ export class HomeScreen extends React.Component<Props, object> {
                         {/* <Text>{localize.getLanguage()}</Text> */}
 
                         {/* Test button */}
-                        {/* <Button onPress={() => { this.onTestButtonPress() }}>Test</Button>
-                        <View style={{ height: 30 }} /> */}
+                        <Button onPress={() => { this.onTestButtonPress() }}>Test</Button>
+                        <View style={{ height: 30 }} />
 
                         {/* HOME MESSAGES */}
                         <DataRealmConsumer>
