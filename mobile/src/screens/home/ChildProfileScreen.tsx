@@ -192,7 +192,7 @@ export class ChildProfileScreen extends React.Component<Props, State> {
                         <UserRealmConsumer>
                             {(userRealmContext: UserRealmContextValue) => (
                                 <Fragment>
-                                    {userRealmStore.getAllChildren(userRealmContext).map((child) => (
+                                    {userRealmStore.getAllChildren().map((child) => (
                                         this.renderChildList(child, themeContext)
                                     ))}
                                 </Fragment>
