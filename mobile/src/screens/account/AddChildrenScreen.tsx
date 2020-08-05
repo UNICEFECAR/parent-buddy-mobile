@@ -123,11 +123,13 @@ export class AddChildrenScreen extends React.Component<Props, State> {
             extension = parts[parts.length - 1].toLowerCase();
         };
 
+        let timestamp = new Date().getTime();
+
         if (child) {
             if (extension) {
-                newFilename = `${child.uuid}.${extension}`;
+                newFilename = `${child.uuid}_${timestamp}.${extension}`;
             } else {
-                newFilename = child.uuid;
+                newFilename = child.uuid + "_" + timestamp;
             };
 
             // Set destPath
@@ -182,13 +184,15 @@ export class AddChildrenScreen extends React.Component<Props, State> {
 
         const allChildren = userRealmStore.realm?.objects<ChildEntity>(ChildEntitySchema.name);
 
-        if (this.state.screenType === "NewChild") {
-            let lastChild = allChildren?.map(item => item);
-            if (lastChild) {
-                if (!lastChild[lastChild?.length - 1].name || lastChild[lastChild?.length - 1].name === "") {
-                    rval = false;
-                };
-            };
+        if (this.state.screenType !== "") {
+            rval = true;
+            // TODO 
+            // let lastChild = allChildren?.map(item => item);
+            // if (lastChild) {
+            //     if (!lastChild[lastChild?.length - 1].name || lastChild[lastChild?.length - 1].name === "") {
+            //         rval = false;
+            //     };
+            // };
         } else {
             allChildren?.forEach((child) => {
                 if (!child.name || child.name === '') {
