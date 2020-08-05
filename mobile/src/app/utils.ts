@@ -3,6 +3,7 @@ import { dataRealmStore } from '../stores';
 import SendSMS, { AndroidSuccessTypes } from 'react-native-sms'
 import URLParser from 'url';
 import RNFS from 'react-native-fs';
+import { Platform } from 'react-native';
 
 /**
  * Various utils methods.
@@ -169,6 +170,23 @@ class Utils {
 
     public upperCaseFirstLetter(text: string): string {
         return text && text.length > 0 ? text.charAt(0).toUpperCase() + text.slice(1) : text;
+    }
+
+    /**
+     * File paths on Android must start with file://, so add that prefix if needed.
+     */
+    public addPrefixForAndroidPaths(path: string): string {
+        let finalPath = path;
+        
+        if (finalPath && Platform.OS === 'android') {
+            let re = new RegExp('^file:');
+            let match = finalPath.match(re);
+            if (!match) {
+                finalPath = 'file://' + finalPath;
+            };
+        };
+
+        return finalPath;
     }
 }
 
