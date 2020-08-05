@@ -100,32 +100,20 @@ export class SettingsScreen extends React.Component<Props, State> {
     }
 
     private logout() {
-
-        const allVariables = dataRealmStore.realm?.objects<VariableEntity>(VariableEntitySchema.name);
-        const variables: string[] = [];
-
-        allVariables?.forEach((record, index, collection) => {
-            if (record.key === "userEmail" ||
-                record.key === "userIsLoggedIn" ||
-                record.key === "loginMethod" ||
-                record.key === "userEnteredChildData" ||
-                record.key === "userParentalRole" ||
-                record.key === "userName" ||
-                record.key === "currentActiveChildId"
-            ) {
-                variables.push(record.key)
-            }
-        });
-
         Alert.alert(
             translate('logoutAlert'),
             translate('logoutDataForDelete'),
             [{
                 text: translate('settingsLogout'), onPress: () => {
-                    variables.map(item => {
-                        let key = item as keyof Variables;
-                        dataRealmStore.deleteVariable(key)
-                    });
+                    
+                    dataRealmStore.deleteVariable("userEmail");
+                    dataRealmStore.deleteVariable("userIsLoggedIn");
+                    dataRealmStore.deleteVariable("loginMethod");
+                    dataRealmStore.deleteVariable("userEnteredChildData");
+                    dataRealmStore.deleteVariable("userParentalRole");
+                    dataRealmStore.deleteVariable("userName");
+                    dataRealmStore.deleteVariable("currentActiveChildId");
+
                     userRealmStore.deleteAll(ChildEntitySchema);
                     navigation.navigate('LoginStackNavigator_LoginScreen');
                 }
@@ -134,7 +122,7 @@ export class SettingsScreen extends React.Component<Props, State> {
                 text: translate('logoutCancel'),
                 onPress: () => { }
             }
-            ]);
+        ]);
     };
 
     private async exportAllData() {
@@ -151,25 +139,29 @@ export class SettingsScreen extends React.Component<Props, State> {
     };
 
     private deleteAccountFromLocal() {
-        const allVariables = dataRealmStore.realm?.objects<VariableEntity>(VariableEntitySchema.name);
         const userRealm = userRealmStore.realm?.objects<ChildEntity>(ChildEntitySchema.name);
-        const variables: string[] = [];
 
         userRealmStore.delete(userRealm);
 
-        allVariables?.forEach((record, index, collection) => {
-            if (record.key) {
-                variables.push(record.key)
-            };
-        });
-
-        variables.map(item => {
-            let key = item as keyof Variables;
-
-            dataRealmStore.deleteVariable(key);
-            navigation.navigate('LoginStackNavigator_LoginScreen');
-        });
-    }
+        dataRealmStore.deleteVariable("allowAnonymousUsage");
+        dataRealmStore.deleteVariable("currentActiveChildId");
+        dataRealmStore.deleteVariable("dailyMessage");
+        dataRealmStore.deleteVariable("followDevelopment");
+        dataRealmStore.deleteVariable("followDoctorVisits");
+        dataRealmStore.deleteVariable("followGrowth");
+        dataRealmStore.deleteVariable("hideHomeMessages");
+        dataRealmStore.deleteVariable("loginMethod");
+        dataRealmStore.deleteVariable("notificationsApp");
+        dataRealmStore.deleteVariable("notificationsEmail");
+        dataRealmStore.deleteVariable("randomNumber");
+        dataRealmStore.deleteVariable("userEmail");
+        dataRealmStore.deleteVariable("userEnteredChildData");
+        dataRealmStore.deleteVariable("userIsLoggedIn");
+        dataRealmStore.deleteVariable("userIsOnboarded");
+        dataRealmStore.deleteVariable("userName");
+        dataRealmStore.deleteVariable("userParentalRole");
+        dataRealmStore.deleteVariable("vocabulariesAndTerms");
+    };
 
     private async deleteAccountCms() {
         const deleteAcc = await apiStore.deleteAccount();
