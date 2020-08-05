@@ -130,6 +130,7 @@ export class UnknownError extends Error {
 
         if (error instanceof Error) {
             this.name = error.name;
+            this.stack = error.stack;
         }
     }
 };
