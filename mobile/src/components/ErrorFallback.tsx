@@ -30,7 +30,7 @@ export const ErrorFallback: FunctionComponent<ErrorFallbackProps> = (props) => {
                 Restart the app please.
             </Text> */}
 
-            <TouchableOpacity style={styles.button} onPress={() => { sendErrorReportWithEmail(error) }}>
+            <TouchableOpacity style={styles.button} onPress={() => { sendErrorReportWithEmail(error, componentStack) }}>
                 <Text style={styles.buttonText}>
                     Send bug report
                 </Text>

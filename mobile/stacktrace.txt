@@ -1,16 +1,26 @@
-onLongPress@index.android.bundle:398:6594
-touchableHandleLongPress@index.android.bundle:211:3960
-_performSideEffectsForTransition@index.android.bundle:217:9324
-_performSideEffectsForTransition@[native code]
-_receiveSignal@index.android.bundle:217:8357
-_receiveSignal@[native code]
-_handleLongDelay@index.android.bundle:217:7926
-_handleLongDelay@[native code]
-bound _handleLongDelay@[native code]
-y@index.android.bundle:116:661
-callTimers@index.android.bundle:116:2718
-value@index.android.bundle:27:3685
-index.android.bundle:27:841
-value@index.android.bundle:27:2939
-value@index.android.bundle:27:813
-value@[native code]
+index.android.bundle:190734:23
+beginWork$$1@index.android.bundle:9951:314
+performUnitOfWork@index.android.bundle:9151:28
+renderRoot@index.android.bundle:9008:47
+renderRoot@[native code]
+runRootCallback@index.android.bundle:8905:37
+runRootCallback@[native code]
+index.android.bundle:6688:34
+unstable_runWithPriority@index.android.bundle:17187:15
+flushSyncCallbackQueueImpl@index.android.bundle:6683:24
+flushSyncCallbackQueue@index.android.bundle:6673:31
+scheduleUpdateOnFiber@index.android.bundle:8861:120
+enqueueSetState@index.android.bundle:7006:28
+setState@index.android.bundle:3151:33
+index.android.bundle:72769:27
+dispatch@index.android.bundle:42968:32
+resetStackAndNavigate@index.android.bundle:42992:22
+gotoNextScreenOnAppOpen@index.android.bundle:103619:55
+index.android.bundle:238324:53
+_callTimer@index.android.bundle:12114:17
+callTimers@index.android.bundle:12301:19
+__callFunction@index.android.bundle:1979:49
+index.android.bundle:1781:31
+__guard@index.android.bundle:1933:15
+callFunctionReturnFlushedQueue@index.android.bundle:1780:21
+callFunctionReturnFlushedQueue@[native code]

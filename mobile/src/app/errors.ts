@@ -31,7 +31,7 @@ export function initGlobalErrorHandler() {
     });
 }
 
-export async function sendErrorReportWithEmail(error: any) {
+export async function sendErrorReportWithEmail(error: any, componentStack?: string) {
     const unknownError = new UnknownError(error);
 
     const mailSubject = `HaloBeba bug report`;
@@ -93,14 +93,19 @@ Device type: ${DeviceInfo.getDeviceType()}
 
     // Children
     try {
-        let allChildren = userRealmStore.getAllChildren({ realm: userRealmStore.realm } as UserRealmContextValue);
+        let allChildren = userRealmStore.getAllChildren();
         mailBody += `CHILDREN:\n${JSON.stringify(allChildren, null, 4)}\n\n`;
     } catch (e) { }
 
     // Stack
     try {
-        mailBody += (unknownError.stack ? 'ERROR STACK:\n' + unknownError.stack : 'Please describe error here');
+        mailBody += (unknownError.stack ? 'ERROR STACK:\n' + unknownError.stack + '\n\n' : 'Please describe error here\n\n');
     } catch (e) { }
+
+    // Component stack
+    if (componentStack) {
+        mailBody += `COMPONENT ERROR STACK:\n${componentStack}\n\n`;
+    }
 
     const mailUrl = `mailto:office@byteout.com?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
 
