@@ -126,6 +126,7 @@ export class ChildProfileScreen extends React.Component<Props, State> {
                 {child.photo ?
                     <Image
                         style={styles.photo}
+                        key={child.photo}
                         source={{
                             uri: child.photo,
                             // @ts-ignore
@@ -191,7 +192,7 @@ export class ChildProfileScreen extends React.Component<Props, State> {
                         <UserRealmConsumer>
                             {(userRealmContext: UserRealmContextValue) => (
                                 <Fragment>
-                                    {userRealmStore.getAllChildren().map((child) => (
+                                    {userRealmStore.getAllChildren(userRealmContext).map((child) => (
                                         this.renderChildList(child, themeContext)
                                     ))}
                                 </Fragment>

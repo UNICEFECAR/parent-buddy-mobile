@@ -310,23 +310,25 @@ class Content {
                 categoryName: categoryName,
                 articles: []
             };
+
             try {
                 const childAgeTagId = dataRealmStore.getChildAgeTagWithArticles(categoryId, true)?.id;
                 const allContent = realm?.objects<ContentEntity>(ContentEntitySchema.name);
-
+                
                 if (childAgeTagId !== null && childAgeTagId !== undefined) {
                     title = translate("todayArticles")
-
+                    
                     const filteredRecordsWithAge = allContent?.
                         filtered(`category == ${categoryId} AND type == 'article'`)
                         .filter(item => item.predefinedTags.indexOf(childAgeTagId) !== -1)
+                    
+                        
                     filteredRecordsWithAge?.forEach((record, index, collection) => {
                         categoryArticles.articles.push(record)
                     })
                 } else {
                     title = translate("popularArticles");
                     const filteredRecords = allContent?.filtered(`category == ${categoryId} AND type == 'article'`)
-                    // .filter(item => item.predefinedTags.indexOf(4756) === -1);
                     filteredRecords?.forEach((record, index, collection) => {
                         categoryArticles.articles.push(
                             record
