@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, View, Text, Button, StyleSheet, ViewStyle, ScrollView } from 'react-native';
+import { SafeAreaView, View, Text, Button, StyleSheet, ViewStyle, ScrollView, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { NavigationStackProp, NavigationStackState, NavigationStackOptions } from 'react-navigation-stack';
 import { ThemeContextValue, ThemeConsumer } from '../../themes/ThemeContext';
@@ -9,7 +9,7 @@ import { Switch, Caption, Divider } from 'react-native-paper';
 import { Typography, TypographyType } from '../../components/Typography';
 import { TextButton, TextButtonColor } from '../../components/TextButton';
 import { RoundedButton, RoundedButtonType } from '../../components/RoundedButton';
-import { dataRealmStore, VariableEntity, userRealmStore, ChildEntity } from '../../stores';
+import { dataRealmStore, VariableEntity, userRealmStore, ChildEntity, apiStore } from '../../stores';
 import { Variables } from '../../stores/dataRealmStore';
 import { navigation, backup, googleDrive } from '../../app';
 import { VariableEntitySchema } from '../../stores/VariableEntity';
@@ -81,7 +81,7 @@ export class SettingsScreen extends React.Component<Props, State> {
         };
 
         this.state = state;
-    }
+    };
 
     private gotoBack() {
         this.props.navigation.goBack();
@@ -101,20 +101,29 @@ export class SettingsScreen extends React.Component<Props, State> {
     }
 
     private logout() {
-        const allVariables = dataRealmStore.realm?.objects<VariableEntity>(VariableEntitySchema.name);
-        const variables: string[] = [];
+        Alert.alert(
+            translate('logoutAlert'),
+            translate('logoutDataForDelete'),
+            [{
+                text: translate('settingsLogout'), onPress: () => {
+                    
+                    dataRealmStore.deleteVariable("userEmail");
+                    dataRealmStore.deleteVariable("userIsLoggedIn");
+                    dataRealmStore.deleteVariable("loginMethod");
+                    dataRealmStore.deleteVariable("userEnteredChildData");
+                    dataRealmStore.deleteVariable("userParentalRole");
+                    dataRealmStore.deleteVariable("userName");
+                    dataRealmStore.deleteVariable("currentActiveChildId");
 
-        allVariables?.forEach((record, index, collection) => {
-            if (record.key !== "lastSyncTimestamp" && record.key !== "vocabulariesAndTerms" && record.key !== "languageCode" && record.key !== "countryCode") {
-                variables.push(record.key)
+                    userRealmStore.deleteAll(ChildEntitySchema);
+                    navigation.navigate('LoginStackNavigator_LoginScreen');
+                }
+            },
+            {
+                text: translate('logoutCancel'),
+                onPress: () => { }
             }
-        })
-
-        variables.map(item => {
-            let key = item as keyof Variables;
-            dataRealmStore.deleteVariable(key)
-        })
-        navigation.navigate('LoginStackNavigator_LoginScreen');
+        ]);
     };
 
     private async exportAllData() {
@@ -130,25 +139,62 @@ export class SettingsScreen extends React.Component<Props, State> {
         };
     };
 
-    private deleteAccount() {
-        const allVariables = dataRealmStore.realm?.objects<VariableEntity>(VariableEntitySchema.name);
+    private deleteAccountFromLocal() {
         const userRealm = userRealmStore.realm?.objects<ChildEntity>(ChildEntitySchema.name);
-        const variables: string[] = [];
 
         userRealmStore.delete(userRealm);
 
-        allVariables?.forEach((record, index, collection) => {
-            if (record.key) {
-                variables.push(record.key)
-            };
-        });
+        dataRealmStore.deleteVariable("allowAnonymousUsage");
+        dataRealmStore.deleteVariable("currentActiveChildId");
+        dataRealmStore.deleteVariable("dailyMessage");
+        dataRealmStore.deleteVariable("followDevelopment");
+        dataRealmStore.deleteVariable("followDoctorVisits");
+        dataRealmStore.deleteVariable("followGrowth");
+        dataRealmStore.deleteVariable("hideHomeMessages");
+        dataRealmStore.deleteVariable("loginMethod");
+        dataRealmStore.deleteVariable("notificationsApp");
+        dataRealmStore.deleteVariable("notificationsEmail");
+        dataRealmStore.deleteVariable("randomNumber");
+        dataRealmStore.deleteVariable("userEmail");
+        dataRealmStore.deleteVariable("userEnteredChildData");
+        dataRealmStore.deleteVariable("userIsLoggedIn");
+        dataRealmStore.deleteVariable("userIsOnboarded");
+        dataRealmStore.deleteVariable("userName");
+        dataRealmStore.deleteVariable("userParentalRole");
+        dataRealmStore.deleteVariable("vocabulariesAndTerms");
+    };
 
-        variables.map(item => {
-            let key = item as keyof Variables;
+    private async deleteAccountCms() {
+        const deleteAcc = await apiStore.deleteAccount();
 
-            dataRealmStore.deleteVariable(key);
-            navigation.navigate('LoginStackNavigator_LoginScreen');
-        })
+        if (deleteAcc.deleteAccountSuccess) {
+            this.deleteAccountFromLocal()
+        };
+    }
+
+    private async deleteAccount() {
+
+        const loginMethod = dataRealmStore.getVariable('loginMethod');
+
+        Alert.alert(
+            translate('deleteAccAlert'),
+            translate('deleteAccAlertMsg'),
+            [
+                {
+                    text: translate('deleteAcc'),
+                    onPress: () => {
+                        if (loginMethod === "cms") {
+                            this.deleteAccountCms()
+                        } else {
+                            this.deleteAccountFromLocal();
+                        }
+                    }
+                },
+                {
+                    text: translate('logoutCancel'),
+                }
+            ]
+        );
     };
 
     private async importAllData(userRealmContext: UserRealmContextValue) {

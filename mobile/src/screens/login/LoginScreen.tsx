@@ -5,7 +5,7 @@ import { GradientBackground } from '../../components/GradientBackground';
 import { Typography, TypographyType } from '../../components/Typography';
 import { RoundedButton, RoundedButtonType } from '../../components/RoundedButton';
 import { RoundedTextInput } from '../../components/RoundedTextInput';
-import { TextButton, TextButtonSize } from '../../components/TextButton';
+import { TextButton, TextButtonSize, TextButtonColor } from '../../components/TextButton';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { translate } from '../../translations/translate';
 import { Animated, Easing } from 'react-native';
@@ -304,6 +304,9 @@ export class LoginScreen extends React.Component<Props, State & AnimationsState>
                             onPress={() => { this.onLoginClick() }}
                             style={{ marginBottom: 15 }}
                         />
+                        <TextButton color={TextButtonColor.white} onPress={() => this.props.navigation.navigate('LoginStackNavigator_ResetPasswordScreen')}>
+                            {translate('loginForgotPassword')}
+                        </TextButton>
 
                         {/* FORGOT THE PASSWORD */}
                         {/* <TextButton size={TextButtonSize.small} textStyle={{ color: 'white', textAlign: 'center' }} onPress={() => { }}>
