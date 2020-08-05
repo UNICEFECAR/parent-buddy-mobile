@@ -12,6 +12,7 @@ import { InterpretationText } from '../screens/growth/GrowthScreen';
 import { Child } from '../screens/home/ChildProfileScreen';
 import RNFS from 'react-native-fs';
 import { UserRealmContextValue } from './UserRealmContext';
+import { utils } from '../app/utils';
 
 type Variables = {
     'userChildren': any;
@@ -276,7 +277,8 @@ class UserRealmStore {
                 let birthDay = child.birthDate ? 
                     DateTime.fromJSDate(child.birthDate).toFormat("dd'.'MM'.'yyyy") : "";
                 
-                let imgUrl = child.photoUri ? `${RNFS.DocumentDirectoryPath}/${child.photoUri}` : null;
+
+                let imgUrl = child.photoUri ? utils.addPrefixForAndroidPaths(`${RNFS.DocumentDirectoryPath}/${child.photoUri}`) : null;
                 let isCurrentActive = false;
                 
                 if(currentChild){

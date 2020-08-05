@@ -19,6 +19,7 @@ import { ChildEntity, ChildEntitySchema, ChildGender } from '../../stores/ChildE
 import { UserRealmConsumer, UserRealmContextValue } from '../../stores/UserRealmContext';
 import { translate } from '../../translations/translate';
 import Orientation from 'react-native-orientation-locker';
+import { utils } from '../../app/utils';
 
 export interface Props {
     navigation: NavigationStackProp<NavigationStackState>;
@@ -201,15 +202,9 @@ export class AddChildrenScreen extends React.Component<Props, State> {
 
     private getAbsolutePathToDocumentFolder(relativePath: string | undefined) {
         let finalPath = relativePath;
+        
         finalPath = DocumentDirectoryPath + finalPath;
-
-        if (finalPath && Platform.OS === 'android') {
-            let re = new RegExp('^file:');
-            let match = finalPath.match(re);
-            if (!match) {
-                finalPath = 'file://' + finalPath;
-            };
-        };
+        finalPath = utils.addPrefixForAndroidPaths(finalPath);
 
         return finalPath;
     };
