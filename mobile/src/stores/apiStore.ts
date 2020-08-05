@@ -8,6 +8,8 @@ import { BasicPageEntity } from "./BasicPageEntity";
 import { MilestoneEntity } from "./MilestoneEntity";
 import { Platform } from "react-native";
 import { DailyMessageEntity } from "./DailyMessageEntity";
+import { exp } from "react-native-reanimated";
+import { dataRealmStore } from "./dataRealmStore";
 
 /**
  * Communication with API.
@@ -59,7 +61,7 @@ class ApiStore {
             let rawResponseJson = axiosResponse.data;
             if (rawResponseJson) {
                 response.total = parseInt(rawResponseJson.total);
-                response.data = rawResponseJson.data.map((rawContent: any):MilestoneEntity => {
+                response.data = rawResponseJson.data.map((rawContent: any): MilestoneEntity => {
                     return {
                         id: parseInt(rawContent.id),
                         body: rawContent.body,
@@ -76,7 +78,7 @@ class ApiStore {
             };
 
         } catch (rejectError) {
-            if(appConfig.showLog){
+            if (appConfig.showLog) {
                 console.log(rejectError);
             };
         };
@@ -174,6 +176,73 @@ class ApiStore {
 
         return response;
     };
+
+    public async resetPassword(userEmail: string): Promise<ResetPasswordResponse> {
+        const language = localize.getLanguage();
+        const url = `${appConfig.apiUrl}/user/reset?username=${userEmail}&langcode=${language}`;
+
+        let response: ResetPasswordResponse = { resetPasswordSuccess: false };
+
+        try {
+            let axiosResponse: AxiosResponse = await axios({
+                url: url,
+                method: 'GET',
+                responseType: 'json',
+                headers: { "Content-type": "application/json" },
+                timeout: appConfig.apiTimeout,
+                auth: {
+                    username: appConfig.apiAuthUsername,
+                    password: appConfig.apiAuthPassword,
+                },
+            })
+
+            let rawResponseJson = axiosResponse.data;
+
+            if (rawResponseJson) {
+                response.resetPasswordSuccess = rawResponseJson.status
+            }
+        } catch (rejectError) {
+            if (appConfig.showLog) {
+                console.log(rejectError, "reject error");
+            }
+        }
+
+        return response
+    }
+
+    public async deleteAccount(): Promise<DeleteAccountResponse> {
+        
+        const userEmail = await dataRealmStore.getVariable('userEmail');
+        let response: DeleteAccountResponse = { deleteAccountSuccess: false };
+
+        if (userEmail) {
+            const url = `${appConfig.apiUrl}/user/delete?username=${userEmail}`;
+            try {
+                let axiosResponse: AxiosResponse = await axios({
+                    url: url,
+                    method: 'GET',
+                    responseType: 'json',
+                    headers: { "Content-type": "application/json" },
+                    timeout: appConfig.apiTimeout,
+                    auth: {
+                        username: appConfig.apiAuthUsername,
+                        password: appConfig.apiAuthPassword,
+                    },
+                })
+                let rawResponseJson = axiosResponse.data;
+
+                if (rawResponseJson) {
+                    response.deleteAccountSuccess = rawResponseJson.status
+                }
+            } catch (rejectError) {
+                if (appConfig.showLog) {
+                    console.log(rejectError, "reject error");
+                }
+            }
+        }
+
+        return response
+    }
 
     public async drupalRegister(args: DrupalRegisterArgs): Promise<DrupalRegisterRespone> {
 
@@ -769,6 +838,13 @@ export interface DrupalRegisterArgs {
     password: string,
 }
 
+export interface ResetPasswordResponse {
+    resetPasswordSuccess: boolean
+};
+
+export interface DeleteAccountResponse {
+    deleteAccountSuccess: boolean,
+}
 
 export interface DrupalRegisterRespone {
     registrationSuccess: boolean
@@ -824,7 +900,7 @@ export interface ContentResponse {
     data: ContentEntity[];
 }
 
-export interface MilestonesResponse{
+export interface MilestonesResponse {
     total: number;
     data: MilestoneEntity[];
 }
