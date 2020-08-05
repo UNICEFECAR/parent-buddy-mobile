@@ -3,6 +3,7 @@ import { dataRealmStore, userRealmStore } from "../stores";
 import { UserRealmContextValue } from "../stores/UserRealmContext";
 import { navigation } from "./Navigators";
 import DeviceInfo from 'react-native-device-info';
+import NetInfo from "@react-native-community/netinfo";
 
 /**
  * Redefines global error handler.
@@ -10,7 +11,7 @@ import DeviceInfo from 'react-native-device-info';
 export function initGlobalErrorHandler() {
     // During development, RN doesn't crash the app when error happens.
     // It shows the LogBox, and we will not change that.
-    if (__DEV__) {
+    if (!__DEV__) {
         return;
     }
 
@@ -55,6 +56,16 @@ Device name: ${await DeviceInfo.getDeviceName()}
 Device ID: ${DeviceInfo.getDeviceId()}
 Device type: ${DeviceInfo.getDeviceType()}
 \n`;
+    } catch (e) { }
+
+    // Network status
+    try {
+        const netInfo = await NetInfo.fetch();
+        mailBody += `NETWORK:
+Is connected: ${netInfo.isConnected}
+Is net reachable: ${netInfo.isInternetReachable}
+Type: ${netInfo.type}
+Details: ${JSON.stringify(netInfo.details, null, 4)}\n\n`
     } catch (e) { }
 
     // Navigation screen state
