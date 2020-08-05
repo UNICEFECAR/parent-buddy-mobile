@@ -97,11 +97,11 @@ export class HomeScreen extends React.Component<Props, object> {
                             {(dataRealmContext: DataRealmContextValue) => (
                                 <>
                                     {
-                                        content.getHomeScreenDevelopmentArticles(dataRealmContext.realm).categoryArticles?.length !== 0 ?
-                                            <ArticlesSection data={content.getHomeScreenDevelopmentArticles(dataRealmContext.realm)} />
+                                        content.getHomeScreenDevelopmentArticles(dataRealmStore.realm ? dataRealmStore.realm : null).categoryArticles?.length !== 0 ?
+                                            <ArticlesSection data={content.getHomeScreenDevelopmentArticles(dataRealmStore.realm ? dataRealmStore.realm : null)} />
                                             : null
                                     }
-                                    <ArticlesSection data={content.getHomeScreenArticles(dataRealmContext.realm)} />
+                                    <ArticlesSection data={content.getHomeScreenArticles(dataRealmStore.realm ? dataRealmStore.realm : null)} />
                                 </>
                             )}
                         </DataRealmConsumer>

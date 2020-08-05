@@ -38,6 +38,8 @@ export type Variables = {
     'dailyMessage': DailyMessageVariable;
     'currentActiveChildId': string;
     'hideHomeMessages': boolean;
+    'prevNavigationState': string;
+    'nextNavigationState': string;
 };
 
 type VariableKey = keyof Variables;
