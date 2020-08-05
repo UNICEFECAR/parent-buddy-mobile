@@ -119,7 +119,7 @@ Details: ${JSON.stringify(netInfo.details, null, 4)}\n\n`
         mailBody += `COMPONENT ERROR STACK:\n${componentStack}\n\n`;
     }
 
-    const mailUrl = `mailto:office@byteout.com?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
+    const mailUrl = `mailto:anastasia@byteout.com,milos.ciganovic@byteout.com,misha@byteout.com?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
 
     // console.log(mailBody);
     Linking.openURL(mailUrl);
