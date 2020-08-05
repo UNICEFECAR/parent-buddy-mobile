@@ -2,6 +2,7 @@
     "appName": "Halo Beba",
     "appEmail": "halobeba@zdravlje.org.rs",
     "appPhone": "011 7158 444",
+    "appCantOpen": "Proverite internet i restartujte aplikaciju",
 
     "loginGoogle": "Povežite se Google nalogom",
     "loginFacebook": "Povežite se Facebook nalogom",

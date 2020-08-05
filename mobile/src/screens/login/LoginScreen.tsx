@@ -89,6 +89,19 @@ export class LoginScreen extends React.Component<Props, State & AnimationsState>
     private async onLoginClick() {
         const { email, password } = this.state;
 
+        // Check if app can be opened
+        const canAppBeOpened = utils.canAppBeOpened();
+
+        if (!canAppBeOpened) {
+            this.setState({
+                isSnackbarVisible: true,
+                snackbarMessage: translate('appCantOpen'),
+            });
+
+            return;
+        }
+
+        // Login
         let userLoginResponse: DrupalLoginResponse = { isUserExist: false }
 
         if (this.inputValidation()) {
@@ -189,6 +202,19 @@ export class LoginScreen extends React.Component<Props, State & AnimationsState>
     }
 
     private async googleLogin() {
+        // Check if app can be opened
+        const canAppBeOpened = utils.canAppBeOpened();
+
+        if (!canAppBeOpened) {
+            this.setState({
+                isSnackbarVisible: true,
+                snackbarMessage: translate('appCantOpen'),
+            });
+
+            return;
+        }
+
+        // Login
         let response = await googleAuth.signIn();
 
         if (response?.user?.email) {
@@ -205,6 +231,19 @@ export class LoginScreen extends React.Component<Props, State & AnimationsState>
     }
 
     private async facebookLogin() {
+        // Check if app can be opened
+        const canAppBeOpened = utils.canAppBeOpened();
+
+        if (!canAppBeOpened) {
+            this.setState({
+                isSnackbarVisible: true,
+                snackbarMessage: translate('appCantOpen'),
+            });
+
+            return;
+        }
+
+        // Login
         let loginResult = await facebook.logIn();
 
         if (loginResult.grantedPermissions) {

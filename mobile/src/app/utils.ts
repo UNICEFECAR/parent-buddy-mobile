@@ -1,9 +1,10 @@
 import { navigation } from './Navigators';
-import { dataRealmStore } from '../stores';
+import { dataRealmStore, ContentEntity } from '../stores';
 import SendSMS, { AndroidSuccessTypes } from 'react-native-sms'
 import URLParser from 'url';
 import RNFS from 'react-native-fs';
 import { Platform } from 'react-native';
+import { ContentEntitySchema } from '../stores/ContentEntity';
 
 /**
  * Various utils methods.
@@ -187,6 +188,23 @@ class Utils {
         };
 
         return finalPath;
+    }
+
+    /**
+     * App can be opened only if API data was downloaded.
+     */
+    public canAppBeOpened(): boolean {
+        let rval = false;
+
+        try {
+            const numberOfContentItems = dataRealmStore.realm?.objects<ContentEntity>(ContentEntitySchema.name).length;
+
+            if (numberOfContentItems && numberOfContentItems > 0) {
+                rval = true;
+            }
+        } catch(e) {}
+
+        return rval;
     }
 }
 

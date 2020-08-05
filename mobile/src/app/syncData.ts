@@ -23,8 +23,15 @@ class SyncData {
         return SyncData.instance;
     }
 
-    public async sync(): Promise<boolean> {
-        let rval = false;
+    public async sync(): Promise<true | Error> {
+        // CHECK IF API IS AVAILABLE
+        const isApiAvailable = await apiStore.isApiAvailable();
+        
+        if (isApiAvailable instanceof Error)  {
+            return isApiAvailable;
+        }
+
+        // VARIABLES
         const lastSyncTimestamp = dataRealmStore.getVariable('lastSyncTimestamp');
 
         // SYNC DATA REPORT
@@ -186,7 +193,7 @@ class SyncData {
         const allContentIsDownloaded = allContent.total > 0 && allContent.data.length === allContent.total;
 
         if (allContentIsDownloaded && numberOfFailedImageDownloads === 0) {
-            dataRealmStore.setVariable('lastSyncTimestamp', Math.round(Date.now() / 1000));
+            await dataRealmStore.setVariable('lastSyncTimestamp', Math.round(Date.now() / 1000));
 
             if (appConfig.showLog) {
                 console.log('syncData.sync(): Updated lastSyncTimestamp');
@@ -198,9 +205,9 @@ class SyncData {
         }
 
         // SAVE SYNC REPORT
-        dataRealmStore.setVariable('syncDataReport', syncDataReport);
+        await dataRealmStore.setVariable('syncDataReport', syncDataReport);
 
-        return rval;
+        return true;
     }
 
     public async syncAndShowSyncingScreen() {
