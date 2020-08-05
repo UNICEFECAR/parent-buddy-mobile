@@ -2,6 +2,7 @@
     "appName": "Parent Buddy",
     "appEmail": "example@gmail.com",
     "appPhone": "",
+    "appCantOpen": "Check internet and restart the app",
 
     "loginGoogle":  "Login with Google account",
     "loginFacebook": "Login with Facebook account",

@@ -10,6 +10,7 @@ import { Platform } from "react-native";
 import { DailyMessageEntity } from "./DailyMessageEntity";
 import { exp } from "react-native-reanimated";
 import { dataRealmStore } from "./dataRealmStore";
+import { UnknownError } from "../app/errors";
 
 /**
  * Communication with API.
@@ -211,7 +212,7 @@ class ApiStore {
     }
 
     public async deleteAccount(): Promise<DeleteAccountResponse> {
-        
+
         const userEmail = await dataRealmStore.getVariable('userEmail');
         let response: DeleteAccountResponse = { deleteAccountSuccess: false };
 
@@ -324,6 +325,47 @@ class ApiStore {
         return response
     }
 
+    public async isApiAvailable(): Promise<true | Error> {
+        // URL
+        const language = localize.getLanguage();
+        let url = `${appConfig.apiUrl}/list-content/${language}`;
+        url = this.addBasicAuthForIOS(url);
+
+        // URL params
+        const urlParams: any = {
+            page: 0,
+            numberOfItems: 1,
+            published: appConfig.showPublishedContent,
+        };
+
+        // Get API response
+        try {
+            let axiosResponse: AxiosResponse = await axios({
+                // API: https://bit.ly/2ZatNfQ
+                url: url,
+                params: urlParams,
+                method: 'GET',
+                responseType: 'json',
+                timeout: appConfig.apiTimeout, // milliseconds
+                maxContentLength: 100000, // bytes
+                auth: {
+                    username: appConfig.apiUsername,
+                    password: appConfig.apiPassword,
+                },
+            });
+
+            let rawResponseJson = axiosResponse.data;
+
+            if (rawResponseJson) {
+                return true;
+            } else {
+                return new Error('API is not available. ' + axiosResponse.statusText);
+            }
+        } catch (rejectError) {
+            return new UnknownError(rejectError);
+        }
+    }
+
     public async getContent(args: GetContentArgs): Promise<ContentResponse> {
         // URL
         const language = localize.getLanguage();
@@ -398,7 +440,9 @@ class ApiStore {
                 });
             }
         } catch (rejectError) {
-            console.log(rejectError);
+            if (appConfig.showLog) {
+                console.log(rejectError);
+            }
         }
 
         return response;
@@ -506,7 +550,9 @@ class ApiStore {
                 });
             }
         } catch (rejectError) {
-            console.log(rejectError);
+            if (appConfig.showLog) {
+                console.log(rejectError);
+            }
         }
 
         return response;
@@ -614,7 +660,9 @@ class ApiStore {
                 if (axiosResponse.data?.data) {
                     response[vocabulary] = objectToArray(axiosResponse.data.data);
                 }
-            } catch (rejectError) { }
+            } catch (rejectError) {
+
+            }
         }
 
         if (appConfig.showLog) {

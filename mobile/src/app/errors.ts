@@ -11,7 +11,7 @@ import NetInfo from "@react-native-community/netinfo";
 export function initGlobalErrorHandler() {
     // During development, RN doesn't crash the app when error happens.
     // It shows the LogBox, and we will not change that.
-    if (!__DEV__) {
+    if (__DEV__) {
         return;
     }
 
@@ -121,8 +121,8 @@ Details: ${JSON.stringify(netInfo.details, null, 4)}\n\n`
 
     const mailUrl = `mailto:office@byteout.com?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
 
-    console.log(mailBody);
-    // Linking.openURL(mailUrl);
+    // console.log(mailBody);
+    Linking.openURL(mailUrl);
 }
 
 export function sendErrorReportWithCrashlytics(error: any, componentStack?: string) {
