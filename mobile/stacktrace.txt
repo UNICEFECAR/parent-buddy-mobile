@@ -1,0 +1,16 @@
+onLongPress@index.android.bundle:398:6594
+touchableHandleLongPress@index.android.bundle:211:3960
+_performSideEffectsForTransition@index.android.bundle:217:9324
+_performSideEffectsForTransition@[native code]
+_receiveSignal@index.android.bundle:217:8357
+_receiveSignal@[native code]
+_handleLongDelay@index.android.bundle:217:7926
+_handleLongDelay@[native code]
+bound _handleLongDelay@[native code]
+y@index.android.bundle:116:661
+callTimers@index.android.bundle:116:2718
+value@index.android.bundle:27:3685
+index.android.bundle:27:841
+value@index.android.bundle:27:2939
+value@index.android.bundle:27:813
+value@[native code]
