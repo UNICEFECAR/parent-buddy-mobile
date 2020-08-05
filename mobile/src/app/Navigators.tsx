@@ -43,11 +43,12 @@ import { userRealmStore } from "../stores";
 import RNFS from 'react-native-fs';
 import { utils } from "./utils";
 import { ResetPasswordScreen } from "../screens/login";
+import { UserRealmConsumer } from "../stores/UserRealmContext";
 
- /**
- * Use it to [navigate screens](https://reactnavigation.org/docs/en/navigating-without-navigation-prop.html)
- * from anywhere in the code.
- */
+/**
+* Use it to [navigate screens](https://reactnavigation.org/docs/en/navigating-without-navigation-prop.html)
+* from anywhere in the code.
+*/
 class Navigation {
     public navigator?: NavigationContainerComponent;
     private static instance: Navigation;
@@ -353,7 +354,7 @@ const HomeStackNavigator = createStackNavigator({
             headerRightContainerStyle: { width: '80%' },
             headerRight: () => {
                 const screenParams = navigation.state.params!;
-                let images = null;
+                let images: null | object = null;
 
                 const currentChild = userRealmStore.getCurrentChild();
 
@@ -386,7 +387,11 @@ const HomeStackNavigator = createStackNavigator({
                                     onPress={() => { toggleSearchInput() }}
                                 />
                             )}
-                        <ProfileIcon onPress={openBirthDataScreen} {...images} />
+                        <UserRealmConsumer>
+                            {(user) => (
+                                <ProfileIcon onPress={openBirthDataScreen} {...images} />
+                            )}
+                        </UserRealmConsumer>
                     </View>
                 );
             },
