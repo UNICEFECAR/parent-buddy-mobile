@@ -7,8 +7,6 @@ import { ThemeProvider } from '../themes/ThemeContext';
 import { googleAuth } from './googleAuth';
 import { DataRealmProvider } from '../stores/DataRealmContext';
 import { UserRealmProvider } from '../stores/UserRealmContext';
-import { DataUserRealmsProvider } from '../stores/DataUserRealmsContext';
-import { utils } from './utils';
 import { localize } from './localize';
 // @ts-ignore
 import { decode as atob, encode as btoa } from 'base-64';
@@ -92,6 +90,12 @@ export class App extends React.Component<object> {
                                 <AppNavigationContainer
                                     ref={(navigatorRef: NavigationContainerComponent) => {
                                         return navigation.setTopLevelNavigator(navigatorRef);
+                                    }}
+                                    onNavigationStateChange={(prevState, nextState) => {
+                                        try {
+                                            dataRealmStore.setVariable('prevNavigationState', JSON.stringify(prevState, null, 4));
+                                            dataRealmStore.setVariable('nextNavigationState', JSON.stringify(nextState, null, 4));
+                                        } catch (e) { }
                                     }}
                                 />
                             </UserRealmProvider>

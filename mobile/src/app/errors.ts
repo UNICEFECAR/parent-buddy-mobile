@@ -68,14 +68,12 @@ Type: ${netInfo.type}
 Details: ${JSON.stringify(netInfo.details, null, 4)}\n\n`
     } catch (e) { }
 
-    // Navigation screen state
-    try {
-        mailBody += `NAVIGATION SCREEN:\n${JSON.stringify(navigation.navigator?.state, null, 4)}\n\n`;
-    } catch (e) { }
-
     // Data realm variables
     try {
         if (dataRealmStore && dataRealmStore.realm && !dataRealmStore.realm.isClosed) {
+            const prevNavigationState = dataRealmStore.getVariable('prevNavigationState');
+            const nextNavigationState = dataRealmStore.getVariable('nextNavigationState');
+
             const dataRealmVariables = {
                 'countryCode': dataRealmStore.getVariable('countryCode'),
                 'currentActiveChildId': dataRealmStore.getVariable('currentActiveChildId'),
@@ -83,6 +81,8 @@ Details: ${JSON.stringify(netInfo.details, null, 4)}\n\n`
                 'lastSyncTimestamp': dataRealmStore.getVariable('lastSyncTimestamp'),
                 'loginMethod': dataRealmStore.getVariable('loginMethod'),
                 'userEmail': dataRealmStore.getVariable('userEmail'),
+                'prevNavigationState': JSON.parse(prevNavigationState ? prevNavigationState : ''),
+                'nextNavigationState': JSON.parse(nextNavigationState ? nextNavigationState : ''),
             };
 
             mailBody += 'DATA REALM VARIABLES:\n' + JSON.stringify(dataRealmVariables, null, 4) + '\n\n';
