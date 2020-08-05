@@ -83,6 +83,7 @@ Details: ${JSON.stringify(netInfo.details, null, 4)}\n\n`
                 'userEmail': dataRealmStore.getVariable('userEmail'),
                 'prevNavigationState': JSON.parse(prevNavigationState ? prevNavigationState : ''),
                 'nextNavigationState': JSON.parse(nextNavigationState ? nextNavigationState : ''),
+                'syncDataReport': dataRealmStore.getVariable('syncDataReport'),
             };
 
             mailBody += 'DATA REALM VARIABLES:\n' + JSON.stringify(dataRealmVariables, null, 4) + '\n\n';
@@ -120,7 +121,8 @@ Details: ${JSON.stringify(netInfo.details, null, 4)}\n\n`
 
     const mailUrl = `mailto:office@byteout.com?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
 
-    Linking.openURL(mailUrl);
+    console.log(mailBody);
+    // Linking.openURL(mailUrl);
 }
 
 export function sendErrorReportWithCrashlytics(error: any, componentStack?: string) {

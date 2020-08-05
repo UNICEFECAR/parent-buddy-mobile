@@ -27,6 +27,9 @@ class SyncData {
         let rval = false;
         const lastSyncTimestamp = dataRealmStore.getVariable('lastSyncTimestamp');
 
+        // SYNC DATA REPORT
+        let syncDataReport: string[] = [];
+
         // DOWNLOAD VOCABULARIES AND TERMS
         const vocabulariesAndTerms = await apiStore.getVocabulariesAndTerms();
 
@@ -38,8 +41,11 @@ class SyncData {
             }
         }
 
+        syncDataReport.push(`VOCABULARIES AND TERMS = Categories:${vocabulariesAndTerms.categories.length}, Keywords:${vocabulariesAndTerms.keywords.length}, Predefined tags:${vocabulariesAndTerms.predefined_tags.length}`);
+
         // DOWNLOAD DEVELOPMENT MILESTONES 
         let allMilestones: MilestonesResponse = {total: 0, data: []}
+        
         try{
             if(lastSyncTimestamp){
                 allMilestones = await apiStore.getAllMilestones(lastSyncTimestamp)
@@ -47,6 +53,7 @@ class SyncData {
                 allMilestones = await apiStore.getAllMilestones();
             }
         } catch (e){};
+
         // Save milestones
         if(allMilestones?.data && allMilestones.data.length > 0){
             const milestonesCreateOrUpdate: Promise<MilestoneEntity>[] = [];
@@ -63,6 +70,8 @@ class SyncData {
                 };
             } catch (e) { };
         };
+
+        syncDataReport.push(`DEVELOPMENT MILESTONES = Total:${allMilestones.data.length}`);
 
         // DOWNLOAD ALL CONTENT
         let allContent: ContentResponse = { total: 0, data: [] };
@@ -92,6 +101,8 @@ class SyncData {
             } catch (e) { };
         }
 
+        syncDataReport.push(`CONTENT = Total:${allContent.data.length}`);
+
         // DOWNLOAD ALL DAILY MESSAGES
         let allDailyMessages: ContentResponse = { total: 0, data: [] };
 
@@ -120,6 +131,8 @@ class SyncData {
             } catch (e) { };
         }
 
+        syncDataReport.push(`DAILY MESSAGES = Total:${allDailyMessages.data.length}`);
+
         // DOWNLOAD BASIC PAGES 
         const basicPages = await apiStore.getBasicPages();
 
@@ -139,6 +152,7 @@ class SyncData {
             } catch (e){};
         };
 
+        syncDataReport.push(`BASIC PAGES = Total:${basicPages.data.length}`);
 
         // DOWNLOAD COVER IMAGES
         let numberOfFailedImageDownloads: number | undefined = 0;
@@ -164,6 +178,8 @@ class SyncData {
                 }
             }, 0);
             if (numberOfFailedImageDownloads === undefined) numberOfFailedImageDownloads = 0;
+
+            syncDataReport.push(`CONTENT IMAGES = Total:${allContent.data.length}, Failed downloads:${numberOfFailedImageDownloads}`);
         }
 
         // UPDATE lastSyncTimestamp
@@ -180,6 +196,9 @@ class SyncData {
                 console.log('syncData.sync(): lastSyncTimestamp was NOT updated');
             }
         }
+
+        // SAVE SYNC REPORT
+        dataRealmStore.setVariable('syncDataReport', syncDataReport);
 
         return rval;
     }
