@@ -77,6 +77,7 @@ class UserRealmStore {
         return rval;
     }
 
+    
     public getCurrentChild = () => {
         let childId = dataRealmStore.getVariable('currentActiveChildId');
         if(childId){
@@ -265,8 +266,8 @@ class UserRealmStore {
         return child?.gender
     }
 
-    public getAllChildren(): Child[]{
-        let allChildren = this.realm?.objects<ChildEntity>(ChildEntitySchema.name).map(child => child);
+    public getAllChildren(context: UserRealmContextValue): Child[]{
+        let allChildren = context.realm?.objects<ChildEntity>(ChildEntitySchema.name).map(child => child);
         let currentChild = this.getCurrentChild()?.uuid;
 
         let allChildrenList: Child[] = [];
@@ -277,7 +278,6 @@ class UserRealmStore {
                 let birthDay = child.birthDate ? 
                     DateTime.fromJSDate(child.birthDate).toFormat("dd'.'MM'.'yyyy") : "";
                 
-
                 let imgUrl = child.photoUri ? utils.addPrefixForAndroidPaths(`${RNFS.DocumentDirectoryPath}/${child.photoUri}`) : null;
                 let isCurrentActive = false;
                 
