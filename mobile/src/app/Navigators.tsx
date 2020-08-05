@@ -42,10 +42,12 @@ import { ChartFullScreen } from '../screens/growth/ChartFullScreen';
 import { userRealmStore } from "../stores";
 import RNFS from 'react-native-fs';
 import { utils } from "./utils";
-/**
-* Use it to [navigate screens](https://reactnavigation.org/docs/en/navigating-without-navigation-prop.html)
-* from anywhere in the code.
-*/
+import { ResetPasswordScreen } from "../screens/login";
+
+ /**
+ * Use it to [navigate screens](https://reactnavigation.org/docs/en/navigating-without-navigation-prop.html)
+ * from anywhere in the code.
+ */
 class Navigation {
     public navigator?: NavigationContainerComponent;
     private static instance: Navigation;
@@ -413,6 +415,12 @@ const LoginStackNavigator = createStackNavigator({
         screen: RegisterScreen,
         navigationOptions: {
             title: "Tab 02"
+        }
+    },
+    LoginStackNavigator_ResetPasswordScreen: {
+        screen: ResetPasswordScreen,
+        navigationOptions: {
+            title: "Tab 03"
         }
     }
 }, {
