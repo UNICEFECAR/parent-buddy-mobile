@@ -4,15 +4,17 @@ import { storiesOf } from '@storybook/react-native';
 import { action } from '@storybook/addon-actions';
 import { GrowthChart, chartTypes } from './GrowthChart';
 import { ScrollView } from 'react-native-gesture-handler';
+import { DateTime } from 'luxon';
 
 const dummyData = {
     /*  0-2  */
-    lineChartData: [{ measurementDate: 269, height: 2, length: 45 }, { measurementDate: 330, height: 4.5, length: 55  }, { measurementDate: 400, height: 7, length: 70 }, { measurementDate: 1000, height: 8, length: 80 }, { measurementDate: 1000, height: 12, length: 87 }], 
-    childBirthDate: new Date("06/09/2018"),   
+    lineChartData: [{ measurementDate: 269, weight: 2, length: 45 }, { measurementDate: 330, weight: 4.5, length: 55  }, { measurementDate: 400, weight: 7, length: 70 }, { measurementDate: 1000, weight: 8, length: 80 }, { measurementDate: 1000, weight: 12, length: 87 }], 
+    childBirthDate: DateTime.local(),   
 
     /*  2-5  */
-    lineChartData2: [{ measurementDate: 269, height: 9.3, length: 88 }, { measurementDate: 330, height: 10.8, length: 95 }, { measurementDate: 400, height: 13, length: 100 }, { measurementDate: 1000, height: 16.4, length: 103 }],
-    childBirthDate2: new Date("06/09/2017"),
+    lineChartData2: [{ measurementDate: 269, weight: 9.3, length: 88 }, { measurementDate: 330, weight: 10.8, length: 95 }, { measurementDate: 400, weight: 13, length: 100 }, { measurementDate: 1000, weight: 16.4, length: 103 }],
+    childBirthDate2: DateTime.local(),   
+
 }
 
 
