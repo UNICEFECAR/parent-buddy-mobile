@@ -7,7 +7,7 @@ import { ArticlesSectionData } from "../screens/home/ArticlesSection";
 import { translate } from "../translations/translate";
 import { dataRealmStore, CategoryArticlesViewEntity, userRealmStore } from "../stores";
 import { Platform } from "react-native";
-import { translateData } from "../translationsData/translateData";
+import { translateData, TranslateDataDevelopmentPeriods } from "../translationsData/translateData";
 import { DateTime } from "luxon";
 import { isArray, indexOf } from "lodash";
 import { Collection } from "realm";
@@ -176,7 +176,7 @@ class Content {
                     oppositeChildGenderTagId = oppositeChildGender === 'boy' ? 40 : 41;
                 };
 
-                const featuredArticles = translateData('developmentPeriods');
+                const featuredArticles = translateData('developmentPeriods')  as (TranslateDataDevelopmentPeriods | null);;
 
                 if (childAgeTagid && childAgeTagid > 51) {
                     childAgeTagid = 51

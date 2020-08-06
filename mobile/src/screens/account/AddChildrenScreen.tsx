@@ -48,9 +48,7 @@ export class AddChildrenScreen extends React.Component<Props, State> {
 
     private initState() {
         let screenType = "";
-
         let screenParam: ScreenTypes = this.props.navigation.state.params?.screenParam
-
         if (screenParam) {
             screenType = screenParam;
         };
@@ -183,16 +181,20 @@ export class AddChildrenScreen extends React.Component<Props, State> {
         let rval = true;
 
         const allChildren = userRealmStore.realm?.objects<ChildEntity>(ChildEntitySchema.name);
-
         if (this.state.screenType !== "") {
-            rval = true;
             // TODO 
-            // let lastChild = allChildren?.map(item => item);
-            // if (lastChild) {
-            //     if (!lastChild[lastChild?.length - 1].name || lastChild[lastChild?.length - 1].name === "") {
-            //         rval = false;
-            //     };
-            // };
+
+            const childId = this.props.navigation.state.params?.id;
+
+            if(childId){
+                let child = allChildren?.find(item => item.uuid === childId);
+                
+                if (child) {
+                    if (!child.name || child.name === "") {
+                        rval = false;
+                    };
+                };
+            }
         } else {
             allChildren?.forEach((child) => {
                 if (!child.name || child.name === '') {

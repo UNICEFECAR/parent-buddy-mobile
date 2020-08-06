@@ -68,7 +68,15 @@ export class EditPeriodScreen extends Component<Props, State> {
 
         let currentPeriod = dataRealmStore.getDevelopmentPeriods().filter(item => item.childAgeTagId === age)[0];
   
-        let defaultScreenParams: EditPeriodScreenParams = {};
+        let defaultScreenParams: EditPeriodScreenParams = {
+            id: 0,
+            isCurrenPeriod: true,
+            onGoBack: () => this.props.navigation.goBack(),
+            subtitle: "",
+            title: "",
+            warningText: "",
+        };
+        
         if (currentPeriod !== undefined) {
             defaultScreenParams = {
                 id: childAgeTagId,
