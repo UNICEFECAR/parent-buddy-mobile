@@ -229,6 +229,7 @@ export class GrowthChart extends React.Component<Props, State> {
                 />
 
                 {/********** SCATTER ********* */}
+                {/* @ts-ignore */}
                  <VictoryScatter
                     data={this.state.lineChart}
                     size={9}
@@ -244,32 +245,32 @@ export class GrowthChart extends React.Component<Props, State> {
                     events={[{
                         target: "data",
                         eventHandlers: {
-                            onPressIn: (evt, pressedProps) => {
+                            onPressIn: (evt:any, pressedProps:any) => {
                                 const selectedDataIndex = pressedProps.index
                                 return [
                                     {
                                         eventKey: 'all',
                                         target: 'labels',
-                                        mutation: props => {
-                                            let activeState = true
+                                        mutation: (props:any) => {
+                                            let activeState: boolean | null = true;
                                             if (props.active === true) {
-                                                activeState = null
+                                                activeState = null;
                                             }
                                             return props.index ===
                                                 selectedDataIndex
                                                 ? { active: activeState }
-                                                : { active: false }
+                                                : { active: false };
                                         },
                                     },
                                     {
                                         eventKey: 'all',
                                         target: "data",
-                                        mutation: (props) => {
+                                        mutation: (props: any) => {
                                             const stroke = props.style && props.style.stroke;
                                             let st;
-                                            let activeState = true
+                                            let activeState: boolean | null = true;
                                             if (props.active === true) {
-                                                activeState = null
+                                                activeState = null;
                                             }
                                             if (stroke === "orange") {
                                                 st = '#ACACAC';
@@ -285,13 +286,13 @@ export class GrowthChart extends React.Component<Props, State> {
                                     },
                                 ]
                             },
-                            onPressOut: (evt, pressedProps) => {
+                            onPressOut: (evt: any, pressedProps:any) => {
                                 const selectedDataIndex = pressedProps.index
                                 return [
                                     {
                                         eventKey: "all",
                                         target: "labels",
-                                        mutation: (props) => {
+                                        mutation: (props: any) => {
                                             return props.index === selectedDataIndex
                                                 ? { active: props.active }
                                                 : null
@@ -300,7 +301,7 @@ export class GrowthChart extends React.Component<Props, State> {
                                     {
                                         eventKey: 'all',
                                         target: "data",
-                                        mutation: (props) => {
+                                        mutation: (props: any) => {
                                             const stroke = props.style && props.style.stroke;
                                             // return stroke === "orange" ? null : { style: { stroke: "orange", strokeWidth: 4, fill: 'white' } };
                                             return props.index === selectedDataIndex

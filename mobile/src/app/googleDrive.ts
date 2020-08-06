@@ -2,6 +2,7 @@
 import GDrive from "react-native-google-drive-api-wrapper";
 import { googleAuth } from "./googleAuth";
 import { appConfig } from "./appConfig";
+import { DownloadResult } from "react-native-fs";
 
 const FILE_METADATA_FIELDS = 'id,name,mimeType,kind,parents,trashed,version,originalFilename,fileExtension';
 

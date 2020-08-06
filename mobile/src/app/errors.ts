@@ -62,8 +62,8 @@ Device type: ${DeviceInfo.getDeviceType()}
     try {
         const netInfo = await NetInfo.fetch();
         mailBody += `NETWORK:
-Is connected: ${netInfo.isConnected}
-Is net reachable: ${netInfo.isInternetReachable}
+Phone can connect to net: ${netInfo.isConnected}
+Is net reachable by the app: ${netInfo.isInternetReachable}
 Type: ${netInfo.type}
 Details: ${JSON.stringify(netInfo.details, null, 4)}\n\n`
     } catch (e) { }
