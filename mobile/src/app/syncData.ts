@@ -207,6 +207,11 @@ class SyncData {
         // SAVE SYNC REPORT
         await dataRealmStore.setVariable('syncDataReport', syncDataReport);
 
+        // RETURN ERROR IF DOWNLOAD FAILED
+        if (!allContentIsDownloaded || numberOfFailedImageDownloads !== 0) {
+            return new Error('Data download failed');
+        }
+
         return true;
     }
 
