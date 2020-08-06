@@ -197,9 +197,10 @@ class Utils {
         let rval = false;
 
         try {
+            const lastSyncTimestamp = dataRealmStore.getVariable('lastSyncTimestamp');
             const numberOfContentItems = dataRealmStore.realm?.objects<ContentEntity>(ContentEntitySchema.name).length;
 
-            if (numberOfContentItems && numberOfContentItems > 0) {
+            if (numberOfContentItems && numberOfContentItems > 0 && lastSyncTimestamp) {
                 rval = true;
             }
         } catch(e) {}
