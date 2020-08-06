@@ -18,7 +18,7 @@
     "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "storybook": "start-storybook -p 7007",
-    "metro-symbolicate": "npx metro-symbolicate android/app/build/generated/sourcemaps/react/release/index.android.bundle.map < stacktrace.txt"
+    "metro-symbolicate": "npx metro-symbolicate ./stacktrace/index.android.bundle.map < ./stacktrace/stacktrace.txt"
   },
   "dependencies": {
     "@react-native-community/async-storage": "1.8.1",
