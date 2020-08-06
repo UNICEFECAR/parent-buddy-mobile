@@ -14,13 +14,13 @@ import { RoundedTextArea } from '../../components/RoundedTextArea';
 import { RoundedButtonType, RoundedButton, } from '../../components/RoundedButton';
 
 const dummyDataOne: MilestoneItem[] = [
-    { id: 0, title: 'Vakcina protiv difterije, tetanusa, velikog kašlja, dečije paralize, hemofilus influence tipa B', checked: false },
-    { id: 1, title: 'Vakcina protiv velikih boginja', checked: false },
+    { relatedArticles:[1], id: 0, title: 'Vakcina protiv difterije, tetanusa, velikog kašlja, dečije paralize, hemofilus influence tipa B', checked: false },
+    { relatedArticles:[1], id: 1, title: 'Vakcina protiv velikih boginja', checked: false },
 ]
 
 const dummyDataTwo: MilestoneItem[] = [
-    { id: 2, title: 'Vakcina protiv hemofilus influence tipa B, tuberkuloze, zarazne žutice', checked: false },
-    { id: 3, title: '[sve vakcine iz prethodnog perioda koje nisu evidentirane]', checked: false },
+    { relatedArticles:[1], id: 2, title: 'Vakcina protiv hemofilus influence tipa B, tuberkuloze, zarazne žutice', checked: false },
+    { relatedArticles:[1], id: 3, title: '[sve vakcine iz prethodnog perioda koje nisu evidentirane]', checked: false },
 ]
 
 

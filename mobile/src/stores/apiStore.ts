@@ -31,7 +31,7 @@ class ApiStore {
         // URL
         const language = localize.getLanguage();
         let url = `${appConfig.apiUrl}/list-milestone/${language}`;
-        // let url = "http://ecaroparentingapppi3xep5h4v.devcloud.acquia-sites.com/api/list-milestone/en?published=0&numberOfItems=10&updateFromDate=1593614089"
+        
         // URL params
         const urlParams: any = {};
 
@@ -923,6 +923,12 @@ interface GetContentArgs {
     /**
      * UNIX timestamp
      */
+    updatedFromDate?: number;
+}
+
+interface GetMilestoneArgs {
+    numberOfItems?: number;
+    page?: number;
     updatedFromDate?: number;
 }
 
