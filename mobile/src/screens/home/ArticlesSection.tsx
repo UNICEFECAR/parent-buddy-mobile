@@ -70,7 +70,6 @@ export class ArticlesSection extends React.Component<Props, State> {
 
     private onArticlePress(article?: ContentEntity) {
         if (!article) return;
-
         // Text article
         const pushAction = StackActions.push({
             routeName: 'HomeStackNavigator_ArticleScreen',

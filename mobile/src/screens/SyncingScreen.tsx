@@ -23,12 +23,18 @@ export class SyncingScreen extends React.Component<Props, object> {
 
     private async startSync() {
         if (!appConfig.preventSync) {
-            await syncData.sync();
-        }
+            const syncResponse = await syncData.sync();
+            const canAppBeOpened = utils.canAppBeOpened();
 
-        setTimeout(() => {
-            utils.gotoNextScreenOnAppOpen();
-        }, 0);
+            setTimeout(() => {utils.gotoNextScreenOnAppOpen()}, 0);
+            setTimeout(() => {
+                if (syncResponse instanceof Error && !canAppBeOpened) {
+                    throw syncResponse;
+                }
+            }, 1000);
+        } else {
+            setTimeout(() => {utils.gotoNextScreenOnAppOpen()}, 0);
+        }
     }
 
     public render() {

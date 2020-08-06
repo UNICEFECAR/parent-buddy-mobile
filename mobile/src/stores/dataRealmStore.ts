@@ -40,6 +40,7 @@ export type Variables = {
     'hideHomeMessages': boolean;
     'prevNavigationState': string;
     'nextNavigationState': string;
+    'syncDataReport': string[];
 };
 
 type VariableKey = keyof Variables;

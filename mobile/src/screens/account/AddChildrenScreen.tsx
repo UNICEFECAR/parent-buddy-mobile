@@ -179,9 +179,8 @@ export class AddChildrenScreen extends React.Component<Props, State> {
 
     private validate(): boolean {
         let rval = true;
-
         const allChildren = userRealmStore.realm?.objects<ChildEntity>(ChildEntitySchema.name);
-        if (this.state.screenType !== "") {
+        if (this.state.screenType !== "" && this.state.screenType !== "NewChild") {
             // TODO 
 
             const childId = this.props.navigation.state.params?.id;
