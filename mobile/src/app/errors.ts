@@ -11,7 +11,7 @@ import NetInfo from "@react-native-community/netinfo";
 export function initGlobalErrorHandler() {
     // During development, RN doesn't crash the app when error happens.
     // It shows the LogBox, and we will not change that.
-    if (!__DEV__) {
+    if (__DEV__) {
         return;
     }
 
@@ -83,6 +83,7 @@ Details: ${JSON.stringify(netInfo.details, null, 4)}\n\n`
                 'userEmail': dataRealmStore.getVariable('userEmail'),
                 'prevNavigationState': JSON.parse(prevNavigationState ? prevNavigationState : ''),
                 'nextNavigationState': JSON.parse(nextNavigationState ? nextNavigationState : ''),
+                'syncDataReport': dataRealmStore.getVariable('syncDataReport'),
             };
 
             mailBody += 'DATA REALM VARIABLES:\n' + JSON.stringify(dataRealmVariables, null, 4) + '\n\n';
@@ -118,8 +119,9 @@ Details: ${JSON.stringify(netInfo.details, null, 4)}\n\n`
         mailBody += `COMPONENT ERROR STACK:\n${componentStack}\n\n`;
     }
 
-    const mailUrl = `mailto:office@byteout.com?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
+    const mailUrl = `mailto:anastasia@byteout.com,milos.ciganovic@byteout.com,misha@byteout.com?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
 
+    // console.log(mailBody);
     Linking.openURL(mailUrl);
 }
 

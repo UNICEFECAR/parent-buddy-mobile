@@ -27,18 +27,21 @@ export function getSearchResultsScreenData(searchTerm: string): SearchResultsScr
     // get collections
     const titleAndBodyCollection = allContent?.
         filtered(`(body CONTAINS[c] '${searchTerm}' OR title CONTAINS[c] '${searchTerm}')`)
+        .filter(item => item.predefinedTags.indexOf(4756) === -1)
         .filter(article => oppositeChildGenderTagId && article.predefinedTags.indexOf(oppositeChildGenderTagId) === -1);
 
     const keywordsCollection = allContent?.
         filter(record => {
             return record.keywords.filter(x => allKeywordsIds?.includes(x)).length !== 0;
         })
+        .filter(item => item.predefinedTags.indexOf(4756) === -1)
         .filter(record => oppositeChildGenderTagId && record.predefinedTags.indexOf(oppositeChildGenderTagId) === -1)
 
     const predefinedTagsCollection = allContent?.
         filter(record => {
             return record.predefinedTags.filter(x => allPredefinteTagsIds?.includes(x)).length !== 0;
         })
+        .filter(item => item.predefinedTags.indexOf(4756) === -1)
         .filter(record => oppositeChildGenderTagId && record.predefinedTags.indexOf(oppositeChildGenderTagId) === -1)
 
 

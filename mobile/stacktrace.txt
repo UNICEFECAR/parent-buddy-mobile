@@ -1,24 +1,9 @@
-index.android.bundle:190734:23
-beginWork$$1@index.android.bundle:9951:314
-performUnitOfWork@index.android.bundle:9151:28
-renderRoot@index.android.bundle:9008:47
-renderRoot@[native code]
-runRootCallback@index.android.bundle:8905:37
-runRootCallback@[native code]
-index.android.bundle:6688:34
-unstable_runWithPriority@index.android.bundle:17187:15
-flushSyncCallbackQueueImpl@index.android.bundle:6683:24
-flushSyncCallbackQueue@index.android.bundle:6673:31
-scheduleUpdateOnFiber@index.android.bundle:8861:120
-enqueueSetState@index.android.bundle:7006:28
-setState@index.android.bundle:3151:33
-index.android.bundle:72769:27
-dispatch@index.android.bundle:42968:32
-resetStackAndNavigate@index.android.bundle:42992:22
-gotoNextScreenOnAppOpen@index.android.bundle:103619:55
-index.android.bundle:238324:53
-_callTimer@index.android.bundle:12114:17
-callTimers@index.android.bundle:12301:19
+createError@index.android.bundle:189575:26
+handleError@index.android.bundle:189477:27
+dispatchEvent@index.android.bundle:13828:31
+setReadyState@index.android.bundle:12912:33
+__didCompleteResponse@index.android.bundle:12739:29
+emit@index.android.bundle:2499:42
 __callFunction@index.android.bundle:1979:49
 index.android.bundle:1781:31
 __guard@index.android.bundle:1933:15
