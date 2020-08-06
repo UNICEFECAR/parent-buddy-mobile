@@ -188,6 +188,8 @@ export class SettingsScreen extends React.Component<Props, State> {
                         } else {
                             this.deleteAccountFromLocal();
                         }
+
+                        this.props.navigation.navigate("LoginStackNavigator_LoginScreen")
                     }
                 },
                 {
