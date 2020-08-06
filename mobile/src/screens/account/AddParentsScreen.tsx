@@ -104,7 +104,7 @@ export class AddParentsScreen extends React.Component<Props, State> {
                     {/* NAME */}
                     <RoundedTextInput
                         label={translate('accountName')}
-                        icon="email-outline"
+                        icon="account-outline"
                         value={this.state.parentName}
                         onChange={(value) => { this.setState({ parentName: value }) }}
                     />
