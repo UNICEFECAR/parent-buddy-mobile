@@ -38,7 +38,6 @@ export class ArticleScreen extends React.Component<Props, object> {
 
     public constructor(props: Props) {
         super(props);
-
         // DEBUG
         const screenParams = this.props.navigation.state.params!;
         // console.log( JSON.stringify(screenParams.article, null, 4) );
@@ -71,7 +70,7 @@ export class ArticleScreen extends React.Component<Props, object> {
 
     public render() {
         const screenParams = this.props.navigation.state.params!;
-
+        console.log(screenParams.article, "screen PARAMS")
         return (
             <ThemeConsumer>
                 {(themeContext: ThemeContextValue) => (
