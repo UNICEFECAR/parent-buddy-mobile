@@ -467,17 +467,28 @@ class Content {
 
         try {
             const allContent = realm?.objects<ContentEntity>(ContentEntitySchema.name);
-            const filteredRecords = allContent?.
-                filtered(`category == ${contentEntity.category} AND type == 'article' AND id <> ${contentEntity.id}`)
-                .filter(item => item.predefinedTags.indexOf(4756) === -1);
+            let filteredRecords: (ContentEntity & Realm.Object)[] | undefined = []
 
-            filteredRecords?.forEach((record, index, collection) => {
-                allArticles.push(record);
-            });
+            if (contentEntity.referencedArticles.length !== 0) {
+                allContent?.forEach(item => {
+                    if(contentEntity.referencedArticles.indexOf(item.id) !== -1){
+                        allArticles.push(item);
+                    };
+                });
+
+            } else {
+                filteredRecords = allContent?.
+                    filtered(`category == ${contentEntity.category} AND type == 'article' AND id <> ${contentEntity.id}`)
+                    .filter(item => item.predefinedTags.indexOf(4756) === -1);
+
+                filteredRecords?.forEach((record, index, collection) => {
+                    allArticles.push(record);
+                });
+            }
+
         } catch (e) {
             console.warn(e);
         }
-
         // Randomize articles
         allArticles = utils.randomizeArray(allArticles);
 

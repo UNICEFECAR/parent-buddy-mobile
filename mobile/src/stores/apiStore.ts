@@ -416,7 +416,6 @@ class ApiStore {
                     if (contentType === 'video_article') {
                         contentType = 'article';
                     }
-
                     return {
                         id: parseInt(rawContent.id),
                         type: contentType,
@@ -427,7 +426,7 @@ class ApiStore {
                         category: parseInt(rawContent.category),
                         predefinedTags: rawContent.predefined_tags ? rawContent.predefined_tags.map((value: any) => parseInt(value)) : [],
                         keywords: rawContent.keywords ? rawContent.keywords.map((value: any) => parseInt(value)) : [],
-                        referencedArticles: rawContent.referenced_articles ? rawContent.referenced_articles.map((value: any) => parseInt(value)) : [],
+                        referencedArticles: rawContent.related_articles ? rawContent.related_articles.map((value: any) => parseInt(value)) : [],
                         coverImageUrl: rawContent.cover_image?.url,
                         coverImageAlt: rawContent.cover_image?.alt,
                         coverImageName: rawContent.cover_image?.name,
@@ -458,7 +457,6 @@ class ApiStore {
             numberOfItems: numberOfItems,
             updatedFromDate: updatedFromDate,
         });
-
         // If all items are returned in first request
         if (finalContentResponse.total <= numberOfItems) {
             if (appConfig.showLog) {
