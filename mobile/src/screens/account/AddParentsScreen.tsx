@@ -12,6 +12,8 @@ import { TextButton, TextButtonSize, TextButtonColor } from "../../components/Te
 import { dataRealmStore } from '../../stores';
 import { utils } from '../../app';
 import { Snackbar, Colors } from 'react-native-paper';
+import { ScrollView } from 'react-native-gesture-handler';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export interface Props {
     navigation: NavigationStackProp<NavigationStackState>;
@@ -83,7 +85,16 @@ export class AddParentsScreen extends React.Component<Props, State> {
     public render() {
         return (
             <SafeAreaView style={[styles.container]}>
-                <View style={{ padding: scale(30), backgroundColor: 'white', flex: 1, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center' }}>
+                <KeyboardAwareScrollView 
+                    keyboardShouldPersistTaps='always'
+                    contentContainerStyle={{ 
+                        padding: scale(30), 
+                        backgroundColor: 'white', 
+                        flex: 1, 
+                        flexDirection: 'column', 
+                        justifyContent: 'flex-start', 
+                        alignItems: 'center' 
+                    }}>
 
                     {/* I AM */}
                     <Typography type={TypographyType.bodyRegular}>
@@ -124,7 +135,7 @@ export class AddParentsScreen extends React.Component<Props, State> {
                         type={RoundedButtonType.purple}
                         onPress={() => { this.saveParentsData() }}
                     />
-                </View>
+                </KeyboardAwareScrollView>
 
                 <Snackbar
                     visible={this.state.isSnackbarVisible}
@@ -155,5 +166,6 @@ export interface AddParentsScreenStyles {
 const styles = StyleSheet.create<AddParentsScreenStyles>({
     container: {
         flex: 1,
+        backgroundColor: 'white'
     },
 });
