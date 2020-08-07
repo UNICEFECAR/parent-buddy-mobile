@@ -8,7 +8,6 @@ import { BasicPageEntity } from "./BasicPageEntity";
 import { MilestoneEntity } from "./MilestoneEntity";
 import { Platform } from "react-native";
 import { DailyMessageEntity } from "./DailyMessageEntity";
-import { exp } from "react-native-reanimated";
 import { dataRealmStore } from "./dataRealmStore";
 import { UnknownError } from "../app/errors";
 
@@ -79,6 +78,9 @@ class ApiStore {
             };
 
         } catch (rejectError) {
+            const netError = new UnknownError(rejectError);
+            dataRealmStore.setVariable('lastNetError', 'getDevelopmentMilestones failed, ' + netError.message);
+
             if (appConfig.showLog) {
                 console.log(rejectError);
             };
@@ -170,6 +172,9 @@ class ApiStore {
             };
 
         } catch (rejectError) {
+            const netError = new UnknownError(rejectError);
+            dataRealmStore.setVariable('lastNetError', 'getBasicPages failed, ' + netError.message);
+
             if (appConfig.showLog) {
                 console.log(rejectError, "REJECT ERROR")
             };
@@ -437,8 +442,13 @@ class ApiStore {
                         updatedAt: new Date(rawContent.updated_at * 1000),
                     };
                 });
+            } else {
+                dataRealmStore.setVariable('lastNetError', 'getContent failed, ' + axiosResponse.statusText);
             }
         } catch (rejectError) {
+            const netError = new UnknownError(rejectError);
+            dataRealmStore.setVariable('lastNetError', 'getContent failed, ' + netError.message);
+
             if (appConfig.showLog) {
                 console.log(rejectError);
             }
@@ -548,6 +558,9 @@ class ApiStore {
                 });
             }
         } catch (rejectError) {
+            const netError = new UnknownError(rejectError);
+            dataRealmStore.setVariable('lastNetError', 'getDailyMessages failed, ' + netError.message);
+
             if (appConfig.showLog) {
                 console.log(rejectError);
             }
@@ -659,7 +672,8 @@ class ApiStore {
                     response[vocabulary] = objectToArray(axiosResponse.data.data);
                 }
             } catch (rejectError) {
-
+                const netError = new UnknownError(rejectError);
+                dataRealmStore.setVariable('lastNetError', 'getVocabulariesAndTerms failed, ' + netError.message);
             }
         }
 
@@ -698,11 +712,16 @@ class ApiStore {
                     // }
                 }
             } else {
+                dataRealmStore.setVariable('lastNetError', 'downloadImage failed, ' + downloadResult.statusCode);
+
                 if (appConfig.showLog) {
                     console.log(`IMAGE DOWNLOAD ERROR: url = ${args.srcUrl}, statusCode: ${downloadResult.statusCode}`);
                 }
             }
         } catch (rejectError) {
+            const netError = new UnknownError(rejectError);
+            dataRealmStore.setVariable('lastNetError', 'downloadImage failed, ' + netError.message);
+
             if (appConfig.showLog) {
                 console.log('IMAGE DOWNLOAD ERROR', rejectError, args.srcUrl);
             }
