@@ -71,7 +71,7 @@ export class AddParentsScreen extends React.Component<Props, State> {
             let message = translate('accountSendSmsText');
 
             message = message.replace('%PARENT%', this.state.parentName);
-            message = message.replace('%APP_URL%', 'https://www.halobeba.rs');
+            message = message.replace('%APP_URL%', translate('accountSendSmsAppUrl'));
 
             utils.sendSms(message);
         } else {
