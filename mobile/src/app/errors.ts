@@ -83,7 +83,7 @@ Details: ${JSON.stringify(netInfo.details, null, 4)}\n\n`
                 'userEmail': dataRealmStore.getVariable('userEmail'),
                 'prevNavigationState': JSON.parse(prevNavigationState ? prevNavigationState : ''),
                 'nextNavigationState': JSON.parse(nextNavigationState ? nextNavigationState : ''),
-                'lastNetError': dataRealmStore.getVariable('lastNetError'),
+                'lastDataSyncError': dataRealmStore.getVariable('lastDataSyncError'),
                 'syncDataReport': dataRealmStore.getVariable('syncDataReport'),
             };
 

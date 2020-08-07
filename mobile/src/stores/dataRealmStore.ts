@@ -41,7 +41,7 @@ export type Variables = {
     'prevNavigationState': string;
     'nextNavigationState': string;
     'syncDataReport': string[];
-    'lastNetError': string;
+    'lastDataSyncError': string;
 };
 
 type VariableKey = keyof Variables;
