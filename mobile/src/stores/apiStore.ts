@@ -79,7 +79,7 @@ class ApiStore {
 
         } catch (rejectError) {
             const netError = new UnknownError(rejectError);
-            dataRealmStore.setVariable('lastNetError', 'getDevelopmentMilestones failed, ' + netError.message);
+            dataRealmStore.setVariable('lastDataSyncError', 'getDevelopmentMilestones failed, ' + netError.message);
 
             if (appConfig.showLog) {
                 console.log(rejectError);
@@ -173,7 +173,7 @@ class ApiStore {
 
         } catch (rejectError) {
             const netError = new UnknownError(rejectError);
-            dataRealmStore.setVariable('lastNetError', 'getBasicPages failed, ' + netError.message);
+            dataRealmStore.setVariable('lastDataSyncError', 'getBasicPages failed, ' + netError.message);
 
             if (appConfig.showLog) {
                 console.log(rejectError, "REJECT ERROR")
@@ -443,11 +443,11 @@ class ApiStore {
                     };
                 });
             } else {
-                dataRealmStore.setVariable('lastNetError', 'getContent failed, ' + axiosResponse.statusText);
+                dataRealmStore.setVariable('lastDataSyncError', 'getContent failed, ' + axiosResponse.statusText);
             }
         } catch (rejectError) {
             const netError = new UnknownError(rejectError);
-            dataRealmStore.setVariable('lastNetError', 'getContent failed, ' + netError.message);
+            dataRealmStore.setVariable('lastDataSyncError', 'getContent failed, ' + netError.message);
 
             if (appConfig.showLog) {
                 console.log(rejectError);
@@ -559,7 +559,7 @@ class ApiStore {
             }
         } catch (rejectError) {
             const netError = new UnknownError(rejectError);
-            dataRealmStore.setVariable('lastNetError', 'getDailyMessages failed, ' + netError.message);
+            dataRealmStore.setVariable('lastDataSyncError', 'getDailyMessages failed, ' + netError.message);
 
             if (appConfig.showLog) {
                 console.log(rejectError);
@@ -673,7 +673,7 @@ class ApiStore {
                 }
             } catch (rejectError) {
                 const netError = new UnknownError(rejectError);
-                dataRealmStore.setVariable('lastNetError', 'getVocabulariesAndTerms failed, ' + netError.message);
+                dataRealmStore.setVariable('lastDataSyncError', 'getVocabulariesAndTerms failed, ' + netError.message);
             }
         }
 
@@ -712,7 +712,7 @@ class ApiStore {
                     // }
                 }
             } else {
-                dataRealmStore.setVariable('lastNetError', 'downloadImage failed, ' + downloadResult.statusCode);
+                dataRealmStore.setVariable('lastDataSyncError', 'downloadImage failed, ' + downloadResult.statusCode);
 
                 if (appConfig.showLog) {
                     console.log(`IMAGE DOWNLOAD ERROR: url = ${args.srcUrl}, statusCode: ${downloadResult.statusCode}`);
@@ -720,7 +720,7 @@ class ApiStore {
             }
         } catch (rejectError) {
             const netError = new UnknownError(rejectError);
-            dataRealmStore.setVariable('lastNetError', 'downloadImage failed, ' + netError.message);
+            dataRealmStore.setVariable('lastDataSyncError', 'downloadImage failed, ' + netError.message);
 
             if (appConfig.showLog) {
                 console.log('IMAGE DOWNLOAD ERROR', rejectError, args.srcUrl);
