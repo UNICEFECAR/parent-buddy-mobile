@@ -9,10 +9,11 @@ import { dataRealmStore, CategoryArticlesViewEntity, userRealmStore } from "../s
 import { Platform } from "react-native";
 import { translateData, TranslateDataDevelopmentPeriods } from "../translationsData/translateData";
 import { DateTime } from "luxon";
-import { isArray, indexOf } from "lodash";
+import { isArray, indexOf, conforms } from "lodash";
 import { Collection } from "realm";
 import { JsonFormatter } from "cucumber";
 import { ChildGender } from "../stores/ChildEntity";
+import { exp } from "react-native-reanimated";
 
 /**
  * Utility methods related to ContentEntity.
@@ -316,8 +317,9 @@ class Content {
             try {
                 const childAgeTagId = dataRealmStore.getChildAgeTagWithArticles(categoryId, true)?.id;
                 const allContent = realm?.objects<ContentEntity>(ContentEntitySchema.name);
-
+                
                 if (childAgeTagId !== null && childAgeTagId !== undefined) {
+                    
                     title = translate("todayArticles")
 
                     const filteredRecordsWithAge = allContent?.
@@ -346,7 +348,8 @@ class Content {
                 console.warn(e);
             };
 
-            for (let item in categoryArticles) {
+
+            for (let item in categoryArticles) { 
                 categoryArticles.articles = utils.randomizeArray(categoryArticles.articles).slice(0, 5)
             };
 

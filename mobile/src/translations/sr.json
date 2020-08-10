@@ -3,7 +3,9 @@
     "appEmail": "halobeba@zdravlje.org.rs",
     "appPhone": "011 7158 444",
     "appCantOpen": "Proverite internet i restartujte aplikaciju",
-
+    "dataCantDownload": "Prvi put kada se otvori, aplikacija mora da preuzme podatke. Molimo vas povežite se na internet i probajte ponovo.", 
+    "downloadData": "Preuzmi podatke",
+    
     "loginGoogle": "Povežite se Google nalogom",
     "loginFacebook": "Povežite se Facebook nalogom",
     "registerAccount": "Napravite nalog koristeći Email",

@@ -105,8 +105,8 @@ export class SettingsScreen extends React.Component<Props, State> {
             translate('logoutAlert'),
             translate('logoutDataForDelete'),
             [{
-                text: translate('settingsLogout'), onPress: () => {
-                    
+                text: translate('settingsLogout'), 
+                onPress: () => {
                     dataRealmStore.deleteVariable("userEmail");
                     dataRealmStore.deleteVariable("userIsLoggedIn");
                     dataRealmStore.deleteVariable("loginMethod");
@@ -154,7 +154,6 @@ export class SettingsScreen extends React.Component<Props, State> {
         dataRealmStore.deleteVariable("loginMethod");
         dataRealmStore.deleteVariable("notificationsApp");
         dataRealmStore.deleteVariable("notificationsEmail");
-        dataRealmStore.deleteVariable("randomNumber");
         dataRealmStore.deleteVariable("userEmail");
         dataRealmStore.deleteVariable("userEnteredChildData");
         dataRealmStore.deleteVariable("userIsLoggedIn");
@@ -162,6 +161,7 @@ export class SettingsScreen extends React.Component<Props, State> {
         dataRealmStore.deleteVariable("userName");
         dataRealmStore.deleteVariable("userParentalRole");
         dataRealmStore.deleteVariable("vocabulariesAndTerms");
+
     };
 
     private async deleteAccountCms() {
@@ -172,7 +172,7 @@ export class SettingsScreen extends React.Component<Props, State> {
         };
     }
 
-    private async deleteAccount() {
+    private deleteAccount() {
 
         const loginMethod = dataRealmStore.getVariable('loginMethod');
 
@@ -189,7 +189,7 @@ export class SettingsScreen extends React.Component<Props, State> {
                             this.deleteAccountFromLocal();
                         }
 
-                        this.props.navigation.navigate("LoginStackNavigator_LoginScreen")
+                        navigation.resetStackAndNavigate('RootModalStackNavigator_SyncingScreen')
                     }
                 },
                 {
