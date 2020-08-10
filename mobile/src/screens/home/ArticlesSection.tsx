@@ -100,8 +100,6 @@ export class ArticlesSection extends React.Component<Props, State> {
     }
 
     public render() {
-        // console.log('RENDER ArticlesSection');
-
         let getPlayIcon = (themeContext: ThemeContextValue, size: number = scale(70)) => {
             return (
                 <View style={{
@@ -117,7 +115,6 @@ export class ArticlesSection extends React.Component<Props, State> {
                 </View>
             );
         }
-
         return (
             <ThemeConsumer>
                 {(themeContext: ThemeContextValue) => (

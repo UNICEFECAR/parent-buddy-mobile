@@ -3,6 +3,8 @@
     "appEmail": "example@gmail.com",
     "appPhone": "",
     "appCantOpen": "Check internet and restart the app",
+    "dataCantDownload": "Application needs to download data the first time it is started. Please connect to the net.",  
+    "downloadData": "Download data",
 
     "loginGoogle":  "Login with Google account",
     "loginFacebook": "Login with Facebook account",
