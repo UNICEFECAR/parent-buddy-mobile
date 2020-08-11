@@ -23,7 +23,7 @@
     "checkEmail": "Proverite svoju Email poštu i kliknite na link u emailu da biste završili registraciju.",
     "sendRegisterEmailAgain": "Nije mi stigao link, pošaljite email ponovo",
     "userAlreadyExist": "Korisnik sa ovim mejlom već postoji.",
-    "userNoExist": "Ne postoji korisnik sa ovim nalogom",
+    "userNoExist": "Pogresan e-mail ili lozinka.",
     "allFieldsMustBeFilled": "Sva polja moraju biti popunjena",
     "notValidEmail": "Email nije validan.",
     "passwordToShort": "Lozinka mora imati najmanje 6 karaktera.",

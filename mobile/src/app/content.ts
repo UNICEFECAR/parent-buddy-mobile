@@ -294,7 +294,6 @@ class Content {
             // DONT SHOW THESE CATEGORIES
             // 5, // Growth
         ];
-        console.log(JSON.stringify(vocabulariesAndTermsResponse.predefined_tags, null, 1), "predefined tags")
         // Get artciles for each category
         categoryIds.forEach((categoryId) => {
             // Set categoryName

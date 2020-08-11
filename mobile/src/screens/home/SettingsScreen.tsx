@@ -149,9 +149,9 @@ export class SettingsScreen extends React.Component<Props, State> {
         dataRealmStore.deleteVariable("allowAnonymousUsage");
         dataRealmStore.deleteVariable("currentActiveChildId");
         dataRealmStore.deleteVariable("dailyMessage");
-        // dataRealmStore.deleteVariable("followDevelopment");
-        // dataRealmStore.deleteVariable("followDoctorVisits");
-        // dataRealmStore.deleteVariable("followGrowth");
+        dataRealmStore.deleteVariable("followDevelopment");
+        dataRealmStore.deleteVariable("followDoctorVisits");
+        dataRealmStore.deleteVariable("followGrowth");
         dataRealmStore.deleteVariable("hideHomeMessages");
         dataRealmStore.deleteVariable("loginMethod");
         dataRealmStore.deleteVariable("notificationsApp");
@@ -163,8 +163,6 @@ export class SettingsScreen extends React.Component<Props, State> {
         dataRealmStore.deleteVariable("userName");
         dataRealmStore.deleteVariable("userParentalRole");
         dataRealmStore.deleteVariable("vocabulariesAndTerms");
-
-
         
     };
 
