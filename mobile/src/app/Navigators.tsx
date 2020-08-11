@@ -44,6 +44,7 @@ import RNFS from 'react-native-fs';
 import { utils } from "./utils";
 import { ResetPasswordScreen } from "../screens/login";
 import { UserRealmConsumer } from "../stores/UserRealmContext";
+import { getFontScale } from "react-native-device-info";
 
 /**
 * Use it to [navigate screens](https://reactnavigation.org/docs/en/navigating-without-navigation-prop.html)
@@ -135,7 +136,8 @@ const secondaryHomeNavigationOptions = {
         backgroundColor: themes.getCurrentTheme().theme.variables?.colors?.headerBackground,
     },
     headerTitleStyle: {
-        color: themes.getCurrentTheme().theme.variables?.colors?.headerTitle
+        color: themes.getCurrentTheme().theme.variables?.colors?.headerTitle,
+        fontSize: scale(16),
     },
     headerRight: undefined,
 };

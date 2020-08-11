@@ -452,7 +452,7 @@ class DataRealmStore {
         return id
     }
 
-    public getChildAgeTagWithArticles = (categoryId: number | null = null, returnNext: boolean = false): { id: number, name: string } | null => {
+    public getChildAgeTagWithArticles = (categoryId: number | null = null, returnNext: boolean = false, isNextPeriod?: boolean ): { id: number, name: string} | null => {
         let obj: { id: number, name: string } | null = {
             id: 0,
             name: ""
@@ -472,8 +472,13 @@ class DataRealmStore {
             if (monthsDiff.months) {
                 months = Math.round(monthsDiff.months);
             };
-
+            console.log(months, "MONTHS BEFORE")
+            if(isNextPeriod){
+                months = months + 1;
+            };
+            
             let id = this.getTagIdFromChildAge(months);
+            console.log(id, "id")
             const vocabulariesAndTermsResponse = this.getVariable('vocabulariesAndTerms');
 
             if (returnNext) {
