@@ -139,7 +139,7 @@ export class ArticleScreen extends React.Component<Props, object> {
                                     html={screenParams.article.body}
                                     baseFontStyle={{ fontSize: scale(17) }}
                                     tagsStyles={htmlStyles}
-                                    imagesMaxWidth={Dimensions.get('window').width}
+                                    imagesMaxWidth={Dimensions.get('window').width - 45}
                                     staticContentMaxWidth={Dimensions.get('window').width}
                                     onLinkPress={(event: any, href: string) => {
                                         Linking.openURL(href);
@@ -183,5 +183,6 @@ const styles = StyleSheet.create<ArticleScreenStyles>({
 const htmlStyles = {
     p: { marginBottom: 15 },
     a: { fontWeight: 'bold', textDecorationLine: 'none' },
+    // img: ,
     blockquote: { backgroundColor: '#F0F1FF', padding: scale(15) },
 };

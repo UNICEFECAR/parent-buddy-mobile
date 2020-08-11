@@ -117,6 +117,8 @@ export class SettingsScreen extends React.Component<Props, State> {
 
                     userRealmStore.deleteAll(ChildEntitySchema);
                     navigation.navigate('LoginStackNavigator_LoginScreen');
+                    // navigation.resetStackAndNavigate('LoginStackNavigator')
+
                 }
             },
             {
@@ -147,9 +149,9 @@ export class SettingsScreen extends React.Component<Props, State> {
         dataRealmStore.deleteVariable("allowAnonymousUsage");
         dataRealmStore.deleteVariable("currentActiveChildId");
         dataRealmStore.deleteVariable("dailyMessage");
-        dataRealmStore.deleteVariable("followDevelopment");
-        dataRealmStore.deleteVariable("followDoctorVisits");
-        dataRealmStore.deleteVariable("followGrowth");
+        // dataRealmStore.deleteVariable("followDevelopment");
+        // dataRealmStore.deleteVariable("followDoctorVisits");
+        // dataRealmStore.deleteVariable("followGrowth");
         dataRealmStore.deleteVariable("hideHomeMessages");
         dataRealmStore.deleteVariable("loginMethod");
         dataRealmStore.deleteVariable("notificationsApp");
@@ -162,6 +164,8 @@ export class SettingsScreen extends React.Component<Props, State> {
         dataRealmStore.deleteVariable("userParentalRole");
         dataRealmStore.deleteVariable("vocabulariesAndTerms");
 
+
+        
     };
 
     private async deleteAccountCms() {

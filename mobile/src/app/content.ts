@@ -224,7 +224,7 @@ class Content {
 
 
                     try {
-                        const childAgeTagId = dataRealmStore.getChildAgeTagWithArticles(categoryId, true)?.id;
+                        const childAgeTagId = dataRealmStore.getChildAgeTagWithArticles(categoryId, true, true)?.id;
 
                         if (childAgeTagId !== undefined) {
                             const filteredRecords = allContent?.
@@ -294,7 +294,7 @@ class Content {
             // DONT SHOW THESE CATEGORIES
             // 5, // Growth
         ];
-
+        console.log(JSON.stringify(vocabulariesAndTermsResponse.predefined_tags, null, 1), "predefined tags")
         // Get artciles for each category
         categoryIds.forEach((categoryId) => {
             // Set categoryName
@@ -315,7 +315,7 @@ class Content {
             };
 
             try {
-                const childAgeTagId = dataRealmStore.getChildAgeTagWithArticles(categoryId, true)?.id;
+                const childAgeTagId = dataRealmStore.getChildAgeTagWithArticles(categoryId, true, true)?.id;
                 const allContent = realm?.objects<ContentEntity>(ContentEntitySchema.name);
                 
                 if (childAgeTagId !== null && childAgeTagId !== undefined) {

@@ -169,7 +169,7 @@ export class CategoryArticlesScreen extends React.Component<Props, State> {
 
                 {/* CATEGORY NAME */}
                 <Typography type={TypographyType.headingPrimary}>
-                    {screenParams.categoryName} ({this.state.listData?.length})
+                    {screenParams.categoryName}
                 </Typography>
             </View>
         );

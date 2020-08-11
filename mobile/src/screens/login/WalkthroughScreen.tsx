@@ -34,6 +34,10 @@ export class WalkthroughScreen extends React.Component<Props, State> {
     public constructor(props: Props) {
         super(props);
 
+        dataRealmStore.setVariable('followGrowth', true);
+        dataRealmStore.setVariable('followDevelopment', true);
+        dataRealmStore.setVariable('followDoctorVisits', true);
+
         this.setDefaultScreenParams();
         this.initState();
     }
@@ -41,6 +45,7 @@ export class WalkthroughScreen extends React.Component<Props, State> {
     public componentDidMount() {
         Orientation.lockToPortrait();
     }
+
 
     private setDefaultScreenParams() {
         let defaultScreenParams: WalkthroughScreenParams = {
@@ -60,9 +65,9 @@ export class WalkthroughScreen extends React.Component<Props, State> {
         const followDoctorVisits = dataRealmStore.getVariable('followDoctorVisits');
 
         let state: State = {
-            followGrowth: followGrowth !== null ? followGrowth : false,
-            followDevelopment: followDevelopment !== null ? followDevelopment : false,
-            followDoctorVisits: followDoctorVisits !== null ? followDoctorVisits : false,
+            followGrowth: followGrowth ? followGrowth : true,
+            followDevelopment: followDevelopment ? followDevelopment : true,
+            followDoctorVisits: followDoctorVisits ? followDoctorVisits : true,
         };
 
         this.state = state;
