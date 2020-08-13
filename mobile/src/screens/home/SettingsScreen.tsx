@@ -18,6 +18,7 @@ import { ActivityIndicator, Snackbar, Colors, Appbar } from 'react-native-paper'
 import { appConfig } from '../../app/appConfig';
 import { ChildEntitySchema } from '../../stores/ChildEntity';
 import { UserRealmConsumer, UserRealmContextValue } from '../../stores/UserRealmContext';
+import { GoogleSignin } from '@react-native-community/google-signin';
 
 export interface SettingsScreenParams {
     searchTerm?: string;
@@ -116,8 +117,8 @@ export class SettingsScreen extends React.Component<Props, State> {
                     dataRealmStore.deleteVariable("currentActiveChildId");
 
                     userRealmStore.deleteAll(ChildEntitySchema);
-                    navigation.navigate('LoginStackNavigator_LoginScreen');
-                    // navigation.resetStackAndNavigate('LoginStackNavigator')
+                    // navigation.navigate('LoginStackNavigator_LoginScreen');
+                    navigation.resetStackAndNavigate('LoginStackNavigator')
 
                 }
             },
@@ -141,7 +142,7 @@ export class SettingsScreen extends React.Component<Props, State> {
         };
     };
 
-    private deleteAccountFromLocal() {
+    private async deleteAccountFromLocal() {
         const userRealm = userRealmStore.realm?.objects<ChildEntity>(ChildEntitySchema.name);
 
         userRealmStore.delete(userRealm);
@@ -164,11 +165,22 @@ export class SettingsScreen extends React.Component<Props, State> {
         dataRealmStore.deleteVariable("userParentalRole");
         dataRealmStore.deleteVariable("vocabulariesAndTerms");
         
+        try {
+            await GoogleSignin.revokeAccess();
+            await GoogleSignin.signOut();
+          } catch (error) {
+            console.error(error);
+          }
     };
 
     private async deleteAccountCms() {
         const deleteAcc = await apiStore.deleteAccount();
-
+        try {
+            await GoogleSignin.signOut();
+            // await GoogleSignin.signOut();
+          } catch (error) {
+            console.error(error, "ERROR");
+          }
         if (deleteAcc.deleteAccountSuccess) {
             this.deleteAccountFromLocal()
         };

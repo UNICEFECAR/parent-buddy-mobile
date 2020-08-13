@@ -420,8 +420,6 @@ class ApiStore {
                         contentType = 'article';
                     }
 
-                    console.log(JSON.stringify(rawContent, null, 4), "RAW RESPONSE");
-
                     return {
                         id: parseInt(rawContent.id),
                         type: contentType,

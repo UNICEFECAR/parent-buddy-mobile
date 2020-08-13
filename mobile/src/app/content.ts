@@ -381,7 +381,7 @@ class Content {
         }
 
         // Get childAgeTagWithArticles
-        const childAgeTagWithArticles = dataRealmStore.getChildAgeTagWithArticles(categoryId, true);
+        const childAgeTagWithArticles = dataRealmStore.getChildAgeTagWithArticles(categoryId, true, true);
 
         // Get childAgeTags
         let childAgeTags: TermChildren[] = dataRealmStore.getChildAgeTags(true);
