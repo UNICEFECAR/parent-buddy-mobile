@@ -58,7 +58,6 @@ export class App extends React.Component<object> {
     }
 
     private async initOnboarding() {
-        console.log("usao u privat async init onboarding")
         const notificationsApp = dataRealmStore.getVariable('notificationsApp');
         const followGrowth = dataRealmStore.getVariable('followGrowth');
         const followDevelopment = dataRealmStore.getVariable('followDevelopment');
