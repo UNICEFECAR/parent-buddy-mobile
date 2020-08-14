@@ -38,6 +38,10 @@ export type Variables = {
     'dailyMessage': DailyMessageVariable;
     'currentActiveChildId': string;
     'hideHomeMessages': boolean;
+    'prevNavigationState': string;
+    'nextNavigationState': string;
+    'syncDataReport': string[];
+    'lastDataSyncError': string;
 };
 
 type VariableKey = keyof Variables;
@@ -448,7 +452,7 @@ class DataRealmStore {
         return id
     }
 
-    public getChildAgeTagWithArticles = (categoryId: number | null = null, returnNext: boolean = false): { id: number, name: string } | null => {
+    public getChildAgeTagWithArticles = (categoryId: number | null = null, returnNext: boolean = false, getArticlesForNextPeriod?: boolean ): { id: number, name: string} | null => {
         let obj: { id: number, name: string } | null = {
             id: 0,
             name: ""
@@ -468,7 +472,10 @@ class DataRealmStore {
             if (monthsDiff.months) {
                 months = Math.round(monthsDiff.months);
             };
-
+            if(getArticlesForNextPeriod){
+                months = months + 1;
+            };
+            
             let id = this.getTagIdFromChildAge(months);
             const vocabulariesAndTermsResponse = this.getVariable('vocabulariesAndTerms');
 

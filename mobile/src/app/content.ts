@@ -7,12 +7,13 @@ import { ArticlesSectionData } from "../screens/home/ArticlesSection";
 import { translate } from "../translations/translate";
 import { dataRealmStore, CategoryArticlesViewEntity, userRealmStore } from "../stores";
 import { Platform } from "react-native";
-import { translateData } from "../translationsData/translateData";
+import { translateData, TranslateDataDevelopmentPeriods } from "../translationsData/translateData";
 import { DateTime } from "luxon";
-import { isArray, indexOf } from "lodash";
+import { isArray, indexOf, conforms } from "lodash";
 import { Collection } from "realm";
 import { JsonFormatter } from "cucumber";
 import { ChildGender } from "../stores/ChildEntity";
+import { exp } from "react-native-reanimated";
 
 /**
  * Utility methods related to ContentEntity.
@@ -126,7 +127,6 @@ class Content {
     public getHomeScreenDevelopmentArticles(realm: Realm | null): ArticlesSectionData {
         let isChildInDevelopmentPeriod = false;
 
-
         const rval: ArticlesSectionData = {
             title: translate('developmentArticles'),
             categoryArticles: [],
@@ -176,7 +176,7 @@ class Content {
                     oppositeChildGenderTagId = oppositeChildGender === 'boy' ? 40 : 41;
                 };
 
-                const featuredArticles = translateData('developmentPeriods');
+                const featuredArticles = translateData('developmentPeriods') as (TranslateDataDevelopmentPeriods | null);;
 
                 if (childAgeTagid && childAgeTagid > 51) {
                     childAgeTagid = 51
@@ -224,15 +224,18 @@ class Content {
 
 
                     try {
-                        const childAgeTagId = dataRealmStore.getChildAgeTagWithArticles(categoryId, true)?.id;
+                        const childAgeTagId = dataRealmStore.getChildAgeTagWithArticles(categoryId, true, true)?.id;
 
                         if (childAgeTagId !== undefined) {
                             const filteredRecords = allContent?.
                                 filtered(`category == ${categoryId} AND type == 'article'`)
+                                .filter(item => item.predefinedTags.indexOf(4756) === -1)
                                 .filter(item => item.predefinedTags.indexOf(childAgeTagId) !== -1);
 
                             filteredRecords?.forEach((record, index, collection) => {
-                                if (record.id !== featuredArticleId && oppositeChildGenderTagId && record.predefinedTags.indexOf(oppositeChildGenderTagId) === -1) {
+                                if (record.id !== featuredArticleId &&
+                                    oppositeChildGenderTagId &&
+                                    record.predefinedTags.indexOf(oppositeChildGenderTagId) === -1) {
                                     categoryArticles.articles.push(
                                         record
                                     );
@@ -291,7 +294,6 @@ class Content {
             // DONT SHOW THESE CATEGORIES
             // 5, // Growth
         ];
-
         // Get artciles for each category
         categoryIds.forEach((categoryId) => {
             // Set categoryName
@@ -310,23 +312,30 @@ class Content {
                 categoryName: categoryName,
                 articles: []
             };
-            try {
-                const childAgeTagId = dataRealmStore.getChildAgeTagWithArticles(categoryId, true)?.id;
-                const allContent = realm?.objects<ContentEntity>(ContentEntitySchema.name);
 
+            try {
+                const childAgeTagId = dataRealmStore.getChildAgeTagWithArticles(categoryId, true, true)?.id;
+                const allContent = realm?.objects<ContentEntity>(ContentEntitySchema.name);
+                
                 if (childAgeTagId !== null && childAgeTagId !== undefined) {
+                    
                     title = translate("todayArticles")
 
                     const filteredRecordsWithAge = allContent?.
                         filtered(`category == ${categoryId} AND type == 'article'`)
+                        .filter(item => item.predefinedTags.indexOf(4756) === -1)
                         .filter(item => item.predefinedTags.indexOf(childAgeTagId) !== -1)
+
+
                     filteredRecordsWithAge?.forEach((record, index, collection) => {
                         categoryArticles.articles.push(record)
                     })
                 } else {
                     title = translate("popularArticles");
-                    const filteredRecords = allContent?.filtered(`category == ${categoryId} AND type == 'article'`)
-                    // .filter(item => item.predefinedTags.indexOf(4756) === -1);
+                    const filteredRecords = allContent?.
+                        filtered(`category == ${categoryId} AND type == 'article'`)
+                        .filter(item => item.predefinedTags.indexOf(4756) === -1)
+
                     filteredRecords?.forEach((record, index, collection) => {
                         categoryArticles.articles.push(
                             record
@@ -338,7 +347,8 @@ class Content {
                 console.warn(e);
             };
 
-            for (let item in categoryArticles) {
+
+            for (let item in categoryArticles) { 
                 categoryArticles.articles = utils.randomizeArray(categoryArticles.articles).slice(0, 5)
             };
 
@@ -371,7 +381,7 @@ class Content {
         }
 
         // Get childAgeTagWithArticles
-        const childAgeTagWithArticles = dataRealmStore.getChildAgeTagWithArticles(categoryId, true);
+        const childAgeTagWithArticles = dataRealmStore.getChildAgeTagWithArticles(categoryId, true, true);
 
         // Get childAgeTags
         let childAgeTags: TermChildren[] = dataRealmStore.getChildAgeTags(true);
@@ -399,7 +409,7 @@ class Content {
         childAgeTags.forEach((childAgeTag) => {
             const articlesForChildAgeTag = realm?.objects<ContentEntity>(ContentEntitySchema.name)
                 .filtered(query)
-
+                .filter(item => item.predefinedTags.indexOf(4756) === -1)
                 // Filter articles with this child age tag
                 .filter((article) => {
                     return article.predefinedTags.indexOf(childAgeTag.id) !== -1;
@@ -426,6 +436,7 @@ class Content {
         // Get other articles
         const articlesOther = realm?.objects<ContentEntity>(ContentEntitySchema.name)
             .filtered(query)
+            .filter(item => item.predefinedTags.indexOf(4756) === -1)
 
             // Remove opposite gender
             .filter((article) => {
@@ -442,7 +453,7 @@ class Content {
                 if (finalArticle.id === article.id) articleAlreadyAdded = true;
             });
             if (!articleAlreadyAdded) rval.push(article);
-        }); 
+        });
 
         return rval;
     }
@@ -458,15 +469,28 @@ class Content {
 
         try {
             const allContent = realm?.objects<ContentEntity>(ContentEntitySchema.name);
-            const filteredRecords = allContent?.filtered(`category == ${contentEntity.category} AND type == 'article' AND id <> ${contentEntity.id}`);
+            let filteredRecords: (ContentEntity & Realm.Object)[] | undefined = []
 
-            filteredRecords?.forEach((record, index, collection) => {
-                allArticles.push(record);
-            });
+            if (contentEntity.referencedArticles.length !== 0) {
+                allContent?.forEach(item => {
+                    if(contentEntity.referencedArticles.indexOf(item.id) !== -1){
+                        allArticles.push(item);
+                    };
+                });
+
+            } else {
+                filteredRecords = allContent?.
+                    filtered(`category == ${contentEntity.category} AND type == 'article' AND id <> ${contentEntity.id}`)
+                    .filter(item => item.predefinedTags.indexOf(4756) === -1);
+
+                filteredRecords?.forEach((record, index, collection) => {
+                    allArticles.push(record);
+                });
+            }
+
         } catch (e) {
             console.warn(e);
         }
-
         // Randomize articles
         allArticles = utils.randomizeArray(allArticles);
 

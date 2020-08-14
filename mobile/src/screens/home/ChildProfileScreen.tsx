@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { View, Text, Button, StyleSheet, ViewStyle, TextStyle } from 'react-native';
+import { View, Text, Image, StyleSheet, ViewStyle, TextStyle, ImageStyle } from 'react-native';
 import { NavigationStackProp, NavigationStackState } from 'react-navigation-stack';
 import { ThemeContextValue, ThemeConsumer } from '../../themes/ThemeContext';
 import { translate } from '../../translations/translate';
@@ -124,11 +124,14 @@ export class ChildProfileScreen extends React.Component<Props, State> {
 
                 {/* PHOTO */}
                 {child.photo ?
-                    <FastImage
+                    <Image
                         style={styles.photo}
+                        key={child.photo}
                         source={{
                             uri: child.photo,
-                            priority: FastImage.priority.normal,
+                            // @ts-ignore
+                            // cache: FastImage.cacheControl.cacheOnly,
+                            // priority: FastImage.priority.normal,
                         }}
                         resizeMode={FastImage.resizeMode.cover}
                     />
@@ -263,7 +266,7 @@ export interface Child {
 
 export interface ChildProfileScreenStyles {
     container?: ViewStyle;
-    photo?: ViewStyle;
+    photo?: ImageStyle;
     childList: ViewStyle;
     defaultImg: TextStyle;
     userEditContainer: ViewStyle;

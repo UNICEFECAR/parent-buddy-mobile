@@ -2,7 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import { storiesOf } from '@storybook/react-native';
 import { action } from '@storybook/addon-actions';
-import { MilestoneForm } from './MilestoneForm';
+import { MilestoneForm, MilestoneItem } from './MilestoneForm';
 
 const dummyHtml = `
         <p>
@@ -10,11 +10,11 @@ const dummyHtml = `
         </p>
         `
 
-let dummyData = [
-    { checked: false, html: dummyHtml, title: "Opušta se kada ga uzmete u naručje", id: 1 },
-    { checked: true, html: dummyHtml, title: "Uzbudi se kada mu nešto govorite, uspori pokrete, sluša, prisustvuje", id: 2 },
-    { checked: false, html: dummyHtml, title: "Gleda vas dok mu se smešite i pričate", id: 3 },
-    { checked: true, html: dummyHtml, title: "Oglašava se", id: 4 },
+let dummyData: MilestoneItem[] = [
+    { relatedArticles: [1], checked: false, html: dummyHtml, title: "Opušta se kada ga uzmete u naručje", id: 1 },
+    { relatedArticles: [1], checked: true, html: dummyHtml, title: "Uzbudi se kada mu nešto govorite, uspori pokrete, sluša, prisustvuje", id: 2 },
+    { relatedArticles: [1], checked: false, html: dummyHtml, title: "Gleda vas dok mu se smešite i pričate", id: 3 },
+    { relatedArticles: [1], checked: true, html: dummyHtml, title: "Oglašava se", id: 4 },
 ]
 
 const onPress = () => {

@@ -3,6 +3,7 @@ import { dataRealmStore, userRealmStore } from "../stores";
 import { UserRealmContextValue } from "../stores/UserRealmContext";
 import { navigation } from "./Navigators";
 import DeviceInfo from 'react-native-device-info';
+import NetInfo from "@react-native-community/netinfo";
 
 /**
  * Redefines global error handler.
@@ -31,7 +32,7 @@ export function initGlobalErrorHandler() {
     });
 }
 
-export async function sendErrorReportWithEmail(error: any) {
+export async function sendErrorReportWithEmail(error: any, componentStack?: string) {
     const unknownError = new UnknownError(error);
 
     const mailSubject = `HaloBeba bug report`;
@@ -57,14 +58,22 @@ Device type: ${DeviceInfo.getDeviceType()}
 \n`;
     } catch (e) { }
 
-    // Navigation screen state
+    // Network status
     try {
-        mailBody += `NAVIGATION SCREEN:\n${JSON.stringify(navigation.navigator?.state, null, 4)}\n\n`;
+        const netInfo = await NetInfo.fetch();
+        mailBody += `NETWORK:
+Phone can connect to net: ${netInfo.isConnected}
+Is net reachable by the app: ${netInfo.isInternetReachable}
+Type: ${netInfo.type}
+Details: ${JSON.stringify(netInfo.details, null, 4)}\n\n`
     } catch (e) { }
 
     // Data realm variables
     try {
         if (dataRealmStore && dataRealmStore.realm && !dataRealmStore.realm.isClosed) {
+            const prevNavigationState = dataRealmStore.getVariable('prevNavigationState');
+            const nextNavigationState = dataRealmStore.getVariable('nextNavigationState');
+
             const dataRealmVariables = {
                 'countryCode': dataRealmStore.getVariable('countryCode'),
                 'currentActiveChildId': dataRealmStore.getVariable('currentActiveChildId'),
@@ -72,6 +81,10 @@ Device type: ${DeviceInfo.getDeviceType()}
                 'lastSyncTimestamp': dataRealmStore.getVariable('lastSyncTimestamp'),
                 'loginMethod': dataRealmStore.getVariable('loginMethod'),
                 'userEmail': dataRealmStore.getVariable('userEmail'),
+                'prevNavigationState': JSON.parse(prevNavigationState ? prevNavigationState : ''),
+                'nextNavigationState': JSON.parse(nextNavigationState ? nextNavigationState : ''),
+                'lastDataSyncError': dataRealmStore.getVariable('lastDataSyncError'),
+                'syncDataReport': dataRealmStore.getVariable('syncDataReport'),
             };
 
             mailBody += 'DATA REALM VARIABLES:\n' + JSON.stringify(dataRealmVariables, null, 4) + '\n\n';
@@ -93,17 +106,23 @@ Device type: ${DeviceInfo.getDeviceType()}
 
     // Children
     try {
-        let allChildren = userRealmStore.getAllChildren({ realm: userRealmStore.realm } as UserRealmContextValue);
+        let allChildren = userRealmStore.getAllChildren();
         mailBody += `CHILDREN:\n${JSON.stringify(allChildren, null, 4)}\n\n`;
     } catch (e) { }
 
     // Stack
     try {
-        mailBody += (unknownError.stack ? 'ERROR STACK:\n' + unknownError.stack : 'Please describe error here');
+        mailBody += (unknownError.stack ? 'ERROR STACK:\n' + unknownError.stack + '\n\n' : 'Please describe error here\n\n');
     } catch (e) { }
 
-    const mailUrl = `mailto:office@byteout.com?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
+    // Component stack
+    if (componentStack) {
+        mailBody += `COMPONENT ERROR STACK:\n${componentStack}\n\n`;
+    }
 
+    const mailUrl = `mailto:anastasia@byteout.com,milos.ciganovic@byteout.com,misha@byteout.com?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
+
+    // console.log(mailBody);
     Linking.openURL(mailUrl);
 }
 
@@ -130,6 +149,7 @@ export class UnknownError extends Error {
 
         if (error instanceof Error) {
             this.name = error.name;
+            this.stack = error.stack;
         }
     }
 };

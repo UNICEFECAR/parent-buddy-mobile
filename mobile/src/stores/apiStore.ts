@@ -8,6 +8,8 @@ import { BasicPageEntity } from "./BasicPageEntity";
 import { MilestoneEntity } from "./MilestoneEntity";
 import { Platform } from "react-native";
 import { DailyMessageEntity } from "./DailyMessageEntity";
+import { dataRealmStore } from "./dataRealmStore";
+import { UnknownError } from "../app/errors";
 
 /**
  * Communication with API.
@@ -28,7 +30,7 @@ class ApiStore {
         // URL
         const language = localize.getLanguage();
         let url = `${appConfig.apiUrl}/list-milestone/${language}`;
-        // let url = "http://ecaroparentingapppi3xep5h4v.devcloud.acquia-sites.com/api/list-milestone/en?published=0&numberOfItems=10&updateFromDate=1593614089"
+        
         // URL params
         const urlParams: any = {};
 
@@ -59,7 +61,7 @@ class ApiStore {
             let rawResponseJson = axiosResponse.data;
             if (rawResponseJson) {
                 response.total = parseInt(rawResponseJson.total);
-                response.data = rawResponseJson.data.map((rawContent: any):MilestoneEntity => {
+                response.data = rawResponseJson.data.map((rawContent: any): MilestoneEntity => {
                     return {
                         id: parseInt(rawContent.id),
                         body: rawContent.body,
@@ -76,7 +78,10 @@ class ApiStore {
             };
 
         } catch (rejectError) {
-            if(appConfig.showLog){
+            const netError = new UnknownError(rejectError);
+            dataRealmStore.setVariable('lastDataSyncError', 'getDevelopmentMilestones failed, ' + netError.message);
+
+            if (appConfig.showLog) {
                 console.log(rejectError);
             };
         };
@@ -167,6 +172,9 @@ class ApiStore {
             };
 
         } catch (rejectError) {
+            const netError = new UnknownError(rejectError);
+            dataRealmStore.setVariable('lastDataSyncError', 'getBasicPages failed, ' + netError.message);
+
             if (appConfig.showLog) {
                 console.log(rejectError, "REJECT ERROR")
             };
@@ -174,6 +182,73 @@ class ApiStore {
 
         return response;
     };
+
+    public async resetPassword(userEmail: string): Promise<ResetPasswordResponse> {
+        const language = localize.getLanguage();
+        const url = `${appConfig.apiUrl}/user/reset?username=${userEmail}&langcode=${language}`;
+
+        let response: ResetPasswordResponse = { resetPasswordSuccess: false };
+
+        try {
+            let axiosResponse: AxiosResponse = await axios({
+                url: url,
+                method: 'GET',
+                responseType: 'json',
+                headers: { "Content-type": "application/json" },
+                timeout: appConfig.apiTimeout,
+                auth: {
+                    username: appConfig.apiAuthUsername,
+                    password: appConfig.apiAuthPassword,
+                },
+            })
+
+            let rawResponseJson = axiosResponse.data;
+
+            if (rawResponseJson) {
+                response.resetPasswordSuccess = rawResponseJson.status
+            }
+        } catch (rejectError) {
+            if (appConfig.showLog) {
+                console.log(rejectError, "reject error");
+            }
+        }
+
+        return response
+    }
+
+    public async deleteAccount(): Promise<DeleteAccountResponse> {
+
+        const userEmail = await dataRealmStore.getVariable('userEmail');
+        let response: DeleteAccountResponse = { deleteAccountSuccess: false };
+
+        if (userEmail) {
+            const url = `${appConfig.apiUrl}/user/delete?username=${userEmail}`;
+            try {
+                let axiosResponse: AxiosResponse = await axios({
+                    url: url,
+                    method: 'GET',
+                    responseType: 'json',
+                    headers: { "Content-type": "application/json" },
+                    timeout: appConfig.apiTimeout,
+                    auth: {
+                        username: appConfig.apiAuthUsername,
+                        password: appConfig.apiAuthPassword,
+                    },
+                })
+                let rawResponseJson = axiosResponse.data;
+
+                if (rawResponseJson) {
+                    response.deleteAccountSuccess = rawResponseJson.status
+                }
+            } catch (rejectError) {
+                if (appConfig.showLog) {
+                    console.log(rejectError, "reject error");
+                }
+            }
+        }
+
+        return response
+    }
 
     public async drupalRegister(args: DrupalRegisterArgs): Promise<DrupalRegisterRespone> {
 
@@ -247,12 +322,51 @@ class ApiStore {
             if (rawResponseJson) {
                 response.isUserExist = rawResponseJson
             }
-        } catch (rejectError) {
-            if (appConfig.showLog) {
-                console.log(rejectError, "REJECT ERROR");
-            }
+        } catch (e) {
+           throw new Error("Network Error ")
         }
         return response
+    }
+
+    public async isApiAvailable(): Promise<true | Error> {
+        // URL
+        const language = localize.getLanguage();
+        let url = `${appConfig.apiUrl}/list-content/${language}`;
+        url = this.addBasicAuthForIOS(url);
+
+        // URL params
+        const urlParams: any = {
+            page: 0,
+            numberOfItems: 1,
+            published: appConfig.showPublishedContent,
+        };
+
+        // Get API response
+        try {
+            let axiosResponse: AxiosResponse = await axios({
+                // API: https://bit.ly/2ZatNfQ
+                url: url,
+                params: urlParams,
+                method: 'GET',
+                responseType: 'json',
+                timeout: appConfig.apiTimeout, // milliseconds
+                maxContentLength: 100000, // bytes
+                auth: {
+                    username: appConfig.apiUsername,
+                    password: appConfig.apiPassword,
+                },
+            });
+
+            let rawResponseJson = axiosResponse.data;
+
+            if (rawResponseJson) {
+                return true;
+            } else {
+                return new Error('API is not available. ' + axiosResponse.statusText);
+            }
+        } catch (rejectError) {
+            return new UnknownError(rejectError);
+        }
     }
 
     public async getContent(args: GetContentArgs): Promise<ContentResponse> {
@@ -274,7 +388,7 @@ class ApiStore {
 
         // Get API response
         let response: ContentResponse = { total: 0, data: [] };
-
+        
         try {
             if (appConfig.showLog) {
                 console.log(`apiStore.getContent(): numberOfItems:${urlParams.numberOfItems}, page:${urlParams.page}, type:${contentType ? contentType : 'all'}, updatedFromDate:${urlParams.updatedFromDate}`);
@@ -316,7 +430,7 @@ class ApiStore {
                         category: parseInt(rawContent.category),
                         predefinedTags: rawContent.predefined_tags ? rawContent.predefined_tags.map((value: any) => parseInt(value)) : [],
                         keywords: rawContent.keywords ? rawContent.keywords.map((value: any) => parseInt(value)) : [],
-                        referencedArticles: rawContent.referenced_articles ? rawContent.referenced_articles.map((value: any) => parseInt(value)) : [],
+                        referencedArticles: rawContent.related_articles ? rawContent.related_articles.map((value: any) => parseInt(value)) : [],
                         coverImageUrl: rawContent.cover_image?.url,
                         coverImageAlt: rawContent.cover_image?.alt,
                         coverImageName: rawContent.cover_image?.name,
@@ -327,9 +441,16 @@ class ApiStore {
                         updatedAt: new Date(rawContent.updated_at * 1000),
                     };
                 });
+            } else {
+                dataRealmStore.setVariable('lastDataSyncError', 'getContent failed, ' + axiosResponse.statusText);
             }
         } catch (rejectError) {
-            console.log(rejectError);
+            const netError = new UnknownError(rejectError);
+            dataRealmStore.setVariable('lastDataSyncError', 'getContent failed, ' + netError.message);
+
+            if (appConfig.showLog) {
+                console.log(rejectError);
+            }
         }
 
         return response;
@@ -345,7 +466,6 @@ class ApiStore {
             numberOfItems: numberOfItems,
             updatedFromDate: updatedFromDate,
         });
-
         // If all items are returned in first request
         if (finalContentResponse.total <= numberOfItems) {
             if (appConfig.showLog) {
@@ -437,7 +557,12 @@ class ApiStore {
                 });
             }
         } catch (rejectError) {
-            console.log(rejectError);
+            const netError = new UnknownError(rejectError);
+            dataRealmStore.setVariable('lastDataSyncError', 'getDailyMessages failed, ' + netError.message);
+
+            if (appConfig.showLog) {
+                console.log(rejectError);
+            }
         }
 
         return response;
@@ -545,7 +670,10 @@ class ApiStore {
                 if (axiosResponse.data?.data) {
                     response[vocabulary] = objectToArray(axiosResponse.data.data);
                 }
-            } catch (rejectError) { }
+            } catch (rejectError) {
+                const netError = new UnknownError(rejectError);
+                dataRealmStore.setVariable('lastDataSyncError', 'getVocabulariesAndTerms failed, ' + netError.message);
+            }
         }
 
         if (appConfig.showLog) {
@@ -583,11 +711,16 @@ class ApiStore {
                     // }
                 }
             } else {
+                dataRealmStore.setVariable('lastDataSyncError', 'downloadImage failed, ' + downloadResult.statusCode);
+
                 if (appConfig.showLog) {
                     console.log(`IMAGE DOWNLOAD ERROR: url = ${args.srcUrl}, statusCode: ${downloadResult.statusCode}`);
                 }
             }
         } catch (rejectError) {
+            const netError = new UnknownError(rejectError);
+            dataRealmStore.setVariable('lastDataSyncError', 'downloadImage failed, ' + netError.message);
+
             if (appConfig.showLog) {
                 console.log('IMAGE DOWNLOAD ERROR', rejectError, args.srcUrl);
             }
@@ -769,6 +902,13 @@ export interface DrupalRegisterArgs {
     password: string,
 }
 
+export interface ResetPasswordResponse {
+    resetPasswordSuccess: boolean
+};
+
+export interface DeleteAccountResponse {
+    deleteAccountSuccess: boolean,
+}
 
 export interface DrupalRegisterRespone {
     registrationSuccess: boolean
@@ -802,6 +942,12 @@ interface GetContentArgs {
     updatedFromDate?: number;
 }
 
+interface GetMilestoneArgs {
+    numberOfItems?: number;
+    page?: number;
+    updatedFromDate?: number;
+}
+
 interface GetDailyMessagesArgs {
     /**
      * Defaults to 10
@@ -824,7 +970,7 @@ export interface ContentResponse {
     data: ContentEntity[];
 }
 
-export interface MilestonesResponse{
+export interface MilestonesResponse {
     total: number;
     data: MilestoneEntity[];
 }

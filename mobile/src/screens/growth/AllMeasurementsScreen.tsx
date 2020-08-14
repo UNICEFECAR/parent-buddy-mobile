@@ -13,6 +13,7 @@ import { TypographyType } from '../../components/Typography';
 import { NavigationStackProp, NavigationStackState } from 'react-navigation-stack';
 import { HomeScreenParams } from '../home/HomeScreen';
 import { UserRealmConsumer, UserRealmContextValue } from '../../stores/UserRealmContext';
+import { stat } from 'react-native-fs';
 
 interface Props {
     navigation: NavigationStackProp<NavigationStackState, HomeScreenParams>,
@@ -40,7 +41,9 @@ export class AllMeasurementsScreen extends Component<Props, State>{
             let measurementDate: DateTime = DateTime.local();
             const timeNow = DateTime.local();
 
-            state.allMeasurements = measrues.map((item: Measures) => {
+            
+
+            let allMeasurements = measrues.map((item: Measures) => {
                 if (item.measurementDate) {
                     measurementDate = DateTime.fromJSDate(new Date(item.measurementDate))
                 };
@@ -56,9 +59,13 @@ export class AllMeasurementsScreen extends Component<Props, State>{
                     weight: item.weight ? parseFloat(item.weight) / 1000 : 0,
                     length: item.length ? parseFloat(item.length) : 0,
                     measurementDate: measurementDate.toFormat("dd'.'MM'.'yyyy"),
+                    dateToMilis: measurementDate.toMillis(),
                     titleDateInMonth: month,
                 };
             });
+
+            state.allMeasurements = allMeasurements.sort((a: any, b: any) =>  a.dateToMilis - b.dateToMilis);
+
 
         };
 

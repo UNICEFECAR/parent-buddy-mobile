@@ -3,6 +3,7 @@ import { Dimensions, View, StyleProp, ViewStyle, StyleSheet, TouchableWithoutFee
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import ImagePicker, { Image as ImageObject } from 'react-native-image-crop-picker';
 import { DocumentDirectoryPath, copyFile, exists, unlink, mkdir } from "react-native-fs";
+import { UnknownError } from '../app/errors';
 
 const CROPPED_IMAGE_WIDTH = 800;
 const CROPPED_IMAGE_HEIGHT = 800;
@@ -74,9 +75,10 @@ export class PhotoPicker extends React.Component<Props, State> {
                     }
                 });
             }
-        }).catch(() => {
-            // User canceled image selection
-            // console.warn('User canceled image selection');
+        }).catch((error) => {
+            if (error.message != 'User cancelled image selection') {
+                throw( new UnknownError(error) );
+            }
         });
     }
 
