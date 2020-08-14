@@ -33,6 +33,7 @@ storiesOf('Milestone Card', module)
                     title="Period upoznavanja"
                     subTitle="1. mesec "
                     html={html1}
+                    isCurrentPeriod={false}
                     roundedButton={{ title: 'Popunite upitnik', onPress: onPres }}
                     textButton={{ title: 'Vise o razvoju u ovom periodu', onPress: onPres }}
                 />
@@ -42,12 +43,14 @@ storiesOf('Milestone Card', module)
                     title="Period uspostavljanja rutine i usklađivanja"
                     subTitle="2. mesec "
                     html={html2}
+                    isCurrentPeriod={false}
                     textButton={{ title: 'Vise o razvoju u ovom periodu', onPress: onPres }}
                 />
             </View>
             <View style={{marginTop: 20}}>
                 <MilestoneCard
                     title="Vreme za nova otkrića"
+                    isCurrentPeriod={false}
                     subTitle="od 7. do 9. meseca "
                     html={html3}
                     articles={[

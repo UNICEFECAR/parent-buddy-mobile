@@ -58,7 +58,8 @@ export class RegisterScreen extends React.Component<Props, State> {
     private dataValidation(): boolean {
         let isValid = true;
 
-        const { firstName, lastName, mail, passwordRepeat, password } = this.state;
+        let { firstName, lastName, mail, passwordRepeat, password } = this.state;
+        mail = mail.trim();
 
         if (firstName === "" || lastName === "" || mail === "" || password === "" || passwordRepeat === "") {
             this.setState({
@@ -97,7 +98,8 @@ export class RegisterScreen extends React.Component<Props, State> {
     }
 
     private async createAccount() {
-        const { firstName, lastName, mail, password } = this.state;
+        let { firstName, lastName, mail, password } = this.state;
+        mail = mail.trim();
         
         let userRegisterResponse: DrupalRegisterRespone = { registrationSuccess: false }
 

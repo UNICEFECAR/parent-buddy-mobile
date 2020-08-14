@@ -7,8 +7,6 @@ import { ThemeProvider } from '../themes/ThemeContext';
 import { googleAuth } from './googleAuth';
 import { DataRealmProvider } from '../stores/DataRealmContext';
 import { UserRealmProvider } from '../stores/UserRealmContext';
-import { DataUserRealmsProvider } from '../stores/DataUserRealmsContext';
-import { utils } from './utils';
 import { localize } from './localize';
 // @ts-ignore
 import { decode as atob, encode as btoa } from 'base-64';
@@ -16,7 +14,8 @@ import { apiStore, dataRealmConfig, dataRealmStore } from '../stores';
 import { initGlobalErrorHandler, sendErrorReportWithCrashlytics } from './errors';
 import { ErrorBoundary } from 'react-error-boundary';
 import { ErrorFallback } from '../components/ErrorFallback';
-
+import { utils } from '.';
+import crashlytics from '@react-native-firebase/crashlytics';
 // ADD GLOBAL POLYFILLS: atob, btoa
 if (!(global as any).btoa) (global as any).btoa = btoa;
 if (!(global as any).atob) (global as any).atob = atob;
@@ -53,6 +52,7 @@ export class App extends React.Component<object> {
 
     public async componentDidMount() {
         // crashlytics().log(‘APP MOUNTED’);
+        crashlytics().log('Updating user count.');
         AppState.addEventListener("change", state => {
             if (state === "active") {
                 utils.logAnalitic("appHasOpened", {eventName: "appHasOpened"});
@@ -103,6 +103,12 @@ export class App extends React.Component<object> {
                                 <AppNavigationContainer
                                     ref={(navigatorRef: NavigationContainerComponent) => {
                                         return navigation.setTopLevelNavigator(navigatorRef);
+                                    }}
+                                    onNavigationStateChange={(prevState, nextState) => {
+                                        try {
+                                            dataRealmStore.setVariable('prevNavigationState', JSON.stringify(prevState, null, 4));
+                                            dataRealmStore.setVariable('nextNavigationState', JSON.stringify(nextState, null, 4));
+                                        } catch (e) { }
                                     }}
                                 />
                             </UserRealmProvider>

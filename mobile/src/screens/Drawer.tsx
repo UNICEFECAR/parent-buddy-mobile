@@ -76,7 +76,7 @@ export class Drawer extends React.Component<Props> {
 
         if (fancyButtonType === FancyButtonType.growth) {
             const followGrowth = dataRealmStore.getVariable('followGrowth');
-
+            
             if (notificationsApp && followGrowth) {
                 navigation.navigate('HomeStackNavigator_GrowthScreen');
                 navigation.dispatch(DrawerActions.closeDrawer());
