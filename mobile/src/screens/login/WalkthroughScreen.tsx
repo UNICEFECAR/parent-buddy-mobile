@@ -33,11 +33,6 @@ export class WalkthroughScreen extends React.Component<Props, State> {
 
     public constructor(props: Props) {
         super(props);
-
-        dataRealmStore.setVariable('followGrowth', true);
-        dataRealmStore.setVariable('followDevelopment', true);
-        dataRealmStore.setVariable('followDoctorVisits', true);
-        dataRealmStore.setVariable('notificationsApp', true);
         
         this.setDefaultScreenParams();
         this.initState();

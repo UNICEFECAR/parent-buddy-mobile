@@ -8,7 +8,7 @@ import { RoundedTextInput } from '../../components/RoundedTextInput';
 import { RoundedButton, RoundedButtonType } from '../../components/RoundedButton';
 import { TextButton, TextButtonSize } from '../../components/TextButton';
 import { apiStore, } from '../../stores';
-import { DrupalRegisterRespone, DrupalRegisterArgs, } from '../../stores/apiStore';
+import { DrupalRegisterArgs, } from '../../stores/apiStore';
 import { Snackbar } from 'react-native-paper';
 import { themes } from '../../themes';
 import { utils } from '../../app';
@@ -101,7 +101,7 @@ export class RegisterScreen extends React.Component<Props, State> {
         let { firstName, lastName, mail, password } = this.state;
         mail = mail.trim();
         
-        let userRegisterResponse: DrupalRegisterRespone = { registrationSuccess: false }
+        let userRegisterResponse: boolean =  false;
 
         if (this.dataValidation()) {
             const body: DrupalRegisterArgs = {
@@ -116,7 +116,7 @@ export class RegisterScreen extends React.Component<Props, State> {
                 userRegisterResponse = await apiStore.drupalRegister(body)
             } catch (rejectError) { }
 
-            if (userRegisterResponse.registrationSuccess) {
+            if (userRegisterResponse) {
                 utils.logAnalitic("userHasRegistered", {eventName: "userHasRegistered"});
                 this.gotoRegisterCreatedScreen(mail, password);
             } else {

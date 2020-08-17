@@ -17,7 +17,7 @@ import { utils } from '../../app/utils';
 import { Button, Snackbar, Colors } from 'react-native-paper';
 import { moderateScale, scale } from 'react-native-size-matters';
 import { themes } from '../../themes/themes';
-import { DrupalLoginResponse, apiStore, DrupalLoginArgs } from '../../stores/apiStore';
+import { apiStore, DrupalLoginArgs } from '../../stores/apiStore';
 import { ScrollView } from 'react-native-gesture-handler';
 import { AppNavigationContainer } from '../../app/Navigators';
 
@@ -104,7 +104,7 @@ export class LoginScreen extends React.Component<Props, State & AnimationsState>
         }
 
         // Login
-        let userLoginResponse: DrupalLoginResponse = { isUserExist: false }
+        let userLoginResponse: boolean = false;
 
         if (this.inputValidation()) {
 
@@ -125,7 +125,7 @@ export class LoginScreen extends React.Component<Props, State & AnimationsState>
                 }
             }
 
-            if (userLoginResponse.isUserExist) {
+            if (userLoginResponse) {
                 dataRealmStore.setVariable('userEmail', email);
                 dataRealmStore.setVariable('userIsLoggedIn', true);
                 dataRealmStore.setVariable('loginMethod', 'cms');
