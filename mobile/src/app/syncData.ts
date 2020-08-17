@@ -7,6 +7,7 @@ import { navigation } from "../app/Navigators";
 import { BasicPageEntity, BasicPagesEntitySchema } from "../stores/BasicPageEntity";
 import { MilestoneEntity, MilestoneEntitySchema } from "../stores/MilestoneEntity";
 import { DailyMessageEntitySchema } from "../stores/DailyMessageEntity";
+import { UnknownError } from "./errors";
 
 /**
  * Sync data between API and realm.
@@ -26,8 +27,8 @@ class SyncData {
     public async sync(): Promise<true | Error> {
         // CHECK IF API IS AVAILABLE
         const isApiAvailable = await apiStore.isApiAvailable();
-        
-        if (isApiAvailable instanceof Error)  {
+
+        if (isApiAvailable instanceof Error) {
             return isApiAvailable;
         }
 
@@ -51,18 +52,21 @@ class SyncData {
         syncDataReport.push(`VOCABULARIES AND TERMS = Categories:${vocabulariesAndTerms.categories.length}, Keywords:${vocabulariesAndTerms.keywords.length}, Predefined tags:${vocabulariesAndTerms.predefined_tags.length}`);
 
         // DOWNLOAD DEVELOPMENT MILESTONES 
-        let allMilestones: MilestonesResponse = {total: 0, data: []}
-        
-        try{
-            if(lastSyncTimestamp){
+        let allMilestones: MilestonesResponse = { total: 0, data: [] }
+
+        try {
+            if (lastSyncTimestamp) {
                 allMilestones = await apiStore.getAllMilestones(lastSyncTimestamp)
-            }else{
+            } else {
                 allMilestones = await apiStore.getAllMilestones();
             }
-        } catch (e){};
+        } catch (e) {
+            const netError = new UnknownError(e);
+            dataRealmStore.setVariable('lastDataSyncError', 'getAllMilestones failed, ' + netError.message);
+        };
 
         // Save milestones
-        if(allMilestones?.data && allMilestones.data.length > 0){
+        if (allMilestones?.data && allMilestones.data.length > 0) {
             const milestonesCreateOrUpdate: Promise<MilestoneEntity>[] = [];
 
             allMilestones.data.forEach((value) => {
@@ -75,7 +79,10 @@ class SyncData {
                 if (appConfig.showLog) {
                     console.log('syncData.sync(): Saved all milestones');
                 };
-            } catch (e) { };
+            } catch (e) {
+                const netError = new UnknownError(e);
+                dataRealmStore.setVariable('lastDataSyncError', 'milestonesCreateOrUpdate failed, ' + netError.message);
+            };
         };
 
         syncDataReport.push(`DEVELOPMENT MILESTONES = Total:${allMilestones.data.length}`);
@@ -89,14 +96,17 @@ class SyncData {
             } else {
                 allContent = await apiStore.getAllContent();
             };
-        } catch (e) { };
+        } catch (e) {
+            const netError = new UnknownError(e);
+            dataRealmStore.setVariable('lastDataSyncError', 'getAllContent failed, ' + netError.message);
+        };
 
         // Save content
         if (allContent?.data && allContent.data.length > 0) {
             const promisesCreateOrUpdate: Promise<ContentEntity>[] = [];
 
             allContent.data.forEach((value) => {
-                promisesCreateOrUpdate.push( dataRealmStore.createOrUpdate(ContentEntitySchema, value) );
+                promisesCreateOrUpdate.push(dataRealmStore.createOrUpdate(ContentEntitySchema, value));
             });
 
             try {
@@ -105,7 +115,10 @@ class SyncData {
                 if (appConfig.showLog) {
                     console.log('syncData.sync(): Saved all content');
                 };
-            } catch (e) { };
+            } catch (e) {
+                const netError = new UnknownError(e);
+                dataRealmStore.setVariable('lastDataSyncError', 'All content createOrUpdate failed, ' + netError.message);
+            };
         }
 
         syncDataReport.push(`CONTENT = Total:${allContent.data.length}`);
@@ -119,14 +132,17 @@ class SyncData {
             } else {
                 allDailyMessages = await apiStore.getAllDailyMessages();
             };
-        } catch (e) { };
+        } catch (e) {
+            const netError = new UnknownError(e);
+            dataRealmStore.setVariable('lastDataSyncError', 'getAllDailyMessages failed, ' + netError.message);
+        };
 
         // Save content
         if (allDailyMessages?.data && allDailyMessages.data.length > 0) {
             const promisesCreateOrUpdate: Promise<ContentEntity>[] = [];
 
             allDailyMessages.data.forEach((value) => {
-                promisesCreateOrUpdate.push( dataRealmStore.createOrUpdate(DailyMessageEntitySchema, value) );
+                promisesCreateOrUpdate.push(dataRealmStore.createOrUpdate(DailyMessageEntitySchema, value));
             });
 
             try {
@@ -135,7 +151,10 @@ class SyncData {
                 if (appConfig.showLog) {
                     console.log('syncData.sync(): Saved all daily messages');
                 };
-            } catch (e) { };
+            } catch (e) {
+                const netError = new UnknownError(e);
+                dataRealmStore.setVariable('lastDataSyncError', 'allDailyMessages createOrUpdate failed, ' + netError.message);
+            };
         }
 
         syncDataReport.push(`DAILY MESSAGES = Total:${allDailyMessages.data.length}`);
@@ -146,7 +165,7 @@ class SyncData {
         // save basic pages 
         if (basicPages?.data && basicPages.data.length > 0) {
             const basicPageCreateOrUpdate: Promise<BasicPageEntity>[] = [];
-            
+
             basicPages.data.forEach((value) => {
                 basicPageCreateOrUpdate.push(dataRealmStore.createOrUpdate(BasicPagesEntitySchema, value));
             });
@@ -156,7 +175,10 @@ class SyncData {
                 if (appConfig.showLog) {
                     console.log('syncData.sync(): Saved basic pages');
                 };
-            } catch (e){};
+            } catch (e) {
+                const netError = new UnknownError(e);
+                dataRealmStore.setVariable('lastDataSyncError', 'basicPageCreateOrUpdate failed, ' + netError.message);
+            };
         };
 
         syncDataReport.push(`BASIC PAGES = Total:${basicPages.data.length}`);
