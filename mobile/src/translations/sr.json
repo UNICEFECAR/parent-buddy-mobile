@@ -3,7 +3,9 @@
     "appEmail": "halobeba@zdravlje.org.rs",
     "appPhone": "011 7158 444",
     "appCantOpen": "Proverite internet i restartujte aplikaciju",
-
+    "dataCantDownload": "Prvi put kada se otvori, aplikacija mora da preuzme podatke. Molimo vas povežite se na internet i probajte ponovo.", 
+    "downloadData": "Preuzmi podatke",
+    
     "loginGoogle": "Povežite se Google nalogom",
     "loginFacebook": "Povežite se Facebook nalogom",
     "registerAccount": "Napravite nalog koristeći Email",
@@ -21,7 +23,7 @@
     "checkEmail": "Proverite svoju Email poštu i kliknite na link u emailu da biste završili registraciju.",
     "sendRegisterEmailAgain": "Nije mi stigao link, pošaljite email ponovo",
     "userAlreadyExist": "Korisnik sa ovim mejlom već postoji.",
-    "userNoExist": "Ne postoji korisnik sa ovim nalogom",
+    "userNoExist": "Pogresan e-mail ili lozinka.",
     "allFieldsMustBeFilled": "Sva polja moraju biti popunjena",
     "notValidEmail": "Email nije validan.",
     "passwordToShort": "Lozinka mora imati najmanje 6 karaktera.",

@@ -321,10 +321,8 @@ class ApiStore {
             if (rawResponseJson) {
                 response.isUserExist = rawResponseJson
             }
-        } catch (rejectError) {
-            if (appConfig.showLog) {
-                console.log(rejectError, "REJECT ERROR");
-            }
+        } catch (e) {
+           throw new Error("Network Error ")
         }
         return response
     }
@@ -389,7 +387,7 @@ class ApiStore {
 
         // Get API response
         let response: ContentResponse = { total: 0, data: [] };
-
+        
         try {
             if (appConfig.showLog) {
                 console.log(`apiStore.getContent(): numberOfItems:${urlParams.numberOfItems}, page:${urlParams.page}, type:${contentType ? contentType : 'all'}, updatedFromDate:${urlParams.updatedFromDate}`);
@@ -420,6 +418,7 @@ class ApiStore {
                     if (contentType === 'video_article') {
                         contentType = 'article';
                     }
+
                     return {
                         id: parseInt(rawContent.id),
                         type: contentType,

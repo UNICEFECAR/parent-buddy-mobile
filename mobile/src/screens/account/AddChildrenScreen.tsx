@@ -156,17 +156,20 @@ export class AddChildrenScreen extends React.Component<Props, State> {
         }, 0);
     }
 
-    private async removeChild(child: ChildEntity) {
+    private async removeChild(child: ChildEntity | undefined) {
         await userRealmStore.delete(child);
+        if (this.state.screenType !== "" && this.state.screenType !== "EditChild") {
+            this.props.navigation.navigate('HomeStackNavigator_ChildProfileScreen')
+        }
     }
 
     private gotoAddParentsScreen() {
         if (this.validate()) {
             dataRealmStore.setVariable('userEnteredChildData', true);
 
-            if(this.state.screenType !== ""){
+            if (this.state.screenType !== "") {
                 this.props.navigation.navigate('HomeStackNavigator_ChildProfileScreen');
-            }else{
+            } else {
                 this.props.navigation.navigate('AccountStackNavigator_AddParentsScreen');
             };
         } else {
@@ -185,9 +188,9 @@ export class AddChildrenScreen extends React.Component<Props, State> {
 
             const childId = this.props.navigation.state.params?.id;
 
-            if(childId){
+            if (childId) {
                 let child = allChildren?.find(item => item.uuid === childId);
-                
+
                 if (child) {
                     if (!child.name || child.name === "") {
                         rval = false;
@@ -207,7 +210,7 @@ export class AddChildrenScreen extends React.Component<Props, State> {
 
     private getAbsolutePathToDocumentFolder(relativePath: string | undefined) {
         let finalPath = relativePath;
-        
+
         finalPath = DocumentDirectoryPath + finalPath;
         finalPath = utils.addPrefixForAndroidPaths(finalPath);
 
@@ -286,6 +289,7 @@ export class AddChildrenScreen extends React.Component<Props, State> {
                 allChildren[allChildren.length - 1] :
                 allChildren.find(item => item.uuid === uuid);
 
+
             if (child) {
                 return (
                     <Fragment>
@@ -299,8 +303,9 @@ export class AddChildrenScreen extends React.Component<Props, State> {
                                 <IconButton
                                     icon="close"
                                     size={scale(25)}
-                                    onPress={() => { this.props.navigation.navigate('HomeStackNavigator_ChildProfileScreen') }}
+                                    onPress={() => {this.removeChild(child)}}
                                 />
+
                             </View>
 
                             {/* PHOTO PICKER */}

@@ -18,6 +18,7 @@ import { ActivityIndicator, Snackbar, Colors, Appbar } from 'react-native-paper'
 import { appConfig } from '../../app/appConfig';
 import { ChildEntitySchema } from '../../stores/ChildEntity';
 import { UserRealmConsumer, UserRealmContextValue } from '../../stores/UserRealmContext';
+import { GoogleSignin } from '@react-native-community/google-signin';
 
 export interface SettingsScreenParams {
     searchTerm?: string;
@@ -105,8 +106,8 @@ export class SettingsScreen extends React.Component<Props, State> {
             translate('logoutAlert'),
             translate('logoutDataForDelete'),
             [{
-                text: translate('settingsLogout'), onPress: () => {
-                    
+                text: translate('settingsLogout'), 
+                onPress: () => {
                     dataRealmStore.deleteVariable("userEmail");
                     dataRealmStore.deleteVariable("userIsLoggedIn");
                     dataRealmStore.deleteVariable("loginMethod");
@@ -116,7 +117,9 @@ export class SettingsScreen extends React.Component<Props, State> {
                     dataRealmStore.deleteVariable("currentActiveChildId");
 
                     userRealmStore.deleteAll(ChildEntitySchema);
-                    navigation.navigate('LoginStackNavigator_LoginScreen');
+                    // navigation.navigate('LoginStackNavigator_LoginScreen');
+                    navigation.resetStackAndNavigate('LoginStackNavigator')
+
                 }
             },
             {
@@ -139,7 +142,7 @@ export class SettingsScreen extends React.Component<Props, State> {
         };
     };
 
-    private deleteAccountFromLocal() {
+    private async deleteAccountFromLocal() {
         const userRealm = userRealmStore.realm?.objects<ChildEntity>(ChildEntitySchema.name);
 
         userRealmStore.delete(userRealm);
@@ -154,7 +157,6 @@ export class SettingsScreen extends React.Component<Props, State> {
         dataRealmStore.deleteVariable("loginMethod");
         dataRealmStore.deleteVariable("notificationsApp");
         dataRealmStore.deleteVariable("notificationsEmail");
-        dataRealmStore.deleteVariable("randomNumber");
         dataRealmStore.deleteVariable("userEmail");
         dataRealmStore.deleteVariable("userEnteredChildData");
         dataRealmStore.deleteVariable("userIsLoggedIn");
@@ -162,17 +164,29 @@ export class SettingsScreen extends React.Component<Props, State> {
         dataRealmStore.deleteVariable("userName");
         dataRealmStore.deleteVariable("userParentalRole");
         dataRealmStore.deleteVariable("vocabulariesAndTerms");
+        
+        try {
+            await GoogleSignin.revokeAccess();
+            await GoogleSignin.signOut();
+          } catch (error) {
+            console.error(error);
+          }
     };
 
     private async deleteAccountCms() {
         const deleteAcc = await apiStore.deleteAccount();
-
+        try {
+            await GoogleSignin.signOut();
+            // await GoogleSignin.signOut();
+          } catch (error) {
+            console.error(error, "ERROR");
+          }
         if (deleteAcc.deleteAccountSuccess) {
             this.deleteAccountFromLocal()
         };
     }
 
-    private async deleteAccount() {
+    private deleteAccount() {
 
         const loginMethod = dataRealmStore.getVariable('loginMethod');
 
@@ -189,7 +203,7 @@ export class SettingsScreen extends React.Component<Props, State> {
                             this.deleteAccountFromLocal();
                         }
 
-                        this.props.navigation.navigate("LoginStackNavigator_LoginScreen")
+                        navigation.resetStackAndNavigate('RootModalStackNavigator_SyncingScreen')
                     }
                 },
                 {
