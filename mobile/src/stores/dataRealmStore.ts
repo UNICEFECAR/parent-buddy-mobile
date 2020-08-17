@@ -84,7 +84,7 @@ class DataRealmStore {
         });
     }
 
-    public getBasicPage(id: 4516 | 4836) {
+    public getBasicPage(id: 4516 | 4836 | 5911) {
         const basicPageVariable = this.realm?.objects<BasicPageEntity>(BasicPagesEntitySchema.name);
         return basicPageVariable?.filtered(`id == ${id}`).find(item => item);
     }

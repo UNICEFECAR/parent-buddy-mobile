@@ -1,5 +1,8 @@
 import React from 'react';
 import { StyleProp, ViewStyle, StyleSheet, ImageBackground, ImageSourcePropType, View, TextStyle } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
+import { SceneView } from 'react-navigation';
+import { scale } from 'react-native-size-matters';
 
 export interface Props {
     type?: WalkthroughBackgroundType,
@@ -59,13 +62,18 @@ export class WalkthroughBackground extends React.Component<Props, State> {
     public render() {
         return (
             <ImageBackground
-                source={ this.state.imageSource }
-                style={ [styles.container, this.props.style] }
+                source={this.state.imageSource}
+                style={[styles.container, this.props.style]}
                 resizeMode="cover"
             >
-                <View style={{height:'53%'}}></View>
-                <View style={ styles.contentWrapper }>
-                    { this.props.children }
+                <View style={{ height: '47%', }}></View>
+                <View style={{ height: '53%', flex: 0, paddingTop: scale(25) }}>
+                    <ScrollView>
+
+                        <View style={styles.contentWrapper}>
+                            {this.props.children}
+                        </View>
+                    </ScrollView>
                 </View>
             </ImageBackground>
         );
@@ -79,14 +87,14 @@ export interface WalkthroughBackgroundStyles {
 
 const styles = StyleSheet.create<WalkthroughBackgroundStyles>({
     container: {
-        flex: 1,        
+        flex: 1,
         flexDirection: 'column',
         justifyContent: 'flex-start',
     },
 
     contentWrapper: {
-        flex: 1,
         paddingLeft: 15,
         paddingRight: 15,
+        paddingBottom: 20
     },
 });

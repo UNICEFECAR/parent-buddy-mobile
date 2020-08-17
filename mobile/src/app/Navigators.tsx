@@ -41,6 +41,7 @@ import { AllMeasurementsScreen } from "../screens/growth/AllMeasurementsScreen";
 import { ChartFullScreen } from '../screens/growth/ChartFullScreen';
 import { userRealmStore } from "../stores";
 import RNFS from 'react-native-fs';
+import { PrivacyPolocyScreen } from "../screens/login/PrivacyPolicyScreen";
 import { utils } from "./utils";
 import { ResetPasswordScreen } from "../screens/login";
 import { UserRealmConsumer } from "../stores/UserRealmContext";
@@ -167,6 +168,13 @@ const HomeStackNavigator = createStackNavigator({
             title: "Search results"
         }
     },
+    HomeStackNavigator_TermsScreen: {
+        screen: TermsScreen,
+        navigationOptions: {
+            
+            title: translate('termsAndConditionsTitle'),
+        }
+    },
     HomeStackNavigator_FaqScreenScreen: {
         screen: FaqScreen,
         navigationOptions: {
@@ -188,15 +196,7 @@ const HomeStackNavigator = createStackNavigator({
             }
         }
     },
-    HomeStackNavigator_TermsScreen: {
-        screen: TermsScreen,
-        navigationOptions: ({ navigation }: NavigationScreenConfigProps<NavigationStackProp<NavigationStackState, any>>): NavigationStackOptions => {
-            return {
-                title: translate('termsAndConditionsTitle'),
-                ...secondaryHomeNavigationOptions
-            }
-        }
-    },
+
     HomeStackNavigator_AppFeedbackScreen: {
         screen: AppFeedbackScreen,
         navigationOptions: ({ navigation }: NavigationScreenConfigProps<NavigationStackProp<NavigationStackState, any>>): NavigationStackOptions => {
@@ -529,6 +529,15 @@ const RootModalStackNavigator = createStackNavigator({
         screen: SyncingScreen,
         navigationOptions: {
             title: "Title"
+        }
+    },
+    RootModalStackNavigator_PrivacyPolicyScreen: {
+        screen: PrivacyPolocyScreen,
+        navigationOptions: ({ navigation }: NavigationScreenConfigProps<NavigationStackProp<NavigationStackState, any>>): NavigationStackOptions => {
+            return {
+                title: translate('termsAndConditionsTitle'),
+                ...secondaryHomeNavigationOptions
+            }
         }
     },
     RootModalStackNavigator_VideoScreen: {
