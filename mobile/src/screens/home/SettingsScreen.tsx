@@ -38,6 +38,8 @@ export interface State {
     isImportRunning: boolean;
     isSnackbarVisible: boolean;
     snackbarMessage: string;
+    isSnackbarSuccessVisible: boolean;
+    snackbarSuccessMessage: string;
 }
 
 export class SettingsScreen extends React.Component<Props, State> {
@@ -78,7 +80,9 @@ export class SettingsScreen extends React.Component<Props, State> {
             isExportRunning: false,
             isImportRunning: false,
             isSnackbarVisible: false,
+            isSnackbarSuccessVisible: false,
             snackbarMessage: '',
+            snackbarSuccessMessage: '',
         };
 
         this.state = state;
@@ -139,6 +143,11 @@ export class SettingsScreen extends React.Component<Props, State> {
                 isSnackbarVisible: true,
                 snackbarMessage: translate('settingsButtonExportError'),
             });
+        }else{
+            this.setState({
+                isSnackbarSuccessVisible: true,
+                snackbarSuccessMessage: translate('exportDataSuccess'),
+            });  
         };
     };
 
@@ -447,6 +456,22 @@ export class SettingsScreen extends React.Component<Props, State> {
                         >
                             <Text style={{ fontSize: moderateScale(16) }}>
                                 {this.state.snackbarMessage}
+                            </Text>
+                        </Snackbar>
+                        <Snackbar
+                            visible={this.state.isSnackbarSuccessVisible}
+                            duration={Snackbar.DURATION_SHORT}
+                            onDismiss={() => { this.setState({ isSnackbarSuccessVisible: false }) }}
+                            theme={{ colors: { onSurface: Colors.green500, accent: 'white' } }}
+                            action={{
+                                label: 'Ok',
+                                onPress: () => {
+                                    this.setState({ isSnackbarVisible: false });
+                                },
+                            }}
+                        >
+                            <Text style={{ fontSize: moderateScale(16) }}>
+                                {this.state.snackbarSuccessMessage}
                             </Text>
                         </Snackbar>
                     </View>
