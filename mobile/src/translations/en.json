@@ -118,7 +118,7 @@
     "settingsButtonDeleteAllData": "Delete account and erase all data",
     "settingsLogout": "Logout",
     "logoutDataForDelete": "Email, Data about the child, Username",
-    "logoutAlert": "The following data will be deleted",
+    "logoutAlert": "All saved data will be deleted unless you export it",
     "logoutCancel": "Cancel",
     "deleteAccAlert": "Delete account.",
     "deleteAccAlertMsg": "All data will be deleted!",
