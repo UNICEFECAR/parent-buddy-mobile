@@ -117,6 +117,7 @@ export class RegisterScreen extends React.Component<Props, State> {
             } catch (rejectError) { }
 
             if (userRegisterResponse.registrationSuccess) {
+                utils.logAnalitic("userHasRegistered", {eventName: "userHasRegistered"});
                 this.gotoRegisterCreatedScreen(mail, password);
             } else {
                 this.setState({
