@@ -142,7 +142,7 @@ function getOppositeChildGender() {
 *   Return list of ids starting from current id 
 */
 function formatChildAgeIds() {
-    const currentChildAgeTag = dataRealmStore.getChildAgeTagWithArticles();
+    const currentChildAgeTag = dataRealmStore.getChildAgeTagWithArticles(null, undefined, true);
 
     // Get childAgeTags
     let childAgeTags: TermChildren[] = dataRealmStore.getChildAgeTags(true);
