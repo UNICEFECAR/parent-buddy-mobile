@@ -127,6 +127,10 @@ export class VideoScreen extends React.Component<Props, State> {
                 var iframe = document.querySelector('iframe');
                 var player = new Vimeo.Player(iframe);
 
+                player.on('ended', () => {
+                    window.ReactNativeWebView.postMessage("close_window");
+                });
+
                 function playVideo() {
                     player.play();
                     let backdrop = document.getElementById("backdrop");
@@ -159,7 +163,7 @@ export class VideoScreen extends React.Component<Props, State> {
                         {/* STATUS BAR */}
                         <StatusBar hidden={true} animated={true} />
 
-                        <View onLayout={this.onContainerLayout} style={{ backgroundColor:'black', flex:1, flexDirection:'column', justifyContent:'center', alignItems:'center' }}>
+                        <View onLayout={this.onContainerLayout} style={{ backgroundColor: 'black', flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                             {this.state.containerWidth && this.state.containerHeight && this.state.aspectRatio ? (screenParams.videoType === 'youtube' ? (
                                 <YoutubePlayer
                                     width={this.state.containerWidth}
@@ -170,7 +174,7 @@ export class VideoScreen extends React.Component<Props, State> {
                                     // webViewStyle={{borderWidth:3, borderColor:'red'}}
                                     // @ts-ignore
                                     webViewProps={{ allowsFullscreenVideo: false }}
-                                    webViewStyle={{  }}
+                                    webViewStyle={{}}
                                     initialPlayerParams={{
                                         preventFullScreen: true,
                                         cc_lang_pref: "us",
@@ -178,17 +182,22 @@ export class VideoScreen extends React.Component<Props, State> {
                                     }}
                                 />
                             ) : (
-                                    // <View style={{width:200, height:200, backgroundColor:'red'}}></View>
                                     <WebView
                                         containerStyle={{
-                                            width: '90%',
-                                            // height: 200,
-                                            alignSelf:'center',
+                                            // width: '80%',
+                                            height: this.state.containerHeight,
+                                            aspectRatio: 1.75,
+                                            alignSelf: 'center',
                                             // aspectRatio: this.state.aspectRatio,
                                             // borderWidth: 5, borderColor: 'blue',
                                         }}
                                         originWhitelist={['*']}
                                         source={{ html: this.getVimeoHtml() }}
+                                        onMessage={(event) => {
+                                            if (event.nativeEvent.data === 'close_window') {
+                                                this.goBack();
+                                            }
+                                        }}
                                     />
                                 )) : null}
 
@@ -197,7 +206,7 @@ export class VideoScreen extends React.Component<Props, State> {
                                 color={Colors.white}
                                 size={scale(30)}
                                 onPress={() => { this.goBack() }}
-                                style={{ position: 'absolute', top: scale(0), right: scale(0), backgroundColor:'black' }}
+                                style={{ position: 'absolute', top: scale(0), right: scale(0), backgroundColor: 'black' }}
                             />
                         </View>
                     </View>
