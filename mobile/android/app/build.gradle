@@ -1,5 +1,6 @@
 apply plugin: "com.android.application"
-
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
 import com.android.build.OutputFile
 
 /**
@@ -78,6 +79,7 @@ import com.android.build.OutputFile
 project.ext.react = [
     entryFile: "index.js",
     enableHermes: false,  // clean and rebuild if changing
+    extraPackagerArgs: [ '--minify=false' ],
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
@@ -130,8 +132,8 @@ android {
         applicationId "org.unicef.ecar.parentbuddy"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 8
-        versionName "1.08"
+        versionCode 15
+        versionName "1.15"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
     }

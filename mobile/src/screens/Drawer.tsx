@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleProp, ViewStyle, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleProp, ViewStyle, StyleSheet, ScrollView, Alert } from 'react-native';
 import { ThemeContextValue, ThemeConsumer } from '../themes/ThemeContext';
 import { translate } from '../translations/translate';
 import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
@@ -66,26 +66,69 @@ export class Drawer extends React.Component<Props> {
             }
         }
 
-        // Go to FaqScreenScreen
         if (fancyButtonType === FancyButtonType.faq) {
             navigation.navigate('HomeStackNavigator_FaqScreenScreen');
             navigation.dispatch(DrawerActions.closeDrawer());
         }
 
+        // Set notificationsApp
+        const notificationsApp = dataRealmStore.getVariable('notificationsApp');
+
         if (fancyButtonType === FancyButtonType.growth) {
-            navigation.navigate('HomeStackNavigator_GrowthScreen');
-            navigation.dispatch(DrawerActions.closeDrawer());
+            const followGrowth = dataRealmStore.getVariable('followGrowth');
+            
+            if (notificationsApp && followGrowth) {
+                navigation.navigate('HomeStackNavigator_GrowthScreen');
+                navigation.dispatch(DrawerActions.closeDrawer());
+            } else {
+                Alert.alert(
+                    translate('alertNoFunctionalityTitle'),
+                    translate('alertNoFunctionalityBody'),
+                    [
+                        {   text: translate('alertNoFunctionalityGotoSettings'),
+                            onPress:() => {
+                                navigation.resetStackAndNavigate('RootModalStackNavigator_SettingsScreen');
+                                navigation.dispatch(DrawerActions.closeDrawer());
+                            }
+                        },
+                        {
+                            text: translate('alertNoFunctionalityCancel'),
+                            style: 'cancel',
+                        }
+                    ]
+                );
+            }
+        }
+
+        if(fancyButtonType === FancyButtonType.development){
+            const followDevelopment = dataRealmStore.getVariable('followDevelopment');
+
+            if (notificationsApp && followDevelopment) {
+                navigation.navigate('HomeStackNavigator_DevelopmentScreen');
+                navigation.dispatch(DrawerActions.closeDrawer())
+            } else {
+                Alert.alert(
+                    translate('alertNoFunctionalityTitle'),
+                    translate('alertNoFunctionalityBody'),
+                    [
+                        {   text: translate('alertNoFunctionalityGotoSettings'),
+                            onPress:() => {
+                                navigation.resetStackAndNavigate('RootModalStackNavigator_SettingsScreen');
+                                navigation.dispatch(DrawerActions.closeDrawer());
+                            }
+                        },
+                        {
+                            text: translate('alertNoFunctionalityCancel'),
+                            style: 'cancel',
+                        }
+                    ]
+                );
+            }
         }
 
         if (fancyButtonType === FancyButtonType.vaccination) {
             navigation.navigate('HomeStackNavigator_VaccinationScreen');
             navigation.dispatch(DrawerActions.closeDrawer());
-        }
-
-        // temporary 
-        if(fancyButtonType === FancyButtonType.development){
-            navigation.navigate('HomeStackNavigator_DevelopmentScreen');
-            navigation.dispatch(DrawerActions.closeDrawer())
         }
 
         if (fancyButtonType === FancyButtonType.settings) {
@@ -163,18 +206,16 @@ export class Drawer extends React.Component<Props> {
                             <FancyButton type={FancyButtonType.doctor} style={{ flex: 1 }} onPress={() => { this.gotoScreen(FancyButtonType.doctor) }} />
                         </View> */}
 
-                        {/* ABOUT US */}
+                        {/* APP RELATED BUTTONS  */}
                         <Typography type={TypographyType.headingPrimary} style={{ marginTop: scale(20), marginBottom: scale(5) }}>
                             {translate('appName')}
                         </Typography>
 
                         <View style={{ flexDirection: 'row' }}>
                             <FancyButton title={translate('drawerButtonAboutUs')} style={{ flex: 1 }} onPress={() => { this.gotoScreen(FancyButtonType.aboutUs) }} />
-                            <FancyButton title={translate('drawerButtonContact')} style={{ flex: 1 }} onPress={() => { this.gotoScreen(FancyButtonType.contact) }} />
+                            <FancyButton type={FancyButtonType.settings} iconPosition={FancyButtonIconPosition.left} style={{ flex: 1 }} onPress={() => { this.gotoScreen(FancyButtonType.settings) }} />
+                            {/* <FancyButton title={translate('drawerButtonContact')} style={{ flex: 1 }} onPress={() => { this.gotoScreen(FancyButtonType.contact) }} /> */}
                         </View>
-
-                        {/* Settings */}
-                        <FancyButton type={FancyButtonType.settings} iconPosition={FancyButtonIconPosition.left} style={{ flex: 1 }} onPress={() => { this.gotoScreen(FancyButtonType.settings) }} />
                     </ScrollView>
                 )}
             </ThemeConsumer>

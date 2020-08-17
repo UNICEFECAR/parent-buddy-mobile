@@ -1,10 +1,11 @@
 import { googleAuth } from "./googleAuth";
 import { googleDrive } from "./googleDrive";
-import { userRealmStore } from "../stores";
+import { userRealmStore, dataRealmStore } from "../stores";
 import { appConfig } from "./appConfig";
 import { utils } from ".";
 import { translate } from "../translations/translate";
 import RNFS from 'react-native-fs';
+import { UserRealmContextValue } from "../stores/UserRealmContext";
 
 /**
  * Export / import user realm to GDrive in order to create backup.
@@ -80,7 +81,7 @@ class Backup {
         return true;
     }
 
-    public async import(): Promise<void|Error> {
+    public async import(userRealmContext: UserRealmContextValue): Promise<void|Error> {
         const tokens = await googleAuth.getTokens();
 
         // Sign in if neccessary
@@ -115,7 +116,7 @@ class Backup {
         }
 
         // Close user realm
-        userRealmStore.closeRealm();
+        userRealmContext.closeRealm();
 
         // Download file from GDrive
         await googleDrive.download({
@@ -124,7 +125,13 @@ class Backup {
         });
 
         // Open user realm
-        await userRealmStore.openRealm();
+        await userRealmContext.openRealm();
+
+        // Set current child to first child
+        const allChildren = userRealmStore.getAllChildren();
+        if (allChildren) {
+            dataRealmStore.setVariable('currentActiveChildId', allChildren[0].id);
+        }
 
         return;
     }

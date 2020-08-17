@@ -64,15 +64,41 @@ export class EditPeriodScreen extends Component<Props, State> {
         let childAgeMonths = DateTime.local().diff(DateTime.fromJSDate(childAge ? childAge : new Date()), "months",).months;
         const childAgeTagId = dataRealmStore.getTagIdFromChildAge(parseInt(childAgeMonths.toString()) + 1);
 
-        let currentPeriod = dataRealmStore.getDevelopmentPeriods().filter(item => item.childAgeTagId === childAgeTagId)[0];
+        const age = childAgeTagId > 51 ? 51 : childAgeTagId;
 
+        let currentPeriod = dataRealmStore.getDevelopmentPeriods().filter(item => item.childAgeTagId === age)[0];
+  
         let defaultScreenParams: EditPeriodScreenParams = {
-            id: childAgeTagId,
+            id: 0,
             isCurrenPeriod: true,
             onGoBack: () => this.props.navigation.goBack(),
-            subtitle: currentPeriod.subtilte,
-            title: currentPeriod.title,
-            warningText: currentPeriod.warningText ? currentPeriod.warningText : "",
+            subtitle: "",
+            title: "",
+            warningText: "",
+        };
+        
+        if (currentPeriod !== undefined) {
+            defaultScreenParams = {
+                id: childAgeTagId,
+                isCurrenPeriod: true,
+                onGoBack: () => this.props.navigation.goBack(),
+                subtitle: currentPeriod.subtilte,
+                title: currentPeriod.title,
+                warningText: currentPeriod.warningText ? currentPeriod.warningText : "",
+            }
+        }else{
+            defaultScreenParams = {
+                id: childAgeTagId,
+                isCurrenPeriod: false,
+                onGoBack: () => this.props.navigation.goBack(),
+                subtitle: "",
+                title: "",
+                warningText: "",
+            } 
+
+            throw(new Error(
+                `Error: EditPeriodScreen => current period je undefined childAgeTagId = ${age}, ChildAge = ${childAge}, currentPeriod = ${currentPeriod}`
+            ));
         };
 
         if (this.props.navigation.state.params) {
@@ -178,7 +204,7 @@ export class EditPeriodScreen extends Component<Props, State> {
             <ThemeConsumer>
                 {(themeContext: ThemeContextValue) => (
                     <ScrollView
-                        style={{ backgroundColor: themeContext.theme.screenContainer?.backgroundColor }}
+                        style={{ backgroundColor: 'white' }}
                         contentContainerStyle={styles.container}
                     >
                         <View style={{ padding: 20 }}>

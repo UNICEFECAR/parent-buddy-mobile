@@ -19,6 +19,7 @@ import { ChildEntity, ChildEntitySchema, ChildGender } from '../../stores/ChildE
 import { UserRealmConsumer, UserRealmContextValue } from '../../stores/UserRealmContext';
 import { translate } from '../../translations/translate';
 import Orientation from 'react-native-orientation-locker';
+import { utils } from '../../app/utils';
 
 export interface Props {
     navigation: NavigationStackProp<NavigationStackState>;
@@ -47,9 +48,7 @@ export class AddChildrenScreen extends React.Component<Props, State> {
 
     private initState() {
         let screenType = "";
-
         let screenParam: ScreenTypes = this.props.navigation.state.params?.screenParam
-
         if (screenParam) {
             screenType = screenParam;
         };
@@ -96,6 +95,7 @@ export class AddChildrenScreen extends React.Component<Props, State> {
                 child.updatedAt = new Date();
             });
         };
+        utils.logAnalitic("onChildGenderSave", {eventName: "onChildGenderSave"});
     };
 
     private onChildNameChange(child: ChildEntity | undefined, newName: string) {
@@ -122,11 +122,13 @@ export class AddChildrenScreen extends React.Component<Props, State> {
             extension = parts[parts.length - 1].toLowerCase();
         };
 
+        let timestamp = new Date().getTime();
+
         if (child) {
             if (extension) {
-                newFilename = `${child.uuid}.${extension}`;
+                newFilename = `${child.uuid}_${timestamp}.${extension}`;
             } else {
-                newFilename = child.uuid;
+                newFilename = child.uuid + "_" + timestamp;
             };
 
             // Set destPath
@@ -149,23 +151,26 @@ export class AddChildrenScreen extends React.Component<Props, State> {
 
     private async addAnotherChild() {
         await userRealmStore.create<ChildEntity>(ChildEntitySchema, this.getNewChild());
-
+        utils.logAnalitic('onAdditionalChildEntered', {eventName: "onAdditionalChildEntered"});
         setTimeout(() => {
             this.scrollView.current?.scrollToEnd();
         }, 0);
     }
 
-    private async removeChild(child: ChildEntity) {
+    private async removeChild(child: ChildEntity | undefined) {
         await userRealmStore.delete(child);
+        if (this.state.screenType !== "" && this.state.screenType !== "EditChild") {
+            this.props.navigation.navigate('HomeStackNavigator_ChildProfileScreen')
+        }
     }
 
     private gotoAddParentsScreen() {
         if (this.validate()) {
             dataRealmStore.setVariable('userEnteredChildData', true);
 
-            if(this.state.screenType !== ""){
+            if (this.state.screenType !== "") {
                 this.props.navigation.navigate('HomeStackNavigator_ChildProfileScreen');
-            }else{
+            } else {
                 this.props.navigation.navigate('AccountStackNavigator_AddParentsScreen');
             };
         } else {
@@ -178,16 +183,21 @@ export class AddChildrenScreen extends React.Component<Props, State> {
 
     private validate(): boolean {
         let rval = true;
-
         const allChildren = userRealmStore.realm?.objects<ChildEntity>(ChildEntitySchema.name);
+        if (this.state.screenType !== "" && this.state.screenType !== "NewChild") {
+            // TODO 
 
-        if (this.state.screenType === "NewChild") {
-            let lastChild = allChildren?.map(item => item);
-            if (lastChild) {
-                if (!lastChild[lastChild?.length - 1].name || lastChild[lastChild?.length - 1].name === "") {
-                    rval = false;
+            const childId = this.props.navigation.state.params?.id;
+
+            if (childId) {
+                let child = allChildren?.find(item => item.uuid === childId);
+
+                if (child) {
+                    if (!child.name || child.name === "") {
+                        rval = false;
+                    };
                 };
-            };
+            }
         } else {
             allChildren?.forEach((child) => {
                 if (!child.name || child.name === '') {
@@ -201,15 +211,9 @@ export class AddChildrenScreen extends React.Component<Props, State> {
 
     private getAbsolutePathToDocumentFolder(relativePath: string | undefined) {
         let finalPath = relativePath;
-        finalPath = DocumentDirectoryPath + finalPath;
 
-        if (finalPath && Platform.OS === 'android') {
-            let re = new RegExp('^file:');
-            let match = finalPath.match(re);
-            if (!match) {
-                finalPath = 'file://' + finalPath;
-            };
-        };
+        finalPath = DocumentDirectoryPath + finalPath;
+        finalPath = utils.addPrefixForAndroidPaths(finalPath);
 
         return finalPath;
     };
@@ -278,13 +282,14 @@ export class AddChildrenScreen extends React.Component<Props, State> {
     };
 
     private renderOtherScreens(userRealmContext: UserRealmContextValue) {
-        let allChilds = userRealmContext.realm?.objects<ChildEntity>(ChildEntitySchema.name).map((child) => child);
+        let allChildren = userRealmContext.realm?.objects<ChildEntity>(ChildEntitySchema.name).map((child) => child);
         let uuid = this.props.navigation.state.params?.id ? this.props.navigation.state.params?.id : ""
 
-        if (allChilds) {
+        if (allChildren) {
             let child = this.state.screenType === "NewChild" ?
-                allChilds[allChilds.length - 1] :
-                allChilds.find(item => item.uuid === uuid);
+                allChildren[allChildren.length - 1] :
+                allChildren.find(item => item.uuid === uuid);
+
 
             if (child) {
                 return (
@@ -299,8 +304,9 @@ export class AddChildrenScreen extends React.Component<Props, State> {
                                 <IconButton
                                     icon="close"
                                     size={scale(25)}
-                                    onPress={() => { this.props.navigation.navigate('HomeStackNavigator_ChildProfileScreen') }}
+                                    onPress={() => {this.removeChild(child)}}
                                 />
+
                             </View>
 
                             {/* PHOTO PICKER */}

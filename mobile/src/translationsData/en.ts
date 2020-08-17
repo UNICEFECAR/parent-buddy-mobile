@@ -3,8 +3,8 @@ export const en = {
         {
             period: '1st month',
             daysStart: 30,
-            name: '1st month – the period of getting to know each other',
-            subtitle: '1. mesec TODO',
+            name: 'The period of getting to know each other',
+            subtitle: '1st month',
             homeMessageBefore: '%CHILD% will soon have 1 month',
             homeMessageAfter: '%CHILD% has 1 month',
             moreAboutPeriodArticleIdMale: 3466,
@@ -42,8 +42,8 @@ Watch your baby's behaviour and talk to your paediatrician or visiting nurse if 
         {
             period: '2nd month',
             daysStart: 60,
-            name: '2nd month – the period of mutual adjustment and establishing routines',
-            subtitle: '2. mesec TODO',
+            name: 'The period of mutual adjustments  and establishing routines',
+            subtitle: '2nd month',
             homeMessageBefore: '%CHILD% will soon have 2 months',
             homeMessageAfter: '%CHILD% has 2 months',
             moreAboutPeriodArticleIdMale: 3476,
@@ -85,11 +85,11 @@ Watch your baby's behavior and talk to your paediatrician or visiting nurse if y
         {
             period: '3-4 months',
             daysStart: 90,
-            name: '3-4 months – the period of diverse experiences',
+            name: 'The period of diverse experiences',
             homeMessageBefore: '%CHILD% will soon have 3 months',
             homeMessageAfter: '%CHILD% has 3 months',
             moreAboutPeriodArticleIdMale: 3486,
-            subtitle: '3. i 4. mesec TODO',    
+            subtitle: '3rd and 4th month',    
             moreAboutPeriodArticleIdFemale: 3481,
             description: `
 <p>
@@ -127,12 +127,12 @@ Watch your baby's behaviour and talk to your paediatrician or visiting nurse if 
         {
             period: '5-6 months',
             daysStart: 150,
-            name: '5-6 months – the period of intensive exploration',
+            name: 'The period of intensive exploration  ',
             homeMessageBefore: '%CHILD% will soon have 5 months',
             homeMessageAfter: '%CHILD% has 5 months',
             moreAboutPeriodArticleIdMale: 3496,
             moreAboutPeriodArticleIdFemale: 3491,
-            subtitle: '5. i 6. mesec TODO',
+            subtitle: '5th and 6th month',
             description: `
 <p>
 Your baby can sit, roll and lift and hold her head on his own.
@@ -170,11 +170,11 @@ Watch your baby's behaviour and talk to your paediatrician or visiting nurse if 
         {
             period: '7-9 months',
             daysStart: 210,
-            name: '7-9 months – the period of new discoveries',
+            name: 'The period of new discoveries',
             homeMessageBefore: '%CHILD% will soon have 7 months',
             homeMessageAfter: '%CHILD% has 7 months',
             moreAboutPeriodArticleIdMale: 3511,
-            subtitle: '7. do 9. mesec TODO',
+            subtitle: '7-9 months',
             moreAboutPeriodArticleIdFemale: 3506,
             description: `
 <p>
@@ -214,12 +214,12 @@ Watch your baby’s behaviour and talk to your paediatrician or visiting nurse i
         {
             period: '10-12 months',
             daysStart: 300,
-            name: '10-12 months – the period of establishing habits and consistency',
+            name: 'The period of establishing habits and consistency',
             homeMessageBefore: '%CHILD% will soon have 10 months',
             homeMessageAfter: '%CHILD% has 10 months',
             moreAboutPeriodArticleIdMale: 3521,
             moreAboutPeriodArticleIdFemale: 3516,
-            subtitle: '10. do 12. mesec TODO',
+            subtitle: '10-12 months',
             description: `
 <p>
 Your baby wants to communicate more and more - points, nods, waves...
@@ -256,11 +256,11 @@ Watch your child’s behaviour and talk to your paediatrician if you notice that
         {
             period: '13-18 months',
             daysStart: 390,
-            name: '13-18 months – first step and first word',
+            name: 'The first step and the first word',
             homeMessageBefore: '%CHILD% will soon have 13 months',
             homeMessageAfter: '%CHILD% has 13 months',
             moreAboutPeriodArticleIdMale: 3531,
-            subtitle: '13. do 18. mesec TODO',
+            subtitle: '13-18 months',
             moreAboutPeriodArticleIdFemale: 3526,
             description: `
 <p>
@@ -300,12 +300,12 @@ Watch your child’s behaviour and talk to your paediatrician if you notice that
         {
             period: '19-24 months',
             daysStart: 570,
-            name: '19-24 months – the period of becoming independent',
+            name: 'The period of becoming independent',
             homeMessageBefore: '%CHILD% will soon have 19 months',
             homeMessageAfter: '%CHILD% has 19 months',
             moreAboutPeriodArticleIdMale: 3541,
             moreAboutPeriodArticleIdFemale: 3536,
-            subtitle: '19. do 24. mesec TODO',
+            subtitle: '19-24 months',
             description: `
 <p>
 Expect new movements - running, climbing... but also new emotions and new words.
@@ -343,11 +343,11 @@ Follow your child's behaviour and talk to your paediatrician if you notice that 
         {
             period: '25-36 months',
             daysStart: 750,
-            name: '25-36 months – the period when imagination flourishes',
+            name: 'The period when imagination flourishes ',
             homeMessageBefore: '%CHILD% will soon have 25 months',
             homeMessageAfter: '%CHILD% has 25 months',
             moreAboutPeriodArticleIdMale: 3551,
-            subtitle: '25. do 36. mesec TODO',
+            subtitle: '25-36 months',
             moreAboutPeriodArticleIdFemale: 3546,
             description: `
 <p>

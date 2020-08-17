@@ -41,14 +41,18 @@ export class AboutScreen extends React.Component<Props, State> {
     private initState() {
         const aboutPageData = dataRealmStore.getBasicPage(4516);    
 
-        if (aboutPageData) {
-            let state: State = {
-                title: aboutPageData.title,
-                body: aboutPageData.body,
-            };
+        let state: State = {
+            title: "",
+            body: "",
+        }
 
-            this.state = state;
+        if (aboutPageData) {
+            
+            state.title = aboutPageData.title;
+            state.body = aboutPageData.body;
         };
+
+        this.state = state;
     };
 
     private setDefaultScreenParams() {

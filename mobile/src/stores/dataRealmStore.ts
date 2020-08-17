@@ -38,6 +38,10 @@ export type Variables = {
     'dailyMessage': DailyMessageVariable;
     'currentActiveChildId': string;
     'hideHomeMessages': boolean;
+    'prevNavigationState': string;
+    'nextNavigationState': string;
+    'syncDataReport': string[];
+    'lastDataSyncError': string;
 };
 
 type VariableKey = keyof Variables;
@@ -89,7 +93,7 @@ class DataRealmStore {
     public async setVariable<T extends VariableKey>(key: T, value: Variables[T] | null): Promise<boolean> {
         return new Promise((resolve, reject) => {
             if (!this.realm) {
-                reject();
+                reject(new Error('setVariable: data realm is not opened'));
                 return;
             }
 
@@ -118,7 +122,7 @@ class DataRealmStore {
                     });
                 }
             } catch (e) {
-                reject();
+                reject(e);
             }
         });
     }
@@ -184,7 +188,7 @@ class DataRealmStore {
     public async createOrUpdate<Entity>(entitySchema: ObjectSchema, record: Entity): Promise<Entity> {
         return new Promise((resolve, reject) => {
             if (!this.realm || !entitySchema.primaryKey) {
-                reject();
+                reject(new Error('createOrUpdate: Data realm is not opened'));
                 return;
             }
 
@@ -195,7 +199,7 @@ class DataRealmStore {
                 });
             } catch (e) {
                 if (appConfig.showLog) console.log(e);
-                reject();
+                reject(e);
             }
         });
     };
@@ -448,7 +452,7 @@ class DataRealmStore {
         return id
     }
 
-    public getChildAgeTagWithArticles = (categoryId: number | null = null, returnNext: boolean = false): { id: number, name: string } | null => {
+    public getChildAgeTagWithArticles = (categoryId: number | null = null, returnNext: boolean = false, getArticlesForNextPeriod?: boolean ): { id: number, name: string} | null => {
         let obj: { id: number, name: string } | null = {
             id: 0,
             name: ""
@@ -468,7 +472,10 @@ class DataRealmStore {
             if (monthsDiff.months) {
                 months = Math.round(monthsDiff.months);
             };
-
+            if(getArticlesForNextPeriod){
+                months = months + 1;
+            };
+            
             let id = this.getTagIdFromChildAge(months);
             const vocabulariesAndTermsResponse = this.getVariable('vocabulariesAndTerms');
 

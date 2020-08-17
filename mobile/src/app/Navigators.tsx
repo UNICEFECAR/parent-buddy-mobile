@@ -1,5 +1,5 @@
 import React from "react";
-import { BackHandler, ScrollView, Text, View } from "react-native";
+import { BackHandler, ScrollView, Text, View, Platform } from "react-native";
 import { IconButton } from "react-native-paper";
 import { moderateScale, scale } from "react-native-size-matters";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
@@ -42,12 +42,17 @@ import { ChartFullScreen } from '../screens/growth/ChartFullScreen';
 import { userRealmStore } from "../stores";
 import RNFS from 'react-native-fs';
 import { PrivacyPolocyScreen } from "../screens/login/PrivacyPolicyScreen";
+import { utils } from "./utils";
+import { ResetPasswordScreen } from "../screens/login";
+import { UserRealmConsumer } from "../stores/UserRealmContext";
+import { getFontScale } from "react-native-device-info";
+
 /**
 * Use it to [navigate screens](https://reactnavigation.org/docs/en/navigating-without-navigation-prop.html)
 * from anywhere in the code.
 */
 class Navigation {
-    private navigator?: NavigationContainerComponent;
+    public navigator?: NavigationContainerComponent;
     private static instance: Navigation;
 
     private constructor() {
@@ -132,7 +137,8 @@ const secondaryHomeNavigationOptions = {
         backgroundColor: themes.getCurrentTheme().theme.variables?.colors?.headerBackground,
     },
     headerTitleStyle: {
-        color: themes.getCurrentTheme().theme.variables?.colors?.headerTitle
+        color: themes.getCurrentTheme().theme.variables?.colors?.headerTitle,
+        fontSize: scale(16),
     },
     headerRight: undefined,
 };
@@ -342,7 +348,7 @@ const HomeStackNavigator = createStackNavigator({
                 let headerTitle: JSX.Element | null = null;
 
                 if (!screenParams.showSearchInput) {
-                    headerTitle = (<Text onLongPress={(event) => { }} style={themes.getCurrentTheme().theme.headerTitle}>{translate('appName')}</Text>);
+                    headerTitle = (<Text onLongPress={(event) => { throw (new Error('Example error')) }} style={themes.getCurrentTheme().theme.headerTitle}>{translate('appName')}</Text>);
                 }
 
                 return headerTitle;
@@ -350,10 +356,14 @@ const HomeStackNavigator = createStackNavigator({
             headerRightContainerStyle: { width: '80%' },
             headerRight: () => {
                 const screenParams = navigation.state.params!;
-                let images = null;
-                if (userRealmStore.getCurrentChild()) {
-                    if (userRealmStore.getCurrentChild()?.photoUri) {
-                        images = { image: `${RNFS.DocumentDirectoryPath}/${userRealmStore.getCurrentChild()?.photoUri}` }
+                let images: null | object = null;
+
+                const currentChild = userRealmStore.getCurrentChild();
+
+                if (currentChild) {
+                    if (currentChild.photoUri) {
+                        const finalUri = utils.addPrefixForAndroidPaths(`${RNFS.DocumentDirectoryPath}/${currentChild.photoUri}`);
+                        images = { image: finalUri };
                     }
                 }
 
@@ -379,7 +389,11 @@ const HomeStackNavigator = createStackNavigator({
                                     onPress={() => { toggleSearchInput() }}
                                 />
                             )}
-                        <ProfileIcon onPress={openBirthDataScreen} {...images} />
+                        <UserRealmConsumer>
+                            {(user) => (
+                                <ProfileIcon onPress={openBirthDataScreen} {...images} />
+                            )}
+                        </UserRealmConsumer>
                     </View>
                 );
             },
@@ -409,6 +423,12 @@ const LoginStackNavigator = createStackNavigator({
         navigationOptions: {
             title: "Tab 02"
         }
+    },
+    LoginStackNavigator_ResetPasswordScreen: {
+        screen: ResetPasswordScreen,
+        navigationOptions: {
+            title: "Tab 03"
+        }
     }
 }, {
     headerMode: "none"
@@ -418,13 +438,13 @@ const WalkthroughStackNavigator = createStackNavigator({
     WalkthroughStackNavigator_WalkthroughScreen: {
         screen: WalkthroughScreen,
         navigationOptions: {
-            title: "Title"
+            // title: "Title"
         }
     },
     WalkthroughStackNavigator_TermsScreen: {
         screen: TermsScreen,
         navigationOptions: {
-            title: "Title"
+            // title: "Title"
         }
     }
 }, {
