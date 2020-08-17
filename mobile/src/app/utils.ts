@@ -23,7 +23,7 @@ class Utils {
         return Utils.instance;
     }
 
-    public logAnalitic(eventName: AnaliticEvents, payload: object) {
+    public logAnalitic(eventName: string, payload: object) {
         let send = true;
         let allowAnonymousUsage = dataRealmStore.getVariable('allowAnonymousUsage');
         if (eventName === "onParentGenderSave" || eventName === "onChildAgeSave" ||
