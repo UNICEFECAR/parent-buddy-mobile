@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, TextStyle, StyleProp, StyleSheet } from 'react-native';
+import { Text, TextStyle, StyleProp, StyleSheet, GestureResponderEvent } from 'react-native';
 import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
 
 export interface Props {
@@ -41,28 +41,28 @@ export class Typography extends React.Component<Props, State> {
 
         if (this.props.type === TypographyType.logo) {
             state.fontFamily = 'SFUIDisplay-Heavy',
-            state.fontSize = scale(56);
+                state.fontSize = scale(56);
             state.lineHeight = scale(67);
             state.marginBottom = scale(34);
         }
 
         if (this.props.type === TypographyType.headingPrimary) {
             state.fontFamily = 'SFUIDisplay-Heavy',
-            state.fontSize = scale(28);
+                state.fontSize = scale(28);
             state.lineHeight = scale(34);
             state.marginBottom = scale(20);
         }
 
         if (this.props.type === TypographyType.headingSecondary) {
             state.fontFamily = 'SFUIDisplay-Bold',
-            state.fontSize = scale(20);
+                state.fontSize = scale(20);
             state.lineHeight = scale(25);
             state.marginBottom = scale(8);
         }
 
         if (this.props.type === TypographyType.bodyRegularLargeSpacing) {
             state.fontFamily = 'SFUIDisplay-Regular',
-            state.fontSize = scale(17);
+                state.fontSize = scale(17);
             state.lineHeight = scale(25);
         }
 
@@ -71,7 +71,7 @@ export class Typography extends React.Component<Props, State> {
 
     public render() {
         return (
-            <Text style={ [styles.container, this.state, this.props.style] }>{ this.props.children }</Text>
+            <Text style={[styles.container, this.state, this.props.style]}>{this.props.children}</Text>
         );
     }
 }

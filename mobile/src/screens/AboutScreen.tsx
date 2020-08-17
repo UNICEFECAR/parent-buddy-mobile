@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, ViewStyle, StyleSheet, Linking, Dimensions } from 'react-native';
+import { ScrollView, ViewStyle, StyleSheet, Linking, Dimensions, View } from 'react-native';
 import { NavigationStackProp, NavigationStackState, NavigationStackOptions } from 'react-navigation-stack';
 import { ThemeContextValue, ThemeConsumer } from '../themes/ThemeContext';
 import { translate } from '../translations/translate';
@@ -9,6 +9,9 @@ import { TermsScreenParams } from './login/TermsScreen';
 import { dataRealmStore } from '../stores';
 // @ts-ignore
 import HTML from 'react-native-render-html';
+import { RoundedButton } from '../components';
+import { RoundedButtonType } from '../components/RoundedButton';
+import { navigation } from '../app';
 
 export interface AboutScreenParams {
     showSearchInput?: boolean;
@@ -36,7 +39,7 @@ export class AboutScreen extends React.Component<Props, State> {
     }
 
     private initState() {
-        const aboutPageData = dataRealmStore.getBasicPage(4516);
+        const aboutPageData = dataRealmStore.getBasicPage(4516);    
 
         let state: State = {
             title: "",
@@ -85,12 +88,10 @@ export class AboutScreen extends React.Component<Props, State> {
             hideCheckboxes: true,
             showBackButton: true
         };
-
         this.props.navigation.navigate('HomeStackNavigator_TermsScreen', screenParams);
     }
-
+    
     public render() {
-        console.log(dataRealmStore.getBasicPage(4516)?.body, "OVDE")
         return (
             <ThemeConsumer>
                 {(themeContext: ThemeContextValue) => (
@@ -109,7 +110,16 @@ export class AboutScreen extends React.Component<Props, State> {
                             }}
                         />
 
-
+                        <View>
+                            <RoundedButton type={RoundedButtonType.purple} text="Zelim da da dsa dasda" onPress={() => {}} />
+                            <TextButton 
+                                style={{marginTop: scale(20), marginBottom: scale(20)}} 
+                                color={TextButtonColor.purple}
+                                onPress={() => this.props.navigation.push('HomeStackNavigator_TermsScreen', {hideCheckboxes: true})}
+                            >
+                                    Uslovi korišćenja aplikacije
+                            </TextButton>
+                        </View>
                     </ScrollView>
                 )}
             </ThemeConsumer>
