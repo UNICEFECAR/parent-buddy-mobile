@@ -205,6 +205,7 @@ export class NewMeasurementScreen extends Component<Props, State> {
                             <DateTimePicker
                                 label={translate("newMeasureScreenDatePickerLabel")}
                                 onChange={(date) => this.setMeasurementDate(date)} 
+                                maximumDate={new Date()}
                                 style={this.state.measurementDateError ? {borderWidth: 1, borderColor: 'red'} : null}    
                             />
                         </View>

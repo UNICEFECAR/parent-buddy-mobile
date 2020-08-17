@@ -66,12 +66,12 @@ export class ProfileIcon extends React.Component<Props, State> {
             // NO PHOTO
             icon = (
                 <TouchableOpacity
-                    style={ { overflow:'hidden', borderRadius:moderateScale(18), backgroundColor:"transparent", borderWidth:moderateScale(3), borderColor:colors?.headerIcon, width:moderateScale(36), height:moderateScale(36), justifyContent:'center', alignItems:'center'} }
+                    style={ { overflow:'hidden', borderRadius:moderateScale(18), backgroundColor:"transparent", borderWidth:moderateScale(2), borderColor:colors?.headerIcon, width:moderateScale(25), height:moderateScale(25), justifyContent:'center', alignItems:'center'} }
                     onPress={ this.onPhotoIconPress }
                 >
                     <Icon
                         name={ "account-outline" }
-                        style={{ color:colors?.headerIcon, fontSize:moderateScale(30), position:'absolute', }}
+                        style={{ color:colors?.headerIcon, fontSize:moderateScale(19), position:'absolute', }}
                     />
                 </TouchableOpacity>
             );
