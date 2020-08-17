@@ -7,7 +7,7 @@ import { GradientBackground } from '../../components/GradientBackground';
 import { RoundedButton, RoundedButtonType } from '../../components/RoundedButton';
 import { TextButton, TextButtonSize, TextButtonColor } from '../../components/TextButton';
 import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
-import { DrupalLoginArgs, DrupalLoginResponse, apiStore } from '../../stores/apiStore';
+import { DrupalLoginArgs, apiStore } from '../../stores/apiStore';
 import { dataRealmStore } from '../../stores';
 import { utils } from '../../app';
 
@@ -25,7 +25,7 @@ export class RegisterCreatedScreen extends React.Component<Props, object> {
     }
 
     private async goToHomeScreen() {
-        let userLoginResponse: DrupalLoginResponse = { isUserExist: false }
+        let userLoginResponse: boolean = false;
 
         let email = "";
         let password = "";
@@ -44,7 +44,7 @@ export class RegisterCreatedScreen extends React.Component<Props, object> {
             userLoginResponse = await apiStore.drupalLogin(args)
         } catch (rejectError) { }
 
-        if (userLoginResponse.isUserExist) {
+        if (userLoginResponse) {
             dataRealmStore.setVariable('userEmail', email);
             dataRealmStore.setVariable('userIsLoggedIn', true);
             dataRealmStore.setVariable('loginMethod', 'cms');

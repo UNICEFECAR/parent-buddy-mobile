@@ -8,7 +8,6 @@ import { RoundedTextInput } from '../../components/RoundedTextInput';
 import { RoundedButton, RoundedButtonType } from '../../components/RoundedButton';
 import { TextButton, TextButtonSize } from '../../components/TextButton';
 import { apiStore, } from '../../stores';
-import { DrupalRegisterRespone, DrupalRegisterArgs, } from '../../stores/apiStore';
 import { Snackbar } from 'react-native-paper';
 import { themes } from '../../themes';
 import { utils, navigation } from '../../app';
@@ -54,7 +53,7 @@ export class ResetPasswordScreen extends React.Component<Props, State> {
         } else {
             if (utils.emailValidator(email)) {
                 const resetPassword = await apiStore.resetPassword(email);
-                if (resetPassword.resetPasswordSuccess) {
+                if (resetPassword) {
                     Alert.alert(translate('resetPasswordSuccess'), "", [{ text: translate('resetPasswordGoBack'), onPress: () => navigation.navigate('LoginStackNavigator_LoginScreen') }])
                 } else {
                     this.setState({

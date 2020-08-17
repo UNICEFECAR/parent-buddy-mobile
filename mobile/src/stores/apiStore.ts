@@ -182,11 +182,11 @@ class ApiStore {
         return response;
     };
 
-    public async resetPassword(userEmail: string): Promise<ResetPasswordResponse> {
+    public async resetPassword(userEmail: string): Promise<boolean> {
         const language = localize.getLanguage();
         const url = `${appConfig.apiUrl}/user/reset?username=${userEmail}&langcode=${language}`;
 
-        let response: ResetPasswordResponse = { resetPasswordSuccess: false };
+        let response: boolean = false;
 
         try {
             let axiosResponse: AxiosResponse = await axios({
@@ -204,7 +204,7 @@ class ApiStore {
             let rawResponseJson = axiosResponse.data;
 
             if (rawResponseJson) {
-                response.resetPasswordSuccess = rawResponseJson.status
+                response = rawResponseJson.status
             }
         } catch (rejectError) {
             if (appConfig.showLog) {
@@ -215,10 +215,10 @@ class ApiStore {
         return response
     }
 
-    public async deleteAccount(): Promise<DeleteAccountResponse> {
+    public async deleteAccount(): Promise<boolean> {
 
         const userEmail = await dataRealmStore.getVariable('userEmail');
-        let response: DeleteAccountResponse = { deleteAccountSuccess: false };
+        let response: boolean = false 
 
         if (userEmail) {
             const url = `${appConfig.apiUrl}/user/delete?username=${userEmail}`;
@@ -237,7 +237,7 @@ class ApiStore {
                 let rawResponseJson = axiosResponse.data;
 
                 if (rawResponseJson) {
-                    response.deleteAccountSuccess = rawResponseJson.status
+                    response = rawResponseJson.status
                 }
             } catch (rejectError) {
                 if (appConfig.showLog) {
@@ -249,7 +249,7 @@ class ApiStore {
         return response
     }
 
-    public async drupalRegister(args: DrupalRegisterArgs): Promise<DrupalRegisterRespone> {
+    public async drupalRegister(args: DrupalRegisterArgs): Promise<boolean> {
 
         const DrupalRegisterApiUrl = appConfig.apiUrl.substring(0, appConfig.apiUrl.length - 3)
 
@@ -269,7 +269,7 @@ class ApiStore {
             "roles": [{ "target_id": "application_user" }]
         }
 
-        let response: DrupalRegisterRespone = { registrationSuccess: false }
+        let response: boolean = false;
 
         try {
             let axiosResponse: AxiosResponse = await axios({
@@ -288,7 +288,7 @@ class ApiStore {
             let rawResponseJson = axiosResponse.data;
 
             if (rawResponseJson) {
-                response.registrationSuccess = rawResponseJson.status
+                response = rawResponseJson.status
             }
         } catch (rejectError) {
             if (appConfig.showLog) {
@@ -298,11 +298,11 @@ class ApiStore {
         return response
     }
 
-    public async drupalLogin(args: DrupalLoginArgs): Promise<DrupalLoginResponse> {
+    public async drupalLogin(args: DrupalLoginArgs): Promise<boolean> {
 
         let url = `${appConfig.apiUrl}/user/validate?username=${args.username}&password=${args.password}`
         url = this.addBasicAuthForIOS(url, true);
-        let response: DrupalLoginResponse = { isUserExist: false }
+        let response: boolean =  false 
 
         try {
             let axiosResponse: AxiosResponse = await axios({
@@ -319,7 +319,7 @@ class ApiStore {
             let rawResponseJson = axiosResponse.data;
 
             if (rawResponseJson) {
-                response.isUserExist = rawResponseJson
+                response = rawResponseJson
             }
         } catch (e) {
            throw new Error("Network Error ")
@@ -901,25 +901,10 @@ export interface DrupalRegisterArgs {
     password: string,
 }
 
-export interface ResetPasswordResponse {
-    resetPasswordSuccess: boolean
-};
-
-export interface DeleteAccountResponse {
-    deleteAccountSuccess: boolean,
-}
-
-export interface DrupalRegisterRespone {
-    registrationSuccess: boolean
-}
 
 export interface DrupalLoginArgs {
     username: string,
     password: string,
-}
-
-export interface DrupalLoginResponse {
-    isUserExist: boolean,
 }
 
 interface GetContentArgs {

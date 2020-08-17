@@ -118,7 +118,7 @@
     "settingsButtonDeleteAllData": "Obrišite nalog i izbrišite sve podatke",
     "settingsLogout": "Odjavite se iz aplikacije",
     "logoutDataForDelete": "Email, Podaci o detetu, Korisničko ime",
-    "logoutAlert": "Sledeći podaci biće izbrisani: ",
+    "logoutAlert": "Svi podaci će biti obrisani ako ih ne izvezete",
     "logoutCancel": "Odustani",
     "deleteAccAlert": "Brisanje naloga.",
     "deleteAccAlertMsg": "Svi podaci će biti obrisani!",
