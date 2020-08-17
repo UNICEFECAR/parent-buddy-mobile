@@ -112,6 +112,7 @@
     "settingsEnterDoctorVisits": "Želim da evidentiram posete doktoru i da me aplikacija podseća da unosim podatke",
     "settingsTitleImportExport": "Uvoz i izvoz sačuvanih podataka",
     "settingsButtonExport": "Izvezite sve sačuvane podatke",
+    "exportDataSuccess": "TODO Podaci su izvezeni uspešno!",
     "settingsButtonImport": "Uvezite sve sačuvane podatke",
     "settingsButtonExportError": "Podaci nisu uspešno izvezeni",
     "settingsButtonImportError": "Backup file ne postoji",

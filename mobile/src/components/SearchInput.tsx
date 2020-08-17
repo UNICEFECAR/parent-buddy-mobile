@@ -106,6 +106,7 @@ export class SearchInput extends React.Component<Props, State> {
                             style={styles.textInputStyle}
                             autoCapitalize="none"
                             autoCorrect={false}
+                            autoFocus={true}
                             placeholderTextColor="#848588"
                             onSubmitEditing={() => { this.onSubmitEditing() }}
                         />

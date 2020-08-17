@@ -112,6 +112,7 @@
     "settingsEnterDoctorVisits": "I want to make records about health check-ups and receive reminders to enter the data",
     "settingsTitleImportExport": "Data export / import",
     "settingsButtonExport": "Export all saved data",
+    "exportDataSuccess": "TODO Data Export is Successful",
     "settingsButtonImport": "Import all saved data",
     "settingsButtonExportError": "Export failed",
     "settingsButtonImportError": "There is no backup file",
