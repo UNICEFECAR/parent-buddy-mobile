@@ -241,6 +241,8 @@ export class BirthDataScreen extends React.Component<Props, State> {
                                 style={{ alignSelf: 'stretch' }}
                                 value={this.state.plannedTermDate ? new Date(this.state.plannedTermDate?.toString()) : undefined}
                                 onChange={(date) => this.setPlannedTerm(date)}
+                                maximumDate={new Date()}
+                                
                             />
 
                             <View style={{ height: themeContext.theme.variables?.sizes.verticalPaddingNormal }} />
@@ -251,6 +253,7 @@ export class BirthDataScreen extends React.Component<Props, State> {
                                 style={[{ alignSelf: 'stretch', }, this.state.dateError ? {borderColor: 'red', borderWidth: 1} : null]}
                                 value={this.state.birthDate ? new Date(this.state.birthDate?.toString()) : undefined}
                                 onChange={(date) => this.setBirthDate(date)}
+                                maximumDate={new Date()}
                             />
 
                             <View style={{ height: themeContext.theme.variables?.sizes.verticalPaddingLarge }} />

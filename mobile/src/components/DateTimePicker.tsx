@@ -2,6 +2,7 @@ import React from 'react';
 import { View, StyleProp, ViewStyle, StyleSheet , Text, TextStyle, TouchableWithoutFeedback} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { DateTime } from 'luxon';
 
 export interface Props {
     label?: string;
@@ -12,6 +13,7 @@ export interface Props {
      */
     icon?: string;
     style?: StyleProp<ViewStyle>;
+    maximumDate?: Date;
     onChange?: (value:Date)=>void;
 }
 
@@ -98,6 +100,7 @@ export class DateTimePicker extends React.Component<Props, State> {
     }
 
     public render() {
+
         return (
             <TouchableWithoutFeedback onPress={() => {this.showDatePicker()}}>
                 <View style={[styles.container, this.props.style]}>
@@ -126,6 +129,7 @@ export class DateTimePicker extends React.Component<Props, State> {
                         is24Hour={ true }
                         onConfirm={(date) => {this.onDateTimePickerConfirm(date)}}
                         onCancel={() => {this.onDateTimePickerCancel()}}
+                        maximumDate={this.props.maximumDate}
                     />
                 </View>
             </TouchableWithoutFeedback>
