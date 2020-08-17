@@ -104,7 +104,7 @@ export class SettingsScreen extends React.Component<Props, State> {
     private logout() {
         Alert.alert(
             translate('logoutAlert'),
-            translate('logoutDataForDelete'),
+            "",
             [{
                 text: translate('settingsLogout'), 
                 onPress: () => {
@@ -150,12 +150,8 @@ export class SettingsScreen extends React.Component<Props, State> {
         dataRealmStore.deleteVariable("allowAnonymousUsage");
         dataRealmStore.deleteVariable("currentActiveChildId");
         dataRealmStore.deleteVariable("dailyMessage");
-        dataRealmStore.deleteVariable("followDevelopment");
-        dataRealmStore.deleteVariable("followDoctorVisits");
-        dataRealmStore.deleteVariable("followGrowth");
         dataRealmStore.deleteVariable("hideHomeMessages");
         dataRealmStore.deleteVariable("loginMethod");
-        dataRealmStore.deleteVariable("notificationsApp");
         dataRealmStore.deleteVariable("notificationsEmail");
         dataRealmStore.deleteVariable("userEmail");
         dataRealmStore.deleteVariable("userEnteredChildData");
@@ -164,6 +160,12 @@ export class SettingsScreen extends React.Component<Props, State> {
         dataRealmStore.deleteVariable("userName");
         dataRealmStore.deleteVariable("userParentalRole");
         dataRealmStore.deleteVariable("vocabulariesAndTerms");
+
+        // reset variables
+        dataRealmStore.setVariable("followDevelopment", true);
+        dataRealmStore.setVariable("followDoctorVisits", true);
+        dataRealmStore.setVariable("followGrowth", true)
+        dataRealmStore.setVariable("notificationsApp", true);
         
         try {
             await GoogleSignin.revokeAccess();
@@ -177,11 +179,10 @@ export class SettingsScreen extends React.Component<Props, State> {
         const deleteAcc = await apiStore.deleteAccount();
         try {
             await GoogleSignin.signOut();
-            // await GoogleSignin.signOut();
           } catch (error) {
             console.error(error, "ERROR");
           }
-        if (deleteAcc.deleteAccountSuccess) {
+        if (deleteAcc) {
             this.deleteAccountFromLocal()
         };
     }
