@@ -12,6 +12,8 @@ import { TextButton, TextButtonSize, TextButtonColor } from "../../components/Te
 import { dataRealmStore } from '../../stores';
 import { utils } from '../../app';
 import { Snackbar, Colors } from 'react-native-paper';
+import { ScrollView } from 'react-native-gesture-handler';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export interface Props {
     navigation: NavigationStackProp<NavigationStackState>;
@@ -69,7 +71,7 @@ export class AddParentsScreen extends React.Component<Props, State> {
             let message = translate('accountSendSmsText');
 
             message = message.replace('%PARENT%', this.state.parentName);
-            message = message.replace('%APP_URL%', 'https://www.halobeba.rs');
+            message = message.replace('%APP_URL%', translate('accountSendSmsAppUrl'));
 
             utils.sendSms(message);
         } else {
@@ -83,7 +85,16 @@ export class AddParentsScreen extends React.Component<Props, State> {
     public render() {
         return (
             <SafeAreaView style={[styles.container]}>
-                <View style={{ padding: scale(30), backgroundColor: 'white', flex: 1, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center' }}>
+                <KeyboardAwareScrollView 
+                    keyboardShouldPersistTaps='always'
+                    contentContainerStyle={{ 
+                        padding: scale(30), 
+                        backgroundColor: 'white', 
+                        flex: 1, 
+                        flexDirection: 'column', 
+                        justifyContent: 'flex-start', 
+                        alignItems: 'center' 
+                    }}>
 
                     {/* I AM */}
                     <Typography type={TypographyType.bodyRegular}>
@@ -95,8 +106,11 @@ export class AddParentsScreen extends React.Component<Props, State> {
                     {/* CHOOSE PARENT TYPE */}
                     <RadioButtons
                         value={this.state.parent}
-                        buttons={[{ text: translate('accountMother'), value: 'mother' }, { text: translate('accountFather'), value: 'father' }]}
-                        onChange={(text: any) => { this.setState({ parent: text }) }}
+                        buttons={[{ text: translate("accountMother"), value: "mother" }, { text: translate("accountFather"), value: "father" }]}
+                        onChange={(text: any) => {
+                            this.setState({ parent: text })
+                            utils.logAnalitic("onParentGenderSave", {eventName: "onParentGenderSave"})
+                        }}
                     />
 
                     <View style={{ height: scale(20) }}></View>
@@ -104,7 +118,7 @@ export class AddParentsScreen extends React.Component<Props, State> {
                     {/* NAME */}
                     <RoundedTextInput
                         label={translate('accountName')}
-                        icon="email-outline"
+                        icon="account-outline"
                         value={this.state.parentName}
                         onChange={(value) => { this.setState({ parentName: value }) }}
                     />
@@ -124,7 +138,7 @@ export class AddParentsScreen extends React.Component<Props, State> {
                         type={RoundedButtonType.purple}
                         onPress={() => { this.saveParentsData() }}
                     />
-                </View>
+                </KeyboardAwareScrollView>
 
                 <Snackbar
                     visible={this.state.isSnackbarVisible}
@@ -155,5 +169,6 @@ export interface AddParentsScreenStyles {
 const styles = StyleSheet.create<AddParentsScreenStyles>({
     container: {
         flex: 1,
+        backgroundColor: 'white'
     },
 });

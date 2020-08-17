@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { View, Text, Button, StyleSheet, ViewStyle, TextStyle } from 'react-native';
+import { View, Text, Image, StyleSheet, ViewStyle, TextStyle, ImageStyle } from 'react-native';
 import { NavigationStackProp, NavigationStackState } from 'react-navigation-stack';
 import { ThemeContextValue, ThemeConsumer } from '../../themes/ThemeContext';
 import { translate } from '../../translations/translate';
@@ -124,11 +124,14 @@ export class ChildProfileScreen extends React.Component<Props, State> {
 
                 {/* PHOTO */}
                 {child.photo ?
-                    <FastImage
+                    <Image
                         style={styles.photo}
+                        key={child.photo}
                         source={{
                             uri: child.photo,
-                            priority: FastImage.priority.normal,
+                            // @ts-ignore
+                            // cache: FastImage.cacheControl.cacheOnly,
+                            // priority: FastImage.priority.normal,
                         }}
                         resizeMode={FastImage.resizeMode.cover}
                     />
@@ -145,10 +148,12 @@ export class ChildProfileScreen extends React.Component<Props, State> {
                 </Typography>
 
                 {/* BIRTH DATE */}
-                <Typography type={TypographyType.bodyRegular} style={{ fontSize: moderateScale(15), color: 'grey' }}>
-                    {child.gender === "girl" ? translate('childProfileBirthDateGirl') : translate('childProfileBirthDateBoy')}
-                    {child.birthDay}
-                </Typography>
+                {child.birthDay ? (
+                    <Typography type={TypographyType.bodyRegular} style={{ fontSize: moderateScale(15), color: 'grey' }}>
+                        {child.gender === "girl" ? translate('childProfileBirthDateGirl') : translate('childProfileBirthDateBoy')}
+                        {' ' + child.birthDay}
+                    </Typography>
+                ) : null}
 
                 <View style={{ height: themeContext.theme.variables?.sizes.verticalPaddingNormal }} />
                 {child.isCurrentActive === false ?
@@ -187,7 +192,7 @@ export class ChildProfileScreen extends React.Component<Props, State> {
                         <UserRealmConsumer>
                             {(userRealmContext: UserRealmContextValue) => (
                                 <Fragment>
-                                    {userRealmStore.getAllChilds(userRealmContext).map((child) => (
+                                    {userRealmStore.getAllChildren().map((child) => (
                                         this.renderChildList(child, themeContext)
                                     ))}
                                 </Fragment>
@@ -261,7 +266,7 @@ export interface Child {
 
 export interface ChildProfileScreenStyles {
     container?: ViewStyle;
-    photo?: ViewStyle;
+    photo?: ImageStyle;
     childList: ViewStyle;
     defaultImg: TextStyle;
     userEditContainer: ViewStyle;
@@ -286,7 +291,7 @@ const styles = StyleSheet.create<ChildProfileScreenStyles>({
     },
     defaultImg: {
         fontSize: moderateScale(150),
-        color: '#EBEBEB',
+        color: '#B8B8B8',
         paddingTop: 5
     },
     childList: {

@@ -10,8 +10,11 @@ import { UserRealmContext } from "./UserRealmContext";
 import { userRealmStore } from "./userRealmStore";
 import { VariableEntity } from './VariableEntity';
 
+// @ts-ignore
 export { ContentEntity };
+// @ts-ignore
 export { VariableEntity };
+// @ts-ignore
 export { ChildEntity };
 export { CategoryArticlesViewEntity };
 export { dataRealmConfig };

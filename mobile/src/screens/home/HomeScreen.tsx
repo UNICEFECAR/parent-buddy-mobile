@@ -44,6 +44,7 @@ export class HomeScreen extends React.Component<Props, object> {
         Orientation.lockToPortrait();
     }
 
+
     public componentWillUnmount() {
         
     }
@@ -60,16 +61,15 @@ export class HomeScreen extends React.Component<Props, object> {
         }
     }
 
-    private async onTestButtonPress() {
-        const response = await apiStore.setVariable('foo', 'bar');
-        // const response = await apiStore.getVariable('foo');
-        // const response = await apiStore.deleteVariable('foo');
-        console.log(response);
+    private onTestButtonPress() {
+        const navigation = this.props.navigation;
+        // throw new Error('Greska');
+
+        console.log(JSON.stringify(navigation.state, null, 4));
     }
 
     public render() {
         const screenParams = this.props.navigation.state.params!;
-
         return (
             <ThemeConsumer>
                 {(themeContext: ThemeContextValue) => (
@@ -97,11 +97,11 @@ export class HomeScreen extends React.Component<Props, object> {
                             {(dataRealmContext: DataRealmContextValue) => (
                                 <>
                                     {
-                                        content.getHomeScreenDevelopmentArticles(dataRealmContext.realm).categoryArticles?.length !== 0 ?
-                                            <ArticlesSection data={content.getHomeScreenDevelopmentArticles(dataRealmContext.realm)} />
+                                        content.getHomeScreenDevelopmentArticles(dataRealmContext.realm ? dataRealmContext.realm : null).categoryArticles?.length !== 0 ?
+                                            <ArticlesSection data={content.getHomeScreenDevelopmentArticles(dataRealmContext.realm ? dataRealmContext.realm : null)} />
                                             : null
                                     }
-                                    <ArticlesSection data={content.getHomeScreenArticles(dataRealmContext.realm)} />
+                                    <ArticlesSection data={content.getHomeScreenArticles(dataRealmContext.realm ? dataRealmContext.realm : null)} />
                                 </>
                             )}
                         </DataRealmConsumer>

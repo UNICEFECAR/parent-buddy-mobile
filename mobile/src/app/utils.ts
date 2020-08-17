@@ -1,8 +1,12 @@
 import { navigation } from './Navigators';
-import { dataRealmStore } from '../stores';
+import { dataRealmStore, ContentEntity } from '../stores';
 import SendSMS, { AndroidSuccessTypes } from 'react-native-sms'
 import URLParser from 'url';
 import RNFS from 'react-native-fs';
+import { appConfig } from './appConfig';
+import analytics from '@react-native-firebase/analytics';
+import { Platform } from 'react-native';
+import { ContentEntitySchema } from '../stores/ContentEntity';
 
 /**
  * Various utils methods.
@@ -18,6 +22,31 @@ class Utils {
         }
         return Utils.instance;
     }
+
+    public logAnalitic(eventName: string, payload: object) {
+        let send = true;
+        let allowAnonymousUsage = dataRealmStore.getVariable('allowAnonymousUsage');
+        if (eventName === "onParentGenderSave" || eventName === "onChildAgeSave" ||
+            eventName === "onAdditionalChildEntered" || eventName === "onChildGenderSave") {
+            if (allowAnonymousUsage === null) {
+                send = false;
+            } else {
+                send = allowAnonymousUsage;
+            };
+        }else {
+            send = true;
+        };
+        if (send) {
+            analytics().logEvent(eventName, {
+                ...payload
+            });
+        } else {
+            // if allow anonimus usage === false
+            if (appConfig.showLog) {
+                console.log("allowUsage je false")
+            }
+        };
+    };
 
     /**
      * When app opens, there is an order of screens that should open,
@@ -169,6 +198,41 @@ class Utils {
 
     public upperCaseFirstLetter(text: string): string {
         return text && text.length > 0 ? text.charAt(0).toUpperCase() + text.slice(1) : text;
+    }
+
+    /**
+     * File paths on Android must start with file://, so add that prefix if needed.
+     */
+    public addPrefixForAndroidPaths(path: string): string {
+        let finalPath = path;
+        
+        if (finalPath && Platform.OS === 'android') {
+            let re = new RegExp('^file:');
+            let match = finalPath.match(re);
+            if (!match) {
+                finalPath = 'file://' + finalPath;
+            };
+        };
+
+        return finalPath;
+    }
+
+    /**
+     * App can be opened only if API data was downloaded.
+     */
+    public canAppBeOpened(): boolean {
+        let rval = false;
+
+        try {
+            const lastSyncTimestamp = dataRealmStore.getVariable('lastSyncTimestamp');
+            const numberOfContentItems = dataRealmStore.realm?.objects<ContentEntity>(ContentEntitySchema.name).length;
+
+            if (numberOfContentItems && numberOfContentItems > 0 && lastSyncTimestamp) {
+                rval = true;
+            }
+        } catch(e) {}
+
+        return rval;
     }
 }
 

@@ -79,7 +79,7 @@ export class AccordionCheckBoxList extends Component<Props> {
                                 titleStyle={{ fontSize: moderateScale(15) }}
                                 style={styles.listStyle}
                             >
-                                <View>
+                                <View style={{paddingHorizontal:30}}>
 
                                     <HTML
                                         html={item.html}
@@ -91,7 +91,7 @@ export class AccordionCheckBoxList extends Component<Props> {
 
                                     {
                                         this.renderRealtedArticles(item.relatedArticles).length !== 0 ? 
-                                        <View style={{padding: 10}}>
+                                        <View style={{paddingVertical: 10}}>
                                         <Typography style={{marginBottom: 10}}>{translate('readMore')}</Typography>
                                         {
                                             this.renderRealtedArticles(item.relatedArticles)?.map(item => (

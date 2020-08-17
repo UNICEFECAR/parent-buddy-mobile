@@ -1,19 +1,21 @@
 import React from 'react';
 import { navigation, AppNavigationContainer } from './Navigators';
 import { NavigationContainerComponent } from 'react-navigation';
-import { YellowBox, Platform, UIManager } from 'react-native';
+import { YellowBox, Platform, UIManager, AppState } from 'react-native';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { ThemeProvider } from '../themes/ThemeContext';
 import { googleAuth } from './googleAuth';
 import { DataRealmProvider } from '../stores/DataRealmContext';
 import { UserRealmProvider } from '../stores/UserRealmContext';
-import { DataUserRealmsProvider } from '../stores/DataUserRealmsContext';
-import { utils } from './utils';
 import { localize } from './localize';
 // @ts-ignore
 import { decode as atob, encode as btoa } from 'base-64';
 import { apiStore, dataRealmConfig, dataRealmStore } from '../stores';
-
+import { initGlobalErrorHandler, sendErrorReportWithCrashlytics } from './errors';
+import { ErrorBoundary } from 'react-error-boundary';
+import { ErrorFallback } from '../components/ErrorFallback';
+import { utils } from '.';
+import crashlytics from '@react-native-firebase/crashlytics';
 // ADD GLOBAL POLYFILLS: atob, btoa
 if (!(global as any).btoa) (global as any).btoa = btoa;
 if (!(global as any).atob) (global as any).atob = atob;
@@ -48,10 +50,36 @@ export class App extends React.Component<object> {
         super(props);
     }
 
-    public componentDidMount() {
+    public async componentDidMount() {
+        // crashlytics().log(‘APP MOUNTED’);
+        crashlytics().log('Updating user count.');
+        AppState.addEventListener("change", state => {
+            if (state === "active") {
+                utils.logAnalitic("appHasOpened", {eventName: "appHasOpened"});
+            } else if (state === "background") {
+                console.log("BACKGROUND")
+            } else if (state === "inactive") {
+                utils.logAnalitic("ExitApp", {eventName: "ExitApp"})
+            }
+        });
+
         this.addItemsToDevMenu();
         googleAuth.configure();
         localize.setLocalesIfNotSet();
+        this.initOnboarding();
+        initGlobalErrorHandler();
+    }
+
+    private async initOnboarding() {
+        const notificationsApp = dataRealmStore.getVariable('notificationsApp');
+        const followGrowth = dataRealmStore.getVariable('followGrowth');
+        const followDevelopment = dataRealmStore.getVariable('followDevelopment');
+        const followDoctorVisits = dataRealmStore.getVariable('followDoctorVisits');
+
+        if (notificationsApp === null) await dataRealmStore.setVariable('notificationsApp', true);
+        if (followGrowth === null) await dataRealmStore.setVariable('followGrowth', true);
+        if (followDevelopment === null) await dataRealmStore.setVariable('followDevelopment', true);
+        if (followDoctorVisits === null) await dataRealmStore.setVariable('followDoctorVisits', true);
     }
 
     private addItemsToDevMenu() {
@@ -67,19 +95,27 @@ export class App extends React.Component<object> {
 
     public render() {
         return (
-            <ThemeProvider>
-                <PaperProvider>
-                    <DataRealmProvider>
-                        <UserRealmProvider>
-                            <AppNavigationContainer
-                                ref={(navigatorRef: NavigationContainerComponent) => {
-                                    return navigation.setTopLevelNavigator(navigatorRef);
-                                }}
-                            />
-                        </UserRealmProvider>
-                    </DataRealmProvider>
-                </PaperProvider>
-            </ThemeProvider>
+            <ErrorBoundary FallbackComponent={ErrorFallback} onError={sendErrorReportWithCrashlytics}>
+                <ThemeProvider>
+                    <PaperProvider>
+                        <DataRealmProvider>
+                            <UserRealmProvider>
+                                <AppNavigationContainer
+                                    ref={(navigatorRef: NavigationContainerComponent) => {
+                                        return navigation.setTopLevelNavigator(navigatorRef);
+                                    }}
+                                    onNavigationStateChange={(prevState, nextState) => {
+                                        try {
+                                            dataRealmStore.setVariable('prevNavigationState', JSON.stringify(prevState, null, 4));
+                                            dataRealmStore.setVariable('nextNavigationState', JSON.stringify(nextState, null, 4));
+                                        } catch (e) { }
+                                    }}
+                                />
+                            </UserRealmProvider>
+                        </DataRealmProvider>
+                    </PaperProvider>
+                </ThemeProvider>
+            </ErrorBoundary>
         );
     }
 }

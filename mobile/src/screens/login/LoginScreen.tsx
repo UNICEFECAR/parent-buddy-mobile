@@ -5,7 +5,7 @@ import { GradientBackground } from '../../components/GradientBackground';
 import { Typography, TypographyType } from '../../components/Typography';
 import { RoundedButton, RoundedButtonType } from '../../components/RoundedButton';
 import { RoundedTextInput } from '../../components/RoundedTextInput';
-import { TextButton, TextButtonSize } from '../../components/TextButton';
+import { TextButton, TextButtonSize, TextButtonColor } from '../../components/TextButton';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { translate } from '../../translations/translate';
 import { Animated, Easing } from 'react-native';
@@ -15,9 +15,11 @@ import { googleAuth, navigation, facebook } from '../../app';
 import { dataRealmStore } from '../../stores';
 import { utils } from '../../app/utils';
 import { Button, Snackbar, Colors } from 'react-native-paper';
-import { moderateScale } from 'react-native-size-matters';
+import { moderateScale, scale } from 'react-native-size-matters';
 import { themes } from '../../themes/themes';
-import { DrupalLoginResponse, apiStore, DrupalLoginArgs } from '../../stores/apiStore';
+import { apiStore, DrupalLoginArgs } from '../../stores/apiStore';
+import { ScrollView } from 'react-native-gesture-handler';
+import { AppNavigationContainer } from '../../app/Navigators';
 
 export interface Props {
     navigation: NavigationSwitchProp<NavigationState>;
@@ -27,7 +29,7 @@ export interface State {
     isSnackbarVisible: boolean;
     snackbarMessage: string;
     email: string,
-    password: string
+    password: string,
 }
 
 interface Animations {
@@ -89,7 +91,20 @@ export class LoginScreen extends React.Component<Props, State & AnimationsState>
     private async onLoginClick() {
         const { email, password } = this.state;
 
-        let userLoginResponse: DrupalLoginResponse = { isUserExist: false }
+        // Check if app can be opened
+        const canAppBeOpened = utils.canAppBeOpened();
+
+        if (!canAppBeOpened) {
+            this.setState({
+                isSnackbarVisible: true,
+                snackbarMessage: translate('appCantOpen'),
+            });
+
+            return;
+        }
+
+        // Login
+        let userLoginResponse: boolean = false;
 
         if (this.inputValidation()) {
 
@@ -100,13 +115,23 @@ export class LoginScreen extends React.Component<Props, State & AnimationsState>
 
             try {
                 userLoginResponse = await apiStore.drupalLogin(args)
-            } catch (rejectError) { }
+            } catch (rejectError) { 
+                console.log(rejectError)
+                if(rejectError.Error === "Network Error"){
+                    this.setState({
+                        isSnackbarVisible: true,
+                        snackbarMessage: "Network error"
+                    });
+                }
+            }
 
-            if (userLoginResponse.isUserExist) {
+            if (userLoginResponse) {
                 dataRealmStore.setVariable('userEmail', email);
                 dataRealmStore.setVariable('userIsLoggedIn', true);
                 dataRealmStore.setVariable('loginMethod', 'cms');
+                utils.logAnalitic("userHasLoggedIn", {eventName: "userHasLoggedIn"});
                 utils.gotoNextScreenOnAppOpen();
+
             } else {
                 this.setState({
                     isSnackbarVisible: true,
@@ -189,12 +214,26 @@ export class LoginScreen extends React.Component<Props, State & AnimationsState>
     }
 
     private async googleLogin() {
+        // Check if app can be opened
+        const canAppBeOpened = utils.canAppBeOpened();
+
+        if (!canAppBeOpened) {
+            this.setState({
+                isSnackbarVisible: true,
+                snackbarMessage: translate('appCantOpen'),
+            });
+
+            return;
+        }
+
+        // Login
         let response = await googleAuth.signIn();
 
         if (response?.user?.email) {
             dataRealmStore.setVariable('userEmail', response.user.email);
             dataRealmStore.setVariable('userIsLoggedIn', true);
             dataRealmStore.setVariable('loginMethod', 'google');
+            utils.logAnalitic("userHasLoggedIn", {eventName: "userHasLoggedIn"});
             utils.gotoNextScreenOnAppOpen();
         } else {
             this.setState({
@@ -205,6 +244,19 @@ export class LoginScreen extends React.Component<Props, State & AnimationsState>
     }
 
     private async facebookLogin() {
+        // Check if app can be opened
+        const canAppBeOpened = utils.canAppBeOpened();
+
+        if (!canAppBeOpened) {
+            this.setState({
+                isSnackbarVisible: true,
+                snackbarMessage: translate('appCantOpen'),
+            });
+
+            return;
+        }
+
+        // Login
         let loginResult = await facebook.logIn();
 
         if (loginResult.grantedPermissions) {
@@ -214,6 +266,7 @@ export class LoginScreen extends React.Component<Props, State & AnimationsState>
                 dataRealmStore.setVariable('userEmail', facebookUser.email);
                 dataRealmStore.setVariable('userIsLoggedIn', true);
                 dataRealmStore.setVariable('loginMethod', 'facebook');
+                utils.logAnalitic("userHasLoggedIn", {eventName: "userHasLoggedIn"});
                 utils.gotoNextScreenOnAppOpen();
             } else {
                 this.setState({
@@ -237,116 +290,138 @@ export class LoginScreen extends React.Component<Props, State & AnimationsState>
             <GradientBackground>
                 <StatusBar barStyle="light-content" />
 
-                <SafeAreaView style={[styles.container]}>
-                    <KeyboardAwareScrollView
-                        keyboardShouldPersistTaps='always'
-                        style={{ borderWidth: 0, borderColor: 'red' }} contentContainerStyle={{ borderWidth: 0, borderColor: 'green', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center', marginLeft: 30, marginRight: 30 }}
-                        onKeyboardWillShow={() => { this.onKeyboardWillShow() }}
-                        onKeyboardWillHide={() => { this.onKeyboardWillHide() }}
-                        onKeyboardDidShow={() => { this.onKeyboardWillShow() }}
-                        onKeyboardDidHide={() => { this.onKeyboardWillHide() }}
-                    >
-                        {/* TITLE */}
-                        <Typography type={TypographyType.logo} style={{ textAlign: 'center', color: 'white', marginTop: 20 }}>
-                            {translate('appName')}
-                        </Typography>
-
-                        <Animated.View style={[{ overflow: 'hidden' }, { height: anim.toggleButtons.height }]}>
-                            {/* LOGIN WITH GOOGLE */}
-                            <RoundedButton
-                                type={RoundedButtonType.google}
-                                onPress={() => { this.googleLogin() }}
-                                style={{ marginBottom: 15, width: '100%' }}
+                {
+                    !utils.canAppBeOpened() ?
+                        <ScrollView contentContainerStyle={{padding: scale(30), flex: 1, justifyContent: 'center'}}>    
+                            <Typography 
+                                type={TypographyType.headingSecondary} 
+                                style={{color: 'white', textAlign: 'center', marginTop: scale(-90), marginBottom: scale(30)}}
+                            >
+                                {translate('dataCantDownload')}
+                            </Typography>
+                            <RoundedButton 
+                                type={RoundedButtonType.purple} 
+                                onPress={() => navigation.resetStackAndNavigate('RootModalStackNavigator_SyncingScreen')}  
+                                text={translate('downloadData')}
                             />
+                        </ScrollView>
+                        :
+                        <SafeAreaView style={[styles.container]}>
+                            <KeyboardAwareScrollView
+                                keyboardShouldPersistTaps='always'
+                                style={{ borderWidth: 0, borderColor: 'red' }} contentContainerStyle={{ borderWidth: 0, borderColor: 'green', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center', marginLeft: 30, marginRight: 30 }}
+                                onKeyboardWillShow={() => { this.onKeyboardWillShow() }}
+                                onKeyboardWillHide={() => { this.onKeyboardWillHide() }}
+                                onKeyboardDidShow={() => { this.onKeyboardWillShow() }}
+                                onKeyboardDidHide={() => { this.onKeyboardWillHide() }}
+                            >
+                                {/* TITLE */}
+                                <Typography type={TypographyType.logo} style={{ textAlign: 'center', color: 'white', marginTop: 20 }}>
+                                    {translate('appName')}
+                                </Typography>
 
-                            {/* LOGIN WITH FACEBOOK */}
-                            <RoundedButton
-                                type={RoundedButtonType.facebook}
-                                onPress={() => { this.facebookLogin() }}
-                                style={{ marginBottom: 15, width: '100%' }}
-                            />
+                                <Animated.View style={[{ overflow: 'hidden' }, { height: anim.toggleButtons.height }]}>
+                                    {/* LOGIN WITH GOOGLE */}
+                                    <RoundedButton
+                                        type={RoundedButtonType.google}
+                                        onPress={() => { this.googleLogin() }}
+                                        style={{ marginBottom: 15, width: '100%' }}
+                                    />
 
-                            {/* REGISTER ACCOUNT */}
-                            <RoundedButton
-                                text={translate('registerAccount')}
-                                type={RoundedButtonType.purple}
-                                onPress={() => { this.gotoRegisterScreen() }}
-                                style={{ marginBottom: 15, width: '100%' }}
-                            />
-                        </Animated.View>
+                                    {/* LOGIN WITH FACEBOOK */}
+                                    <RoundedButton
+                                        type={RoundedButtonType.facebook}
+                                        onPress={() => { this.facebookLogin() }}
+                                        style={{ marginBottom: 15, width: '100%' }}
+                                    />
+
+                                    {/* REGISTER ACCOUNT */}
+                                    <RoundedButton
+                                        text={translate('registerAccount')}
+                                        type={RoundedButtonType.purple}
+                                        onPress={() => { this.gotoRegisterScreen() }}
+                                        style={{ marginBottom: 15, width: '100%' }}
+                                    />
+                                </Animated.View>
 
 
-                        <Animated.View style={{ height: anim.toggleButtons.spaceHeight }}></Animated.View>
+                                <Animated.View style={{ height: anim.toggleButtons.spaceHeight }}></Animated.View>
 
-                        {/* INPUT: email */}
-                        <RoundedTextInput
-                            label={translate('fieldLabelEmail')}
-                            icon="email-outline"
-                            onChange={(value) => { this.setState({ email: value }) }}
-                            onFocus={() => { this.onInputFocus() }}
-                            style={{ marginBottom: 15 }}
-                        />
+                                {/* INPUT: email */}
+                                <RoundedTextInput
+                                    label={translate('fieldLabelEmail')}
+                                    icon="email-outline"
+                                    onChange={(value) => { this.setState({ email: value }) }}
+                                    onFocus={() => { this.onInputFocus() }}
+                                    style={{ marginBottom: 15 }}
+                                />
 
-                        {/* INPUT: password */}
-                        <RoundedTextInput
-                            label={translate('fieldLabelPassword')}
-                            icon="lock-outline"
-                            onChange={(value) => { this.setState({ password: value }) }}
-                            onFocus={() => { this.onInputFocus() }}
-                            style={{ marginBottom: 15 }}
-                            secureTextEntry={true}
-                        />
+                                {/* INPUT: password */}
+                                <RoundedTextInput
+                                    label={translate('fieldLabelPassword')}
+                                    icon="lock-outline"
+                                    onChange={(value) => { this.setState({ password: value }) }}
+                                    onFocus={() => { this.onInputFocus() }}
+                                    style={{ marginBottom: 15 }}
+                                    secureTextEntry={true}
+                                />
 
-                        {/* LOGIN BUTTON */}
-                        <RoundedButton
-                            text={translate('loginButton')}
-                            type={RoundedButtonType.hollowWhite}
-                            onPress={() => { this.onLoginClick() }}
-                            style={{ marginBottom: 15 }}
-                        />
+                                {/* LOGIN BUTTON */}
+                                <RoundedButton
+                                    text={translate('loginButton')}
+                                    type={RoundedButtonType.hollowWhite}
+                                    onPress={() => { this.onLoginClick() }}
+                                    style={{ marginBottom: 15 }}
+                                />
+                                <TextButton color={TextButtonColor.white} onPress={() => this.props.navigation.navigate('LoginStackNavigator_ResetPasswordScreen')}>
+                                    {translate('loginForgotPassword')}
+                                </TextButton>
 
-                        {/* FORGOT THE PASSWORD */}
-                        {/* <TextButton size={TextButtonSize.small} textStyle={{ color: 'white', textAlign: 'center' }} onPress={() => { }}>
+                                {/* FORGOT THE PASSWORD */}
+                                {/* <TextButton size={TextButtonSize.small} textStyle={{ color: 'white', textAlign: 'center' }} onPress={() => { }}>
                             {translate('loginForgotPassword')}
                         </TextButton> */}
 
-                        <View style={{ height: 60 }}></View>
+                                <View style={{ height: 60 }}></View>
 
-                        {/* LOGO IMAGES */}
-                        <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
-                            <Image
-                                source={require('../../themes/assets/gradski_zavod.png')}
-                                style={{ width: '48%', maxWidth: 150, aspectRatio: 3.26 }}
-                                resizeMode="cover"
-                            />
-                            <View style={{ flex: 1 }}></View>
-                            <Image
-                                source={require('../../themes/assets/unicef.png')}
-                                style={{ width: '48%', maxWidth: 140, aspectRatio: 4 }}
-                                resizeMode="cover"
-                            />
-                        </View>
+                                {/* LOGO IMAGES */}
+                                <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
+                                    <Image
+                                        source={require('../../themes/assets/gradski_zavod.png')}
+                                        style={{ width: '48%', maxWidth: 150, aspectRatio: 3.26 }}
+                                        resizeMode="cover"
+                                    />
+                                    <View style={{ flex: 1 }}></View>
+                                    <Image
+                                        source={require('../../themes/assets/unicef.png')}
+                                        style={{ width: '48%', maxWidth: 140, aspectRatio: 4 }}
+                                        resizeMode="cover"
+                                    />
+                                </View>
 
-                        <View style={{ height: 30 }} />
-                    </KeyboardAwareScrollView>
+                                <View style={{ height: 30 }} />
+                            </KeyboardAwareScrollView>
 
-                    <Snackbar
-                        visible={this.state.isSnackbarVisible}
-                        duration={Snackbar.DURATION_SHORT}
-                        onDismiss={() => { this.setState({ isSnackbarVisible: false }) }}
-                        theme={{ colors: { onSurface: snackbarErrorStyle?.backgroundColor, accent: snackbarErrorStyle?.actionButtonColor, } }}
-                        action={{
-                            label: 'Ok',
-                            onPress: () => {
-                                this.setState({ isSnackbarVisible: false });
-                            },
-                        }}
-                    >
-                        <Text style={{ fontSize: snackbarErrorStyle?.fontSize }}>
-                            {this.state.snackbarMessage}
-                        </Text>
-                    </Snackbar>
-                </SafeAreaView>
+                            <Snackbar
+                                visible={this.state.isSnackbarVisible}
+                                duration={Snackbar.DURATION_SHORT}
+                                onDismiss={() => { this.setState({ isSnackbarVisible: false }) }}
+                                theme={{ colors: { onSurface: snackbarErrorStyle?.backgroundColor, accent: snackbarErrorStyle?.actionButtonColor, } }}
+                                action={{
+                                    label: 'Ok',
+                                    onPress: () => {
+                                        this.setState({ isSnackbarVisible: false });
+                                    },
+                                }}
+                            >
+                                <Text style={{ fontSize: snackbarErrorStyle?.fontSize }}>
+                                    {this.state.snackbarMessage}
+                                </Text>
+                            </Snackbar>
+                        </SafeAreaView>
+                }
+
+
             </GradientBackground>
         );
     }

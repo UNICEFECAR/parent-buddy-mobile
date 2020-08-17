@@ -8,7 +8,7 @@ import { RoundedTextInput } from '../../components/RoundedTextInput';
 import { RoundedButton, RoundedButtonType } from '../../components/RoundedButton';
 import { TextButton, TextButtonSize } from '../../components/TextButton';
 import { apiStore, } from '../../stores';
-import { DrupalRegisterRespone, DrupalRegisterArgs, } from '../../stores/apiStore';
+import { DrupalRegisterArgs, } from '../../stores/apiStore';
 import { Snackbar } from 'react-native-paper';
 import { themes } from '../../themes';
 import { utils } from '../../app';
@@ -58,7 +58,8 @@ export class RegisterScreen extends React.Component<Props, State> {
     private dataValidation(): boolean {
         let isValid = true;
 
-        const { firstName, lastName, mail, passwordRepeat, password } = this.state;
+        let { firstName, lastName, mail, passwordRepeat, password } = this.state;
+        mail = mail.trim();
 
         if (firstName === "" || lastName === "" || mail === "" || password === "" || passwordRepeat === "") {
             this.setState({
@@ -97,9 +98,10 @@ export class RegisterScreen extends React.Component<Props, State> {
     }
 
     private async createAccount() {
-        const { firstName, lastName, mail, password } = this.state;
+        let { firstName, lastName, mail, password } = this.state;
+        mail = mail.trim();
         
-        let userRegisterResponse: DrupalRegisterRespone = { registrationSuccess: false }
+        let userRegisterResponse: boolean =  false;
 
         if (this.dataValidation()) {
             const body: DrupalRegisterArgs = {
@@ -114,7 +116,8 @@ export class RegisterScreen extends React.Component<Props, State> {
                 userRegisterResponse = await apiStore.drupalRegister(body)
             } catch (rejectError) { }
 
-            if (userRegisterResponse.registrationSuccess) {
+            if (userRegisterResponse) {
+                utils.logAnalitic("userHasRegistered", {eventName: "userHasRegistered"});
                 this.gotoRegisterCreatedScreen(mail, password);
             } else {
                 this.setState({

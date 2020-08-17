@@ -15,7 +15,7 @@ import { Dimensions, Linking } from 'react-native';
 // @ts-ignore
 import HTML from 'react-native-render-html';
 import { ContentEntity } from '../../stores/ContentEntity';
-import { content } from '../../app';
+import { content, utils } from '../../app';
 import { DataRealmContext, DataRealmContextValue, DataRealmConsumer } from '../../stores/DataRealmContext';
 import { Media } from '../../components';
 import { VideoType } from '../../components/Media';
@@ -38,7 +38,6 @@ export class ArticleScreen extends React.Component<Props, object> {
 
     public constructor(props: Props) {
         super(props);
-
         // DEBUG
         const screenParams = this.props.navigation.state.params!;
         // console.log( JSON.stringify(screenParams.article, null, 4) );
@@ -63,6 +62,15 @@ export class ArticleScreen extends React.Component<Props, object> {
         } else {
             this.props.navigation.state.params = defaultScreenParams;
         }
+
+        let date = new Date();
+        const payload = {
+            eventName: "articleHasOpened",
+            articleId: this.props.navigation.state.params.article.id,
+            categoryName: this.props.navigation.state.params.categoryName,
+            timestampMilisecounds: date.getTime(),
+        }
+        utils.logAnalitic("articleHasOpened", payload);
     }
 
     private gotoBack() {
@@ -71,7 +79,7 @@ export class ArticleScreen extends React.Component<Props, object> {
 
     public render() {
         const screenParams = this.props.navigation.state.params!;
-
+        console.log(screenParams.article, "screen PARAMS")
         return (
             <ThemeConsumer>
                 {(themeContext: ThemeContextValue) => (
@@ -116,23 +124,31 @@ export class ArticleScreen extends React.Component<Props, object> {
                         </View>
 
                         <View style={{ flexDirection: 'column', justifyContent: 'flex-start', padding: themeContext.theme.screenContainer?.padding }}>
-                            {/* ARTICLE BODY */}
-                            {/* <AutoHeightWebView
-                            source={{ html:screenParams.article.bodyHTML}}
-                            style={{width: '100%'}}
-                            customStyle={ `p {font-size:20px}` }
-                            scalesPageToFit={true}
-                            scrollEnabled={false}
-                            viewportContent={'width=device-width, user-scalable=no'}
-                            // onSizeUpdated={ size => console.warn(size.height) }
-                        /> */}
+                            {/* ARTICLE SUMMARY */}
+                            {screenParams.article.summary ? (
+                                <View>
+                                    <HTML
+                                        html={screenParams.article.summary}
+                                        baseFontStyle={{ fontSize: scale(19) }}
+                                        tagsStyles={htmlStyles}
+                                        imagesMaxWidth={Dimensions.get('window').width}
+                                        staticContentMaxWidth={Dimensions.get('window').width}
+                                        onLinkPress={(event: any, href: string) => {
+                                            Linking.openURL(href);
+                                        }}
+                                    />
 
+                                    <Divider style={{marginTop:scale(30)}} />
+                                </View>
+                            ) : null}
+
+                            {/* ARTICLE BODY */}
                             {screenParams.article.body ? (
                                 <HTML
                                     html={screenParams.article.body}
                                     baseFontStyle={{ fontSize: scale(17) }}
                                     tagsStyles={htmlStyles}
-                                    imagesMaxWidth={Dimensions.get('window').width}
+                                    imagesMaxWidth={Dimensions.get('window').width - 45}
                                     staticContentMaxWidth={Dimensions.get('window').width}
                                     onLinkPress={(event: any, href: string) => {
                                         Linking.openURL(href);
@@ -176,5 +192,6 @@ const styles = StyleSheet.create<ArticleScreenStyles>({
 const htmlStyles = {
     p: { marginBottom: 15 },
     a: { fontWeight: 'bold', textDecorationLine: 'none' },
+    // img: ,
     blockquote: { backgroundColor: '#F0F1FF', padding: scale(15) },
 };

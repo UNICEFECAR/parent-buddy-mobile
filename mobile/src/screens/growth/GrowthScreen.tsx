@@ -17,7 +17,7 @@ import { ChildGender, Measures } from '../../stores/ChildEntity';
 import { DateTime } from 'luxon';
 import { ChartData as Data, GrowthChart0_2Type, GrowthChartHeightAgeType } from '../../components/growth/growthChartData';
 import { TextButtonColor } from '../../components/TextButton';
-import { navigation } from '../../app';
+import { navigation, utils } from '../../app';
 import { ActivityIndicator } from 'react-native-paper';
 import { DataRealmContext, DataRealmContextValue, DataRealmConsumer } from '../../stores/DataRealmContext';
 import { UserRealmConsumer, UserRealmContextValue } from '../../stores/UserRealmContext';
@@ -45,11 +45,12 @@ export interface State {
     lastMeasuresLength: number,
     defaultMessage: string,
 }
-
+// git check
 export class GrowthScreen extends Component<Props, State> {
     public constructor(props: Props) {
         super(props);
         this.state = this.initState()
+        utils.logAnalitic("mainMenuItemClick", {eventName: "mainMenuItemClick", screen: "Growth"});
         this.setDefaultScreenParams();
     }
 
@@ -322,7 +323,7 @@ export class GrowthScreen extends Component<Props, State> {
                                                 {this.state.isFirstChartLoaded ?
                                                     <View style={styles.chartCard}>
                                                         <GrowthChart
-                                                            title={translate('heightForLength')}
+                                                            title={translate('weightForLength')}
                                                             chartType={chartTypes.heightLength}
                                                             childBirthDate={childBirthDate ? childBirthDate : DateTime.local()}
                                                             childGender={childGender === "boy" ? "male" : 'female'}

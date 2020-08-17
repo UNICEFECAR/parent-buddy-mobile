@@ -34,7 +34,7 @@ export class WalkthroughScreen extends React.Component<Props, State> {
 
     public constructor(props: Props) {
         super(props);
-
+        
         this.setDefaultScreenParams();
         this.initState();
     }
@@ -42,6 +42,7 @@ export class WalkthroughScreen extends React.Component<Props, State> {
     public componentDidMount() {
         Orientation.lockToPortrait();
     }
+
 
     private setDefaultScreenParams() {
         let defaultScreenParams: WalkthroughScreenParams = {
