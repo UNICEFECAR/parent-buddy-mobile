@@ -58,7 +58,7 @@ PODS:
     - GoogleUtilities/Environment (~> 6.7)
     - GoogleUtilities/Logger (~> 6.7)
     - nanopb (~> 1.30905.0)
-  - FirebaseCrashlytics (4.3.1):
+  - FirebaseCrashlytics (4.3.0):
     - FirebaseCore (~> 6.8)
     - FirebaseInstallations (~> 1.1)
     - GoogleDataTransport (~> 7.0)
@@ -88,7 +88,7 @@ PODS:
     - GoogleUtilities/Network (~> 6.0)
     - "GoogleUtilities/NSData+zlib (~> 6.0)"
     - nanopb (~> 1.30905.0)
-  - GoogleDataTransport (7.1.0):
+  - GoogleDataTransport (7.0.0):
     - nanopb (~> 1.30905.0)
   - GoogleSignIn (5.0.2):
     - AppAuth (~> 1.2)
@@ -641,13 +641,13 @@ SPEC CHECKSUMS:
   FirebaseAnalytics: 5fa308e1b13f838d0f6dc74719ac2a72e8c5afc4
   FirebaseCore: 687b8e6a0a4337b898a6326d68254c2f80c143af
   FirebaseCoreDiagnostics: 7535fe695737f8c5b350584292a70b7f8ff0357b
-  FirebaseCrashlytics: 863c851b034baeb3116cd2c91743e37de2dcedfc
+  FirebaseCrashlytics: f6ae039fdaf07980425f2ae9f49131fc94009c58
   FirebaseInstallations: 3c520c951305cbf9ca54eb891ff9e6d1fd384881
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
   GCDWebServer: 2c156a56c8226e2d5c0c3f208a3621ccffbe3ce4
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
   GoogleAppMeasurement: 8cd1f289d60e629cf16ab03363b9e89c776b9651
-  GoogleDataTransport: af0c79193dc59acd37630b4833d0dc6912ae6bd5
+  GoogleDataTransport: 8a40cb194ad242b6f6dfe72c14fe40fc67c4dcd7
   GoogleSignIn: 7137d297ddc022a7e0aa4619c86d72c909fa7213
   GoogleUtilities: e121a3867449ce16b0e35ddf1797ea7a389ffdf2
   GTMAppAuth: 4deac854479704f348309e7b66189e604cf5e01e
