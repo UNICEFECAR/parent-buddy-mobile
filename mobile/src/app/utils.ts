@@ -3,6 +3,8 @@ import { dataRealmStore, ContentEntity } from '../stores';
 import SendSMS, { AndroidSuccessTypes } from 'react-native-sms'
 import URLParser from 'url';
 import RNFS from 'react-native-fs';
+import { appConfig } from './appConfig';
+import analytics from '@react-native-firebase/analytics';
 import { Platform } from 'react-native';
 import { ContentEntitySchema } from '../stores/ContentEntity';
 
@@ -20,6 +22,31 @@ class Utils {
         }
         return Utils.instance;
     }
+
+    public logAnalitic(eventName: string, payload: object) {
+        let send = true;
+        let allowAnonymousUsage = dataRealmStore.getVariable('allowAnonymousUsage');
+        if (eventName === "onParentGenderSave" || eventName === "onChildAgeSave" ||
+            eventName === "onAdditionalChildEntered" || eventName === "onChildGenderSave") {
+            if (allowAnonymousUsage === null) {
+                send = false;
+            } else {
+                send = allowAnonymousUsage;
+            };
+        }else {
+            send = true;
+        };
+        if (send) {
+            analytics().logEvent(eventName, {
+                ...payload
+            });
+        } else {
+            // if allow anonimus usage === false
+            if (appConfig.showLog) {
+                console.log("allowUsage je false")
+            }
+        };
+    };
 
     /**
      * When app opens, there is an order of screens that should open,

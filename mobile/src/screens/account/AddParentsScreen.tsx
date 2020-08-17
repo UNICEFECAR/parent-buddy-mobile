@@ -106,8 +106,11 @@ export class AddParentsScreen extends React.Component<Props, State> {
                     {/* CHOOSE PARENT TYPE */}
                     <RadioButtons
                         value={this.state.parent}
-                        buttons={[{ text: translate('accountMother'), value: 'mother' }, { text: translate('accountFather'), value: 'father' }]}
-                        onChange={(text: any) => { this.setState({ parent: text }) }}
+                        buttons={[{ text: translate("accountMother"), value: "mother" }, { text: translate("accountFather"), value: "father" }]}
+                        onChange={(text: any) => {
+                            this.setState({ parent: text })
+                            utils.logAnalitic("onParentGenderSave", {eventName: "onParentGenderSave"})
+                        }}
                     />
 
                     <View style={{ height: scale(20) }}></View>

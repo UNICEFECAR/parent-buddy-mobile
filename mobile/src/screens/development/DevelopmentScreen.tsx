@@ -8,7 +8,7 @@ import { HomeScreenParams } from '../home/HomeScreen';
 import { translate } from '../../translations/translate';
 import { dataRealmStore, userRealmStore, ChildEntity } from '../../stores';
 import { MilestoneCard } from '../../components/development/MilestoneCard';
-import { navigation } from '../../app';
+import { navigation, utils } from '../../app';
 import { RoundedButtonType } from '../../components/RoundedButton';
 import { StackActions } from 'react-navigation';
 import { DevelopmentPeriodsType } from '../../stores/dataRealmStore';
@@ -34,6 +34,7 @@ export class DevelopmentScreen extends Component<Props, State> {
     public constructor(props: Props) {
         super(props);
         this.initState();
+        utils.logAnalitic("mainMenuItemClick", {eventName: "mainMenuItemClick", screen: "Development"})
         this.setDefaultScreenParams();
     };
 

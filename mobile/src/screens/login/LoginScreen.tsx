@@ -129,7 +129,9 @@ export class LoginScreen extends React.Component<Props, State & AnimationsState>
                 dataRealmStore.setVariable('userEmail', email);
                 dataRealmStore.setVariable('userIsLoggedIn', true);
                 dataRealmStore.setVariable('loginMethod', 'cms');
+                utils.logAnalitic("userHasLoggedIn", {eventName: "userHasLoggedIn"});
                 utils.gotoNextScreenOnAppOpen();
+
             } else {
                 this.setState({
                     isSnackbarVisible: true,
@@ -231,6 +233,7 @@ export class LoginScreen extends React.Component<Props, State & AnimationsState>
             dataRealmStore.setVariable('userEmail', response.user.email);
             dataRealmStore.setVariable('userIsLoggedIn', true);
             dataRealmStore.setVariable('loginMethod', 'google');
+            utils.logAnalitic("userHasLoggedIn", {eventName: "userHasLoggedIn"});
             utils.gotoNextScreenOnAppOpen();
         } else {
             this.setState({
@@ -263,6 +266,7 @@ export class LoginScreen extends React.Component<Props, State & AnimationsState>
                 dataRealmStore.setVariable('userEmail', facebookUser.email);
                 dataRealmStore.setVariable('userIsLoggedIn', true);
                 dataRealmStore.setVariable('loginMethod', 'facebook');
+                utils.logAnalitic("userHasLoggedIn", {eventName: "userHasLoggedIn"});
                 utils.gotoNextScreenOnAppOpen();
             } else {
                 this.setState({
