@@ -131,6 +131,11 @@ export class Drawer extends React.Component<Props> {
             navigation.dispatch(DrawerActions.closeDrawer());
         }
 
+        if (fancyButtonType === FancyButtonType.doctor) {
+            navigation.navigate('HomeStackNavigator_DoctorVisitsScreen');
+            navigation.dispatch(DrawerActions.closeDrawer());
+        }
+
         if (fancyButtonType === FancyButtonType.settings) {
             // navigation.navigate('HomeStackNavigator_SettingsScreen');
             navigation.resetStackAndNavigate('RootModalStackNavigator_SettingsScreen');
@@ -201,10 +206,10 @@ export class Drawer extends React.Component<Props> {
                             <FancyButton type={FancyButtonType.development} style={{ flex: 1 }} onPress={() => { this.gotoScreen(FancyButtonType.development) }} />
                         </View>
 
-                        {/* <View style={{ flexDirection: 'row' }}>
+                        <View style={{ flexDirection: 'row' }}>
                             <FancyButton type={FancyButtonType.vaccination} style={{ flex: 1 }} onPress={() => { this.gotoScreen(FancyButtonType.vaccination) }} />
                             <FancyButton type={FancyButtonType.doctor} style={{ flex: 1 }} onPress={() => { this.gotoScreen(FancyButtonType.doctor) }} />
-                        </View> */}
+                        </View>
 
                         {/* APP RELATED BUTTONS  */}
                         <Typography type={TypographyType.headingPrimary} style={{ marginTop: scale(20), marginBottom: scale(5) }}>
