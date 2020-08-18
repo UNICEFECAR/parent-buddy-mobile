@@ -234,7 +234,7 @@ export interface DrawerStyles {
 
 const styles = StyleSheet.create<DrawerStyles>({
     contentContainer: {
-        padding: 10,
+        padding: scale(15),
         backgroundColor: 'white',
     },
 });

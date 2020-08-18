@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, ViewStyle, Text, View } from 'react-native'
+import { StyleSheet, ViewStyle, Text, View, TextStyle } from 'react-native'
 import { NavigationStackProp, NavigationStackState } from 'react-navigation-stack';
 import { ScrollView } from 'react-native-gesture-handler';
 import { ThemeConsumer, ThemeContextValue } from '../../themes/ThemeContext';
@@ -7,6 +7,7 @@ import { scale } from 'react-native-size-matters';
 import { HomeScreenParams } from '../home/HomeScreen';
 import { translate } from '../../translations/translate';
 import { Typography, TypographyType } from '../../components/Typography';
+import { DoctorVisitCard } from '../../components/doctor-visit/DoctorVisitCard';
 
 export interface DoctorVisitsScreenParams {
 
@@ -29,9 +30,13 @@ export class DoctorVisitsScreen extends Component<Props> {
                         style={{ backgroundColor: themeContext.theme.screenContainer?.backgroundColor }}
                         contentContainerStyle={styles.container}
                     >
-                        <Typography type={TypographyType.headingPrimary}>
+                        {/* TITLE */}
+                        <Typography type={TypographyType.headingPrimary} style={styles.title}>
                             {translate('doctorVisitsScreenTitle')}
                         </Typography>
+
+                        {/* CARDS */}
+                        <DoctorVisitCard title="Unesi nesto" />
                     </ScrollView>
                 )}
             </ThemeConsumer>
@@ -40,13 +45,18 @@ export class DoctorVisitsScreen extends Component<Props> {
 }
 
 export interface DoctorVisitsScreenStyles {
-    container: ViewStyle
+    container: ViewStyle;
+    title: TextStyle;
 }
 
 const styles = StyleSheet.create<DoctorVisitsScreenStyles>({
     container: {
-        padding: scale(24),
+        padding: scale(14),
         alignItems: 'stretch',
-    }
+    },
+
+    title: {
+        paddingHorizontal: scale(10),
+    },
 })
 
