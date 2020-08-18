@@ -46,6 +46,7 @@ import { utils } from "./utils";
 import { ResetPasswordScreen } from "../screens/login";
 import { UserRealmConsumer } from "../stores/UserRealmContext";
 import { getFontScale } from "react-native-device-info";
+import { DoctorVisitsScreen } from "../screens/doctor-visit/DoctorVisitsScreen";
 
 /**
 * Use it to [navigate screens](https://reactnavigation.org/docs/en/navigating-without-navigation-prop.html)
@@ -301,6 +302,10 @@ const HomeStackNavigator = createStackNavigator({
                 ...secondaryHomeNavigationOptions
             }
         }
+    },
+
+    HomeStackNavigator_DoctorVisitsScreen: {
+        screen: DoctorVisitsScreen
     },
 
 }, {
