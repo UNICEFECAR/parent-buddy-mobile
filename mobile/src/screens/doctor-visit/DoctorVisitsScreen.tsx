@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
-import { StyleSheet, ViewStyle, Text } from 'react-native'
+import { StyleSheet, ViewStyle, Text, View } from 'react-native'
 import { NavigationStackProp, NavigationStackState } from 'react-navigation-stack';
 import { ScrollView } from 'react-native-gesture-handler';
 import { ThemeConsumer, ThemeContextValue } from '../../themes/ThemeContext';
 import { scale } from 'react-native-size-matters';
 import { HomeScreenParams } from '../home/HomeScreen';
 import { translate } from '../../translations/translate';
+import { Typography, TypographyType } from '../../components/Typography';
 
 export interface DoctorVisitsScreenParams {
 
@@ -28,7 +29,9 @@ export class DoctorVisitsScreen extends Component<Props> {
                         style={{ backgroundColor: themeContext.theme.screenContainer?.backgroundColor }}
                         contentContainerStyle={styles.container}
                     >
-                        <Text>Test doctor visit</Text>
+                        <Typography type={TypographyType.headingPrimary}>
+                            {translate('doctorVisitsScreenTitle')}
+                        </Typography>
                     </ScrollView>
                 )}
             </ThemeConsumer>
