@@ -12,6 +12,7 @@ import { DrupalRegisterArgs, } from '../../stores/apiStore';
 import { Snackbar } from 'react-native-paper';
 import { themes } from '../../themes';
 import { utils } from '../../app';
+import NetInfo from "@react-native-community/netinfo";
 
 export interface Props {
     navigation: NavigationSwitchProp<NavigationState>;
@@ -101,6 +102,18 @@ export class RegisterScreen extends React.Component<Props, State> {
         let { firstName, lastName, mail, password } = this.state;
         mail = mail.trim();
         
+        const netInfo = await NetInfo.fetch();
+
+        if(!netInfo.isConnected || !netInfo.isInternetReachable){
+            this.setState({
+                isSnackBarVisible: true,
+                snackBarMessage: translate('appCantOpen'),
+            });
+
+            return;
+        }
+
+
         let userRegisterResponse: boolean =  false;
 
         if (this.dataValidation()) {

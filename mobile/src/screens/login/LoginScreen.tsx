@@ -20,6 +20,7 @@ import { themes } from '../../themes/themes';
 import { apiStore, DrupalLoginArgs } from '../../stores/apiStore';
 import { ScrollView } from 'react-native-gesture-handler';
 import { AppNavigationContainer } from '../../app/Navigators';
+import NetInfo from "@react-native-community/netinfo";
 
 export interface Props {
     navigation: NavigationSwitchProp<NavigationState>;
@@ -90,11 +91,12 @@ export class LoginScreen extends React.Component<Props, State & AnimationsState>
 
     private async onLoginClick() {
         const { email, password } = this.state;
+        const netInfo = await NetInfo.fetch();
+
 
         // Check if app can be opened
-        const canAppBeOpened = utils.canAppBeOpened();
-
-        if (!canAppBeOpened) {
+        
+        if(!netInfo.isConnected || !netInfo.isInternetReachable){
             this.setState({
                 isSnackbarVisible: true,
                 snackbarMessage: translate('appCantOpen'),

@@ -249,7 +249,7 @@ export class GrowthScreen extends Component<Props, State> {
     };
 
     private openFullScreenChart(type: chartTypes) {
-        this.props.navigation.navigate('RootModalStackNavigator_ChartFullScreen',
+        this.props.navigation.push('RootModalStackNavigator_ChartFullScreen',
             {
                 chartType: type,
                 childBirthDate: this.state.childBirthDate,

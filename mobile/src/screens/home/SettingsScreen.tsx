@@ -228,11 +228,17 @@ export class SettingsScreen extends React.Component<Props, State> {
         const importResponse = await backup.import(userRealmContext);
         this.setState({ isImportRunning: false, });
 
+
         if (importResponse instanceof Error) {
             this.setState({
                 isSnackbarVisible: true,
                 snackbarMessage: importResponse.message,
             });
+        }else{
+            this.setState({
+                isSnackbarSuccessVisible: true,
+                snackbarSuccessMessage: translate('importDataSuccess'),
+            });             
         }
     }
 

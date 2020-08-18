@@ -99,6 +99,7 @@
     "writeUsEmail": "Pišite nam na e-mail",
     "callUs": "Pozovite naše savetovalište",
     "aboutUs": "O nama",
+    "surveyParticipateBtn": "Učestvujte u poboljšanju aplikacije",
     "termsAndConditionsTitle": "Uslovi korišćenja",
 
     "settingsTitle": "Podešavanja",
@@ -113,6 +114,7 @@
     "settingsTitleImportExport": "Uvoz i izvoz sačuvanih podataka",
     "settingsButtonExport": "Izvezite sve sačuvane podatke",
     "exportDataSuccess": "TODO Podaci su izvezeni uspešno!",
+    "importDataSuccess": "TODO Podaci su uvezeni uspesno!",
     "settingsButtonImport": "Uvezite sve sačuvane podatke",
     "settingsButtonExportError": "Podaci nisu uspešno izvezeni",
     "settingsButtonImportError": "Backup file ne postoji",
