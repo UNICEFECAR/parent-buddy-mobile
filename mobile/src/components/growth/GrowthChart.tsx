@@ -90,10 +90,12 @@ export class GrowthChart extends React.Component<Props, State> {
 
         let orientation: "portrait"  | "landscape" = windowWidth > windowHeight ? 'landscape' : 'portrait';
 
+        let chartHeight = this.props.showFullscreen ? Dimensions.get('window').height - 120 : windowHeight - 300;
+        
         let state: State = {
             orientation: orientation,
             width: windowWidth,
-            height: windowHeight,
+            height: chartHeight,
             bottomArea: obj.bottomArea,
             topArea: obj.topArea,
             middleArea: obj.middleArea,
@@ -166,6 +168,7 @@ export class GrowthChart extends React.Component<Props, State> {
     }
 
     private fullScreenEvents(){
+        console.log('uso u fullScreen events')
         if(this.props.openFullScreen){
             this.props.openFullScreen()
         }
@@ -177,14 +180,14 @@ export class GrowthChart extends React.Component<Props, State> {
 
 
     private renderProps = () => {
-        return this.props.showFullscreen ? {height: this.state.height - 120} : null
+        // return this.props.showFullscreen ? {height:  : null
     }
     private renderChart = (): ReactNode => (
         <>
             <VictoryChart
                 theme={VictoryTheme.material}
                 width={this.state.width - 30}
-                {...this.renderProps()}
+                height={this.state.height}
             >
                 {/* ********* AXIS HORIZONTAL ********* */}
                 <VictoryAxis

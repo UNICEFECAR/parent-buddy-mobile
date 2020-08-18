@@ -99,6 +99,7 @@
     "writeUsEmail": "Write us email",
     "callUs":  "Call Us",
     "aboutUs": "About us",
+    "surveyParticipateBtn": "TODO Učestvujte u poboljšanju aplikacije",
     "termsAndConditionsTitle": "Terms and conditions",
 
     "settingsTitle": "Settings",
@@ -113,6 +114,7 @@
     "settingsTitleImportExport": "Data export / import",
     "settingsButtonExport": "Export all saved data",
     "exportDataSuccess": "TODO Data Export is Successful",
+    "importDataSuccess": "TODO Data import is Successful",
     "settingsButtonImport": "Import all saved data",
     "settingsButtonExportError": "Export failed",
     "settingsButtonImportError": "There is no backup file",

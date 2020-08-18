@@ -111,13 +111,13 @@ export class AboutScreen extends React.Component<Props, State> {
                         />
 
                         <View>
-                            <RoundedButton type={RoundedButtonType.purple} text="Zelim da da dsa dasda" onPress={() => {}} />
+                            <RoundedButton type={RoundedButtonType.purple} text={translate('surveyParticipateBtn')} onPress={() => {}} />
                             <TextButton 
                                 style={{marginTop: scale(20), marginBottom: scale(20)}} 
                                 color={TextButtonColor.purple}
                                 onPress={() => this.props.navigation.push('HomeStackNavigator_TermsScreen', {hideCheckboxes: true})}
                             >
-                                    Uslovi korišćenja aplikacije
+                                    {translate('termsAndConditionsTitle')}
                             </TextButton>
                         </View>
                     </ScrollView>
