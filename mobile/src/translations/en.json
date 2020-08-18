@@ -194,6 +194,8 @@
     "measurementMass": "Weight",
     "measurementLength": "Lenght",
 
+    "doctorVisitsScreenTitle": "Health check-ups",
+
     "growthChartLegendSilverLabel": "-Typical values for age",
     "growthChartLegendOrangeLabel": "-Suboptimal values for age",
     
