@@ -95,7 +95,7 @@ export class AddChildrenScreen extends React.Component<Props, State> {
                 child.updatedAt = new Date();
             });
         };
-        utils.logAnalitic("onChildGenderSave", {eventName: "onChildGenderSave"});
+        utils.logAnalitic("onChildGenderSave", { eventName: "onChildGenderSave" });
     };
 
     private onChildNameChange(child: ChildEntity | undefined, newName: string) {
@@ -151,10 +151,20 @@ export class AddChildrenScreen extends React.Component<Props, State> {
 
     private async addAnotherChild() {
         await userRealmStore.create<ChildEntity>(ChildEntitySchema, this.getNewChild());
-        utils.logAnalitic('onAdditionalChildEntered', {eventName: "onAdditionalChildEntered"});
+        utils.logAnalitic('onAdditionalChildEntered', { eventName: "onAdditionalChildEntered" });
         setTimeout(() => {
             this.scrollView.current?.scrollToEnd();
         }, 0);
+    }
+
+    private showRemoveButton() {
+        let allChildren = userRealmStore.getAllChildren();
+
+        if (allChildren.length > 1) {
+            return true
+        } else {
+            return false;
+        }
     }
 
     private async removeChild(child: ChildEntity | undefined) {
@@ -162,6 +172,7 @@ export class AddChildrenScreen extends React.Component<Props, State> {
         if (this.state.screenType !== "" && this.state.screenType !== "EditChild") {
             this.props.navigation.navigate('HomeStackNavigator_ChildProfileScreen')
         }
+
     }
 
     private gotoAddParentsScreen() {
@@ -229,12 +240,15 @@ export class AddChildrenScreen extends React.Component<Props, State> {
                                 <Text style={{ flex: 1, fontSize: moderateScale(16), fontWeight: 'bold' }}>
                                     {translate('accountSisterOrBrother')}
                                 </Text>
+                                {
+                                    this.showRemoveButton() ?
+                                        <IconButton
+                                            icon="close"
+                                            size={scale(25)}
+                                            onPress={() => { this.removeChild(child) }}
+                                        /> : null
+                                }
 
-                                <IconButton
-                                    icon="close"
-                                    size={scale(25)}
-                                    onPress={() => { this.removeChild(child) }}
-                                />
                             </View>
                         )}
 
@@ -300,12 +314,15 @@ export class AddChildrenScreen extends React.Component<Props, State> {
                                 <Text style={{ flex: 1, fontSize: moderateScale(16), fontWeight: 'bold' }}>
                                     {this.state.screenType === "EditChild" ? null : translate('accountSisterOrBrother')}
                                 </Text>
+                                {
+                                    this.showRemoveButton() ?
+                                        <IconButton
+                                            icon="close"
+                                            size={scale(25)}
+                                            onPress={() => { this.removeChild(child) }}
+                                        /> : null
+                                }
 
-                                <IconButton
-                                    icon="close"
-                                    size={scale(25)}
-                                    onPress={() => {this.removeChild(child)}}
-                                />
 
                             </View>
 
