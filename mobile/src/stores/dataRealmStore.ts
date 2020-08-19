@@ -42,6 +42,7 @@ export type Variables = {
     'nextNavigationState': string;
     'syncDataReport': string[];
     'lastDataSyncError': string;
+    'finishedPolls': FinishedPolls[]
 };
 
 type VariableKey = keyof Variables;
@@ -698,6 +699,11 @@ export type FaqScreenArticlesResponseItem = {
     tagType: TagType;
     items: ListCardItem[];
 };
+
+export type FinishedPolls = {
+    id: number,
+    updatedTimestamp: number,
+}
 
 export type DevelopmentPeriodsType = {
     finished?: boolean,
