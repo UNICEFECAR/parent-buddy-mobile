@@ -46,6 +46,7 @@ import { utils } from "./utils";
 import { ResetPasswordScreen } from "../screens/login";
 import { UserRealmConsumer } from "../stores/UserRealmContext";
 import { getFontScale } from "react-native-device-info";
+import { PollsScreen } from "../screens/PollsScreen";
 
 /**
 * Use it to [navigate screens](https://reactnavigation.org/docs/en/navigating-without-navigation-prop.html)
@@ -533,6 +534,15 @@ const RootModalStackNavigator = createStackNavigator({
     },
     RootModalStackNavigator_PrivacyPolicyScreen: {
         screen: PrivacyPolocyScreen,
+        navigationOptions: ({ navigation }: NavigationScreenConfigProps<NavigationStackProp<NavigationStackState, any>>): NavigationStackOptions => {
+            return {
+                title: translate('termsAndConditionsTitle'),
+                ...secondaryHomeNavigationOptions
+            }
+        }
+    },
+    RootModalStackNavigator_PollsScreen: {
+        screen: PollsScreen,
         navigationOptions: ({ navigation }: NavigationScreenConfigProps<NavigationStackProp<NavigationStackState, any>>): NavigationStackOptions => {
             return {
                 title: translate('termsAndConditionsTitle'),

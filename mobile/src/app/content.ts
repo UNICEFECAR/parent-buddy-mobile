@@ -230,7 +230,7 @@ class Content {
                             const filteredRecords = allContent?.
                                 filtered(`category == ${categoryId} AND type == 'article'`)
                                 .filter(item => item.predefinedTags.indexOf(4756) === -1)
-                                .filter(item => item.predefinedTags.indexOf(childAgeTagId) !== -1);
+                                .filter(item => item.predefinedTags.indexOf(childAgeTagId) !== -1 || item.predefinedTags.indexOf(446) !== -1);
 
                             filteredRecords?.forEach((record, index, collection) => {
                                 if (record.id !== featuredArticleId &&
@@ -267,7 +267,6 @@ class Content {
         }
         return rval;
     }
-
 
     public getHomeScreenArticles(realm: Realm | null): ArticlesSectionData {
         const rval: ArticlesSectionData = {
@@ -324,7 +323,10 @@ class Content {
                     const filteredRecordsWithAge = allContent?.
                         filtered(`category == ${categoryId} AND type == 'article'`)
                         .filter(item => item.predefinedTags.indexOf(4756) === -1)
-                        .filter(item => item.predefinedTags.indexOf(childAgeTagId) !== -1)
+                        .filter(item => 
+                                item.predefinedTags.indexOf(childAgeTagId) !== -1 || 
+                                item.predefinedTags.indexOf(446) !== -1
+                            );
 
 
                     filteredRecordsWithAge?.forEach((record, index, collection) => {
@@ -412,7 +414,8 @@ class Content {
                 .filter(item => item.predefinedTags.indexOf(4756) === -1)
                 // Filter articles with this child age tag
                 .filter((article) => {
-                    return article.predefinedTags.indexOf(childAgeTag.id) !== -1;
+                    return article.predefinedTags.indexOf(childAgeTag.id) !== -1 || 
+                    article.predefinedTags.indexOf(446) !== -1;
                 })
 
                 // Remove opposite gender
