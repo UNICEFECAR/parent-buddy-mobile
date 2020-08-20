@@ -14,7 +14,7 @@ export interface DoctorVisitsScreenParams {
 }
 
 export interface Props {
-    navigation: NavigationStackProp<NavigationStackState, HomeScreenParams>,
+    navigation: NavigationStackProp<NavigationStackState, HomeScreenParams>;
 }
 
 export class DoctorVisitsScreen extends Component<Props> {
