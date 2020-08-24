@@ -1,16 +1,18 @@
 import React, { Component } from 'react'
-import { View, ViewStyle, StyleSheet, TextStyle, ImageStyle } from 'react-native'
+import { View, ViewStyle, StyleSheet, TextStyle, ImageStyle, Text } from 'react-native'
 import { Typography, TypographyType } from '../Typography';
 import { translate } from '../../translations/translate';
 import { scale, moderateScale } from 'react-native-size-matters';
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import IconFontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 
 export interface Props {
     title: string;
     subTitle?: string;
     titleIcon?: TitleIconType;
     showVerticalLine?: boolean;
-    items: any[];
+    items: DoctorVisitCardItem[];
     buttons?: any[];
 }
 
@@ -23,7 +25,7 @@ export class DoctorVisitCard extends Component<Props, State> {
         title: '',
         items: [],
         buttons: [],
-        showVerticalLine: false,
+        showVerticalLine: true,
     };
 
     constructor(props: Props) {
@@ -71,26 +73,51 @@ export class DoctorVisitCard extends Component<Props, State> {
 
     render() {
         return (
-            <View style={styles.container}>
-                <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
-                    {/* Title icon */}
-                    {this.state.titleIcon ? this.state.titleIcon : null}
+            <View>
+                {/* CARD */}
+                <View style={styles.card}>
+                    {/* TITLE & SUBTITLE */}
+                    <View style={{ flexDirection: 'row', alignItems: 'flex-start', marginBottom: scale(15) }}>
+                        {/* Title icon */}
+                        {this.state.titleIcon ? this.state.titleIcon : null}
 
-                    <View style={{ flex: 1 }}>
-                        {/* Title */}
-                        <Typography
-                            style={styles.title}
-                            type={TypographyType.headingSecondary}
-                        >
-                            {this.props.title}
-                        </Typography>
+                        <View style={{ flex: 1 }}>
+                            {/* Title */}
+                            <Typography
+                                style={styles.title}
+                                type={TypographyType.headingSecondary}
+                            >
+                                {this.props.title}
+                            </Typography>
 
-                        {/* Subtitle */}
-                        <Typography type={TypographyType.bodyRegular}>
-                            {this.props.subTitle}
-                        </Typography>
+                            {/* Subtitle */}
+                            <Typography type={TypographyType.bodyRegular}>
+                                {this.props.subTitle}
+                            </Typography>
+                        </View>
                     </View>
+
+                    {/* ITEMS */}
+                    {this.props.items.map((item, index) => (
+                        <View key={index} style={{ flexDirection: 'row', marginBottom: scale(12) }}>
+                            <FontAwesome5Icon
+                                name={ item.icon }
+                                style={styles.itemIcon}
+                            />
+
+                            <Typography type={TypographyType.bodyRegular} style={{ flex: 1 }}>
+                                {item.text}
+                            </Typography>
+                        </View>
+                    ))}
                 </View>
+
+                {/* VERTICAL LINE */}
+                {this.props.showVerticalLine ? (
+                    <View style={styles.verticalLine} />
+                ) : (
+                        <View style={{ height: scale(30) }} />
+                    )}
             </View>
         )
     }
@@ -98,13 +125,15 @@ export class DoctorVisitCard extends Component<Props, State> {
 
 export interface DoctorVisitCardStyles {
     [index: string]: ViewStyle | TextStyle | ImageStyle;
-    container: ViewStyle;
+    card: ViewStyle;
     title: TextStyle;
     titleIcon: TextStyle;
+    itemIcon: TextStyle;
+    verticalLine: ViewStyle;
 }
 
 const styles = StyleSheet.create<DoctorVisitCardStyles>({
-    container: {
+    card: {
         backgroundColor: 'white',
         borderRadius: 8,
         elevation: 3,
@@ -121,8 +150,22 @@ const styles = StyleSheet.create<DoctorVisitCardStyles>({
 
     titleIcon: {
         lineHeight: scale(25),
-        paddingRight: 10,
-        fontSize: 24,
+        paddingRight: scale(14),
+        fontSize: scale(20),
+    },
+
+    itemIcon: {
+        color: '#272727',
+        paddingRight: scale(14),
+        fontSize: scale(20),
+        opacity: 0.7,
+    },
+
+    verticalLine: {
+        backgroundColor: '#939395',
+        width: scale(3),
+        height: scale(25),
+        marginLeft: scale(20),
     },
 });
 
@@ -131,3 +174,14 @@ export enum TitleIconType {
     Info,
     Add,
 }
+
+export type DoctorVisitCardItem = {
+    icon: DoctorVisitCardItemIcon;
+    text: string;
+}
+
+export enum DoctorVisitCardItemIcon {
+    Syringe = 'syringe',
+    Weight = 'weight',
+    Stethoscope = 'stethoscope',
+};

@@ -7,7 +7,7 @@ import { scale } from 'react-native-size-matters';
 import { HomeScreenParams } from '../home/HomeScreen';
 import { translate } from '../../translations/translate';
 import { Typography, TypographyType } from '../../components/Typography';
-import { DoctorVisitCard, TitleIconType } from '../../components/doctor-visit/DoctorVisitCard';
+import { DoctorVisitCard, TitleIconType, DoctorVisitCardItemIcon } from '../../components/doctor-visit/DoctorVisitCard';
 
 export interface DoctorVisitsScreenParams {
 
@@ -41,6 +41,12 @@ export class DoctorVisitsScreen extends Component<Props> {
                                 title={"Pregled na rodjenju " + index}
                                 subTitle="9.7.2020"
                                 titleIcon={TitleIconType.Checked}
+                                showVerticalLine={index !== 2}
+                                items={[
+                                    {icon: DoctorVisitCardItemIcon.Syringe, text:'Dete je dobilo vakcine'},
+                                    {icon: DoctorVisitCardItemIcon.Weight, text:'Dete je tesko bre Dete je tesko bre Dete je tesko bre Dete je tesko bre Dete je tesko bre '},
+                                    {icon: DoctorVisitCardItemIcon.Stethoscope, text:'Savet doktora'},
+                                ]}
                             />
                         ))}
                     </ScrollView>
