@@ -179,7 +179,8 @@ const styles = StyleSheet.create<DoctorVisitCardStyles>({
         elevation: 3,
         shadowOffset: { width: 2, height: 2 },
         shadowOpacity: 0.2,
-        padding: scale(16),
+        paddingHorizontal: scale(16),
+        paddingTop: scale(16),
     },
 
     title: {
