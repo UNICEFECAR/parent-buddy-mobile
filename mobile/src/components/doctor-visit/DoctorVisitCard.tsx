@@ -8,7 +8,7 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 export interface Props {
     title: string;
     subTitle?: string;
-    titleIcon?: any;
+    titleIcon?: TitleIconType;
     showVerticalLine?: boolean;
     items: any[];
     buttons?: any[];
@@ -37,7 +37,7 @@ export class DoctorVisitCard extends Component<Props, State> {
         // TITLE ICON
 
         // Checked icon
-        if (this.props.titleIcon === IconType.Checked) {
+        if (this.props.titleIcon === TitleIconType.Checked) {
             state.titleIcon = (
                 <Icon
                     name={"check-circle"}
@@ -47,7 +47,7 @@ export class DoctorVisitCard extends Component<Props, State> {
         }
 
         // Add icon
-        if (this.props.titleIcon === IconType.Add) {
+        if (this.props.titleIcon === TitleIconType.Add) {
             state.titleIcon = (
                 <Icon
                     name={"plus-circle-outline"}
@@ -57,7 +57,7 @@ export class DoctorVisitCard extends Component<Props, State> {
         }
 
         // Info icon
-        if (this.props.titleIcon === IconType.Info) {
+        if (this.props.titleIcon === TitleIconType.Info) {
             state.titleIcon = (
                 <Icon
                     name={"information"}
@@ -96,7 +96,6 @@ export class DoctorVisitCard extends Component<Props, State> {
     }
 }
 
-
 export interface DoctorVisitCardStyles {
     [index: string]: ViewStyle | TextStyle | ImageStyle;
     container: ViewStyle;
@@ -127,7 +126,7 @@ const styles = StyleSheet.create<DoctorVisitCardStyles>({
     },
 });
 
-export enum IconType {
+export enum TitleIconType {
     Checked,
     Info,
     Add,

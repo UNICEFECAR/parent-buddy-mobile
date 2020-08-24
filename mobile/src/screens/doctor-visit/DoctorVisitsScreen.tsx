@@ -7,7 +7,7 @@ import { scale } from 'react-native-size-matters';
 import { HomeScreenParams } from '../home/HomeScreen';
 import { translate } from '../../translations/translate';
 import { Typography, TypographyType } from '../../components/Typography';
-import { DoctorVisitCard, IconType } from '../../components/doctor-visit/DoctorVisitCard';
+import { DoctorVisitCard, TitleIconType } from '../../components/doctor-visit/DoctorVisitCard';
 
 export interface DoctorVisitsScreenParams {
 
@@ -36,11 +36,13 @@ export class DoctorVisitsScreen extends Component<Props> {
                         </Typography>
 
                         {/* CARDS */}
-                        <DoctorVisitCard
-                            title="Unesi nesto"
-                            subTitle="9.7.2020"
-                            // titleIcon={IconType.Info}
-                        />
+                        {[0, 1, 2].map(index => (
+                            <DoctorVisitCard
+                                title={"Pregled na rodjenju " + index}
+                                subTitle="9.7.2020"
+                                titleIcon={TitleIconType.Checked}
+                            />
+                        ))}
                     </ScrollView>
                 )}
             </ThemeConsumer>
