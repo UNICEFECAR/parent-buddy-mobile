@@ -1,19 +1,21 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { View, ViewStyle, StyleSheet, TextStyle, ImageStyle, Text } from 'react-native'
 import { Typography, TypographyType } from '../Typography';
 import { translate } from '../../translations/translate';
 import { scale, moderateScale } from 'react-native-size-matters';
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import IconFontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
+import { TextButton, RoundedButton } from '..';
+import { RoundedButtonType } from '../RoundedButton';
+import { TextButtonColor } from '../TextButton';
 
 export interface Props {
     title: string;
     subTitle?: string;
-    titleIcon?: TitleIconType;
+    titleIcon?: DoctorVisitTitleIconType;
     showVerticalLine?: boolean;
     items: DoctorVisitCardItem[];
-    buttons?: any[];
+    buttons?: DoctorVisitCardButton[];
 }
 
 export interface State {
@@ -39,7 +41,7 @@ export class DoctorVisitCard extends Component<Props, State> {
         // TITLE ICON
 
         // Checked icon
-        if (this.props.titleIcon === TitleIconType.Checked) {
+        if (this.props.titleIcon === DoctorVisitTitleIconType.Checked) {
             state.titleIcon = (
                 <Icon
                     name={"check-circle"}
@@ -49,7 +51,7 @@ export class DoctorVisitCard extends Component<Props, State> {
         }
 
         // Add icon
-        if (this.props.titleIcon === TitleIconType.Add) {
+        if (this.props.titleIcon === DoctorVisitTitleIconType.Add) {
             state.titleIcon = (
                 <Icon
                     name={"plus-circle-outline"}
@@ -59,7 +61,7 @@ export class DoctorVisitCard extends Component<Props, State> {
         }
 
         // Info icon
-        if (this.props.titleIcon === TitleIconType.Info) {
+        if (this.props.titleIcon === DoctorVisitTitleIconType.Info) {
             state.titleIcon = (
                 <Icon
                     name={"information"}
@@ -99,9 +101,9 @@ export class DoctorVisitCard extends Component<Props, State> {
 
                     {/* ITEMS */}
                     {this.props.items.map((item, index) => (
-                        <View key={index} style={{ flexDirection: 'row', marginBottom: scale(12) }}>
+                        <View key={index} style={{ flexDirection: 'row', marginBottom: (index !== this.props.items.length - 1 ? scale(12) : 0) }}>
                             <FontAwesome5Icon
-                                name={ item.icon }
+                                name={item.icon}
                                 style={styles.itemIcon}
                             />
 
@@ -109,6 +111,43 @@ export class DoctorVisitCard extends Component<Props, State> {
                                 {item.text}
                             </Typography>
                         </View>
+                    ))}
+
+                    {/* BUTTONS */}
+                    {this.props.buttons?.map((button, index) => (
+                        <Fragment>
+                            {/* Text button */}
+                            {button.type === DoctorVisitCardButtonType.Text ? (
+                                <TextButton
+                                    color={TextButtonColor.purple}
+                                    textStyle={{ flex:1, textAlign: 'center' }}
+                                    style={{paddingVertical: styles.button.marginBottom}}
+                                    onPress={button.onPress}
+                                >
+                                    {button.text}
+                                </TextButton>
+                            ) : null}
+
+                            {/* Purple button */}
+                            {button.type === DoctorVisitCardButtonType.Purple ? (
+                                <RoundedButton
+                                    type={RoundedButtonType.purple}
+                                    text={button.text}
+                                    style={styles.button}
+                                    onPress={button.onPress}
+                                />
+                            ) : null}
+
+                            {/* Hollow purple button */}
+                            {button.type === DoctorVisitCardButtonType.HollowPurple ? (
+                                <RoundedButton
+                                    type={RoundedButtonType.hollowPurple}
+                                    text={button.text}
+                                    style={styles.button}
+                                    onPress={button.onPress}
+                                />
+                            ) : null}
+                        </Fragment>
                     ))}
                 </View>
 
@@ -129,6 +168,7 @@ export interface DoctorVisitCardStyles {
     title: TextStyle;
     titleIcon: TextStyle;
     itemIcon: TextStyle;
+    button: ViewStyle;
     verticalLine: ViewStyle;
 }
 
@@ -161,6 +201,10 @@ const styles = StyleSheet.create<DoctorVisitCardStyles>({
         opacity: 0.7,
     },
 
+    button: {
+        marginBottom: scale(18),
+    },
+
     verticalLine: {
         backgroundColor: '#939395',
         width: scale(3),
@@ -169,7 +213,7 @@ const styles = StyleSheet.create<DoctorVisitCardStyles>({
     },
 });
 
-export enum TitleIconType {
+export enum DoctorVisitTitleIconType {
     Checked,
     Info,
     Add,
@@ -184,4 +228,16 @@ export enum DoctorVisitCardItemIcon {
     Syringe = 'syringe',
     Weight = 'weight',
     Stethoscope = 'stethoscope',
-};
+}
+
+export type DoctorVisitCardButton = {
+    type: DoctorVisitCardButtonType;
+    text: string;
+    onPress: Function;
+}
+
+export enum DoctorVisitCardButtonType {
+    Text,
+    Purple,
+    HollowPurple,
+}
