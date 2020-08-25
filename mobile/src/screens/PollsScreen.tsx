@@ -1,14 +1,17 @@
 import React from 'react';
-import { ScrollView, ViewStyle, StyleSheet, Linking, Dimensions, View } from 'react-native';
+import { ViewStyle, Text, View, Dimensions } from 'react-native';
 import { NavigationStackProp, NavigationStackState, NavigationStackOptions } from 'react-navigation-stack';
 import { ThemeContextValue, ThemeConsumer } from '../themes/ThemeContext';
-import { translate } from '../translations/translate';
-import { scale } from 'react-native-size-matters';
-import { TextButton, TextButtonColor } from '../components/TextButton';
-import { TermsScreenParams } from './login/TermsScreen';
-import { dataRealmStore } from '../stores';
+import NetInfo from "@react-native-community/netinfo";
+
 // @ts-ignore
-import HTML from 'react-native-render-html';
+import WebView from 'react-native-webview';
+import { GradientBackground, Typography, RoundedButton } from '../components';
+import { TypographyType } from '../components/Typography';
+import { dataRealmStore } from '../stores';
+import { ActivityIndicator } from 'react-native-paper';
+import { translate } from 'i18n-js';
+
 
 export interface PollsScreenParams {
     showSearchInput?: boolean;
@@ -20,8 +23,7 @@ export interface Props {
 
 export interface State {
     title: string,
-    body: string,
-
+    url: string,
 }
 
 /**
@@ -36,18 +38,21 @@ export class PollsScreen extends React.Component<Props, State> {
     }
 
     private initState() {
-        const aboutPageData = dataRealmStore.getBasicPage(4516);    
+
+        const polls = this.props.navigation.state.params?.polls;
 
         let state: State = {
             title: "",
-            body: "",
+            url: "",
         }
 
-        if (aboutPageData) {
-            
-            state.title = aboutPageData.title;
-            state.body = aboutPageData.body;
+        if (polls) {
+            const activePolls = polls
+
+            state.title = activePolls.title;
+            state.url = activePolls.link;
         };
+
 
         this.state = state;
     };
@@ -56,6 +61,7 @@ export class PollsScreen extends React.Component<Props, State> {
         let defaultScreenParams: PollsScreenParams = {
             showSearchInput: false,
         };
+
 
         if (this.props.navigation.state.params) {
             this.props.navigation.state.params = Object.assign({}, defaultScreenParams, this.props.navigation.state.params);
@@ -67,28 +73,53 @@ export class PollsScreen extends React.Component<Props, State> {
     private gotoBack() {
         this.props.navigation.goBack();
     }
-    
+
+    private async canPollsBeOpened() {
+        const netInfo = await NetInfo.fetch();
+
+        if (netInfo.isConnected && netInfo.isInternetReachable) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private onMessage() {
+        let polls = this.props.navigation.state.params?.polls;
+
+        if (polls) {
+            let id = polls.id;
+            let updated_at = polls.updated_at
+
+            dataRealmStore.onPollFinished(id, updated_at)
+        };
+    };
+
+    private loader() {
+        let top = Dimensions.get('window').height / 2;
+        return <ActivityIndicator size='large' style={{top: -top}} />
+    }
+
     public render() {
+        if (!this.canPollsBeOpened()) {
+            return (
+                <View style={{ alignContent: 'stretch', alignItems: 'center', justifyContent: 'center', paddingTop: 50 }}>
+                    <Typography style={{ textAlign: 'center', padding: 20 }} type={TypographyType.headingSecondary}>{translate('pollsNoInternet')}</Typography>
+                </View>
+            )
+        }
         return (
-            <ThemeConsumer>
-                {(themeContext: ThemeContextValue) => (
-                    <ScrollView
-                        style={{ flex: 1, backgroundColor: 'white' }}
-                        contentContainerStyle={[styles.container, { padding: themeContext.theme.screenContainer?.padding }]}
-                    >
-                        <HTML
-                            html={this.state.body}
-                            baseFontStyle={{ fontSize: scale(18) }}
-                            tagsStyles={htmlStyles}
-                            imagesMaxWidth={Dimensions.get('window').width}
-                            staticContentMaxWidth={Dimensions.get('window').width}
-                            onLinkPress={(event: any, href: string) => {
-                                Linking.openURL(href);
-                            }}
-                        />
-                    </ScrollView>
-                )}
-            </ThemeConsumer>
+            <WebView
+                style={{ flex: 1 }}
+                renderLoading={this.loader}
+                startInLoadingState={true}
+                source={{
+                    uri: this.state.url
+                }}
+
+                onMessage={() => this.onMessage()}
+            />
+            // <RoundedButton text="TEST FINISH" onPress={() => this.onMessage()} />
         );
     }
 
@@ -98,15 +129,3 @@ export interface PollsScreenStyles {
     container?: ViewStyle;
 }
 
-const styles = StyleSheet.create<PollsScreenStyles>({
-    container: {
-        // flex: 1,
-    },
-});
-const htmlStyles = {
-    p: { marginBottom: 15},
-    ol: {display: 'flex', flexDirection: "column"},
-    li: {width: '100%'},
-    a: { fontWeight: 'bold', textDecorationLine: 'none' },
-    blockquote: { backgroundColor: '#F0F1FF', padding: scale(15) },
-};

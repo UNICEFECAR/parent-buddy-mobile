@@ -13,7 +13,8 @@ import { TextButtonColor } from './TextButton';
 import { dataRealmStore } from '../stores/dataRealmStore';
 
 export interface Props {
-    cardType?: 'purple' | 'white';
+    cardType?: 'purple' | 'white' | "blue";
+    homeMessagesType?: 'polls' | 'homeMessages';
     showCloseButton?: boolean;
     style?: StyleProp<ViewStyle>;
     onClosePress?: () => void;
@@ -50,11 +51,24 @@ export class HomeMessages extends React.Component<Props, State> {
     private getTextStyle(): TextStyle {
         const rval: TextStyle = {};
 
-        if (this.props.cardType === 'purple') {
+        if (this.props.cardType === 'purple' || this.props.cardType === "blue") {
             rval.color = 'white';
         }
 
+        if(this.props.cardType === "blue"){
+            rval.fontSize = scale(20);
+            rval.fontWeight = "bold";
+        }
+
         return rval;
+    }
+
+    private getIconSolidStyle(message: Message): boolean {
+        if(message.iconType === IconType.message){
+            return true;
+        }
+
+        return false;
     }
 
     private getIconStyle(message: Message): TextStyle {
@@ -90,7 +104,11 @@ export class HomeMessages extends React.Component<Props, State> {
             rval.color = '#ED2223';
         }
 
-        if (this.props.cardType === "purple") {
+        if(message.iconType === IconType.message){
+            rval.color = "white";
+        }
+
+        if (this.props.cardType === "purple" || this.props.cardType === "blue") {
             rval.color = 'white';
         }
 
@@ -107,6 +125,8 @@ export class HomeMessages extends React.Component<Props, State> {
         if (message.iconType === IconType.celebrate) rval = 'crown'; // centos, crown, fire
         if (message.iconType === IconType.syringe) rval = 'syringe';
         if (message.iconType === IconType.user) rval = 'user';
+        if (message.iconType === IconType.message) rval = 'comments'
+
 
         return rval;
     }
@@ -146,8 +166,16 @@ export class HomeMessages extends React.Component<Props, State> {
     public render() {
         // console.log('RENDER: HomeMessages');
 
+        let messagesType = this.props.homeMessagesType;
+
         // Get new messages
-        const messages = homeMessages.getMessages();
+        let messages = homeMessages.getMessages();
+
+        if(messagesType){
+            if(messagesType === "polls"){
+                messages = homeMessages.getHomePollMessages();
+            }
+        }
 
         // Decide whether to unhide messages
         if (this.oldMessages !== null && this.state.messagesAreHidden) {
@@ -161,16 +189,33 @@ export class HomeMessages extends React.Component<Props, State> {
         this.oldMessages = messages;
 
         // Sre messages hidden?
-        if (this.state.messagesAreHidden) {
+        if (this.props.homeMessagesType !== "polls" && this.state.messagesAreHidden) {
             return (
                 <TextButton onPress={() => { this.onShowMessagesPress() }} style={{ justifyContent: 'center', marginBottom: scale(15) }} color={TextButtonColor.purple}>{translate('showHomeMessages')}</TextButton>
             );
         }
 
+        if (this.props.homeMessagesType === "polls" && this.state.messagesAreHidden) {
+            return (
+                <TextButton onPress={() => { this.onShowMessagesPress() }} style={{ justifyContent: 'center', marginBottom: scale(15) }} color={TextButtonColor.purple}>{translate('showPolls')}</TextButton>
+            );
+        }
+
+        let cardType = styles.cardWhite;
+
+        if(this.props.cardType === "purple"){
+            cardType = styles.cardPurple
+        }
+
+        if(this.props.cardType === "blue"){
+             cardType = styles.cardBlue
+        }
+
         return (
+            messages?.length > 0 && (
             <View style={[
                 styles.container,
-                this.props.cardType === 'white' ? styles.cardWhite : styles.cardPurple,
+                cardType,
                 this.props.style
             ]}>
                 {messages?.map((message, index) => (
@@ -181,6 +226,7 @@ export class HomeMessages extends React.Component<Props, State> {
                                     <IconFontAwesome5
                                         name={this.getIconName(message)}
                                         style={this.getIconStyle(message)}
+                                        solid={this.getIconSolidStyle(message)}
                                     />
                                 ) : null}
 
@@ -202,6 +248,7 @@ export class HomeMessages extends React.Component<Props, State> {
                             <RoundedButton
                                 style={{ width: '100%', marginTop: message.text ? scale(10) : 0, marginBottom: scale(10), marginLeft: moderateScale(11) }}
                                 type={message.button.type}
+                                showArrow={message.button.showArrow}
                                 text={message.button.text}
                                 onPress={() => { if (message.button?.onPress) message.button?.onPress() }}
                             />
@@ -223,6 +270,7 @@ export class HomeMessages extends React.Component<Props, State> {
                     />
                 ) : null}
             </View>
+            )
         );
     }
 }
@@ -232,6 +280,7 @@ export interface HomeMessagesStyles {
     container: ViewStyle;
     cardWhite: ViewStyle;
     cardPurple: ViewStyle;
+    cardBlue: ViewStyle;
 }
 
 const styles = StyleSheet.create<HomeMessagesStyles>({
@@ -256,6 +305,9 @@ const styles = StyleSheet.create<HomeMessagesStyles>({
     cardPurple: {
         backgroundColor: '#AA40BF',
     },
+    cardBlue: {
+        backgroundColor: '#6967E4'
+    },
 });
 
 export type Message = {
@@ -264,8 +316,9 @@ export type Message = {
     subText?: string;
     iconType?: IconType;
     button?: {
-        type: RoundedButtonType.purple | RoundedButtonType.hollowPurple,
+        type: RoundedButtonType.purple | RoundedButtonType.hollowPurple | RoundedButtonType.hollowWhite,
         text: string;
+        showArrow?: boolean;
         onPress?: () => void
     };
 };
@@ -278,4 +331,5 @@ export enum IconType {
     heart = 'heart',
     checked = 'checked',
     user = 'user',
+    message = 'message'
 };
