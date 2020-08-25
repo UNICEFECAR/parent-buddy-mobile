@@ -427,7 +427,7 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
             text: `The growth from the third years onwards becomes more even. A child gains 5-7.5 cm in height and 2-3 kg in weight per year.`,
         },
     ],
-    healthCheckPeriods: [
+    growthPeriodsMessages: [
         {
             period: 'On birth',
             childAgeInDays: {from:0, to:30},
@@ -762,4 +762,3 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
 
     ]
 };
-

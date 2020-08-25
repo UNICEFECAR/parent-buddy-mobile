@@ -407,7 +407,7 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
             text: 'Dete od treće godine ujednačeno raste. Dete u visini dobija  5-7,5 cm, a u težini 2-3 kg godišnje. ',
         },
     ],
-    healthCheckPeriods: [
+    growthPeriodsMessages: [
         {
             period: 'Na rodjenju',
             childAgeInDays: {from:0, to:30},
