@@ -474,6 +474,15 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
             showGrowthMessageInDays: {from:1851, to:1866},
         },
     ],
+    doctorVisitPeriods: [
+        {
+            period: 'At birth',
+            
+            // period: 'On birth',
+            // childAgeInDays: {from:0, to:30},
+            // showGrowthMessageInDays: {from:25, to:40},
+        },
+    ],
     interpretationWeightForHeight: [
         {
             predefined_tags: [43, 44, 45, 46],
