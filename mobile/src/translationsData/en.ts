@@ -89,7 +89,7 @@ Watch your baby's behavior and talk to your paediatrician or visiting nurse if y
             homeMessageBefore: '%CHILD% will soon have 3 months',
             homeMessageAfter: '%CHILD% has 3 months',
             moreAboutPeriodArticleIdMale: 3486,
-            subtitle: '3rd and 4th month',    
+            subtitle: '3rd and 4th month',
             moreAboutPeriodArticleIdFemale: 3481,
             description: `
 <p>
@@ -427,71 +427,161 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
             text: `The growth from the third years onwards becomes more even. A child gains 5-7.5 cm in height and 2-3 kg in weight per year.`,
         },
     ],
-    healthCheckPeriods: [
+    growthPeriodsMessages: [
         {
             period: 'On birth',
-            childAgeInDays: {from:0, to:30},
-            showGrowthMessageInDays: {from:25, to:40},
+            childAgeInDays: { from: 0, to: 30 },
+            showGrowthMessageInDays: { from: 25, to: 40 },
         },
         {
             period: '1 month',
-            childAgeInDays: {from:31, to:60},
-            showGrowthMessageInDays: {from:55, to:70},
+            childAgeInDays: { from: 31, to: 60 },
+            showGrowthMessageInDays: { from: 55, to: 70 },
         },
         {
             period: '2 months',
-            childAgeInDays: {from:61, to:91},
-            showGrowthMessageInDays: {from:86, to:101},
+            childAgeInDays: { from: 61, to: 91 },
+            showGrowthMessageInDays: { from: 86, to: 101 },
         },
         {
             period: '3-5 months',
-            childAgeInDays: {from:92, to:122},
-            showGrowthMessageInDays: {from:115, to:130},
+            childAgeInDays: { from: 92, to: 122 },
+            showGrowthMessageInDays: { from: 115, to: 130 },
         },
         {
             period: '5 months',
-            childAgeInDays: {from:152, to:182},
-            showGrowthMessageInDays: {from:177, to:192},
+            childAgeInDays: { from: 152, to: 182 },
+            showGrowthMessageInDays: { from: 177, to: 192 },
         },
         {
             period: '6 months',
-            childAgeInDays: {from:183, to:213},
-            showGrowthMessageInDays: {from:208, to:223},
+            childAgeInDays: { from: 183, to: 213 },
+            showGrowthMessageInDays: { from: 208, to: 223 },
         },
         {
             period: '9 months',
-            childAgeInDays: {from:273, to:305},
-            showGrowthMessageInDays: {from:298, to:313},
+            childAgeInDays: { from: 273, to: 305 },
+            showGrowthMessageInDays: { from: 298, to: 313 },
         },
         {
             period: '12-15 monts',
-            childAgeInDays: {from:365, to:460},
-            showGrowthMessageInDays: {from:450, to:465},
+            childAgeInDays: { from: 365, to: 460 },
+            showGrowthMessageInDays: { from: 450, to: 465 },
         },
         {
             period: '18 months',
-            childAgeInDays: {from:545, to:577},
-            showGrowthMessageInDays: {from:572, to:587},
+            childAgeInDays: { from: 545, to: 577 },
+            showGrowthMessageInDays: { from: 572, to: 587 },
         },
         {
             period: '24-30 months',
-            childAgeInDays: {from:730, to:915},
-            showGrowthMessageInDays: {from:907, to:922},
+            childAgeInDays: { from: 730, to: 915 },
+            showGrowthMessageInDays: { from: 907, to: 922 },
         },
         {
             period: '30-36 months',
-            childAgeInDays: {from:916, to:1095},
-            showGrowthMessageInDays: {from:1090, to:1105},
+            childAgeInDays: { from: 916, to: 1095 },
+            showGrowthMessageInDays: { from: 1090, to: 1105 },
         },
         {
             period: '36-48 months',
-            childAgeInDays: {from:1091, to:1460},
-            showGrowthMessageInDays: {from:1455, to:1470},
+            childAgeInDays: { from: 1091, to: 1460 },
+            showGrowthMessageInDays: { from: 1455, to: 1470 },
         },
         {
             period: '48-61 months',
-            childAgeInDays: {from:1456, to:1856},
-            showGrowthMessageInDays: {from:1851, to:1866},
+            childAgeInDays: { from: 1456, to: 1856 },
+            showGrowthMessageInDays: { from: 1851, to: 1866 },
+        },
+    ],
+    doctorVisitPeriods: [
+        {
+            period: 'At birth',
+            nameOfTheDoctorVisit: 'Health check-up',
+            periodSubtitle: 'At birth',
+            vaccinesIds: [],
+            moreAboutDoctorVisitArticleId: 4526,
+            planDoctorVisitMessageInDays: { from: 0, to: 10 },
+        },
+        {
+            period: 'At 1 month',
+            nameOfTheDoctorVisit: 'Health check-up',
+            periodSubtitle: 'with full 1 month',
+            vaccinesIds: [],
+            moreAboutDoctorVisitArticleId: 4441,
+            planDoctorVisitMessageInDays: { from: 20, to: 60 },
+        },
+        {
+            period: 'At 2 months',
+            nameOfTheDoctorVisit: 'Health check-up',
+            periodSubtitle: 'with full 2 months',
+            vaccinesIds: [],
+            moreAboutDoctorVisitArticleId: 4446,
+            planDoctorVisitMessageInDays: { from: 50, to: 90 },
+        },
+        {
+            period: 'At 3.5 months',
+            nameOfTheDoctorVisit: 'Health check-up',
+            periodSubtitle: 'with 3,5 months',
+            vaccinesIds: [],
+            moreAboutDoctorVisitArticleId: 4451,
+            planDoctorVisitMessageInDays: { from: 90, to: 130 },
+        },
+        {
+            period: 'At 5 months',
+            nameOfTheDoctorVisit: 'Health check-up',
+            periodSubtitle: 'with full 5 months',
+            vaccinesIds: [],
+            moreAboutDoctorVisitArticleId: 4456,
+            planDoctorVisitMessageInDays: { from: 140, to: 180 },
+        },
+        {
+            period: 'At 6 months',
+            nameOfTheDoctorVisit: 'Health check-up',
+            periodSubtitle: 'with full 6 months',
+            vaccinesIds: [],
+            moreAboutDoctorVisitArticleId: 4461,
+            planDoctorVisitMessageInDays: { from: 170, to: 220 },
+        },
+        {
+            period: 'At 9 months',
+            nameOfTheDoctorVisit: 'Health check-up',
+            periodSubtitle: 'with full 9 months',
+            vaccinesIds: [],
+            moreAboutDoctorVisitArticleId: 4466,
+            planDoctorVisitMessageInDays: { from: 260, to: 300 },
+        },
+        {
+            period: 'From 12-15 months',
+            nameOfTheDoctorVisit: 'Health check-up',
+            periodSubtitle: 'between 12th and 15th months',
+            vaccinesIds: [],
+            moreAboutDoctorVisitArticleId: 4471,
+            planDoctorVisitMessageInDays: { from: 350, to: 450 },
+        },
+        {
+            period: 'At 18 months',
+            nameOfTheDoctorVisit: 'Health check-up',
+            periodSubtitle: 'with full 18 months',
+            vaccinesIds: [],
+            moreAboutDoctorVisitArticleId: 4476,
+            planDoctorVisitMessageInDays: { from: 530, to: 600 },
+        },
+        {
+            period: 'at 3 years (24-36 months)',
+            nameOfTheDoctorVisit: 'Health check-up',
+            periodSubtitle: 'between 24th and 36th months',
+            vaccinesIds: [],
+            moreAboutDoctorVisitArticleId: 4511,
+            planDoctorVisitMessageInDays: { from: 720, to: 1080 },
+        },
+        {
+            period: '6-7 years',
+            nameOfTheDoctorVisit: 'Health check-up',
+            periodSubtitle: 'between 24th and 36th months',
+            vaccinesIds: [],
+            moreAboutDoctorVisitArticleId: 4511,
+            planDoctorVisitMessageInDays: { from: 2160, to: 2360 },
         },
     ],
     interpretationWeightForHeight: [
@@ -578,13 +668,13 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
                 articleId: 3111
             },
             emergencyBigHeightText: {
-                name: `Typical growth of a child: 10-12 months- weight for length / height of the child are above +3 SD`,                
+                name: `Typical growth of a child: 10-12 months- weight for length / height of the child are above +3 SD`,
                 text: `Urgent attention! Your child is obese, that is, s/he has a serious excess weight for height. This weight can seriously endanger your child's health. Think about what contributed to that: excess intake of energy-rich foods (such as sweet and oily products), intake of junk foods, reduced physical activity, increased screen time or changes in the immediate environment, etc. Be sure to schedule a visit to the pediatrician for an examination and additional diagnostics, as well as to determine the dynamics of further growth monitoring!`,
                 articleId: 3136
             }
         },
         {
-            predefined_tags: [49,50],
+            predefined_tags: [49, 50],
             goodText: {
                 name: `Typical growth of a child:13-24  months- weight for the length / height of the child is between -2SD to + 2 SD`,
                 text: `Bravo! Your child grows well and her/ his weight is in harmonious with her/his height. Continue to follow the recommendations for optimal nutrition, physical activity and sleep. Keep track of your child's growth.`,
@@ -606,13 +696,13 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
                 articleId: 3111
             },
             emergencyBigHeightText: {
-                name: `Typical growth of a child: 13-24 months- weight for length / height of the child are above +3 SD`,                
+                name: `Typical growth of a child: 13-24 months- weight for length / height of the child are above +3 SD`,
                 text: `Urgent attention! Your child is obese, that is, s/he has a serious excess weight for height. This weight can seriously endanger your child's health. Think about what contributed to that: excess intake of energy-rich foods (such as sweet and oily products), intake of junk foods, reduced physical activity, increased screen time or changes in the immediate environment, etc. Be sure to schedule a visit to the pediatrician for an examination and additional diagnostics, as well as to determine the dynamics of further growth monitoring!`,
                 articleId: 3141
             }
         },
         {
-            predefined_tags: [51,52,53,57,58],
+            predefined_tags: [51, 52, 53, 57, 58],
             goodText: {
                 name: `Typical growth of a child:25-72  months- weight for the length / height of the child is between -2SD to + 2 SD`,
                 text: `Bravo! Your child grows well and her/ his weight is in harmonious with her/his height. Continue to follow the recommendations for optimal nutrition, physical activity and sleep. Keep track of your child's growth.`,
@@ -629,12 +719,12 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
                 articleId: 3096,
             },
             warrningBigHeightText: {
-                name: 'Typical growth of a child: 25-72 months- weight for length / height of the child are between +2 and +3 SD',                
+                name: 'Typical growth of a child: 25-72 months- weight for length / height of the child are between +2 and +3 SD',
                 text: `Attention! Your child is moderately overweight for height. This overweight can endanger his/her health, so think about what contributed to that: excess intake of energy-rich foods (such as sweet and oily products), intake of junk foods, reduced physical activity, increased screen time or changes in the immediate environment, etc. Be sure to make an appointment with a pediatrician to get additional recommendations and determine the dynamics of monitoring your child's growth.`,
                 articleId: 3121,
             },
             emergencyBigHeightText: {
-                name: 'Typical growth of a child: 25-72 months- weight for length / height of the child are above +3 SD',                
+                name: 'Typical growth of a child: 25-72 months- weight for length / height of the child are above +3 SD',
                 text: `Urgent attention! Your child is obese, that is, s/he has a serious excess weight for height. This weight can seriously endanger your child's health. Think about what contributed to that: excess intake of energy-rich foods (such as sweet and oily products), intake of junk foods, reduced physical activity, increased screen time or changes in the immediate environment, etc. Be sure to schedule a visit to the pediatrician for an examination and additional diagnostics, as well as to determine the dynamics of further growth monitoring!`,
                 articleId: 3146
             }
@@ -714,7 +804,7 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
             },
         },
         {
-            predefined_tags: [49,50],
+            predefined_tags: [49, 50],
             goodText: {
                 name: `Typical growth of the child: 13-24 months - values of the length / height of the child for the age are between -2SD to + 3SD`,
                 text: `Bravo! Your child grows in length / height in line or slightly above the range expected for his age and gender. Continue to follow the recommendations of good practice in nutrition, physical activity and sleep and monitor your child's growth.`,
@@ -737,7 +827,7 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
             },
         },
         {
-            predefined_tags: [51,52,53,57,58],
+            predefined_tags: [51, 52, 53, 57, 58],
             goodText: {
                 name: `Typical growth of the child: 25-72 months - values of the length / height of the child for the age are between -2SD to + 3SD`,
                 text: `Bravo! Your child grows in length / height in line or slightly above the range expected for his age and gender. Continue to follow the recommendations of good practice in nutrition, physical activity and sleep and monitor your child's growth.`,
