@@ -47,8 +47,7 @@ export class AccordionCheckBoxList extends Component<Props> {
     private goToArticle(item: ContentEntity | undefined) {
         if (item) {
             let category = dataRealmStore.getCategoryNameFromId(item.id);
-            console.log(item, "ITEM");
-            console.log(category, "CATEGORY")
+
             const pushAction = StackActions.push({
                 routeName: 'HomeStackNavigator_ArticleScreen',
                 params: {

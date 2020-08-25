@@ -93,6 +93,33 @@ class UserRealmStore {
 
     }
 
+    public isChildInDevelopmentPeriod(){
+        const childAge = this.getCurrentChild()?.birthDate;
+
+        let isChildInPeriod = false
+        let periodId = 0;
+
+        if(childAge){
+            const childAgeInDays = Math.round(DateTime.local().diff(DateTime.fromJSDate(childAge), "days").days);
+            const developmentPeriods = translateData('developmentPeriods');
+
+            developmentPeriods?.forEach((value: any, index: any) => {
+                console.log(value.daysStart)
+                if (
+                    (childAgeInDays - value.daysStart > 0)
+                    && (childAgeInDays - value.daysStart <= 20)
+                ) {
+                    isChildInPeriod =  true;
+                    periodId = value.predefinedTagId;
+                }
+            });
+        }else{
+            isChildInPeriod = false;
+        }
+
+        return {isChildInPeriod, periodId};
+    }
+
     public getCurrentChildAgeInDays = (birthDayMilisecounds?: number) => {
         let childBirthDay = birthDayMilisecounds ? birthDayMilisecounds : this.getCurrentChild()?.birthDate?.getTime();
 

@@ -15,6 +15,9 @@ import { translateData, TranslateDataDevelopmentPeriods } from '../translationsD
 import { MilestoneItem } from '../components/development/MilestoneForm';
 import { DailyMessageVariable } from '../app/homeMessages';
 import { ChildEntitySchema } from './ChildEntity';
+import { PollsEntity, PollsEntitySchema } from './PollsEntity';
+import { reject } from 'lodash';
+import { diff } from 'react-native-reanimated';
 
 export type Variables = {
     'userEmail': string;
@@ -151,6 +154,32 @@ class DataRealmStore {
         }
     }
 
+    public async deletePolls() {
+        return new Promise((resolve, reject) => {
+            if (!this.realm) {
+                resolve();
+                return;
+            }
+
+            try {
+                const allPols = this.realm.objects<PollsEntity>(PollsEntitySchema.name);
+
+                if (allPols && allPols.length > 0) {
+                    allPols.forEach(record => {
+                        this.realm?.write(() => {
+                            this.realm?.delete(record);
+                            resolve();
+                        });
+                    });
+                } else {
+                    resolve();
+                }
+            } catch (e) {
+                resolve();
+            }
+        })
+    }
+
     public async deleteVariable<T extends VariableKey>(key: T): Promise<void> {
         return new Promise((resolve, reject) => {
             if (!this.realm) {
@@ -204,7 +233,7 @@ class DataRealmStore {
             }
         });
     };
-    
+
     /*
     *   Return all milestones for given age tag
     */
@@ -221,11 +250,96 @@ class DataRealmStore {
     };
 
 
+    private getPollsByChildAge = (polls: PollsEntity[]) => {
+
+        let developmentPeriod = userRealmStore.isChildInDevelopmentPeriod();
+        let pollsForGivenPeriod: PollsEntity[] = [];
+
+        if (developmentPeriod.isChildInPeriod) {
+            pollsForGivenPeriod = polls.filter(item => item.tags.indexOf(developmentPeriod.periodId) !== -1)
+        }
+
+        return pollsForGivenPeriod;
+    }
+
+    private isPollsFinished(poll: PollsEntity) {
+        let finishedPolls = dataRealmStore.getVariable('finishedPolls');
+
+        let isPollFinis = false;
+
+        if (finishedPolls && finishedPolls.length > 0) {
+            finishedPolls.forEach(item => {
+                console.log(item.updatedTimestamp)
+                console.log(poll.updated_at)
+                if (item.id === poll.id && poll.updated_at === item.updatedTimestamp) {
+                    isPollFinis = true;
+                };
+            });
+        };
+
+        return isPollFinis;
+    };
+
+    /*
+    * Return polls based on polls type 
+    */
+    public getActivePolls() {
+        const polls = this.realm?.objects<PollsEntity>(PollsEntitySchema.name);
+        const questionarePolls = polls?.filtered(`category == "Questionnaires"`)
+
+        const activePolls: PollsEntity[] = [];
+
+        // get noTags polls 
+        let noTagsPolls = questionarePolls?.filter(item => item.tags.length === 0);
+
+        if (noTagsPolls) {
+            noTagsPolls.forEach(poll => {
+                if (!this.isPollsFinished(poll)) {
+                    let updateTime = DateTime.fromMillis(poll.updated_at);
+                    if (updateTime.diffNow('days').days <= 20) {
+                        activePolls.push(poll)
+                    };
+                };
+            });
+        };
+
+        // Get age based polls 
+        if (questionarePolls) {
+            let allPolls = questionarePolls.map(item => item);
+            let agePolls = this.getPollsByChildAge(allPolls);
+
+            if (agePolls.length > 0) {
+                agePolls.forEach(item => {
+                    console.log("item", item)
+                    if (!this.isPollsFinished(item)) {
+                        console.log('prosao')
+                        activePolls.push(item)
+                    }
+                });
+            };
+        };
+
+        return activePolls;
+    }
+
+    public onPollFinished(id: number, updatedTimestamp: number){
+        const finishedPolls = this.getVariable('finishedPolls');
+
+        let allFinishedPolls: FinishedPolls[] = [];
+
+        if(finishedPolls && finishedPolls.length){
+            allFinishedPolls = finishedPolls;
+        }
+       
+        allFinishedPolls?.push({id: id, updatedTimestamp: updatedTimestamp});
+        this.setVariable('finishedPolls', allFinishedPolls)
+    };
+
     /*
     *   Return checked status for all previous peroiods 
     *   If one period.finished === false => return false 
     */
-    public areAllPreviousMilestonesEntered(){
+    public areAllPreviousMilestonesEntered() {
 
         let isFinished = true;
 
@@ -236,8 +350,8 @@ class DataRealmStore {
 
         let allPeriods = this.getDevelopmentPeriods().filter(item => item.childAgeTagId ? item.childAgeTagId < childAgeTagId : null);
 
-        for(let i = 0; i < allPeriods.length; i++){
-            if(allPeriods[i].finished === false){
+        for (let i = 0; i < allPeriods.length; i++) {
+            if (allPeriods[i].finished === false) {
                 return false
             };
         };
@@ -254,14 +368,14 @@ class DataRealmStore {
         let childAgeTagId: number = 0;
 
         const childAge = userRealmStore.getCurrentChild()?.birthDate;
-        
-        if(childAge){
+
+        if (childAge) {
             childAgeMonths = DateTime.local().diff(DateTime.fromJSDate(childAge ? childAge : new Date()), "months",).months;
             childAgeTagId = this.getTagIdFromChildAge(parseInt(childAgeMonths.toString()) + 1);
         };
-        
+
         const childGender = userRealmStore.getChildGender();
-        
+
         if (allPeriods) {
             // if user didn't set age return all periods
             if (childAge === undefined || childAge === null) {
@@ -282,14 +396,14 @@ class DataRealmStore {
                 // if user set age return periods up to current age + featured period
                 let index = userRealmStore.getCurrentChild()?.uuid ? userRealmStore.getCurrentChild()?.uuid : "";
                 let user = userRealmStore.realm?.objects<ChildEntity>(ChildEntitySchema.name).find(item => item.uuid === index);
-                
+
                 let checkedMilesteones: number[] = user?.checkedMilestones ? user?.checkedMilestones : []
 
                 developmentPeriods = allPeriods
                     .filter(period => period.predefinedTagId <= childAgeTagId)
                     .map((period: any): DevelopmentPeriodsType => {
                         let allMilestones = this.getMilestonesFromChildAge(period.predefinedTagId);
-                        
+
                         let completed = true;
                         let currentPeriod = false;
 
@@ -340,13 +454,13 @@ class DataRealmStore {
                         });
                     };
                 })
-               
+
             };
         };
 
         return developmentPeriods;
     };
-    
+
     public getMilestonesForGivenPeriod(ageId: number): { checkedMilestones: MilestoneItem[], uncheckedMilestones: MilestoneItem[] } {
         let milestones: {
             checkedMilestones: MilestoneItem[],
@@ -359,10 +473,10 @@ class DataRealmStore {
         };
 
         let allMilestones = this.getMilestonesFromChildAge(ageId);
-        
+
         let index = userRealmStore.getCurrentChild()?.uuid ? userRealmStore.getCurrentChild()?.uuid : "";
         let user = userRealmStore.realm?.objects<ChildEntity>(ChildEntitySchema.name).find(item => item.uuid === index);
-                
+
         let checkedItems: number[] = user?.checkedMilestones ? user?.checkedMilestones : []
 
         if (allMilestones) {
@@ -453,7 +567,7 @@ class DataRealmStore {
         return id
     }
 
-    public getChildAgeTagWithArticles = (categoryId: number | null = null, returnNext: boolean = false, getArticlesForNextPeriod?: boolean ): { id: number, name: string} | null => {
+    public getChildAgeTagWithArticles = (categoryId: number | null = null, returnNext: boolean = false, getArticlesForNextPeriod?: boolean): { id: number, name: string } | null => {
         let obj: { id: number, name: string } | null = {
             id: 0,
             name: ""
@@ -473,10 +587,10 @@ class DataRealmStore {
             if (monthsDiff.months) {
                 months = Math.round(monthsDiff.months);
             };
-            if(getArticlesForNextPeriod){
+            if (getArticlesForNextPeriod) {
                 months = months + 1;
             };
-            
+
             let id = this.getTagIdFromChildAge(months);
             const vocabulariesAndTermsResponse = this.getVariable('vocabulariesAndTerms');
 

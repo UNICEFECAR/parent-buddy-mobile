@@ -126,7 +126,7 @@ class Content {
 
     public getHomeScreenDevelopmentArticles(realm: Realm | null): ArticlesSectionData {
         let isChildInDevelopmentPeriod = false;
-
+        
         const rval: ArticlesSectionData = {
             title: translate('developmentArticles'),
             categoryArticles: [],
@@ -275,7 +275,6 @@ class Content {
         };
         // Set categories
         const vocabulariesAndTermsResponse = dataRealmStore.getVariable('vocabulariesAndTerms');
-
         if (!vocabulariesAndTermsResponse || !vocabulariesAndTermsResponse.categories || !Array.isArray(vocabulariesAndTermsResponse.categories)) {
             return rval;
         }
