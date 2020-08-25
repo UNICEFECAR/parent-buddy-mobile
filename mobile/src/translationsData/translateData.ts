@@ -26,6 +26,7 @@ export type TranslateDataHealthCheckPeriods = typeof en['healthCheckPeriods'];
 export type HealthCheckPeriod = TranslateDataHealthCheckPeriods[0];
 export type TranslateDataInterpretationWeightForHeight = typeof en['interpretationWeightForHeight'];
 export type TranslateDataInterpretationLenghtForAge = typeof en['interpretationLenghtForAge'];
+export type ImmunizationsPeriods = typeof en['immunizationsPeriods'];
 
 type TranslateDataValue =
     TranslateDataDevelopmentPeriods
@@ -33,6 +34,7 @@ type TranslateDataValue =
     | TranslateDataHealthCheckPeriods
     | TranslateDataInterpretationWeightForHeight
     | TranslateDataInterpretationLenghtForAge
+    | ImmunizationsPeriods
     | null;
 
 function getLanguageCode() {

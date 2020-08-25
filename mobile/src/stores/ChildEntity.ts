@@ -14,6 +14,9 @@ export type Measures = {
      * Timestamp in milliseconds.
      */
     measurementDate: number | undefined;
+    /**
+     * Day in mounth.
+     */
     titleDateInMonth?: number,
 }
 
@@ -45,18 +48,18 @@ export const ChildEntitySchema: ObjectSchema = {
 
     // API: https://bit.ly/3f7k9jq
     properties: {
-        uuid: {type:'string'},
-        name: {type:'string'},
-        gender: {type:'string'},
-        photoUri: {type:'string', optional:true},
-        createdAt: {type:'date'},
-        updatedAt: {type:'date'},
-        plannedTermDate: {type: 'date', optional: true},
-        birthDate: {type: 'date', optional: true},
-        babyRating: {type: 'int', optional: true},
-        measures: {type: 'string', optional: true},
-        comment: {type: 'string', optional: true},
-        checkedMilestones: {type: 'int[]', optional: true}
+        uuid: { type: 'string' },
+        name: { type: 'string' },
+        gender: { type: 'string' },
+        photoUri: { type: 'string', optional: true },
+        createdAt: { type: 'date' },
+        updatedAt: { type: 'date' },
+        plannedTermDate: { type: 'date', optional: true },
+        birthDate: { type: 'date', optional: true },
+        babyRating: { type: 'int', optional: true },
+        measures: { type: 'string', optional: true },
+        comment: { type: 'string', optional: true },
+        checkedMilestones: { type: 'int[]', optional: true }
     }
 };
 

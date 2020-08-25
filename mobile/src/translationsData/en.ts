@@ -760,6 +760,129 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
             },
         },
 
+    ],
+    immunizationsPeriods: [
+        {
+            title: 'At birth',
+            subtitle: 'At birth',
+            dayStart: 0,
+            dayEnd: 25,
+            notificationDayStart: 0,
+            notificationDayEnd: 10,
+            vaccines:[
+                {uuid: "0bd76915-b670-41d8-b20d-7af1cbf34c9c", title: "against Hepatitis B - the first dose", hardcodedArticleId: ""},
+                {uuid: "c19e6ab0-479c-4c06-afc3-99f67697ce48", title: "against tuberculosis ", hardcodedArticleId: ""}
+            ]
+        },
+        {
+            title: 'At 1 month',
+            subtitle: 'with full 1 month',
+            dayStart: 25,
+            dayEnd: 50,
+            notificationDayStart: 30,
+            notificationDayEnd: 60,
+            vaccines:[
+                {uuid: "6bec3d74-20d3-4f6a-aa77-0a87b06cc931", title: "against Hepatitis B - the second dose", hardcodedArticleId: ""}
+            ]
+        },
+        {
+            title: 'At 2 months',
+            subtitle: 'with full 2 months',
+            dayStart: 50,
+            dayEnd: 90,
+            notificationDayStart: 60,
+            notificationDayEnd: 90,
+            vaccines:[
+                {uuid: "4ceaf41b-0043-435a-9dce-d5767985197a", title: "against diphtheria, tetanus, pertussis, polio, diseases caused by Haemophilus influenzaeType b - the first dose", hardcodedArticleId: ""},
+                {uuid: "3a936eb7-99ca-4e05-ab58-1b277b77943d", title: "against diseases caused by bacteria Streptococus pneumoniae - the first dose", hardcodedArticleId: ""},
+            ],
+        },
+        {
+            title: 'At 3.5 months',
+            subtitle: 'with 3,5 months',
+            dayStart: 90,
+            dayEnd: 140,
+            notificationDayStart: 100,
+            notificationDayEnd: 130,
+            vaccines:[
+                {uuid: "7739b3d4-f8d1-4f24-b4ad-0cfe751c6220", title: "against diphtheria, tetanus, pertussis, polio, diseases caused by Haemophilus influenzaeType b - the second dose", hardcodedArticleId: ""},
+                {uuid: "2b2d6afc-7244-4aad-a4ea-ff5a63d295cc", title: "against diseases caused by bacteria Streptococus pneumoniae - the second dose", hardcodedArticleId: ""},
+            ]
+        },
+        {
+            title: 'At 5 months',
+            subtitle: 'with full 5 months',
+            dayStart: 140,
+            dayEnd: 170,
+            notificationDayStart: 150,
+            notificationDayEnd: 180,
+            vaccines:[
+                {uuid: "c243996c-b5ab-4392-a7e4-364b6dcdfd5a", title: "against diphtheria, tetanus, pertussis, polio, diseases caused by Haemophilus influenzaeType b - the third dose", hardcodedArticleId: ""},
+                {uuid: "0870563f-1bd5-4d18-b282-27f76abc6e91", title: "against diseases caused by bacteria Streptococus pneumoniae - the third dose", hardcodedArticleId: ""},
+            ]
+        },
+        {
+            title: 'At 6 months',
+            subtitle: 'with full 6 months',
+            dayStart: 170,
+            dayEnd: 350,
+            notificationDayStart: 180,
+            notificationDayEnd: 220,
+            vaccines:[
+                {uuid: "56714192-64c9-4b51-a837-934bf3947836", title: "against Hepatitis B - the third dose", hardcodedArticleId: ""},
+            ]
+        },
+        {
+            title: 'at 9 months',
+            subtitle: 'with full 9 months',
+            vaccines:[]
+        },
+        {
+            title: 'From 12-15 months ',
+            subtitle: 'between 12th and 15th months',
+            dayStart: 350,
+            dayEnd: 530,
+            notificationDayStart: 360,
+            notificationDayEnd: 450,
+            vaccines:[
+                {uuid: "5e0638e8-cc8f-4372-be70-c9b951bcd23e", title: "against measles, mumps, rubella", hardcodedArticleId: ""},
+                {uuid: "fbe5157e-5221-42fb-9663-48d3257757f0", title: "against diseases caused by bacteria Streptococus pneumoniae - revaccination", hardcodedArticleId: ""},
+            ]
+        },
+        {
+            title: 'At 18 months ',
+            subtitle: '',
+            dayStart: 530,
+            dayEnd: 2160,
+            notificationDayStart: 540,
+            notificationDayEnd: 600,
+            vaccines:[
+                {uuid: "85d98c51-bf2c-4eba-af25-8795f9211da4", title: "against diphtheria, tetanus, pertussis, polio, diseases caused by Haemophilus influenzaeType b - the first revaccination ", hardcodedArticleId: ""},
+            ]
+        },
+        {
+            title: 'at 3 years (24-36 months)',
+            subtitle: '',
+            vaccines:[]
+        },  
+        {
+            title: '6-7 years ',
+            dayStart: 2160,
+            dayEnd: null,
+            notificationDayStart: 2160,
+            notificationDayEnd: null,
+            subtitle: '',
+            vaccines:[
+                {uuid: "79ae380e-d42a-4d9c-8ab8-a06485dc8d40", title: "against measles, mumps, rubella - revaccination ", hardcodedArticleId: ""},
+                {uuid: "2279b64e-49fb-407e-88d2-bfa2c31ceaf4", title: "against diphtheria, tetanus, pertussis, polio, diseases caused by Haemophilus influenzaeType b - the second revaccination", hardcodedArticleId: ""},
+            ]
+        },
     ]
 };
+
+
+
+
+
+
 
