@@ -6,7 +6,7 @@ import { DateTime } from 'luxon';
 import { translate } from "../translations/translate";
 import { RoundedButtonType } from "../components/RoundedButton";
 import { navigation } from ".";
-import { translateData, TranslateDataHealthCheckPeriods, HealthCheckPeriod, TranslateDataDevelopmentPeriods } from "../translationsData/translateData";
+import { translateData, TranslateDataGrowthPeriodsMessages, HealthCheckPeriod, TranslateDataDevelopmentPeriods } from "../translationsData/translateData";
 import { utils } from "./utils";
 import { Measures } from "../stores/ChildEntity";
 
@@ -471,17 +471,17 @@ class HomeMessages {
         // Validation
         if (this.childAgeInDays === undefined || this.childAgeInDays == 0) return null;
 
-        // Set healthCheckPeriods
-        let healthCheckPeriods = translateData('healthCheckPeriods') as (TranslateDataHealthCheckPeriods | null);
+        // Set growthPeriodsMessages
+        let growthPeriodsMessages = translateData('growthPeriodsMessages') as (TranslateDataGrowthPeriodsMessages | null);
 
-        if (!healthCheckPeriods || healthCheckPeriods.length === 0) {
+        if (!growthPeriodsMessages || growthPeriodsMessages.length === 0) {
             return null;
         }
 
-        // Go over all healthCheckPeriods
+        // Go over all growthPeriodsMessages
         const childAgeInDays = this.childAgeInDays;
 
-        healthCheckPeriods.forEach((period) => {
+        growthPeriodsMessages.forEach((period) => {
             if (
                 childAgeInDays >= period.showGrowthMessageInDays.from
                 && childAgeInDays <= period.showGrowthMessageInDays.to
