@@ -496,6 +496,7 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
     ],
     doctorVisitPeriods: [
         {
+            uuid: '67c0169d-8d5f-4d28-9943-43985824370a',
             period: 'At birth',
             nameOfTheDoctorVisit: 'Health check-up',
             periodSubtitle: 'At birth',
@@ -504,6 +505,7 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
             planDoctorVisitMessageInDays: { from: 0, to: 10 },
         },
         {
+            uuid: '33949b8f-124b-44b4-876f-fefab9ad348c',
             period: 'At 1 month',
             nameOfTheDoctorVisit: 'Health check-up',
             periodSubtitle: 'with full 1 month',
@@ -512,6 +514,7 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
             planDoctorVisitMessageInDays: { from: 20, to: 60 },
         },
         {
+            uuid: '841a9c37-0fd4-4680-afb4-8ff4e3b46179',
             period: 'At 2 months',
             nameOfTheDoctorVisit: 'Health check-up',
             periodSubtitle: 'with full 2 months',
@@ -520,6 +523,7 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
             planDoctorVisitMessageInDays: { from: 50, to: 90 },
         },
         {
+            uuid: 'cc17d35c-0c00-4605-a7f9-ab58acaa61e3',
             period: 'At 3.5 months',
             nameOfTheDoctorVisit: 'Health check-up',
             periodSubtitle: 'with 3,5 months',
@@ -528,6 +532,7 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
             planDoctorVisitMessageInDays: { from: 90, to: 130 },
         },
         {
+            uuid: '11c000ae-16c6-4a21-8563-1901ae2a2d10',
             period: 'At 5 months',
             nameOfTheDoctorVisit: 'Health check-up',
             periodSubtitle: 'with full 5 months',
@@ -536,6 +541,7 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
             planDoctorVisitMessageInDays: { from: 140, to: 180 },
         },
         {
+            uuid: '4ba2ebd8-3ece-4a39-b3b0-a73a4f7459ac',
             period: 'At 6 months',
             nameOfTheDoctorVisit: 'Health check-up',
             periodSubtitle: 'with full 6 months',
@@ -544,6 +550,7 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
             planDoctorVisitMessageInDays: { from: 170, to: 220 },
         },
         {
+            uuid: 'e74fbcd2-0381-428e-a6a5-81221562a1e0',
             period: 'At 9 months',
             nameOfTheDoctorVisit: 'Health check-up',
             periodSubtitle: 'with full 9 months',
@@ -552,6 +559,7 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
             planDoctorVisitMessageInDays: { from: 260, to: 300 },
         },
         {
+            uuid: 'ac9763f3-9588-4034-998b-69327c75bb09',
             period: 'From 12-15 months',
             nameOfTheDoctorVisit: 'Health check-up',
             periodSubtitle: 'between 12th and 15th months',
@@ -560,6 +568,7 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
             planDoctorVisitMessageInDays: { from: 350, to: 450 },
         },
         {
+            uuid: 'a66a6b43-8370-410d-9195-a6347ecb2d10',
             period: 'At 18 months',
             nameOfTheDoctorVisit: 'Health check-up',
             periodSubtitle: 'with full 18 months',
@@ -568,6 +577,7 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
             planDoctorVisitMessageInDays: { from: 530, to: 600 },
         },
         {
+            uuid: '145d6f2d-3179-44fd-a0ce-0013cd712c24',
             period: 'at 3 years (24-36 months)',
             nameOfTheDoctorVisit: 'Health check-up',
             periodSubtitle: 'between 24th and 36th months',
@@ -576,6 +586,7 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
             planDoctorVisitMessageInDays: { from: 720, to: 1080 },
         },
         {
+            uuid: '21781895-05a1-4eb5-bbd1-7436cd020873',
             period: '6-7 years',
             nameOfTheDoctorVisit: 'Health check-up',
             periodSubtitle: 'between 24th and 36th months',

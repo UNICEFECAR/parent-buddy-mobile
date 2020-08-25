@@ -476,6 +476,7 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
     ],
     doctorVisitPeriods: [
         {
+            uuid: '63072492-271f-4776-8b76-1dbae74e453f',
             period: 'Na rodjenju',
             nameOfTheDoctorVisit: 'Redovan preventivni pregled',
             periodSubtitle: 'Na rođenju',
@@ -484,6 +485,7 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
             planDoctorVisitMessageInDays: { from: 0, to: 10 },
         },
         {
+            uuid: '2d2886f2-c99e-4720-8f59-bfe76b3d7d86',
             period: 'Sa 1 mesec',
             nameOfTheDoctorVisit: 'Redovan preventivni pregled',
             periodSubtitle: 'sa punih mesec dana',
@@ -492,6 +494,7 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
             planDoctorVisitMessageInDays: { from: 20, to: 60 },
         },
         {
+            uuid: '4a431509-6d03-417f-92d5-b14fe11f5767',
             period: 'Sa dva meseca',
             nameOfTheDoctorVisit: 'Redovan preventivni pregled',
             periodSubtitle: 'sa puna 2 meseca',
@@ -500,6 +503,7 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
             planDoctorVisitMessageInDays: { from: 50, to: 91 },
         },
         {
+            uuid: 'b3c69374-f593-4dea-b87a-662d195d0369',
             period: 'Sa 3,5 meseca',
             nameOfTheDoctorVisit: 'Redovan preventivni pregled',
             periodSubtitle: 'sa 3,5 meseca',
@@ -508,6 +512,7 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
             planDoctorVisitMessageInDays: { from: 90, to: 130 },
         },
         {
+            uuid: '445c09a5-57ad-45bf-8abe-76ac67178988',
             period: 'Sa 5 meseci',
             nameOfTheDoctorVisit: 'Redovan preventivni pregled',
             periodSubtitle: 'sa punih 5 meseci',
@@ -516,6 +521,7 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
             planDoctorVisitMessageInDays: { from: 140, to: 182 },
         },
         {
+            uuid: '2126bff1-4f4e-4e23-a65b-3edf120dea32',
             period: 'Sa 6 meseci',
             nameOfTheDoctorVisit: 'Redovan preventivni pregled',
             periodSubtitle: 'sa punih 6 meseci',
@@ -524,6 +530,7 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
             planDoctorVisitMessageInDays: { from: 170, to: 220 },
         },
         {
+            uuid: '566692f0-2d24-4a8c-ac1d-2d0f16781fda',
             period: 'Sa 9 meseci',
             nameOfTheDoctorVisit: 'Redovan preventivni pregled',
             periodSubtitle: 'sa punih 9 meseci',
@@ -532,6 +539,7 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
             planDoctorVisitMessageInDays: { from: 260, to: 305 },
         },
         {
+            uuid: '32491a94-d575-462b-90bc-39448904062f',
             period: 'Od 12 do 15 meseci',
             nameOfTheDoctorVisit: 'Redovan preventivni pregled',
             periodSubtitle: 'između 12. i 15. meseca',
@@ -540,6 +548,7 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
             planDoctorVisitMessageInDays: { from: 350, to: 460 },
         },
         {
+            uuid: 'd7b32a59-3943-4523-b84f-c7d84a63dddd',
             period: 'Sa 18 meseci',
             nameOfTheDoctorVisit: 'Redovan preventivni pregled',
             periodSubtitle: 'sa godinu ipo dana (18. meseci)',
@@ -548,6 +557,7 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
             planDoctorVisitMessageInDays: { from: 530, to: 600 },
         },
         {
+            uuid: 'e038f09c-bf5b-4cc3-bb79-fe1567b994c2',
             period: 'Sa 3. godine (24 - 30 meseci)',
             nameOfTheDoctorVisit: 'Redovan preventivni pregled',
             periodSubtitle: 'u trećoj godini (između 24 i 36 meseci)',
@@ -556,6 +566,7 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
             planDoctorVisitMessageInDays: { from: 720, to: 915 },
         },
         {
+            uuid: '0f130748-2e08-479a-9202-191ecfdaf5ff',
             period: '6/7 godina',
             nameOfTheDoctorVisit: 'Redovan preventivni pregled',
             periodSubtitle: 'pred polazak u školu (6-7 godina)',
