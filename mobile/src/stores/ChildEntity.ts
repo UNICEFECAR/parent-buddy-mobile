@@ -6,14 +6,17 @@ export type Measures = {
      * Grams.
      */
     weight: string;
+
     /**
      * Centimeters.
      */
     length: string;
+
     /**
      * Timestamp in milliseconds.
      */
-    measurementDate: number | undefined;
+    measurementDate?: number;
+
     titleDateInMonth?: number,
 }
 

@@ -77,19 +77,19 @@ class UserRealmStore {
         return rval;
     }
 
-    
+
     public getCurrentChild = () => {
         let childId = dataRealmStore.getVariable('currentActiveChildId');
-        if(childId){
+        if (childId) {
             return this.realm?.objects<ChildEntity>(ChildEntitySchema.name).filtered(`uuid == '${childId}'`).map(item => item)[0];
-        }else{
+        } else {
             let child = this.realm?.objects<ChildEntity>(ChildEntitySchema.name).find((record, index) => index === 0);
-            if(child){
+            if (child) {
                 dataRealmStore.setVariable('currentActiveChildId', child.uuid);
                 return child;
             }
         }
-        
+
 
     }
 
@@ -99,11 +99,11 @@ class UserRealmStore {
         const timeNow = DateTime.local();
         let days: number = 0;
 
-        if(childBirthDay){
+        if (childBirthDay) {
             let date = DateTime.fromMillis(childBirthDay);
             let convertInDays = timeNow.diff(date, "days").toObject().days;
 
-            if(convertInDays!== undefined) days = convertInDays;
+            if (convertInDays !== undefined) days = convertInDays;
         };
 
         return days;
@@ -153,11 +153,11 @@ class UserRealmStore {
 
         let allinterpretationData = translateData('interpretationLenghtForAge') as (TranslateDataInterpretationLenghtForAge | null)
 
-        
+
         let interpretationData = allinterpretationData?.
             find(item => item.predefined_tags.indexOf(childAgeId ? childAgeId : 0) !== -1);
 
-        
+
         if (filteredData !== undefined) {
             if (length >= filteredData.SD2neg && length <= filteredData.SD3) {
                 interpretationText = interpretationData?.goodText;
@@ -175,7 +175,7 @@ class UserRealmStore {
                 interpretationText = interpretationData?.warrningBigLengthText;
             };
         };
-        if(interpretationText && interpretationText.name === ""){
+        if (interpretationText && interpretationText.name === "") {
             goodMeasure = undefined
         }
 
@@ -223,7 +223,7 @@ class UserRealmStore {
 
         let filteredDataForHeight = chartData.find(data => data.Height === length);
 
-        let allInterpretationData = translateData('interpretationWeightForHeight') as (TranslateDataInterpretationWeightForHeight | null) 
+        let allInterpretationData = translateData('interpretationWeightForHeight') as (TranslateDataInterpretationWeightForHeight | null)
 
         let interpretationData = allInterpretationData?.
             find(item => item.predefined_tags.indexOf(childAgeId ? childAgeId : 0) !== -1);
@@ -251,7 +251,7 @@ class UserRealmStore {
             };
         };
 
-        if(interpretationText && interpretationText.name === ""){
+        if (interpretationText && interpretationText.name === "") {
             goodMeasure = undefined
         }
 
@@ -266,26 +266,26 @@ class UserRealmStore {
         return child?.gender
     }
 
-    public getAllChildren(context?: UserRealmContextValue): Child[]{
-        let allChildren = context ? 
-            context.realm?.objects<ChildEntity>(ChildEntitySchema.name).map(child => child) : 
+    public getAllChildren(context?: UserRealmContextValue): Child[] {
+        let allChildren = context ?
+            context.realm?.objects<ChildEntity>(ChildEntitySchema.name).map(child => child) :
             userRealmStore.realm?.objects<ChildEntity>(ChildEntitySchema.name).map(child => child);
-            
+
         let currentChild = this.getCurrentChild()?.uuid;
 
         let allChildrenList: Child[] = [];
 
-        if(allChildren){
+        if (allChildren) {
 
             allChildrenList = allChildren?.map(child => {
-                let birthDay = child.birthDate ? 
+                let birthDay = child.birthDate ?
                     DateTime.fromJSDate(child.birthDate).toFormat("dd'.'MM'.'yyyy") : "";
-                
+
                 let imgUrl = child.photoUri ? utils.addPrefixForAndroidPaths(`${RNFS.DocumentDirectoryPath}/${child.photoUri}`) : null;
                 let isCurrentActive = false;
-                
-                if(currentChild){
-                    if(currentChild === child.uuid){
+
+                if (currentChild) {
+                    if (currentChild === child.uuid) {
                         isCurrentActive = true;
                     }
                 };
@@ -301,7 +301,7 @@ class UserRealmStore {
                 };
             });
         };
-  
+
 
         return allChildrenList;
     };
@@ -450,6 +450,50 @@ class UserRealmStore {
                 reject(e);
             }
         });
+    }
+
+    public async addMeasuresForCurrentChild(measures: Measures) {
+        return new Promise((resolve, reject) => {
+            const currentChild = this.getCurrentChild();
+            if (!currentChild) {
+                resolve();
+                return;
+            }
+
+            try {
+                let measuresString = currentChild.measures;
+                if (!measuresString || measuresString === '') {
+                    measuresString = '[]';
+                }
+
+                const measuresArray: Measures[] = JSON.parse(measuresString);
+                measuresArray.push(measures);
+
+                this.realm?.write(() => {
+                    currentChild.measures = JSON.stringify(measuresArray);
+                    resolve();
+                });
+            } catch (e) {
+                resolve();
+            }
+        });
+    }
+
+    public getAllMeasuresForCurrentChild(): Measures[] {
+        let rval: Measures[] = [];
+
+        const currentChild = this.getCurrentChild();
+        if (currentChild) {
+            let measuresString = currentChild.measures;
+
+            if (!measuresString || measuresString === '') {
+                measuresString = '[]';
+            }
+
+            rval = JSON.parse(measuresString);
+        }
+
+        return rval;
     }
 }
 
