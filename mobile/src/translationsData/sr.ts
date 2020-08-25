@@ -914,11 +914,6 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
             ]
         },
         {
-            title: 'Sa 9 meseci',
-            subtitle: 'sa punih 9 meseci',
-            vaccines:[]
-        },
-        {
             title: 'Od 12 do 15 meseci',
             subtitle: 'između 12. i 15. meseca',
             dayStart: 350,
@@ -940,11 +935,6 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
             vaccines:[
                 {uuid: "fbe5157e-5221-42fb-9663-48d3257757f0", title: "protiv difterije, tetanusa, velikog kašlja, dečje paralize, oboljenja koje izaziva bakterija Hemofilus influence b - prva revakcinacija", hardcodedArticleId: "4896"},
             ]
-        },
-        {
-            title: 'Sa 3. godine (24 - 30 meseci)',
-            subtitle: 'u trećoj godini (između 24 i 36 meseci)',
-            vaccines:[]
         },
         {
             title: '6/7 godina',

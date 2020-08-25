@@ -934,11 +934,6 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
             ]
         },
         {
-            title: 'at 9 months',
-            subtitle: 'with full 9 months',
-            vaccines:[]
-        },
-        {
             title: 'From 12-15 months ',
             subtitle: 'between 12th and 15th months',
             dayStart: 350,
@@ -961,11 +956,6 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
                 {uuid: "85d98c51-bf2c-4eba-af25-8795f9211da4", title: "against diphtheria, tetanus, pertussis, polio, diseases caused by Haemophilus influenzaeType b - the first revaccination ", hardcodedArticleId: ""},
             ]
         },
-        {
-            title: 'at 3 years (24-36 months)',
-            subtitle: '',
-            vaccines:[]
-        },  
         {
             title: '6-7 years ',
             dayStart: 2160,
