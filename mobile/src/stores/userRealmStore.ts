@@ -5,7 +5,7 @@ import { appConfig } from '../app/appConfig';
 import { ChildEntity } from '.';
 import { ChildEntitySchema, ChildGender, Measures } from './ChildEntity';
 import { DateTime } from 'luxon';
-import { translateData, TranslateDataInterpretationLenghtForAge, TranslateDataInterpretationWeightForHeight } from '../translationsData/translateData';
+import { translateData, TranslateDataInterpretationLenghtForAge, TranslateDataInterpretationWeightForHeight, TranslateDataDoctorVisitPeriods } from '../translationsData/translateData';
 import { ChartData as Data, GrowthChart0_2Type, GrowthChartHeightAgeType } from '../components/growth/growthChartData';
 import { dataRealmStore } from './dataRealmStore';
 import { InterpretationText } from '../screens/growth/GrowthScreen';
@@ -498,7 +498,21 @@ class UserRealmStore {
     }
 
     public getDoctorVisitCards(): DoctorVisitCardProps[] {
-        return [];
+        let rval: DoctorVisitCardProps[] = [];
+
+        const doctorVisitPeriods = translateData('doctorVisitPeriods') as (TranslateDataDoctorVisitPeriods);
+        if (!doctorVisitPeriods) return [];
+        
+        doctorVisitPeriods.forEach((doctorVisit, index) => {
+            rval.push({
+                title: doctorVisit.nameOfTheDoctorVisit,
+                subTitle: doctorVisit.periodSubtitle,
+                items: [],
+                showVerticalLine: index !== doctorVisitPeriods.length -1,
+            });
+        });
+
+        return rval;
     }
 }
 
