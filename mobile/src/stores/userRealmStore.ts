@@ -13,6 +13,7 @@ import { Child } from '../screens/home/ChildProfileScreen';
 import RNFS from 'react-native-fs';
 import { UserRealmContextValue } from './UserRealmContext';
 import { utils } from '../app/utils';
+import { Props as  DoctorVisitCardProps} from '../components/doctor-visit/DoctorVisitCard';
 
 type Variables = {
     'userChildren': any;
@@ -494,6 +495,10 @@ class UserRealmStore {
         }
 
         return rval;
+    }
+
+    public getDoctorVisitCards(): DoctorVisitCardProps[] {
+        return [];
     }
 }
 
