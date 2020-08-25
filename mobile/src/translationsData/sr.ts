@@ -740,5 +740,122 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
             },
         },
 
+    ],
+    immunizationsPeriods: [
+        {
+            title: 'Na rodjenju',
+            subtitle: 'Na rodjenju',
+            dayStart: 0,
+            dayEnd: 10,
+            notificationDayStart: 0,
+            notificationDayEnd: 10,
+            vaccines:[
+                {uuid: "0bd76915-b670-41d8-b20d-7af1cbf34c9c", title: "protiv hepatitisa B - prva doza", hardcodedArticleId: "4661"},
+                {uuid: "c19e6ab0-479c-4c06-afc3-99f67697ce48", title: "protiv tuberkuloze ", hardcodedArticleId: "4676"}
+            ]
+        },
+        {
+            title: 'Sa 1 mesec',
+            subtitle: 'sa punih mesec dana',
+            dayStart: 20,
+            dayEnd: 60,
+            notificationDayStart: 31,
+            notificationDayEnd: 60,
+            vaccines:[
+                {uuid: "6bec3d74-20d3-4f6a-aa77-0a87b06cc931", title: "protiv hepatitisa B - druga doza", hardcodedArticleId: "4661"},
+            ]
+        },
+        {
+            title: 'Sa dva meseca',
+            subtitle: 'sa puna 2 meseca',
+            dayStart: 50,
+            dayEnd: 91,
+            notificationDayStart: 61,
+            notificationDayEnd: 91,
+            vaccines:[
+                {uuid: "819755b6-7fea-4483-bcc6-310eaaf774fa", title: "protiv difterije, tetanusa, velikog kašlja, dečje paralize, oboljenja koje izaziva bakterija Hemofilus influence b - prva doza", hardcodedArticleId: "4896"},
+                {uuid: "4ceaf41b-0043-435a-9dce-d5767985197a", title: "protiv oboljenja koje izaziva bakterija Streptococus pneumonije - prva doza", hardcodedArticleId: "4796"},
+            ]
+        },
+        {
+            title: 'Sa 3,5 meseca',
+            subtitle: 'Sa 3,5 meseca',
+            dayStart: 90,
+            dayEnd: 130,
+            notificationDayStart: 100,
+            notificationDayEnd: 130,
+            vaccines:[
+                {uuid: "3a936eb7-99ca-4e05-ab58-1b277b77943d", title: "protiv difterije, tetanusa, velikog kašlja, dečje paralize, oboljenja koje izaziva bakterija Hemofilus influence b - druga doza", hardcodedArticleId: "4896"},
+                {uuid: "7739b3d4-f8d1-4f24-b4ad-0cfe751c6220", title: "protiv oboljenja koje izaziva bakterija Streptococus pneumonije - druga doza", hardcodedArticleId: "4796"},
+            ]
+        },
+        {
+            title: 'Sa 5 meseci',
+            subtitle: 'sa punih 5 meseci',
+            dayStart: 140,
+            dayEnd: 182,
+            notificationDayStart: 152,
+            notificationDayEnd: 182,
+            vaccines:[
+                {uuid: "2b2d6afc-7244-4aad-a4ea-ff5a63d295cc", title: "protiv difterije, tetanusa, velikog kašlja, dečje paralize, oboljenja koje izaziva bakterija Hemofilus influence b - treća doza", hardcodedArticleId: "4896"},
+                {uuid: "c243996c-b5ab-4392-a7e4-364b6dcdfd5a", title: "protiv oboljenja koje izaziva bakterija Streptococus pneumonije - treća doza", hardcodedArticleId: "4796"},
+            ]
+        },
+        {
+            title: 'Sa 6 meseci',
+            subtitle: 'sa punih 6 meseci',
+            dayStart: 170,
+            dayEnd: 220,
+            notificationDayStart: 183,
+            notificationDayEnd: 220,
+            vaccines:[
+                {uuid: "0870563f-1bd5-4d18-b282-27f76abc6e91", title: "protiv hepatitisa B - treća doza", hardcodedArticleId: "4661"},
+            ]
+        },
+        {
+            title: 'Sa 9 meseci',
+            subtitle: 'sa punih 9 meseci',
+            vaccines:[]
+        },
+        {
+            title: 'Od 12 do 15 meseci',
+            subtitle: 'između 12. i 15. meseca',
+            dayStart: 350,
+            dayEnd: 460,
+            notificationDayStart: 365,
+            notificationDayEnd: 460,
+            vaccines:[
+                {uuid: "56714192-64c9-4b51-a837-934bf3947836", title: "protiv malih boginja, zauški, rubeole (crvenka)", hardcodedArticleId: "5071"},
+                {uuid: "5e0638e8-cc8f-4372-be70-c9b951bcd23e", title: "protiv oboljenja koje izaziva bakterija Streptococus pneumonije ' revakcinacija", hardcodedArticleId: "4796"},
+            ]
+        },
+        {
+            title: 'Sa 18 meseci',
+            subtitle: 'sa godinu ipo dana (18. meseci)',
+            dayStart: 530,
+            dayEnd: 600,
+            notificationDayStart: 545,
+            notificationDayEnd: 600,
+            vaccines:[
+                {uuid: "fbe5157e-5221-42fb-9663-48d3257757f0", title: "protiv difterije, tetanusa, velikog kašlja, dečje paralize, oboljenja koje izaziva bakterija Hemofilus influence b - prva revakcinacija", hardcodedArticleId: "4896"},
+            ]
+        },
+        {
+            title: 'Sa 3. godine (24 - 30 meseci)',
+            subtitle: 'u trećoj godini (između 24 i 36 meseci)',
+            vaccines:[]
+        },
+        {
+            title: '6/7 godina',
+            subtitle: 'pred polazak u školu (6-7 godina)',
+            dayStart: 2160,
+            dayEnd: null,
+            notificationDayStart: 2160,
+            notificationDayEnd: null,
+            vaccines:[
+                {uuid: "85d98c51-bf2c-4eba-af25-8795f9211da4", title: "protiv malih boginja, zauški, rubeole (crvenka) - revakcinacija", hardcodedArticleId: "5071"},
+                {uuid: "79ae380e-d42a-4d9c-8ab8-a06485dc8d40", title: "protiv difterije, tetanusa, velikog kašlja i dečje paralize - druga revakcinacija", hardcodedArticleId: ""},
+            ]
+        },
     ]
 };
