@@ -500,7 +500,7 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
             period: 'At birth',
             nameOfTheDoctorVisit: 'Health check-up',
             periodSubtitle: 'At birth',
-            vaccinesIds: [],
+            immunizationsPeriodId: '5edc9c03-4066-4d1e-9d28-fea7ceb36b33',
             moreAboutDoctorVisitArticleId: 4526,
             planDoctorVisitMessageInDays: { from: 0, to: 10 },
         },
@@ -509,7 +509,7 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
             period: 'At 1 month',
             nameOfTheDoctorVisit: 'Health check-up',
             periodSubtitle: 'with full 1 month',
-            vaccinesIds: [],
+            immunizationsPeriodId: 'bc428a1a-b9d1-41cf-922e-6f5bb22b4a77',
             moreAboutDoctorVisitArticleId: 4441,
             planDoctorVisitMessageInDays: { from: 20, to: 60 },
         },
@@ -518,7 +518,7 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
             period: 'At 2 months',
             nameOfTheDoctorVisit: 'Health check-up',
             periodSubtitle: 'with full 2 months',
-            vaccinesIds: [],
+            immunizationsPeriodId: '2ee47528-f52a-48c1-8925-b694132384d1',
             moreAboutDoctorVisitArticleId: 4446,
             planDoctorVisitMessageInDays: { from: 50, to: 90 },
         },
@@ -527,7 +527,7 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
             period: 'At 3.5 months',
             nameOfTheDoctorVisit: 'Health check-up',
             periodSubtitle: 'with 3,5 months',
-            vaccinesIds: [],
+            immunizationsPeriodId: 'd9aa2bca-01a2-4372-a911-0e02f259a66f',
             moreAboutDoctorVisitArticleId: 4451,
             planDoctorVisitMessageInDays: { from: 90, to: 130 },
         },
@@ -536,7 +536,7 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
             period: 'At 5 months',
             nameOfTheDoctorVisit: 'Health check-up',
             periodSubtitle: 'with full 5 months',
-            vaccinesIds: [],
+            immunizationsPeriodId: '4c7ad009-df70-45e0-91ef-81ee75f0e8d5',
             moreAboutDoctorVisitArticleId: 4456,
             planDoctorVisitMessageInDays: { from: 140, to: 180 },
         },
@@ -545,7 +545,7 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
             period: 'At 6 months',
             nameOfTheDoctorVisit: 'Health check-up',
             periodSubtitle: 'with full 6 months',
-            vaccinesIds: [],
+            immunizationsPeriodId: 'd43b92e1-9ec5-4ca8-ae41-3f68814cc1f1',
             moreAboutDoctorVisitArticleId: 4461,
             planDoctorVisitMessageInDays: { from: 170, to: 220 },
         },
@@ -554,7 +554,7 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
             period: 'At 9 months',
             nameOfTheDoctorVisit: 'Health check-up',
             periodSubtitle: 'with full 9 months',
-            vaccinesIds: [],
+            immunizationsPeriodId: '',
             moreAboutDoctorVisitArticleId: 4466,
             planDoctorVisitMessageInDays: { from: 260, to: 300 },
         },
@@ -563,7 +563,7 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
             period: 'From 12-15 months',
             nameOfTheDoctorVisit: 'Health check-up',
             periodSubtitle: 'between 12th and 15th months',
-            vaccinesIds: [],
+            immunizationsPeriodId: '9ef94154-46eb-4db9-95f0-663b1a0b33e9',
             moreAboutDoctorVisitArticleId: 4471,
             planDoctorVisitMessageInDays: { from: 350, to: 450 },
         },
@@ -572,7 +572,7 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
             period: 'At 18 months',
             nameOfTheDoctorVisit: 'Health check-up',
             periodSubtitle: 'with full 18 months',
-            vaccinesIds: [],
+            immunizationsPeriodId: '4c9c0536-274d-45b5-a657-ef4ce7f19e38',
             moreAboutDoctorVisitArticleId: 4476,
             planDoctorVisitMessageInDays: { from: 530, to: 600 },
         },
@@ -581,7 +581,7 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
             period: 'at 3 years (24-36 months)',
             nameOfTheDoctorVisit: 'Health check-up',
             periodSubtitle: 'between 24th and 36th months',
-            vaccinesIds: [],
+            immunizationsPeriodId: '',
             moreAboutDoctorVisitArticleId: 4511,
             planDoctorVisitMessageInDays: { from: 720, to: 1080 },
         },
@@ -590,7 +590,7 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
             period: '6-7 years',
             nameOfTheDoctorVisit: 'Health check-up',
             periodSubtitle: 'between 24th and 36th months',
-            vaccinesIds: [],
+            immunizationsPeriodId: '868e2ee6-34d9-44f0-b0aa-8d4011fc3666',
             moreAboutDoctorVisitArticleId: 4511,
             planDoctorVisitMessageInDays: { from: 2160, to: 2360 },
         },
@@ -864,6 +864,7 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
     ],
     immunizationsPeriods: [
         {
+            uuid: '5edc9c03-4066-4d1e-9d28-fea7ceb36b33',
             title: 'At birth',
             subtitle: 'At birth',
             dayStart: 0,
@@ -876,6 +877,7 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
             ]
         },
         {
+            uuid: 'bc428a1a-b9d1-41cf-922e-6f5bb22b4a77',
             title: 'At 1 month',
             subtitle: 'with full 1 month',
             dayStart: 25,
@@ -887,6 +889,7 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
             ]
         },
         {
+            uuid: '2ee47528-f52a-48c1-8925-b694132384d1',
             title: 'At 2 months',
             subtitle: 'with full 2 months',
             dayStart: 50,
@@ -899,6 +902,7 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
             ],
         },
         {
+            uuid: 'd9aa2bca-01a2-4372-a911-0e02f259a66f',
             title: 'At 3.5 months',
             subtitle: 'with 3,5 months',
             dayStart: 90,
@@ -911,6 +915,7 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
             ]
         },
         {
+            uuid: '4c7ad009-df70-45e0-91ef-81ee75f0e8d5',
             title: 'At 5 months',
             subtitle: 'with full 5 months',
             dayStart: 140,
@@ -923,6 +928,7 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
             ]
         },
         {
+            uuid: 'd43b92e1-9ec5-4ca8-ae41-3f68814cc1f1',
             title: 'At 6 months',
             subtitle: 'with full 6 months',
             dayStart: 170,
@@ -934,6 +940,7 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
             ]
         },
         {
+            uuid: '9ef94154-46eb-4db9-95f0-663b1a0b33e9',
             title: 'From 12-15 months ',
             subtitle: 'between 12th and 15th months',
             dayStart: 350,
@@ -946,6 +953,7 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
             ]
         },
         {
+            uuid: '4c9c0536-274d-45b5-a657-ef4ce7f19e38',
             title: 'At 18 months ',
             subtitle: '',
             dayStart: 530,
@@ -957,6 +965,7 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
             ]
         },
         {
+            uuid: '868e2ee6-34d9-44f0-b0aa-8d4011fc3666',
             title: '6-7 years ',
             dayStart: 2160,
             dayEnd: null,

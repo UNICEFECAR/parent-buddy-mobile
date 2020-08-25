@@ -9,7 +9,7 @@ import { ArticlesSection, ArticlesSectionData } from './ArticlesSection';
 import { DataRealmContext, DataRealmContextValue, DataRealmConsumer } from '../../stores/DataRealmContext';
 import { ContentEntity, ContentEntitySchema } from '../../stores/ContentEntity';
 import { CategoryArticlesViewEntity } from '../../stores/CategoryArticlesViewEntity';
-import { dataRealmStore, apiStore } from '../../stores';
+import { dataRealmStore, apiStore, userRealmStore } from '../../stores';
 import { translate } from '../../translations/translate';
 import { content, localize, utils } from '../../app';
 import { Media } from '../../components';
@@ -62,10 +62,13 @@ export class HomeScreen extends React.Component<Props, object> {
     }
 
     private onTestButtonPress() {
-        const navigation = this.props.navigation;
-        // throw new Error('Greska');
+        // userRealmStore.addMeasuresForCurrentChild({
+        //     weight: '1000',
+        //     length: '1000',
+        //     measurementDate: Date.now(),
+        // });
 
-        console.log(JSON.stringify(navigation.state, null, 4));
+        console.log(userRealmStore.getAllMeasuresForCurrentChild());
     }
 
     public render() {
@@ -78,8 +81,8 @@ export class HomeScreen extends React.Component<Props, object> {
                         {/* <Text>{localize.getLanguage()}</Text> */}
 
                         {/* Test button */}
-                        {/* <Button onPress={() => { this.onTestButtonPress() }}>Test</Button>
-                        <View style={{ height: 30 }} /> */}
+                        <Button onPress={() => { this.onTestButtonPress() }}>Test</Button>
+                        <View style={{ height: 30 }} />
 
                         {/* HOME MESSAGES */}
                         <DataRealmConsumer>
