@@ -6,7 +6,7 @@ import { DateTime } from 'luxon';
 import { translate } from "../translations/translate";
 import { RoundedButtonType } from "../components/RoundedButton";
 import { navigation } from ".";
-import { translateData, TranslateDataGrowthPeriodsMessages, HealthCheckPeriod, TranslateDataDevelopmentPeriods } from "../translationsData/translateData";
+import { translateData, TranslateDataGrowthPeriodsMessages, TranslateDataGrowthMessagesPeriod, TranslateDataDevelopmentPeriods } from "../translationsData/translateData";
 import { utils } from "./utils";
 import { Measures } from "../stores/ChildEntity";
 
@@ -465,8 +465,8 @@ class HomeMessages {
         return rval;
     }
 
-    private currentHealthCheckPeriod(): HealthCheckPeriod | null {
-        let rval: HealthCheckPeriod | null = null;
+    private currentHealthCheckPeriod(): TranslateDataGrowthMessagesPeriod | null {
+        let rval: TranslateDataGrowthMessagesPeriod | null = null;
 
         // Validation
         if (this.childAgeInDays === undefined || this.childAgeInDays == 0) return null;
@@ -493,7 +493,7 @@ class HomeMessages {
         return rval;
     }
 
-    private measuresForHealthCheckPeriod(healthCheckPeriod: HealthCheckPeriod | null): Measures | null {
+    private measuresForHealthCheckPeriod(healthCheckPeriod: TranslateDataGrowthMessagesPeriod | null): Measures | null {
         let rval: Measures | null = null;
 
         // Validation
