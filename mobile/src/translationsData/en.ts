@@ -494,6 +494,15 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
             showGrowthMessageInDays: {from:1851, to:1866},
         },
     ],
+    doctorVisitPeriods: [
+        {
+            period: 'At birth',
+            
+            // period: 'On birth',
+            // childAgeInDays: {from:0, to:30},
+            // showGrowthMessageInDays: {from:25, to:40},
+        },
+    ],
     interpretationWeightForHeight: [
         {
             predefined_tags: [43, 44, 45, 46],
