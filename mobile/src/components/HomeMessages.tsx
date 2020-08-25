@@ -160,7 +160,7 @@ export class HomeMessages extends React.Component<Props, State> {
         }
         this.oldMessages = messages;
 
-        // Sre messages hidden?
+        // Are messages hidden?
         if (this.state.messagesAreHidden) {
             return (
                 <TextButton onPress={() => { this.onShowMessagesPress() }} style={{ justifyContent: 'center', marginBottom: scale(15) }} color={TextButtonColor.purple}>{translate('showHomeMessages')}</TextButton>

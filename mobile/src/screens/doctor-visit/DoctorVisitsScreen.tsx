@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { StyleSheet, ViewStyle, Text, View, TextStyle } from 'react-native'
 import { NavigationStackProp, NavigationStackState } from 'react-navigation-stack';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -8,6 +8,10 @@ import { HomeScreenParams } from '../home/HomeScreen';
 import { translate } from '../../translations/translate';
 import { Typography, TypographyType } from '../../components/Typography';
 import { DoctorVisitCard, DoctorVisitTitleIconType, DoctorVisitCardItemIcon, DoctorVisitCardButtonType } from '../../components/doctor-visit/DoctorVisitCard';
+import { DataRealmConsumer, DataRealmContextValue } from '../../stores/DataRealmContext';
+import { UserRealmConsumer, UserRealmContextValue } from '../../stores/UserRealmContext';
+import { HomeMessages } from '../../components/HomeMessages';
+import { userRealmStore } from '../../stores/userRealmStore';
 
 export interface DoctorVisitsScreenParams {
 
@@ -35,25 +39,40 @@ export class DoctorVisitsScreen extends Component<Props> {
                             {translate('doctorVisitsScreenTitle')}
                         </Typography>
 
-                        {/* CARDS */}
-                        {[0, 1, 2].map(index => (
-                            <DoctorVisitCard
-                                title={"Pregled na rodjenju " + index}
-                                subTitle="9.7.2020"
-                                titleIcon={DoctorVisitTitleIconType.Checked}
-                                showVerticalLine={index !== 2}
-                                items={[
-                                    {icon: DoctorVisitCardItemIcon.Syringe, text:'Dete je dobilo vakcine'},
-                                    {icon: DoctorVisitCardItemIcon.Weight, text:'Dete je tesko bre Dete je tesko bre Dete je tesko bre Dete je tesko bre Dete je tesko bre '},
-                                    {icon: DoctorVisitCardItemIcon.Stethoscope, text:'Savet doktora'},
-                                ]}
-                                buttons={[
-                                    {type:DoctorVisitCardButtonType.Text, text:'Text button', onPress: () => {}},
-                                    {type:DoctorVisitCardButtonType.HollowPurple, text:'Hollow purple button', onPress: () => {}},
-                                    {type:DoctorVisitCardButtonType.Purple, text:'Purple button', onPress: () => {}},
-                                ]}
-                            />
-                        ))}
+                        <DataRealmConsumer>
+                            {(dataRealmContext: DataRealmContextValue) => (
+                                <UserRealmConsumer>
+                                    {(userRealmContext: UserRealmContextValue) => (
+                                        <Fragment>
+                                            {/* HOME MESSAGES */}
+                                            {!userRealmStore.getCurrentChild()?.birthDate ? (
+                                                <HomeMessages showCloseButton={true}></HomeMessages>
+                                            ) : null}
+
+                                            {/* CARDS */}
+                                            {[0, 1, 2].map(index => (
+                                                <DoctorVisitCard
+                                                    title={"Pregled na rodjenju " + index}
+                                                    subTitle="9.7.2020"
+                                                    titleIcon={DoctorVisitTitleIconType.Checked}
+                                                    showVerticalLine={index !== 2}
+                                                    items={[
+                                                        { icon: DoctorVisitCardItemIcon.Syringe, text: 'Dete je dobilo vakcine' },
+                                                        { icon: DoctorVisitCardItemIcon.Weight, text: 'Dete je tesko bre Dete je tesko bre Dete je tesko bre Dete je tesko bre Dete je tesko bre ' },
+                                                        { icon: DoctorVisitCardItemIcon.Stethoscope, text: 'Savet doktora' },
+                                                    ]}
+                                                    buttons={[
+                                                        { type: DoctorVisitCardButtonType.Text, text: 'Text button', onPress: () => { } },
+                                                        { type: DoctorVisitCardButtonType.HollowPurple, text: 'Hollow purple button', onPress: () => { } },
+                                                        { type: DoctorVisitCardButtonType.Purple, text: 'Purple button', onPress: () => { } },
+                                                    ]}
+                                                />
+                                            ))}
+                                        </Fragment>
+                                    )}
+                                </UserRealmConsumer>
+                            )}
+                        </DataRealmConsumer>
                     </ScrollView>
                 )}
             </ThemeConsumer>
