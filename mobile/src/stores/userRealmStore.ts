@@ -5,7 +5,7 @@ import { appConfig } from '../app/appConfig';
 import { ChildEntity } from '.';
 import { ChildEntitySchema, ChildGender, Measures } from './ChildEntity';
 import { DateTime } from 'luxon';
-import { translateData, TranslateDataInterpretationLenghtForAge, TranslateDataInterpretationWeightForHeight } from '../translationsData/translateData';
+import { translateData, TranslateDataInterpretationLenghtForAge, TranslateDataInterpretationWeightForHeight, TranslateDataImmunizationsPeriods } from '../translationsData/translateData';
 import { ChartData as Data, GrowthChart0_2Type, GrowthChartHeightAgeType } from '../components/growth/growthChartData';
 import { dataRealmStore } from './dataRealmStore';
 import { InterpretationText } from '../screens/growth/GrowthScreen';
@@ -92,6 +92,50 @@ class UserRealmStore {
         }
 
 
+    }
+
+    public getAllRecivedVaccine(){
+
+    }
+
+    public getAllVaccinationPeriods(){
+
+        let rval: any = [];
+        let isBirthDayEntered = false;
+        
+        const childBirthDay = this.getCurrentChild()?.birthDate;
+        const immunizationsPeriods = translateData('immunizationsPeriods') as (TranslateDataImmunizationsPeriods | null);
+
+        let vaccine = [];
+
+        if(childBirthDay){
+            const childAgeInDays = this.getCurrentChildAgeInDays();
+            let isCurrentPeriod = false;
+
+            isBirthDayEntered = true;
+
+            immunizationsPeriods?.forEach(period => {
+                
+                if(childAgeInDays >= period.dayStart && childAgeInDays <= period.dayEnd){
+                    isCurrentPeriod = true;
+                }else{
+                    isCurrentPeriod = false;
+                }
+
+                rval.push({
+                    isCurrentPeriod: isCurrentPeriod,
+                    title: period.title,
+                    isBirthDayEntered: isBirthDayEntered
+                })
+            });
+        }else{
+            isBirthDayEntered = true;
+
+            rval = immunizationsPeriods;
+        }
+
+
+        return rval;
     }
 
     public getCurrentChildAgeInDays = (birthDayMilisecounds?: number) => {

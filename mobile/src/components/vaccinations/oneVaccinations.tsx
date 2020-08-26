@@ -8,20 +8,30 @@ import { scale, moderateScale } from 'react-native-size-matters';
 import { IconProps } from 'react-native-paper/lib/typescript/src/components/MaterialCommunityIcon';
 import { TextButton } from '..';
 import { TextButtonColor } from '../TextButton';
+import { dataRealmStore } from '../../stores';
+import { StackActions } from 'react-navigation';
+import { navigation } from '../../app';
 
 export interface VaccinationDate {
     complete: boolean,
     title: string,
     description?: string,
+    hardcodedArticleId: string,
 }
 
 export interface Props {
     vaccinationDate?: string,
     title: string,
+    isVaccinationComplete: boolean,
     isVerticalLineVisible?: boolean,
-    vaccineList: VaccinationDate[]
+    vaccineList: VaccinationDate[],
+    isBirthDayEntered: boolean,
     onPress: Function,
     onPress2: Function,
+}
+
+export interface Vaccination {
+
 }
 
 export interface State {
@@ -59,15 +69,35 @@ export class OneVaccinations extends Component<Props, State> {
         }
     }
 
+    private goToArticle(id: number) {
+        let article = dataRealmStore.getContentFromId(id);
+        let category = dataRealmStore.getCategoryNameFromId(id);
+        console.log('artikl', article)
+        const pushAction = StackActions.push({
+            routeName: 'HomeStackNavigator_ArticleScreen',
+            params: {
+                article: article,
+                categoryName: category,
+            },
+        });
+        // this.props.navigation.push('HomeStackNavigator_ArticleScreen', {article: item});
+        navigation.dispatch(pushAction)
+    }
+
     render() {
         return (
             <View>
                 <View style={styles.container}>
                     <View style={{ flexDirection: 'row' }}>
-                        <Icon
-                            name={this.renderIcon(this.state.isVaccinationComplete)}
-                            style={[styles.iconStyle, { color: this.state.isVaccinationComplete ? "#2CBA39" : "#EB4747" }]}
-                        />
+                        {
+                            this.props.isBirthDayEntered && (
+                                <Icon
+                                    name={this.renderIcon(this.props.isVaccinationComplete)}
+                                    style={[styles.iconStyle, { color: this.state.isVaccinationComplete ? "#2CBA39" : "#EB4747" }]}
+                                />
+                            )
+                        }
+
                         <View style={{ flexDirection: "column" }}>
                             <Typography type={TypographyType.headingSecondary}>
                                 {this.props.title}
@@ -100,14 +130,21 @@ export class OneVaccinations extends Component<Props, State> {
                                             </Typography>
                                         </View>
                                         <View style={styles.vaccineItemContent}>
-                                            <TextButton color={TextButtonColor.purple} style={{ marginTop: -4, marginBottom: 12 }}>{translate('moreAboutDisease')}</TextButton>
+                                            <TextButton color={TextButtonColor.purple} style={{ marginTop: -4, marginBottom: 12 }} onPress={() => this.goToArticle(parseInt(item.hardcodedArticleId))}>{translate('moreAboutDisease')}</TextButton>
                                             {
                                                 item.description && (
                                                     <>
                                                         <Typography>
                                                             {item.description}
                                                         </Typography>
-                                                        <TextButton color={TextButtonColor.purple} style={{ marginTop: 4, marginBottom: 12 }}>{translate('moreAboutVaccineBtn')}</TextButton>
+                                                        <TextButton
+                                                            color={TextButtonColor.purple}
+                                                            style={{ marginTop: 4, marginBottom: 12 }}
+                                                            onPress={() => { console.log('click') }}
+
+                                                        >
+                                                            {translate('moreAboutVaccineBtn')}
+                                                        </TextButton>
                                                     </>
                                                 )
                                             }
@@ -124,16 +161,16 @@ export class OneVaccinations extends Component<Props, State> {
                     {
                         !this.state.isVaccinationComplete ?
                             <View >
-                                <RoundedButton 
-                                    style={{ paddingLeft: moderateScale(20) }} 
-                                    type={RoundedButtonType.purple} text={translate('AddDataAboutVaccination')} 
-                                    showArrow={true} 
+                                <RoundedButton
+                                    style={{ paddingLeft: moderateScale(20) }}
+                                    type={RoundedButtonType.purple} text={translate('AddDataAboutVaccination')}
+                                    showArrow={true}
                                     onPress={() => this.props.onPress()}
                                 />
-                                <RoundedButton 
-                                    type={RoundedButtonType.hollowPurple} 
-                                    text={translate('AddVaccinationReminder')} 
-                                    showArrow={true} style={styles.reminderBtn} 
+                                <RoundedButton
+                                    type={RoundedButtonType.hollowPurple}
+                                    text={translate('AddVaccinationReminder')}
+                                    showArrow={true} style={styles.reminderBtn}
                                     onPress={() => this.props.onPress2()}
                                 />
                             </View>
@@ -172,9 +209,9 @@ const styles = StyleSheet.create<OneVaccinationsStyles>({
         shadowOpacity: 0.2,
         padding: scale(16),
     },
-    reminderBtn:{
-        paddingLeft: moderateScale(20), 
-        marginTop: moderateScale(20), 
+    reminderBtn: {
+        paddingLeft: moderateScale(20),
+        marginTop: moderateScale(20),
         marginBottom: moderateScale(24)
     },
     vaccineContainer: {
