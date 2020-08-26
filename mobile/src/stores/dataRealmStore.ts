@@ -15,6 +15,8 @@ import { translateData, TranslateDataDevelopmentPeriods } from '../translationsD
 import { MilestoneItem } from '../components/development/MilestoneForm';
 import { DailyMessageVariable } from '../app/homeMessages';
 import { ChildEntitySchema } from './ChildEntity';
+import { navigation } from '../app';
+import { Alert } from 'react-native';
 
 export type Variables = {
     'userEmail': string;
@@ -626,6 +628,19 @@ class DataRealmStore {
         }
 
         return rval;
+    }
+
+    public openArticleScreen(articleId: number) {
+        const article = this.getContentFromId(articleId);
+
+        if (article) {
+            navigation.navigate('HomeStackNavigator_ArticleScreen', {
+                article,
+                categoryName: '',
+            });
+        } else {
+            Alert.alert('Warning', translate('noArticleWithId'));
+        }
     }
 
     public getFaqCategoryScreenData(tagType: TagType, tagId: number): ListCardItem[] {
