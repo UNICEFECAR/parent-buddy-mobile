@@ -7,6 +7,7 @@ import { scale } from 'react-native-size-matters';
 import { HomeScreenParams } from '../home/HomeScreen';
 import { translate } from '../../translations/translate';
 import { OneVaccinations } from '../../components/vaccinations/oneVaccinations';
+import { translateData } from '../../translationsData/translateData';
 
 export interface VaccinationScreenParams {
 
@@ -23,6 +24,8 @@ export class VaccinationScreen extends Component<Props> {
         this.setDefaultScreenParams();
     }
 
+
+
     private setDefaultScreenParams() {
         let defaultScreenParams: VaccinationScreenParams = {
 
@@ -35,6 +38,18 @@ export class VaccinationScreen extends Component<Props> {
         }
     }
 
+    private getAllVaccinationsPeriods() {
+        let periods = translateData('immunizationsPeriods');
+
+        return periods;
+    }
+
+    /*
+        Ako datum rodjenja nije unet, ne treba da ima red or green mark, 
+        treba da ima listu vakcina sa tackicama
+        ne treba da ima button-e 
+    */
+
     render() {
         return (
             <ThemeConsumer>
@@ -43,18 +58,25 @@ export class VaccinationScreen extends Component<Props> {
                         style={{ backgroundColor: themeContext.theme.screenContainer?.backgroundColor }}
                         contentContainerStyle={styles.container}
                     >
-                        <OneVaccinations
-                            title="Na rođenju"
-                            isVerticalLineVisible={true}
-                            vaccineList={[
-                                { complete: true, title: "Protiv tuberkuloze", },
-                                { complete: true, title: "Protiv zarazne žutice B", },
-                            ]}
-                            onPress={() => this.props.navigation.navigate('HomeStackNavigator_NewDoctorVisitScreen')}
-                            onPress2={() => this.props.navigation.navigate('HomeStackNavigator_VaccinationDataScreen')}
+                        {
+                            this.getAllVaccinationsPeriods()?.map(item => {
+                                console.log(item)
+                                return(
+                                    <OneVaccinations
+                                        title={item.title}
+                                        isVaccinationComplete={true}
+                                        isVerticalLineVisible={true}
+                                        vaccineList={item.vaccines}
+                                        onPress={() => this.props.navigation.navigate('HomeStackNavigator_NewDoctorVisitScreen')}
+                                        onPress2={() => this.props.navigation.navigate('HomeStackNavigator_VaccinationDataScreen')}
+                                    />
+                                )
+                            }
+                               
+                            )
+                        }
 
-                        />
-                        <OneVaccinations
+                        {/* <OneVaccinations
                             vaccinationDate="21.7.2019."
                             vaccineList={[
                                 { complete: false, title: "Protiv zarazne žutice B", description: "Vakcina dobijena genetskim inženjeringom, sadrži prečišćeni HbsAg" },
@@ -76,7 +98,7 @@ export class VaccinationScreen extends Component<Props> {
                             ]}
                             onPress={() => this.props.navigation.navigate('HomeStackNavigator_NewDoctorVisitScreen')}
                             onPress2={() => this.props.navigation.navigate('HomeStackNavigator_VaccinationDataScreen')}
-                        />
+                        /> */}
 
                     </ScrollView>
                 )}
