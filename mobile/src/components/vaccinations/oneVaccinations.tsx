@@ -11,23 +11,27 @@ import { TextButtonColor } from '../TextButton';
 import { dataRealmStore } from '../../stores';
 import { StackActions } from 'react-navigation';
 import { navigation } from '../../app';
+import { DateTime } from 'luxon';
 
-export interface VaccinationDate {
+export interface Vaccine {
     complete: boolean,
     title: string,
-    description?: string,
     hardcodedArticleId: string,
+    recivedDateMilis?: number | undefined,
+    uuid: string,
 }
 
-export interface Props {
+export interface VaccinationPeriod {
     vaccinationDate?: string,
     title: string,
-    isVaccinationComplete: boolean,
+    isFeaturedPeriod?: boolean,
+    isVaccinationComplete?: boolean,
     isVerticalLineVisible?: boolean,
-    vaccineList: VaccinationDate[],
+    isCurrentPeriod?: boolean,
+    vaccineList: Vaccine[],
     isBirthDayEntered: boolean,
-    onPress: Function,
-    onPress2: Function,
+    onPress?: Function,
+    onPress2?: Function,
 }
 
 export interface Vaccination {
@@ -38,8 +42,8 @@ export interface State {
     isVaccinationComplete: boolean
 }
 
-export class OneVaccinations extends Component<Props, State> {
-    constructor(props: Props) {
+export class OneVaccinations extends Component<VaccinationPeriod, State> {
+    constructor(props: VaccinationPeriod) {
         super(props);
         this.initState()
     }
@@ -62,6 +66,11 @@ export class OneVaccinations extends Component<Props, State> {
     }
 
     private renderIcon = (complete: boolean) => {
+
+        if (!this.props.isBirthDayEntered || this.props.isFeaturedPeriod) {
+            return "dot"
+        }
+
         if (complete) {
             return "check-circle"
         } else {
@@ -90,10 +99,10 @@ export class OneVaccinations extends Component<Props, State> {
                 <View style={styles.container}>
                     <View style={{ flexDirection: 'row' }}>
                         {
-                            this.props.isBirthDayEntered && (
+                            this.props.isBirthDayEntered && !this.props.isFeaturedPeriod && (
                                 <Icon
                                     name={this.renderIcon(this.props.isVaccinationComplete)}
-                                    style={[styles.iconStyle, { color: this.state.isVaccinationComplete ? "#2CBA39" : "#EB4747" }]}
+                                    style={[styles.iconStyle, { color: this.props.isVaccinationComplete ? "#2CBA39" : "#EB4747" }]}
                                 />
                             )
                         }
@@ -103,7 +112,7 @@ export class OneVaccinations extends Component<Props, State> {
                                 {this.props.title}
                             </Typography>
                             {
-                                !this.state.isVaccinationComplete ? <Typography style={{ marginTop: -7 }} type={TypographyType.headingSecondary}>{translate('vaccinationTitleQuestion')}</Typography> : null
+                                !this.props.isVaccinationComplete ? <Typography style={{ marginTop: -7 }} type={TypographyType.headingSecondary}>{translate('vaccinationTitleQuestion')}</Typography> : null
                             }
                             {
                                 this.props.vaccinationDate && (
@@ -118,20 +127,30 @@ export class OneVaccinations extends Component<Props, State> {
                     <View style={styles.vaccineContainer}>
                         <View style={{ flexDirection: 'column' }}>
                             {
-                                this.props.vaccineList.map(item => (
-                                    <View style={styles.vaccineItemContainer} >
-                                        <View style={styles.vaccineItemHeader}>
-                                            <Icon
-                                                name={this.renderIcon(item.complete)}
-                                                style={[styles.iconStyle, { color: item.complete ? "#2CBA39" : "#EB4747" }]}
-                                            />
-                                            <Typography style={styles.vaccineItemTitle} type={TypographyType.headingSecondary}>
-                                                {item.title}
-                                            </Typography>
-                                        </View>
-                                        <View style={styles.vaccineItemContent}>
-                                            <TextButton color={TextButtonColor.purple} style={{ marginTop: -4, marginBottom: 12 }} onPress={() => this.goToArticle(parseInt(item.hardcodedArticleId))}>{translate('moreAboutDisease')}</TextButton>
-                                            {
+                                this.props.vaccineList.map(item => {
+
+                                    let date = "";
+
+                                    if(item.recivedDateMilis){
+                                        date = DateTime.fromMillis(item.recivedDateMilis).toLocaleString();
+                                    }else{
+                                        date = "";
+                                    }
+
+                                    return (
+                                        <View style={styles.vaccineItemContainer} >
+                                            <View style={styles.vaccineItemHeader}>
+                                                <Icon
+                                                    name={this.renderIcon(item.complete)}
+                                                    style={[styles.iconStyle, { color: item.complete ? "#2CBA39" : "#EB4747" }]}
+                                                />
+                                                <Typography style={styles.vaccineItemTitle} type={TypographyType.headingSecondary}>
+                                                    {item.title + " " + date}
+                                                </Typography>
+                                            </View>
+                                            <View style={styles.vaccineItemContent}>
+                                                <TextButton color={TextButtonColor.purple} style={{ marginTop: -4, marginBottom: 12 }} onPress={() => this.goToArticle(parseInt(item.hardcodedArticleId))}>{translate('moreAboutDisease')}</TextButton>
+                                                {/* {
                                                 item.description && (
                                                     <>
                                                         <Typography>
@@ -147,10 +166,12 @@ export class OneVaccinations extends Component<Props, State> {
                                                         </TextButton>
                                                     </>
                                                 )
-                                            }
+                                            } */}
+                                            </View>
                                         </View>
-                                    </View>
-                                ))
+
+                                    )
+                                })
                             }
 
                             <View>
@@ -159,7 +180,7 @@ export class OneVaccinations extends Component<Props, State> {
                         </View>
                     </View>
                     {
-                        !this.state.isVaccinationComplete ?
+                        !this.props.isVaccinationComplete && this.props.isCurrentPeriod ?
                             <View >
                                 <RoundedButton
                                     style={{ paddingLeft: moderateScale(20) }}

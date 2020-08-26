@@ -8,6 +8,9 @@ import { HomeScreenParams } from '../home/HomeScreen';
 import { translate } from '../../translations/translate';
 import { OneVaccinations } from '../../components/vaccinations/oneVaccinations';
 import { translateData } from '../../translationsData/translateData';
+import { userRealmStore } from '../../stores';
+import { DataRealmConsumer } from '../../stores/DataRealmContext';
+import { UserRealmConsumer } from '../../stores/UserRealmContext';
 
 export interface VaccinationScreenParams {
 
@@ -58,47 +61,41 @@ export class VaccinationScreen extends Component<Props> {
                         style={{ backgroundColor: themeContext.theme.screenContainer?.backgroundColor }}
                         contentContainerStyle={styles.container}
                     >
-                        {
-                            this.getAllVaccinationsPeriods()?.map(item => {
-                                console.log(item)
-                                return(
-                                    <OneVaccinations
-                                        title={item.title}
-                                        isVaccinationComplete={true}
-                                        isVerticalLineVisible={true}
-                                        vaccineList={item.vaccines}
-                                        onPress={() => this.props.navigation.navigate('HomeStackNavigator_NewDoctorVisitScreen')}
-                                        onPress2={() => this.props.navigation.navigate('HomeStackNavigator_VaccinationDataScreen')}
-                                    />
-                                )
-                            }
-                               
-                            )
-                        }
+                        <DataRealmConsumer>
+                            {data => (
+                                <UserRealmConsumer>
+                                    {(user) => (
+                                        <>
+                                            {userRealmStore.getAllVaccinationPeriods().map(period => {
 
-                        {/* <OneVaccinations
-                            vaccinationDate="21.7.2019."
-                            vaccineList={[
-                                { complete: false, title: "Protiv zarazne žutice B", description: "Vakcina dobijena genetskim inženjeringom, sadrži prečišćeni HbsAg" },
-                                { complete: true, title: "Protiv difterije, tetanusa, velikog kašlja - 14.6.2019.", description: "Vakcina koja sadrži toksoide difterije i tetanusa i inaktivisanu korpuskulu Bordetella pertusis" },
-                                { complete: true, title: "Protiv dečije paralize", description: "Živa oralna tritipna polio vakcina koja sadrži sva tri tipa živa oslabljena poliovirusa" },
-                                { complete: true, title: "Protiv oboljenja izazvanih hemofilusom influence tipa B - 15.5.2019.", description: "Konjugovana vakcina" },
-                            ]}
-                            title="5. Mesec"
-                            isVerticalLineVisible={true}
-                            onPress={() => this.props.navigation.navigate('HomeStackNavigator_NewDoctorVisitScreen')}
-                            onPress2={() => this.props.navigation.navigate('HomeStackNavigator_VaccinationDataScreen')}
+                                                let isComplete = true;
 
-                        />
-                        <OneVaccinations
-                            vaccinationDate="17. - 24. mesec"
-                            title="Predstojeća vakcinacija"
-                            vaccineList={[
-                                { complete: false, title: "Protiv zarazne žutice B", description: "Kombinovana vakcina koja sadrži toksoide difterije i tetanusa i inaktivisanu korpuskulu Bordetella pertusis" }
-                            ]}
-                            onPress={() => this.props.navigation.navigate('HomeStackNavigator_NewDoctorVisitScreen')}
-                            onPress2={() => this.props.navigation.navigate('HomeStackNavigator_VaccinationDataScreen')}
-                        /> */}
+                                                period.vaccineList.forEach(vaccine => {
+                                                    if (vaccine.complete === false) {
+                                                        isComplete = false;
+                                                        return
+                                                    }
+                                                });
+                                               
+                                                return (
+                                                    <OneVaccinations
+                                                        title={period.title}
+                                                        isBirthDayEntered={period.isBirthDayEntered}
+                                                        isFeaturedPeriod={period.isFeaturedPeriod}
+                                                        isCurrentPeriod={period.isCurrentPeriod}
+                                                        isVaccinationComplete={isComplete}
+                                                        isVerticalLineVisible={true}
+                                                        vaccineList={period.vaccineList}
+                                                        onPress={() => this.props.navigation.navigate('HomeStackNavigator_NewDoctorVisitScreen')}
+                                                        onPress2={() => this.props.navigation.navigate('HomeStackNavigator_VaccinationDataScreen')}
+                                                    />
+                                                )
+                                            })}
+                                        </>
+                                    )}
+                                </UserRealmConsumer>
+                            )}
+                        </DataRealmConsumer>
 
                     </ScrollView>
                 )}

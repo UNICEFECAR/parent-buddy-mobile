@@ -5,7 +5,7 @@ import { appConfig } from '../app/appConfig';
 import { ChildEntity } from '.';
 import { ChildEntitySchema, ChildGender, Measures } from './ChildEntity';
 import { DateTime } from 'luxon';
-import { translateData, TranslateDataInterpretationLenghtForAge, TranslateDataInterpretationWeightForHeight, TranslateDataImmunizationsPeriods } from '../translationsData/translateData';
+import { translateData, TranslateDataInterpretationLenghtForAge, TranslateDataInterpretationWeightForHeight, TranslateDataDoctorVisitPeriods, TranslateDataImmunizationsPeriods } from '../translationsData/translateData';
 import { ChartData as Data, GrowthChart0_2Type, GrowthChartHeightAgeType } from '../components/growth/growthChartData';
 import { dataRealmStore } from './dataRealmStore';
 import { InterpretationText } from '../screens/growth/GrowthScreen';
@@ -13,7 +13,8 @@ import { Child } from '../screens/home/ChildProfileScreen';
 import RNFS from 'react-native-fs';
 import { UserRealmContextValue } from './UserRealmContext';
 import { utils } from '../app/utils';
-import { Props as  DoctorVisitCardProps} from '../components/doctor-visit/DoctorVisitCard';
+import { Props as DoctorVisitCardProps } from '../components/doctor-visit/DoctorVisitCard';
+import { Vaccine, VaccinationPeriod } from '../components/vaccinations/oneVaccinations';
 
 type Variables = {
     'userChildren': any;
@@ -94,49 +95,127 @@ class UserRealmStore {
 
     }
 
-    public getAllRecivedVaccine(){
 
+    /* VACCINATIONS */
+    
+    public getAllRecivedVaccines() {
+        let allMeasures = this.getAllMeasuresForCurrentChild();
+
+        let rval: vaccine[] = [];
+
+        allMeasures.forEach(measure => {
+            if (measure.vaccineIds !== null && measure.vaccineIds !== undefined && measure.vaccineIds.length > 0) {
+                rval.push({ uuid: measure.vaccineIds, date: measure.measurementDate });
+            };
+        });
+
+        return rval;
+    };
+
+    public getVaccineForPeriod(recivedVaccination: vaccine[], period: object): Vaccine[] {
+
+        let allVaccines: Vaccine[] = []
+        if (recivedVaccination.length !== 0) {
+            period.vaccines.forEach(vaccine => {
+                let isCompleted = false;
+                recivedVaccination.forEach(item => {
+                    if (item.uuid.indexOf(parseInt(vaccine.uuid)) !== -1) {
+                        isCompleted = true;
+                    } else {
+                        isCompleted = false;
+                    }
+
+                    allVaccines.push({
+                        title: vaccine.title,
+                        uuid: vaccine.uuid,
+                        complete: isCompleted,
+                        hardcodedArticleId: vaccine.hardcodedArticleId,
+                        recivedDateMilis: item.date
+                    })
+                })
+            })
+        } else {
+            period.vaccines.forEach(vaccine => {
+                let isCompleted = false;
+                allVaccines.push({
+                    title: vaccine.title,
+                    uuid: vaccine.uuid,
+                    complete: isCompleted,
+                    hardcodedArticleId: vaccine.hardcodedArticleId,
+
+                })
+            })
+        }
+
+
+        return allVaccines;
     }
 
-    public getAllVaccinationPeriods(){
+    public getAllVaccinationPeriods(): VaccinationPeriod[] {
 
-        let rval: any = [];
+        let rval: VaccinationPeriod[] = [];
         let isBirthDayEntered = false;
-        
+
         const childBirthDay = this.getCurrentChild()?.birthDate;
         const immunizationsPeriods = translateData('immunizationsPeriods') as (TranslateDataImmunizationsPeriods | null);
 
-        let vaccine = [];
-
-        if(childBirthDay){
+        if (childBirthDay) {
             const childAgeInDays = this.getCurrentChildAgeInDays();
+            const recivedVaccination = this.getAllRecivedVaccines();
+
             let isCurrentPeriod = false;
+            let isFeaturedPeriod = false;
 
             isBirthDayEntered = true;
 
             immunizationsPeriods?.forEach(period => {
-                
-                if(childAgeInDays >= period.dayStart && childAgeInDays <= period.dayEnd){
+
+                // Get current period 
+                if (childAgeInDays >= period.dayStart && childAgeInDays <= period.dayEnd) {
                     isCurrentPeriod = true;
-                }else{
+                } else {
                     isCurrentPeriod = false;
+                }
+
+                // Get featured periods 
+                if(childAgeInDays < period.dayStart){
+                    isFeaturedPeriod = true;
                 }
 
                 rval.push({
                     isCurrentPeriod: isCurrentPeriod,
                     title: period.title,
-                    isBirthDayEntered: isBirthDayEntered
+                    isBirthDayEntered: isBirthDayEntered,
+                    vaccineList: this.getVaccineForPeriod(recivedVaccination, period),
+                    isFeaturedPeriod: isFeaturedPeriod,
                 })
             });
-        }else{
-            isBirthDayEntered = true;
+        } else {
+            isBirthDayEntered = false;
 
-            rval = immunizationsPeriods;
+            immunizationsPeriods?.forEach(period => {
+                rval.push({
+                    isCurrentPeriod: false,
+                    title: period.title,
+                    isBirthDayEntered: isBirthDayEntered,
+                    vaccineList: period.vaccines.map(item => {
+                        return {
+                            title: item.title,
+                            uuid: item.uuid,
+                            complete: false,
+                            hardcodedArticleId: item.hardcodedArticleId
+                        }
+                    }),
+                });
+            });
         }
 
 
         return rval;
     }
+
+
+
 
     public getCurrentChildAgeInDays = (birthDayMilisecounds?: number) => {
         let childBirthDay = birthDayMilisecounds ? birthDayMilisecounds : this.getCurrentChild()?.birthDate?.getTime();
@@ -542,8 +621,27 @@ class UserRealmStore {
     }
 
     public getDoctorVisitCards(): DoctorVisitCardProps[] {
-        return [];
+        let rval: DoctorVisitCardProps[] = [];
+
+        const doctorVisitPeriods = translateData('doctorVisitPeriods') as (TranslateDataDoctorVisitPeriods);
+        if (!doctorVisitPeriods) return [];
+
+        doctorVisitPeriods.forEach((doctorVisit, index) => {
+            rval.push({
+                title: doctorVisit.nameOfTheDoctorVisit,
+                subTitle: doctorVisit.periodSubtitle,
+                items: [],
+                showVerticalLine: index !== doctorVisitPeriods.length - 1,
+            });
+        });
+
+        return rval;
     }
+}
+
+export type vaccine = {
+    uuid: number[];
+    date: number | undefined;
 }
 
 export const userRealmStore = UserRealmStore.getInstance();
