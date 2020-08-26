@@ -14,7 +14,7 @@ import { translate } from '../../translations/translate';
 import { content, localize, utils } from '../../app';
 import { Media } from '../../components';
 import Orientation from 'react-native-orientation-locker';
-import { getSearchResultsScreenData } from '../../stores/getSearchResultsScreenData';
+import { getSearchResultsScreenData } from '../../stores/functions/getSearchResultsScreenData';
 import axios, { AxiosResponse } from 'axios';
 import { appConfig } from "../../app/appConfig";
 import { HomeMessages, Message, IconType } from '../../components/HomeMessages';

@@ -86,6 +86,7 @@
     "relatedArticles": "Related articles",
     "developmentArticles": "Child development",
     "noArticles": "There are no articles",
+    "noArticleWithId": "There is no article with the given ID",
     "popularArticles": "Popular articles",
     "todayArticles": "Featured today",
     "showAllResults": "Show all results",
@@ -195,6 +196,9 @@
     "measurementLength": "Lenght",
 
     "doctorVisitsScreenTitle": "Health check-ups TODO",
+    "doctorVisitsVaccineDataNotEntered": "Vaccines not entered TODO",
+    "doctorVisitsMeasuresNotEntered": "Measures not entered TODO",
+    "doctorVisitsReadMore": "Read more about health checkups in this period TODO",
 
     "growthChartLegendSilverLabel": "-Typical values for age",
     "growthChartLegendOrangeLabel": "-Suboptimal values for age",
