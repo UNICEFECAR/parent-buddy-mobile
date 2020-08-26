@@ -13,7 +13,8 @@ import { Child } from '../screens/home/ChildProfileScreen';
 import RNFS from 'react-native-fs';
 import { UserRealmContextValue } from './UserRealmContext';
 import { utils } from '../app/utils';
-import { Props as DoctorVisitCardProps } from '../components/doctor-visit/DoctorVisitCard';
+import { Props as  DoctorVisitCardProps, DoctorVisitCardItemIcon, DoctorVisitCardButtonType} from '../components/doctor-visit/DoctorVisitCard';
+import { getDoctorVisitCardsNoBirthday } from './functions/getDoctorVisitCards';
 import { Vaccine, VaccinationPeriod } from '../components/vaccinations/oneVaccinations';
 
 type Variables = {
@@ -623,17 +624,13 @@ class UserRealmStore {
     public getDoctorVisitCards(): DoctorVisitCardProps[] {
         let rval: DoctorVisitCardProps[] = [];
 
-        const doctorVisitPeriods = translateData('doctorVisitPeriods') as (TranslateDataDoctorVisitPeriods);
-        if (!doctorVisitPeriods) return [];
+        const currentChild = this.getCurrentChild();
+        if (!currentChild) return [];
 
-        doctorVisitPeriods.forEach((doctorVisit, index) => {
-            rval.push({
-                title: doctorVisit.nameOfTheDoctorVisit,
-                subTitle: doctorVisit.periodSubtitle,
-                items: [],
-                showVerticalLine: index !== doctorVisitPeriods.length - 1,
-            });
-        });
+        // Birthday is not given
+        if (!currentChild.birthDate) {
+            rval = getDoctorVisitCardsNoBirthday();
+        }
 
         return rval;
     }
