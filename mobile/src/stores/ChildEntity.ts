@@ -17,11 +17,12 @@ export type Measures = {
      */
     measurementDate?: number;
 
-    titleDateInMonth?: number,
+    titleDateInMonth?: number;
+
     /**
-     * All recived vaccine.
+     * All received vaccines.
      */
-    vaccineIds?: number[]
+    vaccineIds?: number[];
 }
 
 export type ChildEntity = {
