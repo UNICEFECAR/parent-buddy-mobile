@@ -18,6 +18,10 @@ export type Measures = {
     measurementDate?: number;
 
     titleDateInMonth?: number,
+    /**
+     * All recived vaccine.
+     */
+    vaccineIds?: number[]
 }
 
 export type ChildEntity = {

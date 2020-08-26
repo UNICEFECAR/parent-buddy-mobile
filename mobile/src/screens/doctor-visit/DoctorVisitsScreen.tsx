@@ -50,7 +50,10 @@ export class DoctorVisitsScreen extends Component<Props> {
                                             ) : null}
 
                                             {/* CARDS */}
-                                            {[0, 1, 2].map(index => (
+                                            {userRealmStore.getDoctorVisitCards().map(cardProps => (
+                                                <DoctorVisitCard {...cardProps} />
+                                            ))}
+                                            {/* {[0, 1, 2].map(index => (
                                                 <DoctorVisitCard
                                                     title={"Pregled na rodjenju " + index}
                                                     subTitle="9.7.2020"
@@ -67,7 +70,7 @@ export class DoctorVisitsScreen extends Component<Props> {
                                                         { type: DoctorVisitCardButtonType.Purple, text: 'Purple button', onPress: () => { } },
                                                     ]}
                                                 />
-                                            ))}
+                                            ))} */}
                                         </Fragment>
                                     )}
                                 </UserRealmConsumer>

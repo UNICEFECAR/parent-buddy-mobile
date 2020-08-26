@@ -93,7 +93,7 @@ export class DoctorVisitCard extends Component<Props, State> {
                             </Typography>
 
                             {/* Subtitle */}
-                            <Typography type={TypographyType.bodyRegular}>
+                            <Typography type={TypographyType.bodyRegular} style={{fontWeight:'bold'}}>
                                 {this.props.subTitle}
                             </Typography>
                         </View>
