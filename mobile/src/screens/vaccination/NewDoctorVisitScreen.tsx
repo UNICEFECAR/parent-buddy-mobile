@@ -40,6 +40,8 @@ export interface State {
     vaccinesForPreviousPeriod: Vaccine[],
     isSnackbarVisible: boolean,
     snackbarMessage: string,
+    isVaccineReceivedError: string,
+    visitDateError: string,
 }
 
 
@@ -66,7 +68,9 @@ export class NewDoctorVisitScreen extends Component<Props, State> {
             height: "",
             comment: "",
             isVaccineReceived: isVaccineReceived,
+            isVaccineReceivedError: "",
             isChildMeasured: "",
+            visitDateError: "",
             childMeasuredError: "",
             childMeasuredWeightError: "",
             childMeasuredHeightError: "",
@@ -87,7 +91,31 @@ export class NewDoctorVisitScreen extends Component<Props, State> {
     }
 
     private saveData = () => {
-        if (this.state.visitDate) {
+
+        let error = false;
+
+        if (this.state.isChildMeasured === "") {
+            error = true;
+            this.setState({
+                childMeasuredError:  translate('vaccinationSwitchBtnErrorMessage')
+            });
+        };
+
+        if (this.state.isVaccineReceived === "") {
+            error = true;
+            this.setState({
+                isVaccineReceivedError: translate('vaccinationSwitchBtnErrorMessage')
+            });
+        };
+
+        if (!this.state.visitDate) {
+            error = true;
+            this.setState({
+                visitDateError: translate('vaccinationDateErrorMessage')
+            });
+        };
+
+        if (!error && this.state.visitDate) {
 
             const completedVaccinations = this.getCompletedVaccines();
 
@@ -97,7 +125,7 @@ export class NewDoctorVisitScreen extends Component<Props, State> {
 
             if (this.state.isChildMeasured === "yes") {
                 isChildMeasured = true;
-            }
+            };
 
             if (this.props.navigation.state.params?.screenType === screenType.heltCheckUp) {
                 if (this.state.isVaccineReceived === "yes") {
@@ -116,21 +144,18 @@ export class NewDoctorVisitScreen extends Component<Props, State> {
                 vaccineIds: completedVaccinations,
                 isChildMeasured: isChildMeasured,
                 didChildGetVaccines: didChildGetVaccines,
+                doctorComment: this.state.comment
             }
 
             userRealmStore.addMeasuresForCurrentChild(measure);
             this.props.navigation.goBack();
-        } else {
-            this.setState({
-                snackbarMessage: "TODO Datum mora biti popunjen",
-                isSnackbarVisible: true,
-            })
         }
     }
 
     private setMeasurementDate = (value: Date) => {
         this.setState({
             visitDate: value,
+            visitDateError: "",
         })
     }
 
@@ -200,13 +225,13 @@ export class NewDoctorVisitScreen extends Component<Props, State> {
                     vaccinesList.length > 0 ?
                         <>
                             <View style={styles.vaccineContainerTitle}>
-                                <Typography type={TypographyType.headingSecondary} style={{marginBottom: -10}}>
+                                <Typography type={TypographyType.headingSecondary} style={{ marginBottom: -10 }}>
                                     {
                                         periodType === "previousPeriod" ?
                                             translate('previousVaccinesTitle')
                                             :
                                             translate('newVaccinesLabelTitle')
-                                    }   
+                                    }
                                 </Typography>
                             </View>
                             {
@@ -217,7 +242,7 @@ export class NewDoctorVisitScreen extends Component<Props, State> {
                                             <Typography style={styles.vaccineText}>
                                                 {item.title}
                                             </Typography>
-                                            <Icon name="info-circle" style={{fontSize: moderateScale(18), opacity: 0.7}} onPress={() => this.goToArticle(parseInt(item.hardcodedArticleId))} />
+                                            <Icon name="info-circle" style={{ fontSize: moderateScale(18), opacity: 0.7 }} onPress={() => this.goToArticle(parseInt(item.hardcodedArticleId))} />
                                         </View>
                                     </View>
                                 ))
@@ -237,13 +262,19 @@ export class NewDoctorVisitScreen extends Component<Props, State> {
                             <Typography style={{ marginBottom: scale(16) }}>{translate("newMeasureScreenVaccineTitle")}</Typography>
                             <RadioButtons
                                 value={this.state.isVaccineReceived}
-                                onChange={(value) => this.setState({ isVaccineReceived: value })}
+                                style={this.state.isVaccineReceivedError !== "" ? { borderColor: colorError, borderWidth: 1, borderRadius: 27 } : null}
+                                onChange={(value) => this.setState({ isVaccineReceived: value, isVaccineReceivedError: "" })}
                                 buttonStyle={{ width: 150 }}
                                 buttons={[
                                     { text: translate("newMeasureScreenVaccineOptionYes"), value: "yes" },
                                     { text: translate("newMeasureScreenVaccineOptionNo"), value: "no" }
                                 ]}
                             />
+                            {
+                                this.state.isVaccineReceivedError !== "" ?
+                                    <Typography style={{ color: colorError, fontSize: moderateScale(15) }}>{this.state.isVaccineReceivedError}</Typography>
+                                    : null
+                            }
                         </View>
                         :
                         null
@@ -278,13 +309,13 @@ export class NewDoctorVisitScreen extends Component<Props, State> {
                     />
                     {
                         this.state.childMeasuredError !== "" ?
-                            <Typography style={{ color: colorError }}>{this.state.childMeasuredError}</Typography>
+                            <Typography style={{ color: colorError, fontSize: moderateScale(15) }}>{this.state.childMeasuredError}</Typography>
                             : null
                     }
                 </View>
                 {
                     this.state.isChildMeasured === "yes" && (
-                        <View style={{ marginTop: 16 }}>
+                        <View style={{ marginTop: 16, }}>
                             <RoundedTextInput
                                 label={translate('fieldLabelWeight')}
                                 suffix="g"
@@ -317,7 +348,16 @@ export class NewDoctorVisitScreen extends Component<Props, State> {
                             contentContainerStyle={styles.container}
                         >
                             <View>
-                                <DateTimePicker label={translate("NewDoctorVisitScreenDatePickerLabel")} onChange={(value) => this.setMeasurementDate(value)} />
+                                <DateTimePicker
+                                    label={translate("NewDoctorVisitScreenDatePickerLabel")}
+                                    onChange={(value) => this.setMeasurementDate(value)}
+                                    style={this.state.visitDateError !== "" ? { borderColor: colorError, borderWidth: 1, borderRadius: 27 } : null}
+                                />
+                                {
+                                    this.state.visitDateError !== "" ?
+                                        <Typography style={{ color: colorError, fontSize: moderateScale(15) }}>{this.state.visitDateError}</Typography>
+                                        : null
+                                }
                             </View>
 
                             {
@@ -335,7 +375,7 @@ export class NewDoctorVisitScreen extends Component<Props, State> {
 
 
                             <View style={styles.commenterContainer}>
-                                <RoundedTextArea placeholder={translate("newMeasureScreenCommentPlaceholder")} />
+                                <RoundedTextArea placeholder={translate("newMeasureScreenCommentPlaceholder")} onChange={(value) => this.setState({ comment: value })} />
                             </View>
 
                             <View>
@@ -393,6 +433,7 @@ const styles = StyleSheet.create<NewDoctorVisitScreenStyles>({
     vaccineContainer: {
         alignItems: "flex-start",
         marginTop: scale(22),
+
     },
     commenterContainer: {
         marginTop: scale(32),
