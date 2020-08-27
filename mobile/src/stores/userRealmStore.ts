@@ -14,7 +14,7 @@ import RNFS from 'react-native-fs';
 import { UserRealmContextValue } from './UserRealmContext';
 import { utils } from '../app/utils';
 import { Props as DoctorVisitCardProps, DoctorVisitCardItemIcon, DoctorVisitCardButtonType } from '../components/doctor-visit/DoctorVisitCard';
-import { getDoctorVisitCardsBirthdayIsNotSet } from './functions/getDoctorVisitCards';
+import { getDoctorVisitCardsBirthdayIsNotSet, getDoctorVisitCardsBirthdayIsSet } from './functions/getDoctorVisitCards';
 import { Vaccine, VaccinationPeriod } from '../components/vaccinations/oneVaccinations';
 
 type Variables = {
@@ -720,6 +720,8 @@ class UserRealmStore {
         let rval: DoctorVisitCardProps[] = [];
 
         const currentChild = this.getCurrentChild();
+        // console.log('getDoctorVisitCards', JSON.stringify(JSON.parse(currentChild?.measures ? currentChild?.measures : ''), null, 4));
+        
         if (!currentChild) return [];
 
         // Birthday is NOT given
@@ -729,7 +731,7 @@ class UserRealmStore {
 
         // Birthday is given
         if (currentChild.birthDate) {
-
+            rval = getDoctorVisitCardsBirthdayIsSet();
         }
 
         return rval;
