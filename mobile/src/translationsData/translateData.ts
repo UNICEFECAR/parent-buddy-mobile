@@ -26,6 +26,7 @@ export type TranslateDataGrowthPeriodsMessages = typeof en['growthPeriodsMessage
 export type TranslateDataGrowthMessagesPeriod = TranslateDataGrowthPeriodsMessages[0];
 export type TranslateDataDoctorVisitPeriods = typeof en['doctorVisitPeriods'];
 export type TranslateDataImmunizationsPeriods = typeof en['immunizationsPeriods'];
+export type TranslateDataImmunizationsPeriod = TranslateDataImmunizationsPeriods[0];
 export type TranslateDataInterpretationWeightForHeight = typeof en['interpretationWeightForHeight'];
 export type TranslateDataInterpretationLenghtForAge = typeof en['interpretationLenghtForAge'];
 
