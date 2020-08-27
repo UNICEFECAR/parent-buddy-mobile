@@ -478,6 +478,7 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
         {
             uuid: '63072492-271f-4776-8b76-1dbae74e453f',
             period: 'Na rodjenju',
+            childAgeInDays: { from: 0, to: 30 },
             nameOfTheDoctorVisit: 'Redovan preventivni pregled',
             periodSubtitle: 'Na rođenju',
             immunizationsPeriodId: '78e0d1a9-bc54-4f47-af59-ef7268788e3e',
@@ -487,6 +488,7 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
         {
             uuid: '2d2886f2-c99e-4720-8f59-bfe76b3d7d86',
             period: 'Sa 1 mesec',
+            childAgeInDays: { from: 31, to: 60 },
             nameOfTheDoctorVisit: 'Redovan preventivni pregled',
             periodSubtitle: 'Sa punih mesec dana',
             immunizationsPeriodId: '2c144a63-e39f-490e-852a-75ae694a75ca',
@@ -496,6 +498,7 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
         {
             uuid: '4a431509-6d03-417f-92d5-b14fe11f5767',
             period: 'Sa dva meseca',
+            childAgeInDays: { from: 61, to: 90 },
             nameOfTheDoctorVisit: 'Redovan preventivni pregled',
             periodSubtitle: 'Sa puna 2 meseca',
             immunizationsPeriodId: 'bbd965ed-936a-4958-903e-8cf02f3e5617',
@@ -505,6 +508,7 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
         {
             uuid: 'b3c69374-f593-4dea-b87a-662d195d0369',
             period: 'Sa 3,5 meseca',
+            childAgeInDays: { from: 91, to: 150 },
             nameOfTheDoctorVisit: 'Redovan preventivni pregled',
             periodSubtitle: 'Sa 3,5 meseca',
             immunizationsPeriodId: 'dc851707-b65f-48fd-be87-1ff2b084ed6b',
@@ -514,6 +518,7 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
         {
             uuid: '445c09a5-57ad-45bf-8abe-76ac67178988',
             period: 'Sa 5 meseci',
+            childAgeInDays: { from: 151, to: 180 },
             nameOfTheDoctorVisit: 'Redovan preventivni pregled',
             periodSubtitle: 'Sa punih 5 meseci',
             immunizationsPeriodId: '41734989-f615-4d60-a9d8-75a823e84611',
@@ -523,6 +528,7 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
         {
             uuid: '2126bff1-4f4e-4e23-a65b-3edf120dea32',
             period: 'Sa 6 meseci',
+            childAgeInDays: { from: 181, to: 210 },
             nameOfTheDoctorVisit: 'Redovan preventivni pregled',
             periodSubtitle: 'Sa punih 6 meseci',
             immunizationsPeriodId: '8755d225-0e47-441f-8360-74af954ae588',
@@ -532,6 +538,7 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
         {
             uuid: '566692f0-2d24-4a8c-ac1d-2d0f16781fda',
             period: 'Sa 9 meseci',
+            childAgeInDays: { from: 271, to: 300 },
             nameOfTheDoctorVisit: 'Redovan preventivni pregled',
             periodSubtitle: 'Sa punih 9 meseci',
             immunizationsPeriodId: '',
@@ -541,6 +548,7 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
         {
             uuid: '32491a94-d575-462b-90bc-39448904062f',
             period: 'Od 12 do 15 meseci',
+            childAgeInDays: { from: 361, to: 450 },
             nameOfTheDoctorVisit: 'Redovan preventivni pregled',
             periodSubtitle: 'Između 12. i 15. meseca',
             immunizationsPeriodId: 'b8cf588a-afb3-4689-8767-555179dc6d93',
@@ -550,6 +558,7 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
         {
             uuid: 'd7b32a59-3943-4523-b84f-c7d84a63dddd',
             period: 'Sa 18 meseci',
+            childAgeInDays: { from: 541, to: 570 },
             nameOfTheDoctorVisit: 'Redovan preventivni pregled',
             periodSubtitle: 'Sa godinu ipo dana (18. meseci)',
             immunizationsPeriodId: '6a14f374-9cd8-4b69-a09a-78a105f88eb6',
@@ -559,6 +568,7 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
         {
             uuid: 'e038f09c-bf5b-4cc3-bb79-fe1567b994c2',
             period: 'Sa 3. godine (24 - 30 meseci)',
+            childAgeInDays: { from: 721, to: 1080 },
             nameOfTheDoctorVisit: 'Redovan preventivni pregled',
             periodSubtitle: 'U trećoj godini (između 24 i 36 meseci)',
             immunizationsPeriodId: '',
@@ -568,6 +578,7 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
         {
             uuid: '0f130748-2e08-479a-9202-191ecfdaf5ff',
             period: '6/7 godina',
+            childAgeInDays: { from: 2190, to: 2555 },
             nameOfTheDoctorVisit: 'Redovan preventivni pregled',
             periodSubtitle: 'Pred polazak u školu (6-7 godina)',
             immunizationsPeriodId: 'ff8201be-f478-4f42-80fd-bb94470d78df',

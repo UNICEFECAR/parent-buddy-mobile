@@ -14,7 +14,7 @@ import RNFS from 'react-native-fs';
 import { UserRealmContextValue } from './UserRealmContext';
 import { utils } from '../app/utils';
 import { Props as  DoctorVisitCardProps, DoctorVisitCardItemIcon, DoctorVisitCardButtonType} from '../components/doctor-visit/DoctorVisitCard';
-import { getDoctorVisitCardsNoBirthday } from './functions/getDoctorVisitCards';
+import { getDoctorVisitCardsBirthdayIsNotSet } from './functions/getDoctorVisitCards';
 import { Vaccine, VaccinationPeriod } from '../components/vaccinations/oneVaccinations';
 
 type Variables = {
@@ -627,9 +627,14 @@ class UserRealmStore {
         const currentChild = this.getCurrentChild();
         if (!currentChild) return [];
 
-        // Birthday is not given
+        // Birthday is NOT given
         if (!currentChild.birthDate) {
-            rval = getDoctorVisitCardsNoBirthday();
+            rval = getDoctorVisitCardsBirthdayIsNotSet();
+        }
+
+        // Birthday is given
+        if (currentChild.birthDate) {
+            
         }
 
         return rval;
