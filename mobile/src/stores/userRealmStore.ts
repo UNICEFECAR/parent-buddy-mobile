@@ -14,11 +14,7 @@ import RNFS from 'react-native-fs';
 import { UserRealmContextValue } from './UserRealmContext';
 import { utils } from '../app/utils';
 import { Props as DoctorVisitCardProps, DoctorVisitCardItemIcon, DoctorVisitCardButtonType } from '../components/doctor-visit/DoctorVisitCard';
-<<<<<<< HEAD
-import { getDoctorVisitCardsNoBirthday } from './functions/getDoctorVisitCards';
-=======
 import { getDoctorVisitCardsBirthdayIsNotSet } from './functions/getDoctorVisitCards';
->>>>>>> 0cf37e644ea07b2b675a2b25770b3cbff67f6480
 import { Vaccine, VaccinationPeriod } from '../components/vaccinations/oneVaccinations';
 
 type Variables = {
@@ -104,7 +100,6 @@ class UserRealmStore {
         let childBirthDay = this.getCurrentChild()?.birthDate;
         let receivedVaccinations = this.getAllReceivedVaccines();
 
-<<<<<<< HEAD
         let vaccines: Vaccine[] = [];
 
         if (childBirthDay) {
@@ -192,11 +187,6 @@ class UserRealmStore {
     };
 
     public getAllReceivedVaccines() {
-=======
-    /* VACCINATIONS */
-
-    public getAllRecivedVaccines() {
->>>>>>> 0cf37e644ea07b2b675a2b25770b3cbff67f6480
         let allMeasures = this.getAllMeasuresForCurrentChild();
 
         let rval: VaccineForPeriod[] = [];
@@ -215,6 +205,7 @@ class UserRealmStore {
         let allVaccines: Vaccine[] = [];
 
         if (receivedVaccination.length !== 0) {
+            // FIXME 
             period.vaccines.forEach(vaccine => {
                 let isCompleted = false;
                 let date: number | undefined = undefined;
@@ -236,6 +227,7 @@ class UserRealmStore {
             });
 
         } else {
+            // FIXME 
             period.vaccines.forEach(vaccine => {
                 let isCompleted = false;
                 allVaccines.push({

@@ -2,6 +2,8 @@ import { ObjectSchema } from "realm";
 
 
 export type Measures = {
+    isChildMeasured: boolean;
+
     /**
      * Grams.
      */
@@ -18,6 +20,8 @@ export type Measures = {
     measurementDate?: number;
 
     titleDateInMonth?: number;
+
+    didChildGetVaccines: boolean;
 
     /**
      * All received vaccines.
