@@ -646,6 +646,9 @@ class UserRealmStore {
      * divides them into regular and additional measures according to
      * doctorVisitPeriods.
      * 
+     * Regular measure is the first measure that is inside doctorVisitPeriod.
+     * All other are additional.
+     * 
      * doctorVisitPeriods are defined in translationsData->en for example.
      */
     public getRegularAndAdditionalMeasures() {
@@ -689,8 +692,17 @@ class UserRealmStore {
                 }
             });
 
+            // Set regularMeasureAlreadyExists
+            let regularMeasureAlreadyExists = false;
+
+            rval.regularMeasures.forEach((value) => {
+                if (value.doctorVisitPeriodUuid === doctorVisitPeriodUuid) {
+                    regularMeasureAlreadyExists = true;
+                }
+            });
+
             // Add this measure to proper group
-            if (doctorVisitPeriodUuid) {
+            if (doctorVisitPeriodUuid && !regularMeasureAlreadyExists) {
                 rval.regularMeasures.push({
                     doctorVisitPeriodUuid: doctorVisitPeriodUuid,
                     measures: currentMeasures,
