@@ -979,9 +979,9 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
             uuid: '868e2ee6-34d9-44f0-b0aa-8d4011fc3666',
             title: '6-7 years ',
             dayStart: 2160,
-            dayEnd: null,
+            dayEnd: 2190,
             notificationDayStart: 2160,
-            notificationDayEnd: null,
+            notificationDayEnd: 2190,
             subtitle: '',
             vaccines:[
                 {uuid: "79ae380e-d42a-4d9c-8ab8-a06485dc8d40", title: "against measles, mumps, rubella - revaccination ", hardcodedArticleId: ""},
