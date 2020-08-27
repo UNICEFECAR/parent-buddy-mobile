@@ -498,6 +498,7 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
         {
             uuid: '67c0169d-8d5f-4d28-9943-43985824370a',
             period: 'At birth',
+            childAgeInDays: { from: 0, to: 30 },
             nameOfTheDoctorVisit: 'Health check-up',
             periodSubtitle: 'At birth',
             immunizationsPeriodId: '5edc9c03-4066-4d1e-9d28-fea7ceb36b33',
@@ -507,6 +508,7 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
         {
             uuid: '33949b8f-124b-44b4-876f-fefab9ad348c',
             period: 'At 1 month',
+            childAgeInDays: { from: 31, to: 60 },
             nameOfTheDoctorVisit: 'Health check-up',
             periodSubtitle: 'With full 1 month',
             immunizationsPeriodId: 'bc428a1a-b9d1-41cf-922e-6f5bb22b4a77',
@@ -516,6 +518,7 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
         {
             uuid: '841a9c37-0fd4-4680-afb4-8ff4e3b46179',
             period: 'At 2 months',
+            childAgeInDays: { from: 61, to: 90 },
             nameOfTheDoctorVisit: 'Health check-up',
             periodSubtitle: 'With full 2 months',
             immunizationsPeriodId: '2ee47528-f52a-48c1-8925-b694132384d1',
@@ -525,6 +528,7 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
         {
             uuid: 'cc17d35c-0c00-4605-a7f9-ab58acaa61e3',
             period: 'At 3.5 months',
+            childAgeInDays: { from: 91, to: 150 },
             nameOfTheDoctorVisit: 'Health check-up',
             periodSubtitle: 'With 3,5 months',
             immunizationsPeriodId: 'd9aa2bca-01a2-4372-a911-0e02f259a66f',
@@ -534,6 +538,7 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
         {
             uuid: '11c000ae-16c6-4a21-8563-1901ae2a2d10',
             period: 'At 5 months',
+            childAgeInDays: { from: 151, to: 180 },
             nameOfTheDoctorVisit: 'Health check-up',
             periodSubtitle: 'With full 5 months',
             immunizationsPeriodId: '4c7ad009-df70-45e0-91ef-81ee75f0e8d5',
@@ -543,6 +548,7 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
         {
             uuid: '4ba2ebd8-3ece-4a39-b3b0-a73a4f7459ac',
             period: 'At 6 months',
+            childAgeInDays: { from: 181, to: 210 },
             nameOfTheDoctorVisit: 'Health check-up',
             periodSubtitle: 'With full 6 months',
             immunizationsPeriodId: 'd43b92e1-9ec5-4ca8-ae41-3f68814cc1f1',
@@ -552,6 +558,7 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
         {
             uuid: 'e74fbcd2-0381-428e-a6a5-81221562a1e0',
             period: 'At 9 months',
+            childAgeInDays: { from: 271, to: 300 },
             nameOfTheDoctorVisit: 'Health check-up',
             periodSubtitle: 'With full 9 months',
             immunizationsPeriodId: '',
@@ -561,6 +568,7 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
         {
             uuid: 'ac9763f3-9588-4034-998b-69327c75bb09',
             period: 'From 12-15 months',
+            childAgeInDays: { from: 361, to: 450 },
             nameOfTheDoctorVisit: 'Health check-up',
             periodSubtitle: 'Between 12th and 15th months',
             immunizationsPeriodId: '9ef94154-46eb-4db9-95f0-663b1a0b33e9',
@@ -570,6 +578,7 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
         {
             uuid: 'a66a6b43-8370-410d-9195-a6347ecb2d10',
             period: 'At 18 months',
+            childAgeInDays: { from: 541, to: 570 },
             nameOfTheDoctorVisit: 'Health check-up',
             periodSubtitle: 'With full 18 months',
             immunizationsPeriodId: '4c9c0536-274d-45b5-a657-ef4ce7f19e38',
@@ -579,6 +588,7 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
         {
             uuid: '145d6f2d-3179-44fd-a0ce-0013cd712c24',
             period: 'at 3 years (24-36 months)',
+            childAgeInDays: { from: 721, to: 1080 },
             nameOfTheDoctorVisit: 'Health check-up',
             periodSubtitle: 'Between 24th and 36th months',
             immunizationsPeriodId: '',
@@ -588,8 +598,9 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
         {
             uuid: '21781895-05a1-4eb5-bbd1-7436cd020873',
             period: '6-7 years',
+            childAgeInDays: { from: 2190, to: 2555 },
             nameOfTheDoctorVisit: 'Health check-up',
-            periodSubtitle: 'Between 24th and 36th months',
+            periodSubtitle: 'Between 6 and 7 years',
             immunizationsPeriodId: '868e2ee6-34d9-44f0-b0aa-8d4011fc3666',
             moreAboutDoctorVisitArticleId: 4511,
             planDoctorVisitMessageInDays: { from: 2160, to: 2360 },

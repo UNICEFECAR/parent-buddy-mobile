@@ -639,7 +639,8 @@ class DataRealmStore {
                 categoryName: '',
             });
         } else {
-            Alert.alert('Warning', translate('noArticleWithId'));
+            const text = translate('noArticleWithId').replace('%ARTICLE_ID%', articleId + '');
+            Alert.alert('Warning', text);
         }
     }
 
