@@ -949,9 +949,9 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
             title: '6/7 godina',
             subtitle: 'pred polazak u školu (6-7 godina)',
             dayStart: 2160,
-            dayEnd: null,
+            dayEnd: 2190,
             notificationDayStart: 2160,
-            notificationDayEnd: null,
+            notificationDayEnd: 2190,
             vaccines:[
                 {uuid: "85d98c51-bf2c-4eba-af25-8795f9211da4", title: "protiv malih boginja, zauški, rubeole (crvenka) - revakcinacija", hardcodedArticleId: "5071"},
                 {uuid: "79ae380e-d42a-4d9c-8ab8-a06485dc8d40", title: "protiv difterije, tetanusa, velikog kašlja i dečje paralize - druga revakcinacija", hardcodedArticleId: ""},
