@@ -62,13 +62,8 @@ export class HomeScreen extends React.Component<Props, object> {
     }
 
     private onTestButtonPress() {
-        // userRealmStore.addMeasuresForCurrentChild({
-        //     weight: '1000',
-        //     length: '1000',
-        //     measurementDate: Date.now(),
-        // });
-
-        console.log(userRealmStore.getAllMeasuresForCurrentChild());
+        // console.log(JSON.stringify(userRealmStore.getAllMeasuresForCurrentChild(), null, 4));
+        console.log(JSON.stringify(userRealmStore.getRegularAndAdditionalMeasures(), null, 4));
     }
 
     public render() {
@@ -81,8 +76,8 @@ export class HomeScreen extends React.Component<Props, object> {
                         {/* <Text>{localize.getLanguage()}</Text> */}
 
                         {/* Test button */}
-                        {/* <Button onPress={() => { this.onTestButtonPress() }}>Test</Button>
-                        <View style={{ height: 30 }} /> */}
+                        <Button onPress={() => { this.onTestButtonPress() }}>Test</Button>
+                        <View style={{ height: 30 }} />
 
                         {/* HOME MESSAGES */}
                         <DataRealmConsumer>
