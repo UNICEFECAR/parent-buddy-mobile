@@ -13,7 +13,7 @@ import { Child } from '../screens/home/ChildProfileScreen';
 import RNFS from 'react-native-fs';
 import { UserRealmContextValue } from './UserRealmContext';
 import { utils } from '../app/utils';
-import { Props as  DoctorVisitCardProps, DoctorVisitCardItemIcon, DoctorVisitCardButtonType} from '../components/doctor-visit/DoctorVisitCard';
+import { Props as DoctorVisitCardProps, DoctorVisitCardItemIcon, DoctorVisitCardButtonType } from '../components/doctor-visit/DoctorVisitCard';
 import { getDoctorVisitCardsNoBirthday } from './functions/getDoctorVisitCards';
 import { Vaccine, VaccinationPeriod } from '../components/vaccinations/oneVaccinations';
 
@@ -96,13 +96,100 @@ class UserRealmStore {
 
     }
 
+    public getPreviousVaccines() {
+        let childBirthDay = this.getCurrentChild()?.birthDate;
+        let receivedVaccinations = this.getAllReceivedVaccines();
 
-    /* VACCINATIONS */
-    
-    public getAllRecivedVaccines() {
+        let vaccines: Vaccine[] = [];
+
+        if (childBirthDay) {
+            let childAgeInDays = this.getCurrentChildAgeInDays();
+
+            const immunizationsPeriods = translateData('immunizationsPeriods') as (TranslateDataImmunizationsPeriods | null);
+
+
+            let currentImmunizationsPeriods = immunizationsPeriods?.find(period => period.dayStart <= childAgeInDays && period.dayEnd >= childAgeInDays);
+
+            if (currentImmunizationsPeriods && immunizationsPeriods) {
+                // get all vaccines for previous period 
+                for (let i = 0; i < immunizationsPeriods?.length; i++) {
+                    if (immunizationsPeriods[i].uuid === currentImmunizationsPeriods.uuid) {
+                        break;
+                    };
+
+                    vaccines = vaccines.concat(immunizationsPeriods[i].vaccines.map(vaccine => {
+                        return {
+                            complete: false,
+                            title: vaccine.title,
+                            hardcodedArticleId: vaccine.hardcodedArticleId,
+                            uuid: vaccine.uuid,
+                        }
+                    }));
+                };
+            };
+
+            // If received vaccinations is empty return all previous vaccination
+            if (receivedVaccinations === null || receivedVaccinations === undefined || receivedVaccinations.length === 0) {
+                vaccines = vaccines;
+            } else {
+                let recivedVaccinationIds: string[] = []
+
+                // get array of ids for every received vaccine 
+                receivedVaccinations.forEach(item => {
+                    item.uuid.forEach(uid => {
+                        recivedVaccinationIds.push(uid.toString());
+                    })
+                });
+
+                let finalyVaccinesList: Vaccine[] = []
+
+                /*
+                * Compare received vaccines with vaccines for previous period 
+                * Return all nonReceived vaccines 
+                */ 
+                vaccines.forEach(item => {
+                    if (recivedVaccinationIds.indexOf(item.uuid) === -1) {
+                        finalyVaccinesList.push(item)
+                    }
+                });
+                vaccines = finalyVaccinesList;
+            }
+        };
+
+
+        return vaccines;
+    }
+
+    public getVaccinationsForCurrentPeriod() {
+        let childBirthDay = this.getCurrentChild()?.birthDate;
+        let vaccines: Vaccine[] = [];
+
+        if (childBirthDay) {
+            let childAgeInDays = this.getCurrentChildAgeInDays();
+
+            const immunizationsPeriods = translateData('immunizationsPeriods') as (TranslateDataImmunizationsPeriods | null);
+
+            let currentImmunizationsPeriods = immunizationsPeriods?.find(period => period.dayStart <= childAgeInDays && period.dayEnd >= childAgeInDays);
+
+            if (currentImmunizationsPeriods) {
+                vaccines = currentImmunizationsPeriods.vaccines.map(vaccine => {
+                    return {
+                        complete: false,
+                        title: vaccine.title,
+                        hardcodedArticleId: vaccine.hardcodedArticleId,
+                        uuid: vaccine.uuid,
+                    };
+                });
+            };
+        };
+
+        return vaccines;
+    };
+
+    public getAllReceivedVaccines() {
         let allMeasures = this.getAllMeasuresForCurrentChild();
 
-        let rval: vaccine[] = [];
+        let rval: VaccineForPeriod[] = [];
 
         allMeasures.forEach(measure => {
             if (measure.vaccineIds !== null && measure.vaccineIds !== undefined && measure.vaccineIds.length > 0) {
@@ -113,28 +200,31 @@ class UserRealmStore {
         return rval;
     };
 
-    public getVaccineForPeriod(recivedVaccination: vaccine[], period: object): Vaccine[] {
+    public getVaccinesForSinglePeriod(receivedVaccination: VaccineForPeriod[], period: any): Vaccine[] {
 
-        let allVaccines: Vaccine[] = []
-        if (recivedVaccination.length !== 0) {
+        let allVaccines: Vaccine[] = [];
+
+        if (receivedVaccination.length !== 0) {
             period.vaccines.forEach(vaccine => {
                 let isCompleted = false;
-                recivedVaccination.forEach(item => {
-                    if (item.uuid.indexOf(parseInt(vaccine.uuid)) !== -1) {
+                let date: number | undefined = undefined;
+                
+                receivedVaccination.forEach(item => {
+                    if (item.uuid.indexOf(vaccine.uuid) !== -1) {
                         isCompleted = true;
-                    } else {
-                        isCompleted = false;
-                    }
+                        date = item.date;
+                    } 
+                });
 
-                    allVaccines.push({
-                        title: vaccine.title,
-                        uuid: vaccine.uuid,
-                        complete: isCompleted,
-                        hardcodedArticleId: vaccine.hardcodedArticleId,
-                        recivedDateMilis: item.date
-                    })
-                })
-            })
+                allVaccines.push({
+                    title: vaccine.title,
+                    uuid: vaccine.uuid,
+                    complete: isCompleted,
+                    hardcodedArticleId: vaccine.hardcodedArticleId,
+                    recivedDateMilis: date
+                });
+            });
+
         } else {
             period.vaccines.forEach(vaccine => {
                 let isCompleted = false;
@@ -144,13 +234,12 @@ class UserRealmStore {
                     complete: isCompleted,
                     hardcodedArticleId: vaccine.hardcodedArticleId,
 
-                })
-            })
-        }
-
+                });
+            });
+        };
 
         return allVaccines;
-    }
+    };
 
     public getAllVaccinationPeriods(): VaccinationPeriod[] {
 
@@ -162,7 +251,7 @@ class UserRealmStore {
 
         if (childBirthDay) {
             const childAgeInDays = this.getCurrentChildAgeInDays();
-            const recivedVaccination = this.getAllRecivedVaccines();
+            const recivedVaccination = this.getAllReceivedVaccines();
 
             let isCurrentPeriod = false;
             let isFeaturedPeriod = false;
@@ -179,7 +268,7 @@ class UserRealmStore {
                 }
 
                 // Get featured periods 
-                if(childAgeInDays < period.dayStart){
+                if (childAgeInDays < period.dayStart) {
                     isFeaturedPeriod = true;
                 }
 
@@ -187,7 +276,7 @@ class UserRealmStore {
                     isCurrentPeriod: isCurrentPeriod,
                     title: period.title,
                     isBirthDayEntered: isBirthDayEntered,
-                    vaccineList: this.getVaccineForPeriod(recivedVaccination, period),
+                    vaccineList: this.getVaccinesForSinglePeriod(recivedVaccination, period),
                     isFeaturedPeriod: isFeaturedPeriod,
                 })
             });
@@ -213,7 +302,7 @@ class UserRealmStore {
 
 
         return rval;
-    }
+    };
 
 
 
@@ -636,8 +725,8 @@ class UserRealmStore {
     }
 }
 
-export type vaccine = {
-    uuid: number[];
+export type VaccineForPeriod = {
+    uuid: string[];
     date: number | undefined;
 }
 

@@ -30,8 +30,8 @@ export interface VaccinationPeriod {
     isCurrentPeriod?: boolean,
     vaccineList: Vaccine[],
     isBirthDayEntered: boolean,
-    onPress?: Function,
-    onPress2?: Function,
+    doctorVisitBtn?: Function,
+    reminderBtn?: Function,
 }
 
 export interface Vaccination {
@@ -65,32 +65,58 @@ export class OneVaccinations extends Component<VaccinationPeriod, State> {
         this.state = state;
     }
 
-    private renderIcon = (complete: boolean) => {
-
+    private renderIcon = (complete: boolean | undefined) => {
         if (!this.props.isBirthDayEntered || this.props.isFeaturedPeriod) {
-            return "dot"
+            return "circle"
+        } else {
+            if (complete) {
+                return "check-circle"
+            } else {
+                return "exclamation-circle"
+            }
+        }
+    }
+
+    private renderIconStyle(complete: boolean) {
+        if (!this.props.isBirthDayEntered || this.props.isFeaturedPeriod) {
+            return [styles.dotIconStyle, { color: '#000000' }]
+        } else {
+            if (complete) {
+                return [styles.iconStyle, { color: "#2CBA39" }]
+            } else {
+                return [styles.iconStyle, { color: "#EB4747" }]
+            }
         }
 
-        if (complete) {
-            return "check-circle"
-        } else {
-            return "exclamation-circle"
-        }
     }
 
     private goToArticle(id: number) {
         let article = dataRealmStore.getContentFromId(id);
         let category = dataRealmStore.getCategoryNameFromId(id);
-        console.log('artikl', article)
-        const pushAction = StackActions.push({
-            routeName: 'HomeStackNavigator_ArticleScreen',
-            params: {
-                article: article,
-                categoryName: category,
-            },
-        });
-        // this.props.navigation.push('HomeStackNavigator_ArticleScreen', {article: item});
-        navigation.dispatch(pushAction)
+
+        if (article && category) {
+            const pushAction = StackActions.push({
+                routeName: 'HomeStackNavigator_ArticleScreen',
+                params: {
+                    article: article,
+                    categoryName: category,
+                },
+            });
+
+            navigation.dispatch(pushAction)
+        }
+    };
+
+    private goToDoctorVisit(){
+        if(this.props.doctorVisitBtn){
+            this.props.doctorVisitBtn()
+        }
+    }
+
+    private goToRemminder(){
+        if(this.props.reminderBtn){
+            this.props.reminderBtn()
+        }
     }
 
     render() {
@@ -102,7 +128,7 @@ export class OneVaccinations extends Component<VaccinationPeriod, State> {
                             this.props.isBirthDayEntered && !this.props.isFeaturedPeriod && (
                                 <Icon
                                     name={this.renderIcon(this.props.isVaccinationComplete)}
-                                    style={[styles.iconStyle, { color: this.props.isVaccinationComplete ? "#2CBA39" : "#EB4747" }]}
+                                    style={[styles.iconStyle, {color: this.props.isVaccinationComplete ? "#2CBA39" : "#EB4747"}]}
                                 />
                             )
                         }
@@ -131,9 +157,9 @@ export class OneVaccinations extends Component<VaccinationPeriod, State> {
 
                                     let date = "";
 
-                                    if(item.recivedDateMilis){
+                                    if (item.recivedDateMilis) {
                                         date = DateTime.fromMillis(item.recivedDateMilis).toLocaleString();
-                                    }else{
+                                    } else {
                                         date = "";
                                     }
 
@@ -142,31 +168,20 @@ export class OneVaccinations extends Component<VaccinationPeriod, State> {
                                             <View style={styles.vaccineItemHeader}>
                                                 <Icon
                                                     name={this.renderIcon(item.complete)}
-                                                    style={[styles.iconStyle, { color: item.complete ? "#2CBA39" : "#EB4747" }]}
+                                                    style={this.renderIconStyle(item.complete)}
                                                 />
                                                 <Typography style={styles.vaccineItemTitle} type={TypographyType.headingSecondary}>
                                                     {item.title + " " + date}
                                                 </Typography>
                                             </View>
                                             <View style={styles.vaccineItemContent}>
-                                                <TextButton color={TextButtonColor.purple} style={{ marginTop: -4, marginBottom: 12 }} onPress={() => this.goToArticle(parseInt(item.hardcodedArticleId))}>{translate('moreAboutDisease')}</TextButton>
-                                                {/* {
-                                                item.description && (
-                                                    <>
-                                                        <Typography>
-                                                            {item.description}
-                                                        </Typography>
-                                                        <TextButton
-                                                            color={TextButtonColor.purple}
-                                                            style={{ marginTop: 4, marginBottom: 12 }}
-                                                            onPress={() => { console.log('click') }}
-
-                                                        >
-                                                            {translate('moreAboutVaccineBtn')}
-                                                        </TextButton>
-                                                    </>
-                                                )
-                                            } */}
+                                                <TextButton
+                                                    color={TextButtonColor.purple}
+                                                    style={{ marginTop: -4, marginBottom: 12 }}
+                                                    onPress={() => this.goToArticle(parseInt(item.hardcodedArticleId))}
+                                                >
+                                                    {translate('moreAboutDisease')}
+                                                </TextButton>
                                             </View>
                                         </View>
 
@@ -186,13 +201,13 @@ export class OneVaccinations extends Component<VaccinationPeriod, State> {
                                     style={{ paddingLeft: moderateScale(20) }}
                                     type={RoundedButtonType.purple} text={translate('AddDataAboutVaccination')}
                                     showArrow={true}
-                                    onPress={() => this.props.onPress()}
+                                    onPress={() => this.goToDoctorVisit()}
                                 />
                                 <RoundedButton
                                     type={RoundedButtonType.hollowPurple}
                                     text={translate('AddVaccinationReminder')}
                                     showArrow={true} style={styles.reminderBtn}
-                                    onPress={() => this.props.onPress2()}
+                                    onPress={() => this.goToRemminder()}
                                 />
                             </View>
                             : null
@@ -218,7 +233,7 @@ export interface OneVaccinationsStyles {
     iconStyle: IconProps,
     verticalLine: ViewStyle,
     vaccineDateText: TextStyle,
-
+    dotIconStyle: IconProps
 }
 
 const styles = StyleSheet.create<OneVaccinationsStyles>({
@@ -264,6 +279,13 @@ const styles = StyleSheet.create<OneVaccinationsStyles>({
         marginRight: scale(15),
         marginTop: scale(3),
         fontSize: moderateScale(21),
+        color: "#2CBA39",
+        lineHeight: moderateScale(21),
+    },
+    dotIconStyle: {
+        marginRight: scale(8),
+        marginTop: scale(3),
+        fontSize: moderateScale(8),
         color: "#2CBA39",
         lineHeight: moderateScale(21),
     },
