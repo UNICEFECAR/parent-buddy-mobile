@@ -3,7 +3,7 @@ import { translateData, TranslateDataDoctorVisitPeriods } from '../../translatio
 import { Props as  DoctorVisitCardProps, DoctorVisitCardItemIcon, DoctorVisitCardButtonType} from '../../components/doctor-visit/DoctorVisitCard';
 import { dataRealmStore } from '..';
 
-export function getDoctorVisitCardsNoBirthday(): DoctorVisitCardProps[] {
+export function getDoctorVisitCardsBirthdayIsNotSet(): DoctorVisitCardProps[] {
     let rval: DoctorVisitCardProps[] = [];
 
     // REQUIRED DATA
@@ -39,6 +39,12 @@ export function getDoctorVisitCardsNoBirthday(): DoctorVisitCardProps[] {
             showVerticalLine: index !== doctorVisitPeriods.length - 1,
         });
     });
+
+    return rval;
+}
+
+export function getDoctorVisitCardsBirthdayIsSet(): DoctorVisitCardProps[] {
+    let rval: DoctorVisitCardProps[] = [];
 
     return rval;
 }

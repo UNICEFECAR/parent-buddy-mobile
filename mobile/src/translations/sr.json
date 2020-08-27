@@ -86,7 +86,7 @@
     "relatedArticles": "Povezani članci",
     "developmentArticles": "Razvoj dece",
     "noArticles": "Nema članaka",
-    "noArticleWithId": "Ne postoji članak sa datim ID-em",
+    "noArticleWithId": "Ne postoji članak sa ID = %ARTICLE_ID%",
     "popularArticles": "Popularani članci",
     "todayArticles": "Danas izdvajamo",
     "showAllResults": "Prikaži sve rezultate",

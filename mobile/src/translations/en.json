@@ -86,7 +86,7 @@
     "relatedArticles": "Related articles",
     "developmentArticles": "Child development",
     "noArticles": "There are no articles",
-    "noArticleWithId": "There is no article with the given ID",
+    "noArticleWithId": "There is no article with ID = %ARTICLE_ID%",
     "popularArticles": "Popular articles",
     "todayArticles": "Featured today",
     "showAllResults": "Show all results",
