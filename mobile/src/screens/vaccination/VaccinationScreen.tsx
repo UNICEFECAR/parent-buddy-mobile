@@ -52,8 +52,6 @@ export class VaccinationScreen extends Component<Props> {
 
     render() {
 
-        let allVaccinations = userRealmStore.getAllVaccinationPeriods();
-        let index = 0;
 
         return (
             <ThemeConsumer>
@@ -68,8 +66,7 @@ export class VaccinationScreen extends Component<Props> {
                                     {(user) => (
                                         <>
                                             <Typography type={TypographyType.headingPrimary}>{translate('vaccinationTitle')}</Typography>
-                                            {allVaccinations.map(period => {
-                                                index = index + 1;
+                                            {userRealmStore.getAllVaccinationPeriods().map((period, index) => {
                                                 let isComplete = true;
                                                 let isLastPeriod = false;
 
@@ -81,7 +78,7 @@ export class VaccinationScreen extends Component<Props> {
                                                 });
 
                                                 // remove verticalLine on last card
-                                                if(index === allVaccinations.length){
+                                                if(index === userRealmStore.getAllVaccinationPeriods().length - 1){
                                                     isLastPeriod = true;
                                                 }
 
