@@ -26,7 +26,9 @@ export type Measures = {
     /**
      * All received vaccines.
      */
-    vaccineIds?: string[]
+    vaccineIds?: string[];
+
+    doctorComment?: string;
 }
 
 export type ChildEntity = {
@@ -47,9 +49,6 @@ export type ChildEntity = {
 /**
  * Realm schema for ChildEntity.
  */
-export const Measure = {
-
-}
 
 export const ChildEntitySchema: ObjectSchema = {
     name: 'ChildEntity',
