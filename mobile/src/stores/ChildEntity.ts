@@ -26,7 +26,7 @@ export type Measures = {
     /**
      * All received vaccines.
      */
-    vaccineIds?: number[];
+    vaccineIds?: string[]
 }
 
 export type ChildEntity = {

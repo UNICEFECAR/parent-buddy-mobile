@@ -11,6 +11,9 @@ import { translateData } from '../../translationsData/translateData';
 import { userRealmStore } from '../../stores';
 import { DataRealmConsumer } from '../../stores/DataRealmContext';
 import { UserRealmConsumer } from '../../stores/UserRealmContext';
+import { screenType } from './NewDoctorVisitScreen';
+import { Typography } from '../../components';
+import { TypographyType } from '../../components/Typography';
 
 export interface VaccinationScreenParams {
 
@@ -47,13 +50,9 @@ export class VaccinationScreen extends Component<Props> {
         return periods;
     }
 
-    /*
-        Ako datum rodjenja nije unet, ne treba da ima red or green mark, 
-        treba da ima listu vakcina sa tackicama
-        ne treba da ima button-e 
-    */
-
     render() {
+
+
         return (
             <ThemeConsumer>
                 {(themeContext: ThemeContextValue) => (
@@ -66,9 +65,10 @@ export class VaccinationScreen extends Component<Props> {
                                 <UserRealmConsumer>
                                     {(user) => (
                                         <>
-                                            {userRealmStore.getAllVaccinationPeriods().map(period => {
-
+                                            <Typography type={TypographyType.headingPrimary}>{translate('vaccinationTitle')}</Typography>
+                                            {userRealmStore.getAllVaccinationPeriods().map((period, index) => {
                                                 let isComplete = true;
+                                                let isLastPeriod = false;
 
                                                 period.vaccineList.forEach(vaccine => {
                                                     if (vaccine.complete === false) {
@@ -76,7 +76,12 @@ export class VaccinationScreen extends Component<Props> {
                                                         return
                                                     }
                                                 });
-                                               
+
+                                                // remove verticalLine on last card
+                                                if(index === userRealmStore.getAllVaccinationPeriods().length - 1){
+                                                    isLastPeriod = true;
+                                                }
+
                                                 return (
                                                     <OneVaccinations
                                                         title={period.title}
@@ -84,10 +89,10 @@ export class VaccinationScreen extends Component<Props> {
                                                         isFeaturedPeriod={period.isFeaturedPeriod}
                                                         isCurrentPeriod={period.isCurrentPeriod}
                                                         isVaccinationComplete={isComplete}
-                                                        isVerticalLineVisible={true}
+                                                        isVerticalLineVisible={!isLastPeriod}
                                                         vaccineList={period.vaccineList}
-                                                        onPress={() => this.props.navigation.navigate('HomeStackNavigator_NewDoctorVisitScreen')}
-                                                        onPress2={() => this.props.navigation.navigate('HomeStackNavigator_VaccinationDataScreen')}
+                                                        doctorVisitBtn={() => this.props.navigation.navigate('HomeStackNavigator_NewDoctorVisitScreen', { screenType: screenType.vaccination })}
+                                                        reminderBtn={() => this.props.navigation.navigate('HomeStackNavigator_VaccinationDataScreen')}
                                                     />
                                                 )
                                             })}

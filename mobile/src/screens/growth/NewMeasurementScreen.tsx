@@ -147,7 +147,7 @@ export class NewMeasurementScreen extends Component<Props, State> {
                 });
 
                 if(sameDate === false){
-                    measures.push({ length: length, weight: weight, measurementDate: measurementDate?.toMillis() });
+                    measures.push({ length: length, weight: weight, measurementDate: measurementDate?.toMillis(), didChildGetVaccines: false, isChildMeasured: true });
                 };
             } else {
                 measures[0].weight = weight;
