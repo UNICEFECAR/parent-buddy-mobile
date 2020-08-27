@@ -14,7 +14,11 @@ import RNFS from 'react-native-fs';
 import { UserRealmContextValue } from './UserRealmContext';
 import { utils } from '../app/utils';
 import { Props as DoctorVisitCardProps, DoctorVisitCardItemIcon, DoctorVisitCardButtonType } from '../components/doctor-visit/DoctorVisitCard';
+<<<<<<< HEAD
 import { getDoctorVisitCardsNoBirthday } from './functions/getDoctorVisitCards';
+=======
+import { getDoctorVisitCardsBirthdayIsNotSet } from './functions/getDoctorVisitCards';
+>>>>>>> 0cf37e644ea07b2b675a2b25770b3cbff67f6480
 import { Vaccine, VaccinationPeriod } from '../components/vaccinations/oneVaccinations';
 
 type Variables = {
@@ -100,6 +104,7 @@ class UserRealmStore {
         let childBirthDay = this.getCurrentChild()?.birthDate;
         let receivedVaccinations = this.getAllReceivedVaccines();
 
+<<<<<<< HEAD
         let vaccines: Vaccine[] = [];
 
         if (childBirthDay) {
@@ -187,6 +192,11 @@ class UserRealmStore {
     };
 
     public getAllReceivedVaccines() {
+=======
+    /* VACCINATIONS */
+
+    public getAllRecivedVaccines() {
+>>>>>>> 0cf37e644ea07b2b675a2b25770b3cbff67f6480
         let allMeasures = this.getAllMeasuresForCurrentChild();
 
         let rval: VaccineForPeriod[] = [];
@@ -304,13 +314,22 @@ class UserRealmStore {
         return rval;
     };
 
+    /**
+     * Get child age in days.
+     * 
+     * If birthDayMillis is not given, current child birthday is taken.
+     * 
+     * If currentMillis is not given, current time is taken. If it is given,
+     * days are calculated from birthDayMillis to given currentMillis.
+     */
+    public getCurrentChildAgeInDays = (birthDayMillis?: number, currentMillis?: number) => {
+        let childBirthDay = birthDayMillis ? birthDayMillis : this.getCurrentChild()?.birthDate?.getTime();
 
+        let timeNow = DateTime.local();
+        if (currentMillis) {
+            timeNow = DateTime.fromMillis(currentMillis);
+        }
 
-
-    public getCurrentChildAgeInDays = (birthDayMilisecounds?: number) => {
-        let childBirthDay = birthDayMilisecounds ? birthDayMilisecounds : this.getCurrentChild()?.birthDate?.getTime();
-
-        const timeNow = DateTime.local();
         let days: number = 0;
 
         if (childBirthDay) {
@@ -693,11 +712,15 @@ class UserRealmStore {
         });
     }
 
+    /**
+     * Returns measures field for current child.
+     */
     public getAllMeasuresForCurrentChild(): Measures[] {
         let rval: Measures[] = [];
 
         const currentChild = this.getCurrentChild();
         if (currentChild) {
+            // Get measures
             let measuresString = currentChild.measures;
 
             if (!measuresString || measuresString === '') {
@@ -705,8 +728,78 @@ class UserRealmStore {
             }
 
             rval = JSON.parse(measuresString);
+
+            // Sort measures per measurementDate
+            rval.sort((firstEl, secondEl) => {
+                if ((firstEl.measurementDate as number) < (secondEl.measurementDate as number)) return -1;
+                if ((firstEl.measurementDate as number) > (secondEl.measurementDate as number)) return 1;
+                return 0;
+            });
         }
 
+        return rval;
+    }
+
+    /**
+     * Returns all measures similar to getAllMeasuresForCurrentChild, but
+     * divides them into regular and additional measures according to
+     * doctorVisitPeriods.
+     * 
+     * doctorVisitPeriods are defined in translationsData->en for example.
+     */
+    public getRegularAndAdditionalMeasures() {
+        const rval: {
+            regularMeasures: { doctorVisitPeriodUuid: string, measures: Measures }[];
+            additionalMeasures: Measures[];
+        } = {
+            regularMeasures: [],
+            additionalMeasures: []
+        };
+
+        // Get current child
+        const currentChild = this.getCurrentChild();
+
+        if (!currentChild || !currentChild.birthDate) return rval;
+
+        // Get all measures
+        const allMeasuresForCurrentChild = this.getAllMeasuresForCurrentChild();
+        if (allMeasuresForCurrentChild.length === 0) return rval;
+
+        // Set doctorVisitPeriods
+        const doctorVisitPeriods = translateData('doctorVisitPeriods') as (TranslateDataDoctorVisitPeriods);
+
+        // Set regularMeasures, additionalMeasures
+        allMeasuresForCurrentChild.forEach((currentMeasures) => {
+            let childAgeInDaysForMeasure = this.getCurrentChildAgeInDays(
+                currentChild.birthDate?.getTime(),
+                currentMeasures.measurementDate,
+            );
+
+            // Set doctorVisitPeriodUuid
+            let doctorVisitPeriodUuid: string | null = null
+
+            doctorVisitPeriods.forEach((doctorVisitPeriod) => {
+                if (
+                    childAgeInDaysForMeasure >= doctorVisitPeriod.childAgeInDays.from
+                    &&
+                    childAgeInDaysForMeasure <= doctorVisitPeriod.childAgeInDays.to
+                ) {
+                    doctorVisitPeriodUuid = doctorVisitPeriod.uuid;
+                }
+            });
+
+            // Add this measure to proper group
+            if (doctorVisitPeriodUuid) {
+                rval.regularMeasures.push({
+                    doctorVisitPeriodUuid: doctorVisitPeriodUuid,
+                    measures: currentMeasures,
+                });
+            } else {
+                rval.additionalMeasures.push(currentMeasures);
+            }
+        });
+
+        // Return
         return rval;
     }
 
@@ -716,9 +809,14 @@ class UserRealmStore {
         const currentChild = this.getCurrentChild();
         if (!currentChild) return [];
 
-        // Birthday is not given
+        // Birthday is NOT given
         if (!currentChild.birthDate) {
-            rval = getDoctorVisitCardsNoBirthday();
+            rval = getDoctorVisitCardsBirthdayIsNotSet();
+        }
+
+        // Birthday is given
+        if (currentChild.birthDate) {
+
         }
 
         return rval;
