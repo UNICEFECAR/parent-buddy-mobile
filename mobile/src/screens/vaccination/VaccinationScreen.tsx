@@ -12,6 +12,8 @@ import { userRealmStore } from '../../stores';
 import { DataRealmConsumer } from '../../stores/DataRealmContext';
 import { UserRealmConsumer } from '../../stores/UserRealmContext';
 import { screenType } from './NewDoctorVisitScreen';
+import { Typography } from '../../components';
+import { TypographyType } from '../../components/Typography';
 
 export interface VaccinationScreenParams {
 
@@ -49,6 +51,10 @@ export class VaccinationScreen extends Component<Props> {
     }
 
     render() {
+
+        let allVaccinations = userRealmStore.getAllVaccinationPeriods();
+        let index = 0;
+
         return (
             <ThemeConsumer>
                 {(themeContext: ThemeContextValue) => (
@@ -61,9 +67,11 @@ export class VaccinationScreen extends Component<Props> {
                                 <UserRealmConsumer>
                                     {(user) => (
                                         <>
-                                            {userRealmStore.getAllVaccinationPeriods().map(period => {
-
+                                            <Typography type={TypographyType.headingPrimary}>{translate('vaccinationTitle')}</Typography>
+                                            {allVaccinations.map(period => {
+                                                index = index + 1;
                                                 let isComplete = true;
+                                                let isLastPeriod = false;
 
                                                 period.vaccineList.forEach(vaccine => {
                                                     if (vaccine.complete === false) {
@@ -71,7 +79,12 @@ export class VaccinationScreen extends Component<Props> {
                                                         return
                                                     }
                                                 });
-                                               
+
+                                                // remove verticalLine on last card
+                                                if(index === allVaccinations.length){
+                                                    isLastPeriod = true;
+                                                }
+
                                                 return (
                                                     <OneVaccinations
                                                         title={period.title}
@@ -79,9 +92,9 @@ export class VaccinationScreen extends Component<Props> {
                                                         isFeaturedPeriod={period.isFeaturedPeriod}
                                                         isCurrentPeriod={period.isCurrentPeriod}
                                                         isVaccinationComplete={isComplete}
-                                                        isVerticalLineVisible={true}
+                                                        isVerticalLineVisible={!isLastPeriod}
                                                         vaccineList={period.vaccineList}
-                                                        doctorVisitBtn={() => this.props.navigation.navigate('HomeStackNavigator_NewDoctorVisitScreen', {screenType: screenType.vaccination})}
+                                                        doctorVisitBtn={() => this.props.navigation.navigate('HomeStackNavigator_NewDoctorVisitScreen', { screenType: screenType.vaccination })}
                                                         reminderBtn={() => this.props.navigation.navigate('HomeStackNavigator_VaccinationDataScreen')}
                                                     />
                                                 )

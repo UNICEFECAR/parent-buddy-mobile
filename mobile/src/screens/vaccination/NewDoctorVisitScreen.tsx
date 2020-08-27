@@ -13,11 +13,12 @@ import { translate } from '../../translations/translate';
 import { userRealmStore, dataRealmStore } from '../../stores';
 import { Vaccine } from '../../components/vaccinations/oneVaccinations';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { Checkbox } from 'react-native-paper';
+import { Checkbox, Snackbar } from 'react-native-paper';
 import { Measures } from '../../stores/ChildEntity';
 import { NavigationStackState, NavigationStackProp } from 'react-navigation-stack';
 import { StackActions } from 'react-navigation';
 import { navigation } from '../../app';
+import { DateTime } from 'luxon';
 
 const colorError = "#EB4747"
 
@@ -26,7 +27,7 @@ export interface Props {
 }
 
 export interface State {
-    visitDate: string,
+    visitDate: Date | null,
     weight: string,
     height: string,
     comment: string,
@@ -37,6 +38,8 @@ export interface State {
     childMeasuredHeightError: string,
     vaccinesForCurrenPeriod: Vaccine[],
     vaccinesForPreviousPeriod: Vaccine[],
+    isSnackbarVisible: boolean,
+    snackbarMessage: string,
 }
 
 
@@ -58,7 +61,7 @@ export class NewDoctorVisitScreen extends Component<Props, State> {
         }
 
         let state: State = {
-            visitDate: "",
+            visitDate: null,
             weight: "",
             height: "",
             comment: "",
@@ -69,6 +72,8 @@ export class NewDoctorVisitScreen extends Component<Props, State> {
             childMeasuredHeightError: "",
             vaccinesForCurrenPeriod: vaccinesForCurrenPeriod,
             vaccinesForPreviousPeriod: vaccinesForPreviousPeriod,
+            isSnackbarVisible: false,
+            snackbarMessage: "",
         };
 
         this.state = state;
@@ -82,26 +87,48 @@ export class NewDoctorVisitScreen extends Component<Props, State> {
     }
 
     private saveData = () => {
-        // if (this.state.isChildMeasured === "") {
-        //     this.setState({
-        //         childMeasuredError: translate('childMeasuredError')
-        //     })
-        // }
+        if (this.state.visitDate) {
 
-        let measure: Measures = {
-            weight: "1",
-            length: "1",
-            measurementDate: 1,
-            titleDateInMonth: 1,
-            vaccineIds: this.getCompletedVaccines(),
+            const completedVaccinations = this.getCompletedVaccines();
+
+            let isChildMeasured: boolean = false;
+            let didChildGetVaccines: boolean = false;
+            let measurementDate = DateTime.fromJSDate(this.state.visitDate).toMillis();
+
+            if (this.state.isChildMeasured === "yes") {
+                isChildMeasured = true;
+            }
+
+            if (this.props.navigation.state.params?.screenType === screenType.heltCheckUp) {
+                if (this.state.isVaccineReceived === "yes") {
+                    didChildGetVaccines = true;
+                }
+            } else {
+                if (completedVaccinations.length > 0) {
+                    didChildGetVaccines = true;
+                }
+            }
+
+            let measure: Measures = {
+                weight: this.state.weight,
+                length: this.state.height,
+                measurementDate: measurementDate,
+                vaccineIds: completedVaccinations,
+                isChildMeasured: isChildMeasured,
+                didChildGetVaccines: didChildGetVaccines,
+            }
+
+            userRealmStore.addMeasuresForCurrentChild(measure);
+            this.props.navigation.goBack();
+        } else {
+            this.setState({
+                snackbarMessage: "TODO Datum mora biti popunjen",
+                isSnackbarVisible: true,
+            })
         }
-
-
-        userRealmStore.addMeasuresForCurrentChild(measure)
-
     }
 
-    private setMeasurementDate = (value: string) => {
+    private setMeasurementDate = (value: Date) => {
         this.setState({
             visitDate: value,
         })
@@ -173,13 +200,13 @@ export class NewDoctorVisitScreen extends Component<Props, State> {
                     vaccinesList.length > 0 ?
                         <>
                             <View style={styles.vaccineContainerTitle}>
-                                <Typography type={TypographyType.headingSecondary}>
+                                <Typography type={TypographyType.headingSecondary} style={{marginBottom: -10}}>
                                     {
                                         periodType === "previousPeriod" ?
-                                            "TODO Vakcine iz prethodnog perioda"
+                                            translate('previousVaccinesTitle')
                                             :
-                                            "TODO VAKCINE IZ SADASNJEG PERIODA"
-                                    }
+                                            translate('newVaccinesLabelTitle')
+                                    }   
                                 </Typography>
                             </View>
                             {
@@ -190,7 +217,7 @@ export class NewDoctorVisitScreen extends Component<Props, State> {
                                             <Typography style={styles.vaccineText}>
                                                 {item.title}
                                             </Typography>
-                                            <Icon name="info" onPress={() => this.goToArticle(parseInt(item.hardcodedArticleId))} />
+                                            <Icon name="info-circle" style={{fontSize: moderateScale(18), opacity: 0.7}} onPress={() => this.goToArticle(parseInt(item.hardcodedArticleId))} />
                                         </View>
                                     </View>
                                 ))
@@ -259,7 +286,7 @@ export class NewDoctorVisitScreen extends Component<Props, State> {
                     this.state.isChildMeasured === "yes" && (
                         <View style={{ marginTop: 16 }}>
                             <RoundedTextInput
-                                label="Težina"
+                                label={translate('fieldLabelWeight')}
                                 suffix="g"
                                 icon="weight"
                                 style={{ width: 150 }}
@@ -267,7 +294,7 @@ export class NewDoctorVisitScreen extends Component<Props, State> {
                                 onChange={value => this.measureChange(value, 'weight')}
                             />
                             <RoundedTextInput
-                                label="Visina"
+                                label={translate('fieldLabelLength')}
                                 suffix="cm"
                                 icon="weight"
                                 style={{ width: 150, marginTop: 8 }}
@@ -284,40 +311,58 @@ export class NewDoctorVisitScreen extends Component<Props, State> {
         return (
             <ThemeConsumer>
                 {(themeContext: ThemeContextValue) => (
-                    <ScrollView
-                        style={{ backgroundColor: themeContext.theme.screenContainer?.backgroundColor }}
-                        contentContainerStyle={styles.container}
-                    >
-                        <View>
-                            <DateTimePicker label={translate("NewDoctorVisitScreenDatePickerLabel")} onChange={() => { }} />
-                        </View>
+                    <>
+                        <ScrollView
+                            style={{ backgroundColor: themeContext.theme.screenContainer?.backgroundColor }}
+                            contentContainerStyle={styles.container}
+                        >
+                            <View>
+                                <DateTimePicker label={translate("NewDoctorVisitScreenDatePickerLabel")} onChange={(value) => this.setMeasurementDate(value)} />
+                            </View>
 
-                        {
-                            this.props.navigation.state.params?.screenType === screenType.vaccination ?
-                                <>
-                                    {this.renderVaccinesSection()}
-                                    {this.renderChildMeasuresSection()}
-                                </>
-                                :
-                                <>
-                                    {this.renderChildMeasuresSection()}
-                                    {this.renderVaccinesSection()}
-                                </>
-                        }
+                            {
+                                this.props.navigation.state.params?.screenType === screenType.vaccination ?
+                                    <>
+                                        {this.renderVaccinesSection()}
+                                        {this.renderChildMeasuresSection()}
+                                    </>
+                                    :
+                                    <>
+                                        {this.renderChildMeasuresSection()}
+                                        {this.renderVaccinesSection()}
+                                    </>
+                            }
 
 
-                        <View style={styles.commenterContainer}>
-                            <RoundedTextArea placeholder={translate("newMeasureScreenCommentPlaceholder")} />
-                        </View>
+                            <View style={styles.commenterContainer}>
+                                <RoundedTextArea placeholder={translate("newMeasureScreenCommentPlaceholder")} />
+                            </View>
 
-                        <View>
-                            <RoundedButton
-                                text={translate("newMeasureScreenSaveBtn")}
-                                type={RoundedButtonType.purple}
-                                onPress={() => this.saveData()}
-                            />
-                        </View>
-                    </ScrollView>
+                            <View>
+                                <RoundedButton
+                                    text={translate("newMeasureScreenSaveBtn")}
+                                    type={RoundedButtonType.purple}
+                                    onPress={() => this.saveData()}
+                                />
+                            </View>
+                        </ScrollView>
+                        <Snackbar
+                            visible={this.state.isSnackbarVisible}
+                            duration={Snackbar.DURATION_SHORT}
+                            onDismiss={() => { this.setState({ isSnackbarVisible: false }) }}
+                            theme={{ colors: { onSurface: "red", accent: 'white' } }}
+                            action={{
+                                label: 'Ok',
+                                onPress: () => {
+                                    this.setState({ isSnackbarVisible: false });
+                                },
+                            }}
+                        >
+                            <Text style={{ fontSize: moderateScale(16) }}>
+                                {this.state.snackbarMessage}
+                            </Text>
+                        </Snackbar>
+                    </>
                 )}
             </ThemeConsumer>
 
@@ -347,7 +392,7 @@ const styles = StyleSheet.create<NewDoctorVisitScreenStyles>({
     },
     vaccineContainer: {
         alignItems: "flex-start",
-        marginTop: scale(32),
+        marginTop: scale(22),
     },
     commenterContainer: {
         marginTop: scale(32),
@@ -358,8 +403,9 @@ const styles = StyleSheet.create<NewDoctorVisitScreenStyles>({
         flexDirection: 'row',
     },
     vaccineText: {
-        fontSize: moderateScale(12),
+        fontSize: moderateScale(15),
         width: moderateScale(260),
+        padding: scale(5),
         marginRight: scale(20),
         marginLeft: moderateScale(5),
         lineHeight: moderateScale(18)

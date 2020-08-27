@@ -138,9 +138,6 @@ export class OneVaccinations extends Component<VaccinationPeriod, State> {
                                 {this.props.title}
                             </Typography>
                             {
-                                !this.props.isVaccinationComplete ? <Typography style={{ marginTop: -7 }} type={TypographyType.headingSecondary}>{translate('vaccinationTitleQuestion')}</Typography> : null
-                            }
-                            {
                                 this.props.vaccinationDate && (
                                     <Typography type={TypographyType.headingSecondary} style={styles.vaccineDateText}>
                                         {this.props.vaccinationDate}
@@ -158,7 +155,7 @@ export class OneVaccinations extends Component<VaccinationPeriod, State> {
                                     let date = "";
 
                                     if (item.recivedDateMilis) {
-                                        date = DateTime.fromMillis(item.recivedDateMilis).toLocaleString();
+                                        date = ` - ${DateTime.fromMillis(item.recivedDateMilis).toLocaleString()}`;
                                     } else {
                                         date = "";
                                     }
@@ -170,14 +167,14 @@ export class OneVaccinations extends Component<VaccinationPeriod, State> {
                                                     name={this.renderIcon(item.complete)}
                                                     style={this.renderIconStyle(item.complete)}
                                                 />
-                                                <Typography style={styles.vaccineItemTitle} type={TypographyType.headingSecondary}>
-                                                    {item.title + " " + date}
+                                                <Typography style={styles.vaccineItemTitle} type={TypographyType.bodyRegular}>
+                                                    {item.title + "" + date}
                                                 </Typography>
                                             </View>
                                             <View style={styles.vaccineItemContent}>
                                                 <TextButton
                                                     color={TextButtonColor.purple}
-                                                    style={{ marginTop: -4, marginBottom: 12 }}
+                                                    style={{ marginTop: scale(5), marginBottom: scale(10) }}
                                                     onPress={() => this.goToArticle(parseInt(item.hardcodedArticleId))}
                                                 >
                                                     {translate('moreAboutDisease')}
@@ -283,7 +280,8 @@ const styles = StyleSheet.create<OneVaccinationsStyles>({
         lineHeight: moderateScale(21),
     },
     dotIconStyle: {
-        marginRight: scale(8),
+        marginRight: scale(15),
+        marginLeft: scale(10),
         marginTop: scale(3),
         fontSize: moderateScale(8),
         color: "#2CBA39",
