@@ -190,6 +190,8 @@
     "newVaccinesLabelTitle": "TODO Planirane vakcine",
     "previousVaccinesTitle": "TODO Vakcine iz prethodnog perioda",
     "vaccinationTitle": "TODO Vakcinacije",
+    "vaccinationDateErrorMessage": "TODO Datum mora biti popunjen",
+    "vaccinationSwitchBtnErrorMessage": "TODO Morate izabrati jedan odgovor!",
     "newMeasureScreenVaccineOptionYes": "Yes",
     "newMeasureScreenVaccineOptionNo": "No",
     "newMeasureScreenCommentPlaceholder": "Doctor's remark or comment",
