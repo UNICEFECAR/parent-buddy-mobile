@@ -5,7 +5,7 @@ import { appConfig } from '../app/appConfig';
 import { ChildEntity } from '.';
 import { ChildEntitySchema, ChildGender, Measures } from './ChildEntity';
 import { DateTime } from 'luxon';
-import { translateData, TranslateDataInterpretationLenghtForAge, TranslateDataInterpretationWeightForHeight, TranslateDataDoctorVisitPeriods, TranslateDataImmunizationsPeriods } from '../translationsData/translateData';
+import { translateData, TranslateDataImmunizationsPeriod, TranslateDataInterpretationLenghtForAge, TranslateDataInterpretationWeightForHeight, TranslateDataDoctorVisitPeriods, TranslateDataImmunizationsPeriods } from '../translationsData/translateData';
 import { ChartData as Data, GrowthChart0_2Type, GrowthChartHeightAgeType } from '../components/growth/growthChartData';
 import { dataRealmStore } from './dataRealmStore';
 import { InterpretationText } from '../screens/growth/GrowthScreen';
@@ -200,7 +200,7 @@ class UserRealmStore {
         return rval;
     };
 
-    public getVaccinesForSinglePeriod(receivedVaccination: VaccineForPeriod[], period: any): Vaccine[] {
+    public getVaccinesForSinglePeriod(receivedVaccination: VaccineForPeriod[], period: TranslateDataImmunizationsPeriod): Vaccine[] {
 
         let allVaccines: Vaccine[] = [];
 
