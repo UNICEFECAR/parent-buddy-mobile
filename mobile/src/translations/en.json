@@ -208,6 +208,7 @@
     "doctorVisitsMeasuresEnteredButNotGiven": "Measures entered TODO",
     "doctorVisitsMeasuresEnteredAndGiven": "Child has %WEIGHT%kg and %LENGTH%cm TODO",
     "doctorVisitsReadMore": "Read more about health checkups in this period TODO",
+    "doctorVisitsAddMeasuresButton": "Add doctor visit data TODO",
 
     "growthChartLegendSilverLabel": "-Typical values for age",
     "growthChartLegendOrangeLabel": "-Suboptimal values for age",

@@ -1,10 +1,11 @@
 import { translate } from '../../translations/translate';
-import { translateData, TranslateDataDoctorVisitPeriods, TranslateDataImmunizationsPeriods } from '../../translationsData/translateData';
-import { Props as DoctorVisitCardProps, DoctorVisitCardItemIcon, DoctorVisitCardButtonType, DoctorVisitTitleIconType, DoctorVisitCardItem } from '../../components/doctor-visit/DoctorVisitCard';
+import { translateData, TranslateDataDoctorVisitPeriods, TranslateDataImmunizationsPeriods, TranslateDataDoctorVisitPeriod } from '../../translationsData/translateData';
+import { Props as DoctorVisitCardProps, DoctorVisitCardItemIcon, DoctorVisitCardButtonType, DoctorVisitTitleIconType, DoctorVisitCardItem, DoctorVisitCardButton } from '../../components/doctor-visit/DoctorVisitCard';
 import { dataRealmStore } from '..';
 import { userRealmStore } from '../userRealmStore';
-import { Measures } from '../ChildEntity';
+import { Measures, ChildEntity } from '../ChildEntity';
 import { DateTime } from 'luxon';
+import { navigation } from '../../app';
 
 export function getDoctorVisitCardsBirthdayIsNotSet(): DoctorVisitCardProps[] {
     let rval: DoctorVisitCardProps[] = [];
@@ -116,19 +117,35 @@ export function getDoctorVisitCardsBirthdayIsSet(): DoctorVisitCardProps[] {
         // Items
         const items = getCardItems(thisPeriodMeasures);
 
+        // Buttons
+        const buttons: DoctorVisitCardButton[] = [
+            {
+                type: DoctorVisitCardButtonType.Text,
+                text: translate('doctorVisitsReadMore'),
+                onPress: () => { dataRealmStore.openArticleScreen(doctorVisitPeriod.moreAboutDoctorVisitArticleId) },
+            }
+        ]
+
+        const shoulShowButtonEnterDoctorVisit = showButtonEnterDoctorVisit(
+            doctorVisitPeriod,
+            thisPeriodMeasures,
+        );
+
+        if (shoulShowButtonEnterDoctorVisit) {
+            buttons.push({
+                type: DoctorVisitCardButtonType.Purple,
+                text: translate('doctorVisitsAddMeasuresButton'),
+                onPress: () => { navigation.navigate('HomeStackNavigator_NewDoctorVisitScreen') },
+            });
+        }
+
         // CREATE REGULAR CARD
         regularCards.push({
             title: cardTitle,
             subTitle: cardSubTitle,
             items: items,
             titleIcon: cardTitleIcon,
-            buttons: [
-                {
-                    type: DoctorVisitCardButtonType.Text,
-                    text: translate('doctorVisitsReadMore'),
-                    onPress: () => { dataRealmStore.openArticleScreen(doctorVisitPeriod.moreAboutDoctorVisitArticleId) },
-                }
-            ]
+            buttons: buttons,
         });
     });
 
@@ -242,6 +259,43 @@ function getCardItems(periodMeasures: Measures | null): DoctorVisitCardItem[] {
     }
 
     return items;
+}
+
+/**
+ * Returns true if button "Enter doctor visit data", should be shown.
+ */
+function showButtonEnterDoctorVisit(
+    doctorVisitPeriod: TranslateDataDoctorVisitPeriod,
+    thisPeriodMeasures: Measures | null
+): boolean {
+    let rval = false;
+    const childAgeInDays = userRealmStore.getCurrentChildAgeInDays();
+
+    // SET isPeriodPassed
+    let isPeriodPassed = false;
+
+    if (childAgeInDays > doctorVisitPeriod.childAgeInDays.to) {
+        isPeriodPassed = true;
+    }
+
+    // SET isPeriodCurrent
+    let isPeriodCurrent = false;
+
+    if (
+        (childAgeInDays >= doctorVisitPeriod.childAgeInDays.from)
+        &&
+        (childAgeInDays <= doctorVisitPeriod.childAgeInDays.to)
+    ) {
+        isPeriodCurrent = true;
+    }
+
+    // SET arePeriodMeasuresEntered
+    let arePeriodMeasuresEntered = thisPeriodMeasures === null ? false : true;
+
+    // SET rval
+    rval = (isPeriodPassed || isPeriodCurrent) && !arePeriodMeasuresEntered;
+
+    return rval;
 }
 
 enum MeasuresEnteredType {
