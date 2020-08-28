@@ -11,7 +11,7 @@ import { translateData } from '../../translationsData/translateData';
 import { userRealmStore } from '../../stores';
 import { DataRealmConsumer } from '../../stores/DataRealmContext';
 import { UserRealmConsumer } from '../../stores/UserRealmContext';
-import { screenType } from './NewDoctorVisitScreen';
+import { NewDoctorVisitScreenType } from './NewDoctorVisitScreen';
 import { Typography } from '../../components';
 import { TypographyType } from '../../components/Typography';
 
@@ -91,7 +91,7 @@ export class VaccinationScreen extends Component<Props> {
                                                         isVaccinationComplete={isComplete}
                                                         isVerticalLineVisible={!isLastPeriod}
                                                         vaccineList={period.vaccineList}
-                                                        doctorVisitBtn={() => this.props.navigation.navigate('HomeStackNavigator_NewDoctorVisitScreen', {screenType: screenType.vaccination})}
+                                                        doctorVisitBtn={() => this.props.navigation.navigate('HomeStackNavigator_NewDoctorVisitScreen', {screenType: NewDoctorVisitScreenType.Vaccination})}
                                                         reminderBtn={() => this.props.navigation.navigate('HomeStackNavigator_VaccinationDataScreen')}
                                                     />
                                                 )
