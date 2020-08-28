@@ -353,6 +353,7 @@ export class NewDoctorVisitScreen extends Component<Props, State> {
                                 <DateTimePicker
                                     label={translate("NewDoctorVisitScreenDatePickerLabel")}
                                     onChange={(value) => this.setMeasurementDate(value)}
+                                    maximumDate={new Date()}
                                     style={this.state.visitDateError !== "" ? { borderColor: colorError, borderWidth: 1, borderRadius: 27 } : null}
                                 />
                                 {
