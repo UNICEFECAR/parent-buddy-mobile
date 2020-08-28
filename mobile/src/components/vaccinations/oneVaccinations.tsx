@@ -179,7 +179,7 @@ export class OneVaccinations extends Component<VaccinationPeriod, State> {
                                                 <TextButton
                                                     color={TextButtonColor.purple}
                                                     style={{ marginTop: scale(5), marginBottom: scale(10) }}
-                                                    onPress={() => this.goToArticle(parseInt(item.hardcodedArticleId))}
+                                                    onPress={() => dataRealmStore.openArticleScreen(parseInt(item.hardcodedArticleId))}
                                                 >
                                                     {translate('moreAboutDisease')}
                                                 </TextButton>
@@ -199,7 +199,7 @@ export class OneVaccinations extends Component<VaccinationPeriod, State> {
                         !this.props.isVaccinationComplete && this.props.isCurrentPeriod ?
                             <View >
                                 <RoundedButton
-                                    style={{ paddingLeft: moderateScale(20) }}
+                                    style={{ paddingLeft: moderateScale(20), marginTop: scale(10) }}
                                     type={RoundedButtonType.purple} text={translate('AddDataAboutVaccination')}
                                     showArrow={true}
                                     onPress={() => this.goToDoctorVisit()}
@@ -248,12 +248,12 @@ const styles = StyleSheet.create<OneVaccinationsStyles>({
     },
     reminderBtn: {
         paddingLeft: moderateScale(20),
-        marginTop: moderateScale(20),
-        marginBottom: moderateScale(24)
+        marginTop: moderateScale(15),
+        marginBottom: moderateScale(5)
     },
     vaccineContainer: {
         flexDirection: 'row',
-        marginBottom: scale(16),
+        marginBottom: scale(-5),
     },
     vaccineItemContainer: {
         flexDirection: 'column',
