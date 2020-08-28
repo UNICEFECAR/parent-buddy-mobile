@@ -23,7 +23,7 @@ import { DateTime } from 'luxon';
 const colorError = "#EB4747"
 
 export interface NewDoctorVisitScreenParams {
-    screenType: screenType;
+    screenType: NewDoctorVisitScreenType;
 }
 export interface Props {
     navigation: NavigationStackProp<NavigationStackState, NewDoctorVisitScreenParams>;
@@ -61,7 +61,7 @@ export class NewDoctorVisitScreen extends Component<Props, State> {
 
         let isVaccineReceived = "";
 
-        if (this.props.navigation.state?.params?.screenType === screenType.vaccination) {
+        if (this.props.navigation.state?.params?.screenType === NewDoctorVisitScreenType.Vaccination) {
             isVaccineReceived = "yes"
         }
 
@@ -130,7 +130,7 @@ export class NewDoctorVisitScreen extends Component<Props, State> {
                 isChildMeasured = true;
             };
 
-            if (this.props.navigation.state.params?.screenType === screenType.heltCheckUp) {
+            if (this.props.navigation.state.params?.screenType === NewDoctorVisitScreenType.HeltCheckUp) {
                 if (this.state.isVaccineReceived === "yes") {
                     didChildGetVaccines = true;
                 }
@@ -262,7 +262,7 @@ export class NewDoctorVisitScreen extends Component<Props, State> {
         return (
             <>
                 {
-                    this.props.navigation.state.params?.screenType === screenType.heltCheckUp ?
+                    this.props.navigation.state.params?.screenType === NewDoctorVisitScreenType.HeltCheckUp ?
                         <View style={styles.vaccineContainer} >
                             <Typography style={{ marginBottom: scale(16) }}>{translate("newMeasureScreenVaccineTitle")}</Typography>
                             <RadioButtons
@@ -367,7 +367,7 @@ export class NewDoctorVisitScreen extends Component<Props, State> {
                             </View>
 
                             {
-                                this.props.navigation.state.params?.screenType === screenType.vaccination ?
+                                this.props.navigation.state.params?.screenType === NewDoctorVisitScreenType.Vaccination ?
                                     <>
                                         {this.renderVaccinesSection()}
                                         {this.renderChildMeasuresSection()}
@@ -416,9 +416,9 @@ export class NewDoctorVisitScreen extends Component<Props, State> {
     }
 }
 
-export enum screenType {
-    "vaccination",
-    "heltCheckUp"
+export enum NewDoctorVisitScreenType {
+    Vaccination,
+    HeltCheckUp
 }
 
 export interface NewDoctorVisitScreenStyles {
