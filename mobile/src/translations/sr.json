@@ -214,7 +214,8 @@
 
     "vaccinationTitleQuestion": "Da li je dete vakcinisano?",
     "moreAboutVaccineBtn": "Pročitajte više o vakcini",
-    "moreAboutDisease": "Pročitajte više o bolesti",
+    "moreAboutDisease": "Više o vakcini i bolestima od kojih štiti",
+    "vaccinationPeriodsSubtitle": "Vakcina",
     "AddDataAboutVaccination": "Upišite podatke sa vakcinacije",
     "AddVaccinationReminder" : "Dodajte podsetnik za vakcinaciju",
     "NewDoctorVisitMeasurementTitle": "Da li je dete izmereno?",

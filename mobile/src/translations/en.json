@@ -214,7 +214,8 @@
     
     "vaccinationTitleQuestion": "Was the child vaccinated?",
     "moreAboutVaccineBtn": "Read more about vaccine",
-    "moreAboutDisease": "Read more about disease",
+    "moreAboutDisease": "TODO Više o vakcini i bolestima od kojih štiti",
+    "vaccinationPeriodsSubtitle": "TODO Vakcina",
     "AddDataAboutVaccination": "Enter data from vaccination",
     "AddVaccinationReminder" : "Add reminder for vaccination",
     "NewDoctorVisitMeasurementTitle": "Was the child measured",

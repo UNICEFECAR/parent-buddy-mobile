@@ -203,18 +203,20 @@ export class NewDoctorVisitScreen extends Component<Props, State> {
     }
 
     private goToArticle(id: number) {
-        let article = dataRealmStore.getContentFromId(id);
-        let category = dataRealmStore.getCategoryNameFromId(id);
-
-        const pushAction = StackActions.push({
-            routeName: 'HomeStackNavigator_ArticleScreen',
-            params: {
-                article: article,
-                categoryName: category,
-            },
-        });
-
-        navigation.dispatch(pushAction)
+        if(id){
+            let article = dataRealmStore.getContentFromId(id);
+            let category = dataRealmStore.getCategoryNameFromId(id);
+    
+            const pushAction = StackActions.push({
+                routeName: 'HomeStackNavigator_ArticleScreen',
+                params: {
+                    article: article,
+                    categoryName: category,
+                },
+            });
+    
+            navigation.dispatch(pushAction)
+        };
     };
 
 
@@ -225,7 +227,7 @@ export class NewDoctorVisitScreen extends Component<Props, State> {
                     vaccinesList.length > 0 ?
                         <>
                             <View style={styles.vaccineContainerTitle}>
-                                <Typography type={TypographyType.headingSecondary} style={{ marginBottom: -10 }}>
+                                <Typography type={TypographyType.bodyRegular} style={{ marginBottom: -10, fontWeight: "bold" }}>
                                     {
                                         periodType === "previousPeriod" ?
                                             translate('previousVaccinesTitle')
@@ -237,7 +239,7 @@ export class NewDoctorVisitScreen extends Component<Props, State> {
                             {
                                 vaccinesList.map(item => (
                                     <View style={styles.vaccineContainerBody}>
-                                        <Checkbox.Android status={item.complete ? "checked" : "unchecked"} onPress={() => this.onCheckBox(periodType, item.uuid)} />
+                                        <Checkbox.Android status={item.complete ? "checked" : "unchecked"} color="#2BABEE" onPress={() => this.onCheckBox(periodType, item.uuid)} />
                                         <View style={styles.vaccineContainerText}>
                                             <Typography style={styles.vaccineText}>
                                                 {item.title}
@@ -351,6 +353,7 @@ export class NewDoctorVisitScreen extends Component<Props, State> {
                                 <DateTimePicker
                                     label={translate("NewDoctorVisitScreenDatePickerLabel")}
                                     onChange={(value) => this.setMeasurementDate(value)}
+                                    maximumDate={new Date()}
                                     style={this.state.visitDateError !== "" ? { borderColor: colorError, borderWidth: 1, borderRadius: 27 } : null}
                                 />
                                 {
@@ -444,7 +447,7 @@ const styles = StyleSheet.create<NewDoctorVisitScreenStyles>({
         flexDirection: 'row',
     },
     vaccineText: {
-        fontSize: moderateScale(15),
+        fontSize: moderateScale(14),
         width: moderateScale(260),
         padding: scale(5),
         marginRight: scale(20),
