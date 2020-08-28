@@ -6,7 +6,7 @@ import { userRealmStore } from '../userRealmStore';
 import { Measures, ChildEntity } from '../ChildEntity';
 import { DateTime } from 'luxon';
 import { navigation } from '../../app';
-import { screenType } from '../../screens/vaccination/NewDoctorVisitScreen';
+import { NewDoctorVisitScreenType } from '../../screens/vaccination/NewDoctorVisitScreen';
 
 export function getDoctorVisitCardsBirthdayIsNotSet(): DoctorVisitCardProps[] {
     let rval: DoctorVisitCardProps[] = [];
@@ -136,7 +136,7 @@ export function getDoctorVisitCardsBirthdayIsSet(): DoctorVisitCardProps[] {
             buttons.push({
                 type: DoctorVisitCardButtonType.Purple,
                 text: translate('doctorVisitsAddMeasuresButton'),
-                onPress: () => { navigation.navigate('HomeStackNavigator_NewDoctorVisitScreen', {screenType: screenType.heltCheckUp}) },
+                onPress: () => { navigation.navigate('HomeStackNavigator_NewDoctorVisitScreen', {screenType: NewDoctorVisitScreenType.HeltCheckUp}) },
             });
         }
 
