@@ -202,7 +202,11 @@
 
     "doctorVisitsScreenTitle": "Lekarski pregledi TODO",
     "doctorVisitsVaccineDataNotEntered": "Podaci o vakcini nisu uneti TODO",
+    "doctorVisitsVaccinesNotGiven": "Vakcine nisu date TODO",
+    "doctorVisitsVaccinesGiven": "Vakcine su date TODO",
     "doctorVisitsMeasuresNotEntered": "Podaci o merenju nisu uneti TODO",
+    "doctorVisitsMeasuresEnteredButNotGiven": "Mere su unete TODO",
+    "doctorVisitsMeasuresEnteredAndGiven": "Dete je teško %WEIGHT%kg i dugačko %LENGTH%cm TODO",
     "doctorVisitsReadMore": "Više o pregledima u ovom periodu TODO",
 
     "growthChartLegendSilverLabel": " - Uobičajene vrednosti za uzrast",

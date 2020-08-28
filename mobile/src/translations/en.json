@@ -202,7 +202,11 @@
 
     "doctorVisitsScreenTitle": "Health check-ups TODO",
     "doctorVisitsVaccineDataNotEntered": "Vaccines not entered TODO",
+    "doctorVisitsVaccinesNotGiven": "Vaccines were not given TODO",
+    "doctorVisitsVaccinesGiven": "Vaccines were given TODO",
     "doctorVisitsMeasuresNotEntered": "Measures not entered TODO",
+    "doctorVisitsMeasuresEnteredButNotGiven": "Measures entered TODO",
+    "doctorVisitsMeasuresEnteredAndGiven": "Child has %WEIGHT%kg and %LENGTH%cm TODO",
     "doctorVisitsReadMore": "Read more about health checkups in this period TODO",
 
     "growthChartLegendSilverLabel": "-Typical values for age",
