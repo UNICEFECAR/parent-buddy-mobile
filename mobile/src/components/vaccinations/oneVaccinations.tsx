@@ -91,10 +91,11 @@ export class OneVaccinations extends Component<VaccinationPeriod, State> {
     }
 
     private goToArticle(id: number) {
-        let article = dataRealmStore.getContentFromId(id);
-        let category = dataRealmStore.getCategoryNameFromId(id);
 
-        if (article && category) {
+        if (id) {
+            let article = dataRealmStore.getContentFromId(id);
+            let category = dataRealmStore.getCategoryNameFromId(id);
+
             const pushAction = StackActions.push({
                 routeName: 'HomeStackNavigator_ArticleScreen',
                 params: {
@@ -104,17 +105,17 @@ export class OneVaccinations extends Component<VaccinationPeriod, State> {
             });
 
             navigation.dispatch(pushAction)
-        }
+        };
     };
 
-    private goToDoctorVisit(){
-        if(this.props.doctorVisitBtn){
+    private goToDoctorVisit() {
+        if (this.props.doctorVisitBtn) {
             this.props.doctorVisitBtn()
         }
     }
 
-    private goToRemminder(){
-        if(this.props.reminderBtn){
+    private goToRemminder() {
+        if (this.props.reminderBtn) {
             this.props.reminderBtn()
         }
     }
@@ -128,7 +129,7 @@ export class OneVaccinations extends Component<VaccinationPeriod, State> {
                             this.props.isBirthDayEntered && !this.props.isFeaturedPeriod && (
                                 <Icon
                                     name={this.renderIcon(this.props.isVaccinationComplete)}
-                                    style={[styles.iconStyle, {color: this.props.isVaccinationComplete ? "#2CBA39" : "#EB4747"}]}
+                                    style={[styles.iconStyle, { color: this.props.isVaccinationComplete ? "#2CBA39" : "#EB4747" }]}
                                 />
                             )
                         }
@@ -136,6 +137,9 @@ export class OneVaccinations extends Component<VaccinationPeriod, State> {
                         <View style={{ flexDirection: "column" }}>
                             <Typography type={TypographyType.headingSecondary}>
                                 {this.props.title}
+                            </Typography>
+                            <Typography type={TypographyType.headingSecondary} style={{fontSize: moderateScale(16), marginTop: -10}}>
+                                {translate('vaccinationPeriodsSubtitle')}
                             </Typography>
                             {
                                 this.props.vaccinationDate && (
@@ -280,10 +284,10 @@ const styles = StyleSheet.create<OneVaccinationsStyles>({
         lineHeight: moderateScale(21),
     },
     dotIconStyle: {
-        marginRight: scale(15),
+        marginRight: scale(13),
         marginLeft: scale(10),
         marginTop: scale(3),
-        fontSize: moderateScale(8),
+        fontSize: moderateScale(6),
         color: "#2CBA39",
         lineHeight: moderateScale(21),
     },

@@ -112,6 +112,7 @@ class UserRealmStore {
 
             if (currentImmunizationsPeriods && immunizationsPeriods) {
                 // get all vaccines for previous period 
+                
                 for (let i = 0; i < immunizationsPeriods?.length; i++) {
                     if (immunizationsPeriods[i].uuid === currentImmunizationsPeriods.uuid) {
                         break;
@@ -205,7 +206,6 @@ class UserRealmStore {
         let allVaccines: Vaccine[] = [];
 
         if (receivedVaccination.length !== 0) {
-            // FIXME 
             period.vaccines.forEach(vaccine => {
                 let isCompleted = false;
                 let date: number | undefined = undefined;
@@ -227,7 +227,6 @@ class UserRealmStore {
             });
 
         } else {
-            // FIXME 
             period.vaccines.forEach(vaccine => {
                 let isCompleted = false;
                 allVaccines.push({
@@ -276,7 +275,7 @@ class UserRealmStore {
 
                 rval.push({
                     isCurrentPeriod: isCurrentPeriod,
-                    title: period.title,
+                    title: period.subtitle,
                     isBirthDayEntered: isBirthDayEntered,
                     vaccineList: this.getVaccinesForSinglePeriod(recivedVaccination, period),
                     isFeaturedPeriod: isFeaturedPeriod,
@@ -288,7 +287,7 @@ class UserRealmStore {
             immunizationsPeriods?.forEach(period => {
                 rval.push({
                     isCurrentPeriod: false,
-                    title: period.title,
+                    title: period.subtitle,
                     isBirthDayEntered: isBirthDayEntered,
                     vaccineList: period.vaccines.map(item => {
                         return {
