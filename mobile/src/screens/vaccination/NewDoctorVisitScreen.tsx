@@ -333,7 +333,7 @@ export class NewDoctorVisitScreen extends Component<Props, State> {
                     <>
                         <KeyboardAwareScrollView
                             style={{ backgroundColor: 'white' }}
-                            keyboardShouldPersistTaps="handled"
+                            keyboardShouldPersistTaps='handled'
                             contentContainerStyle={[styles.container]}
                         >
                             <View>
