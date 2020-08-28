@@ -19,6 +19,7 @@ import { NavigationStackState, NavigationStackProp } from 'react-navigation-stac
 import { StackActions } from 'react-navigation';
 import { navigation } from '../../app';
 import { DateTime } from 'luxon';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const colorError = "#EB4747"
 
@@ -100,7 +101,7 @@ export class NewDoctorVisitScreen extends Component<Props, State> {
         if (this.state.isChildMeasured === "") {
             error = true;
             this.setState({
-                childMeasuredError:  translate('vaccinationSwitchBtnErrorMessage')
+                childMeasuredError: translate('vaccinationSwitchBtnErrorMessage')
             });
         };
 
@@ -205,24 +206,6 @@ export class NewDoctorVisitScreen extends Component<Props, State> {
         return allVaccines
     }
 
-    private goToArticle(id: number) {
-        if(id){
-            let article = dataRealmStore.getContentFromId(id);
-            let category = dataRealmStore.getCategoryNameFromId(id);
-    
-            const pushAction = StackActions.push({
-                routeName: 'HomeStackNavigator_ArticleScreen',
-                params: {
-                    article: article,
-                    categoryName: category,
-                },
-            });
-    
-            navigation.dispatch(pushAction)
-        };
-    };
-
-
     private renderVaccines(vaccinesList: Vaccine[], periodType: "previousPeriod" | "currentPeriod") {
         return (
             <>
@@ -247,7 +230,7 @@ export class NewDoctorVisitScreen extends Component<Props, State> {
                                             <Typography style={styles.vaccineText}>
                                                 {item.title}
                                             </Typography>
-                                            <Icon name="info-circle" style={{ fontSize: moderateScale(18), opacity: 0.7 }} onPress={() => this.goToArticle(parseInt(item.hardcodedArticleId))} />
+                                            <Icon name="info-circle" style={{ fontSize: moderateScale(18), opacity: 0.7 }} onPress={() => dataRealmStore.openArticleScreen(parseInt(item.hardcodedArticleId))} />
                                         </View>
                                     </View>
                                 ))
@@ -348,9 +331,10 @@ export class NewDoctorVisitScreen extends Component<Props, State> {
             <ThemeConsumer>
                 {(themeContext: ThemeContextValue) => (
                     <>
-                        <ScrollView
-                            style={{ backgroundColor: themeContext.theme.screenContainer?.backgroundColor }}
-                            contentContainerStyle={styles.container}
+                        <KeyboardAwareScrollView
+                            style={{ backgroundColor: 'white' }}
+                            keyboardShouldPersistTaps='always'
+                            contentContainerStyle={[styles.container]}
                         >
                             <View>
                                 <DateTimePicker
@@ -391,7 +375,7 @@ export class NewDoctorVisitScreen extends Component<Props, State> {
                                     onPress={() => this.saveData()}
                                 />
                             </View>
-                        </ScrollView>
+                        </KeyboardAwareScrollView>
                         <Snackbar
                             visible={this.state.isSnackbarVisible}
                             duration={Snackbar.DURATION_SHORT}
