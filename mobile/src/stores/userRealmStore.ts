@@ -694,7 +694,7 @@ class UserRealmStore {
                 measuresArray.push(measures);
 
                 this.realm?.write(() => {
-                    currentChild.measures = JSON.stringify(measuresArray);
+                    currentChild.measures = JSON.stringify(measuresArray, null, 4);
                     resolve();
                 });
             } catch (e) {
