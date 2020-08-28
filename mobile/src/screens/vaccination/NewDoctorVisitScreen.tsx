@@ -22,8 +22,11 @@ import { DateTime } from 'luxon';
 
 const colorError = "#EB4747"
 
+export interface NewDoctorVisitScreenParams {
+    screenType: screenType;
+}
 export interface Props {
-    navigation: NavigationStackProp<NavigationStackState, {}>;
+    navigation: NavigationStackProp<NavigationStackState, NewDoctorVisitScreenParams>;
 }
 
 export interface State {
@@ -322,7 +325,7 @@ export class NewDoctorVisitScreen extends Component<Props, State> {
                                 label={translate('fieldLabelWeight')}
                                 suffix="g"
                                 icon="weight"
-                                style={{ width: 150 }}
+                                style={{ width: 170 }}
                                 value={this.state.weight}
                                 onChange={value => this.measureChange(value, 'weight')}
                             />
@@ -330,7 +333,7 @@ export class NewDoctorVisitScreen extends Component<Props, State> {
                                 label={translate('fieldLabelLength')}
                                 suffix="cm"
                                 icon="weight"
-                                style={{ width: 150, marginTop: 8 }}
+                                style={{ width: 170, marginTop: 8 }}
                                 value={this.state.height}
                                 onChange={value => this.measureChange(value, 'height')}
                             />
