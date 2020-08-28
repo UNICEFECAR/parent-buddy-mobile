@@ -208,6 +208,7 @@
     "doctorVisitsMeasuresEnteredButNotGiven": "Mere su unete TODO",
     "doctorVisitsMeasuresEnteredAndGiven": "Dete je teško %WEIGHT%kg i dugačko %LENGTH%cm TODO",
     "doctorVisitsReadMore": "Više o pregledima u ovom periodu TODO",
+    "doctorVisitsAddMeasuresButton": "Upišite podatke sa pregleda TODO",
 
     "growthChartLegendSilverLabel": " - Uobičajene vrednosti za uzrast",
     "growthChartLegendOrangeLabel": " - Odstupajuće vrednosti za uzrast",
