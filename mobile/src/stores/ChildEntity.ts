@@ -19,6 +19,9 @@ export type Measures = {
      */
     measurementDate?: number;
 
+    /**
+     * Month in number for child Development title 
+     */
     titleDateInMonth?: number;
 
     didChildGetVaccines: boolean;
