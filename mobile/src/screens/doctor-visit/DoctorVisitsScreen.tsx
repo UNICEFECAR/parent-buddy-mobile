@@ -53,24 +53,6 @@ export class DoctorVisitsScreen extends Component<Props> {
                                             {userRealmStore.getDoctorVisitCards().map(cardProps => (
                                                 <DoctorVisitCard {...cardProps} />
                                             ))}
-                                            {/* {[0, 1, 2].map(index => (
-                                                <DoctorVisitCard
-                                                    title={"Pregled na rodjenju " + index}
-                                                    subTitle="9.7.2020"
-                                                    titleIcon={DoctorVisitTitleIconType.Checked}
-                                                    showVerticalLine={index !== 2}
-                                                    items={[
-                                                        { icon: DoctorVisitCardItemIcon.Syringe, text: 'Dete je dobilo vakcine' },
-                                                        { icon: DoctorVisitCardItemIcon.Weight, text: 'Dete je tesko bre Dete je tesko bre Dete je tesko bre Dete je tesko bre Dete je tesko bre ' },
-                                                        { icon: DoctorVisitCardItemIcon.Stethoscope, text: 'Savet doktora' },
-                                                    ]}
-                                                    buttons={[
-                                                        { type: DoctorVisitCardButtonType.Text, text: 'Text button', onPress: () => { } },
-                                                        { type: DoctorVisitCardButtonType.HollowPurple, text: 'Hollow purple button', onPress: () => { } },
-                                                        { type: DoctorVisitCardButtonType.Purple, text: 'Purple button', onPress: () => { } },
-                                                    ]}
-                                                />
-                                            ))} */}
                                         </Fragment>
                                     )}
                                 </UserRealmConsumer>
