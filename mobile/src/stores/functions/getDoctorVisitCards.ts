@@ -48,7 +48,7 @@ export function getDoctorVisitCardsBirthdayIsNotSet(): DoctorVisitCardProps[] {
     return rval;
 }
 
-export function getDoctorVisitCardsBirthdayIsSet(): DoctorVisitCardProps[] {
+export function getDoctorVisitCardsBirthdayIsSet(currentChild: ChildEntity & Realm.Object): DoctorVisitCardProps[] {
     let rval: DoctorVisitCardProps[] = [];
 
     // SET doctorVisitPeriods
@@ -58,7 +58,7 @@ export function getDoctorVisitCardsBirthdayIsSet(): DoctorVisitCardProps[] {
     // SET regularAndAdditionalMeasures
     const regularAndAdditionalMeasures = userRealmStore.getRegularAndAdditionalMeasures();
 
-    // SET regularCards
+    // ADD REGULAR CARDS
     const regularCards: DoctorVisitCardProps[] = [];
 
     doctorVisitPeriods.forEach((doctorVisitPeriod) => {
@@ -88,6 +88,7 @@ export function getDoctorVisitCardsBirthdayIsSet(): DoctorVisitCardProps[] {
         }
 
         // CREATE CARD PROPS
+        // Title
         let cardTitle = '';
         let cardSubTitle = '';
         let cardTitleIcon: DoctorVisitTitleIconType | undefined = undefined;
@@ -136,7 +137,7 @@ export function getDoctorVisitCardsBirthdayIsSet(): DoctorVisitCardProps[] {
             buttons.push({
                 type: DoctorVisitCardButtonType.Purple,
                 text: translate('doctorVisitsAddMeasuresButton'),
-                onPress: () => { navigation.navigate('HomeStackNavigator_NewDoctorVisitScreen', {screenType: NewDoctorVisitScreenType.HeltCheckUp}) },
+                onPress: () => { navigation.navigate('HomeStackNavigator_NewDoctorVisitScreen', { screenType: NewDoctorVisitScreenType.HeltCheckUp }) },
             });
 
             if (measuresEnteredType === MeasuresEnteredType.NotEntered) {
@@ -144,8 +145,21 @@ export function getDoctorVisitCardsBirthdayIsSet(): DoctorVisitCardProps[] {
             }
         }
 
+        // Ordering
+        let ordering: number = 0;
+
+        if (thisPeriodMeasures !== null) {
+            const m = thisPeriodMeasures as Measures;
+            ordering = m.measurementDate as number;
+        } else {
+            const periodFromDays = doctorVisitPeriod.childAgeInDays.from;
+            const childBirtday = DateTime.fromJSDate(currentChild.birthDate as Date);
+            ordering = childBirtday.plus({ days: periodFromDays }).toMillis();
+        }
+
         // CREATE REGULAR CARD
         regularCards.push({
+            ordering, // milliseconds
             title: cardTitle,
             subTitle: cardSubTitle,
             items: items,
@@ -154,10 +168,93 @@ export function getDoctorVisitCardsBirthdayIsSet(): DoctorVisitCardProps[] {
         });
     });
 
-    // COMBINE CARDS
-    rval = regularCards;
+    // ADD ADDITIONAL CARDS
+    const additionalCards: DoctorVisitCardProps[] = [];
 
-    // SET showVerticalLine
+    regularAndAdditionalMeasures.additionalMeasures.forEach((measures) => {
+        // SET measuresEnteredType
+        let measuresEnteredType: MeasuresEnteredType = MeasuresEnteredType.NotEntered;
+
+        if (measures !== null) {
+            const m = measures as Measures;
+
+            if (
+                m.isChildMeasured && m.length && m.length !== '' && m.weight && m.weight !== ''
+                && m.didChildGetVaccines && m.vaccineIds && Array.isArray(m.vaccineIds) && m.vaccineIds.length > 0
+            ) {
+                measuresEnteredType = MeasuresEnteredType.EnteredFully;
+            } else {
+                measuresEnteredType = MeasuresEnteredType.EnteredIncomplete;
+            }
+        }
+
+        // CREATE CARD PROPS
+        // Title
+        let cardTitle = '';
+        let cardSubTitle = '';
+        let cardTitleIcon: DoctorVisitTitleIconType | undefined = undefined;
+
+        // cardTitle
+        cardTitle = translate('doctorVisitsAddtionalCheckUpTitle');
+
+        // cardSubTitle
+        let cardMeasurementMillis = measures.measurementDate;
+        if (cardMeasurementMillis) {
+            let cardMeasurementDateTime = DateTime.fromMillis(cardMeasurementMillis);
+            cardSubTitle = cardMeasurementDateTime.toLocaleString(DateTime.DATE_MED);
+        }
+
+        // cardTitleIcon
+        if (measuresEnteredType === MeasuresEnteredType.EnteredFully) {
+            cardTitleIcon = DoctorVisitTitleIconType.Checked;
+        }
+        if (measuresEnteredType === MeasuresEnteredType.EnteredIncomplete) {
+            cardTitleIcon = DoctorVisitTitleIconType.Info;
+        }
+
+        // Items
+        const items = getCardItems(measures);
+
+        // Ordering
+        let ordering: number = measures.measurementDate as number;
+
+        // CREATE REGULAR CARD
+        additionalCards.push({
+            ordering, // milliseconds
+            title: cardTitle,
+            subTitle: cardSubTitle,
+            items: items,
+            titleIcon: cardTitleIcon,
+            buttons: [],
+        });
+    });
+
+    // ADD CARD FOR ENTERING ADDITIONAL CHECK-UPS
+    additionalCards.push({
+        ordering: Date.now(), // milliseconds
+        title: translate('doctorVisitsAddtionalCheckUpTitle'),
+        items: [],
+        titleIcon: DoctorVisitTitleIconType.Add,
+        buttons: [
+            {
+                type: DoctorVisitCardButtonType.Purple,
+                text: translate('doctorVisitsAddMeasuresButton'),
+                onPress: () => { navigation.navigate('HomeStackNavigator_NewDoctorVisitScreen', { screenType: NewDoctorVisitScreenType.HeltCheckUp }) },
+            }
+        ],
+    });
+
+    // COMBINE CARDS
+    rval = regularCards.concat(additionalCards);
+
+    // SORT CARDS
+    rval.sort((cardA, cardB) => {
+        if ((cardA.ordering as number) > (cardB.ordering as number)) return 1;
+        if ((cardA.ordering as number) < (cardB.ordering as number)) return -1;
+        return 0;
+    });
+
+    // SET showVerticalLine FOR THE LAST CARD
     rval[rval.length - 1].showVerticalLine = false;
 
     return rval;
