@@ -10,6 +10,7 @@ import { RoundedButtonType } from '../RoundedButton';
 import { TextButtonColor } from '../TextButton';
 
 export interface Props {
+    ordering?: number;
     title: string;
     subTitle?: string;
     titleIcon?: DoctorVisitTitleIconType;
@@ -24,6 +25,7 @@ export interface State {
 
 export class DoctorVisitCard extends Component<Props, State> {
     static defaultProps: Props = {
+        ordering: 0,
         title: '',
         items: [],
         buttons: [],
@@ -148,6 +150,10 @@ export class DoctorVisitCard extends Component<Props, State> {
                             ) : null}
                         </Fragment>
                     ))}
+
+                    {this.props.buttons && this.props.buttons?.length === 0 ? (
+                        <View style={{height:scale(18)}} />
+                    ) : null}
                 </View>
 
                 {/* VERTICAL LINE */}
