@@ -138,6 +138,10 @@ export function getDoctorVisitCardsBirthdayIsSet(): DoctorVisitCardProps[] {
                 text: translate('doctorVisitsAddMeasuresButton'),
                 onPress: () => { navigation.navigate('HomeStackNavigator_NewDoctorVisitScreen', {screenType: NewDoctorVisitScreenType.HeltCheckUp}) },
             });
+
+            if (measuresEnteredType === MeasuresEnteredType.NotEntered) {
+                cardTitleIcon = DoctorVisitTitleIconType.Add;
+            }
         }
 
         // CREATE REGULAR CARD
