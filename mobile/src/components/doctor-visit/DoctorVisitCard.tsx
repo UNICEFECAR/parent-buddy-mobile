@@ -19,7 +19,7 @@ export interface Props {
 }
 
 export interface State {
-    titleIcon?: JSX.Element;
+    
 }
 
 export class DoctorVisitCard extends Component<Props, State> {
@@ -32,17 +32,16 @@ export class DoctorVisitCard extends Component<Props, State> {
 
     constructor(props: Props) {
         super(props);
-        this.initState();
     }
 
-    private initState() {
-        const state: State = {};
+    private getTitleIcon(iconType: DoctorVisitTitleIconType | undefined): JSX.Element | null {
+        let rval: JSX.Element | null = null;
 
-        // TITLE ICON
+        if (iconType === undefined) return null;
 
         // Checked icon
         if (this.props.titleIcon === DoctorVisitTitleIconType.Checked) {
-            state.titleIcon = (
+            rval = (
                 <Icon
                     name={"check-circle"}
                     style={[styles.titleIcon, { color: '#2CBB39' }]}
@@ -52,7 +51,7 @@ export class DoctorVisitCard extends Component<Props, State> {
 
         // Add icon
         if (this.props.titleIcon === DoctorVisitTitleIconType.Add) {
-            state.titleIcon = (
+            rval = (
                 <Icon
                     name={"plus-circle-outline"}
                     style={[styles.titleIcon, { color: '#AA40BF' }]}
@@ -62,7 +61,7 @@ export class DoctorVisitCard extends Component<Props, State> {
 
         // Info icon
         if (this.props.titleIcon === DoctorVisitTitleIconType.Info) {
-            state.titleIcon = (
+            rval = (
                 <Icon
                     name={"information"}
                     style={[styles.titleIcon, { color: '#2BABEF' }]}
@@ -70,7 +69,7 @@ export class DoctorVisitCard extends Component<Props, State> {
             );
         }
 
-        this.state = state;
+        return rval;
     }
 
     render() {
@@ -81,7 +80,7 @@ export class DoctorVisitCard extends Component<Props, State> {
                     {/* TITLE & SUBTITLE */}
                     <View style={{ flexDirection: 'row', alignItems: 'flex-start', marginBottom: scale(15) }}>
                         {/* Title icon */}
-                        {this.state.titleIcon ? this.state.titleIcon : null}
+                        {this.getTitleIcon(this.props.titleIcon)}
 
                         <View style={{ flex: 1 }}>
                             {/* Title */}
@@ -93,7 +92,7 @@ export class DoctorVisitCard extends Component<Props, State> {
                             </Typography>
 
                             {/* Subtitle */}
-                            <Typography type={TypographyType.bodyRegular} style={{fontWeight:'bold'}}>
+                            <Typography type={TypographyType.bodyRegular} style={{ fontWeight: 'bold' }}>
                                 {this.props.subTitle}
                             </Typography>
                         </View>
@@ -120,8 +119,8 @@ export class DoctorVisitCard extends Component<Props, State> {
                             {button.type === DoctorVisitCardButtonType.Text ? (
                                 <TextButton
                                     color={TextButtonColor.purple}
-                                    textStyle={{ flex:1, textAlign: 'center' }}
-                                    style={{paddingVertical: styles.button.marginBottom}}
+                                    textStyle={{ flex: 1, textAlign: 'center' }}
+                                    style={{ paddingVertical: styles.button.marginBottom }}
                                     onPress={button.onPress}
                                 >
                                     {button.text}
