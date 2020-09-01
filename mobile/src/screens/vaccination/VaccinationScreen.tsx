@@ -80,7 +80,7 @@ export class VaccinationScreen extends Component<Props> {
                                                 // remove verticalLine on last card
                                                 if(index === userRealmStore.getAllVaccinationPeriods().length - 1){
                                                     isLastPeriod = true;
-                                                }
+                                                };
 
                                                 return (
                                                     <OneVaccinations
