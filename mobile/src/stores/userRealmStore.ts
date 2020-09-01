@@ -822,7 +822,7 @@ class UserRealmStore {
 
         // Birthday is given
         if (currentChild.birthDate) {
-            rval = getDoctorVisitCardsBirthdayIsSet();
+            rval = getDoctorVisitCardsBirthdayIsSet(currentChild);
         }
 
         return rval;
