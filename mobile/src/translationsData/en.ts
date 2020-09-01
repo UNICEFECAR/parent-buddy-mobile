@@ -498,7 +498,7 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
         {
             uuid: '67c0169d-8d5f-4d28-9943-43985824370a',
             period: 'At birth',
-            childAgeInDays: { from: 0, to: 30 },
+            childAgeInDays: { from: 0, to: 10 },
             nameOfTheDoctorVisit: 'Health check-up',
             periodSubtitle: 'At birth',
             immunizationsPeriodId: '5edc9c03-4066-4d1e-9d28-fea7ceb36b33',
@@ -518,7 +518,7 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
         {
             uuid: '841a9c37-0fd4-4680-afb4-8ff4e3b46179',
             period: 'At 2 months',
-            childAgeInDays: { from: 61, to: 90 },
+            childAgeInDays: { from: 61, to: 93 },
             nameOfTheDoctorVisit: 'Health check-up',
             periodSubtitle: 'With full 2 months',
             immunizationsPeriodId: '2ee47528-f52a-48c1-8925-b694132384d1',
@@ -528,7 +528,7 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
         {
             uuid: 'cc17d35c-0c00-4605-a7f9-ab58acaa61e3',
             period: 'At 3.5 months',
-            childAgeInDays: { from: 91, to: 150 },
+            childAgeInDays: { from: 100, to: 130 },
             nameOfTheDoctorVisit: 'Health check-up',
             periodSubtitle: 'With 3,5 months',
             immunizationsPeriodId: 'd9aa2bca-01a2-4372-a911-0e02f259a66f',
@@ -538,7 +538,7 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
         {
             uuid: '11c000ae-16c6-4a21-8563-1901ae2a2d10',
             period: 'At 5 months',
-            childAgeInDays: { from: 151, to: 180 },
+            childAgeInDays: { from: 152, to: 182 },
             nameOfTheDoctorVisit: 'Health check-up',
             periodSubtitle: 'With full 5 months',
             immunizationsPeriodId: '4c7ad009-df70-45e0-91ef-81ee75f0e8d5',
@@ -548,7 +548,7 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
         {
             uuid: '4ba2ebd8-3ece-4a39-b3b0-a73a4f7459ac',
             period: 'At 6 months',
-            childAgeInDays: { from: 181, to: 210 },
+            childAgeInDays: { from: 183, to: 220 },
             nameOfTheDoctorVisit: 'Health check-up',
             periodSubtitle: 'With full 6 months',
             immunizationsPeriodId: 'd43b92e1-9ec5-4ca8-ae41-3f68814cc1f1',
@@ -558,7 +558,7 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
         {
             uuid: 'e74fbcd2-0381-428e-a6a5-81221562a1e0',
             period: 'At 9 months',
-            childAgeInDays: { from: 271, to: 300 },
+            childAgeInDays: { from: 273, to: 305 },
             nameOfTheDoctorVisit: 'Health check-up',
             periodSubtitle: 'With full 9 months',
             immunizationsPeriodId: '',
@@ -568,7 +568,7 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
         {
             uuid: 'ac9763f3-9588-4034-998b-69327c75bb09',
             period: 'From 12-15 months',
-            childAgeInDays: { from: 361, to: 450 },
+            childAgeInDays: { from: 365, to: 460 },
             nameOfTheDoctorVisit: 'Health check-up',
             periodSubtitle: 'Between 12th and 15th months',
             immunizationsPeriodId: '9ef94154-46eb-4db9-95f0-663b1a0b33e9',
@@ -578,7 +578,7 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
         {
             uuid: 'a66a6b43-8370-410d-9195-a6347ecb2d10',
             period: 'At 18 months',
-            childAgeInDays: { from: 541, to: 570 },
+            childAgeInDays: { from: 545, to: 600 },
             nameOfTheDoctorVisit: 'Health check-up',
             periodSubtitle: 'With full 18 months',
             immunizationsPeriodId: '4c9c0536-274d-45b5-a657-ef4ce7f19e38',
@@ -588,7 +588,7 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
         {
             uuid: '145d6f2d-3179-44fd-a0ce-0013cd712c24',
             period: 'at 3 years (24-36 months)',
-            childAgeInDays: { from: 721, to: 1080 },
+            childAgeInDays: { from: 730, to: 920 },
             nameOfTheDoctorVisit: 'Health check-up',
             periodSubtitle: 'Between 24th and 36th months',
             immunizationsPeriodId: '',
@@ -598,12 +598,12 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
         {
             uuid: '21781895-05a1-4eb5-bbd1-7436cd020873',
             period: '6-7 years',
-            childAgeInDays: { from: 2190, to: 2555 },
+            childAgeInDays: { from: 2190, to: 2590 },
             nameOfTheDoctorVisit: 'Health check-up',
             periodSubtitle: 'Between 6 and 7 years',
             immunizationsPeriodId: '868e2ee6-34d9-44f0-b0aa-8d4011fc3666',
             moreAboutDoctorVisitArticleId: 4511,
-            planDoctorVisitMessageInDays: { from: 2160, to: 2360 },
+            planDoctorVisitMessageInDays: { from: 2160, to: 2690 },
         },
     ],
     interpretationWeightForHeight: [
@@ -882,9 +882,9 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
             dayEnd: 25,
             notificationDayStart: 0,
             notificationDayEnd: 10,
-            vaccines:[
-                {uuid: "0bd76915-b670-41d8-b20d-7af1cbf34c9c", title: "against Hepatitis B - the first dose", hardcodedArticleId: ""},
-                {uuid: "c19e6ab0-479c-4c06-afc3-99f67697ce48", title: "against tuberculosis ", hardcodedArticleId: ""}
+            vaccines: [
+                { uuid: "0bd76915-b670-41d8-b20d-7af1cbf34c9c", title: "against Hepatitis B - the first dose", hardcodedArticleId: "" },
+                { uuid: "c19e6ab0-479c-4c06-afc3-99f67697ce48", title: "against tuberculosis ", hardcodedArticleId: "" }
             ]
         },
         {
@@ -895,8 +895,8 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
             dayEnd: 50,
             notificationDayStart: 30,
             notificationDayEnd: 60,
-            vaccines:[
-                {uuid: "6bec3d74-20d3-4f6a-aa77-0a87b06cc931", title: "against Hepatitis B - the second dose", hardcodedArticleId: ""}
+            vaccines: [
+                { uuid: "6bec3d74-20d3-4f6a-aa77-0a87b06cc931", title: "against Hepatitis B - the second dose", hardcodedArticleId: "" }
             ]
         },
         {
@@ -907,9 +907,9 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
             dayEnd: 90,
             notificationDayStart: 60,
             notificationDayEnd: 90,
-            vaccines:[
-                {uuid: "4ceaf41b-0043-435a-9dce-d5767985197a", title: "against diphtheria, tetanus, pertussis, polio, diseases caused by Haemophilus influenzaeType b - the first dose", hardcodedArticleId: ""},
-                {uuid: "3a936eb7-99ca-4e05-ab58-1b277b77943d", title: "against diseases caused by bacteria Streptococus pneumoniae - the first dose", hardcodedArticleId: ""},
+            vaccines: [
+                { uuid: "4ceaf41b-0043-435a-9dce-d5767985197a", title: "against diphtheria, tetanus, pertussis, polio, diseases caused by Haemophilus influenzaeType b - the first dose", hardcodedArticleId: "" },
+                { uuid: "3a936eb7-99ca-4e05-ab58-1b277b77943d", title: "against diseases caused by bacteria Streptococus pneumoniae - the first dose", hardcodedArticleId: "" },
             ],
         },
         {
@@ -920,9 +920,9 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
             dayEnd: 140,
             notificationDayStart: 100,
             notificationDayEnd: 130,
-            vaccines:[
-                {uuid: "7739b3d4-f8d1-4f24-b4ad-0cfe751c6220", title: "against diphtheria, tetanus, pertussis, polio, diseases caused by Haemophilus influenzaeType b - the second dose", hardcodedArticleId: ""},
-                {uuid: "2b2d6afc-7244-4aad-a4ea-ff5a63d295cc", title: "against diseases caused by bacteria Streptococus pneumoniae - the second dose", hardcodedArticleId: ""},
+            vaccines: [
+                { uuid: "7739b3d4-f8d1-4f24-b4ad-0cfe751c6220", title: "against diphtheria, tetanus, pertussis, polio, diseases caused by Haemophilus influenzaeType b - the second dose", hardcodedArticleId: "" },
+                { uuid: "2b2d6afc-7244-4aad-a4ea-ff5a63d295cc", title: "against diseases caused by bacteria Streptococus pneumoniae - the second dose", hardcodedArticleId: "" },
             ]
         },
         {
@@ -933,9 +933,9 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
             dayEnd: 170,
             notificationDayStart: 150,
             notificationDayEnd: 180,
-            vaccines:[
-                {uuid: "c243996c-b5ab-4392-a7e4-364b6dcdfd5a", title: "against diphtheria, tetanus, pertussis, polio, diseases caused by Haemophilus influenzaeType b - the third dose", hardcodedArticleId: ""},
-                {uuid: "0870563f-1bd5-4d18-b282-27f76abc6e91", title: "against diseases caused by bacteria Streptococus pneumoniae - the third dose", hardcodedArticleId: ""},
+            vaccines: [
+                { uuid: "c243996c-b5ab-4392-a7e4-364b6dcdfd5a", title: "against diphtheria, tetanus, pertussis, polio, diseases caused by Haemophilus influenzaeType b - the third dose", hardcodedArticleId: "" },
+                { uuid: "0870563f-1bd5-4d18-b282-27f76abc6e91", title: "against diseases caused by bacteria Streptococus pneumoniae - the third dose", hardcodedArticleId: "" },
             ]
         },
         {
@@ -946,8 +946,8 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
             dayEnd: 350,
             notificationDayStart: 180,
             notificationDayEnd: 220,
-            vaccines:[
-                {uuid: "56714192-64c9-4b51-a837-934bf3947836", title: "against Hepatitis B - the third dose", hardcodedArticleId: ""},
+            vaccines: [
+                { uuid: "56714192-64c9-4b51-a837-934bf3947836", title: "against Hepatitis B - the third dose", hardcodedArticleId: "" },
             ]
         },
         {
@@ -958,9 +958,9 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
             dayEnd: 530,
             notificationDayStart: 360,
             notificationDayEnd: 450,
-            vaccines:[
-                {uuid: "5e0638e8-cc8f-4372-be70-c9b951bcd23e", title: "against measles, mumps, rubella", hardcodedArticleId: ""},
-                {uuid: "fbe5157e-5221-42fb-9663-48d3257757f0", title: "against diseases caused by bacteria Streptococus pneumoniae - revaccination", hardcodedArticleId: ""},
+            vaccines: [
+                { uuid: "5e0638e8-cc8f-4372-be70-c9b951bcd23e", title: "against measles, mumps, rubella", hardcodedArticleId: "" },
+                { uuid: "fbe5157e-5221-42fb-9663-48d3257757f0", title: "against diseases caused by bacteria Streptococus pneumoniae - revaccination", hardcodedArticleId: "" },
             ]
         },
         {
@@ -971,8 +971,8 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
             dayEnd: 2160,
             notificationDayStart: 540,
             notificationDayEnd: 600,
-            vaccines:[
-                {uuid: "85d98c51-bf2c-4eba-af25-8795f9211da4", title: "against diphtheria, tetanus, pertussis, polio, diseases caused by Haemophilus influenzaeType b - the first revaccination ", hardcodedArticleId: ""},
+            vaccines: [
+                { uuid: "85d98c51-bf2c-4eba-af25-8795f9211da4", title: "against diphtheria, tetanus, pertussis, polio, diseases caused by Haemophilus influenzaeType b - the first revaccination ", hardcodedArticleId: "" },
             ]
         },
         {
@@ -983,9 +983,9 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
             notificationDayStart: 2160,
             notificationDayEnd: 2190,
             subtitle: '',
-            vaccines:[
-                {uuid: "79ae380e-d42a-4d9c-8ab8-a06485dc8d40", title: "against measles, mumps, rubella - revaccination ", hardcodedArticleId: ""},
-                {uuid: "2279b64e-49fb-407e-88d2-bfa2c31ceaf4", title: "against diphtheria, tetanus, pertussis, polio, diseases caused by Haemophilus influenzaeType b - the second revaccination", hardcodedArticleId: ""},
+            vaccines: [
+                { uuid: "79ae380e-d42a-4d9c-8ab8-a06485dc8d40", title: "against measles, mumps, rubella - revaccination ", hardcodedArticleId: "" },
+                { uuid: "2279b64e-49fb-407e-88d2-bfa2c31ceaf4", title: "against diphtheria, tetanus, pertussis, polio, diseases caused by Haemophilus influenzaeType b - the second revaccination", hardcodedArticleId: "" },
             ]
         },
     ]
