@@ -14,6 +14,7 @@ export interface Props {
     icon?: string;
     style?: StyleProp<ViewStyle>;
     maximumDate?: Date;
+    minimumDate?: Date;
     onChange?: (value:Date)=>void;
 }
 
@@ -130,6 +131,7 @@ export class DateTimePicker extends React.Component<Props, State> {
                         onConfirm={(date) => {this.onDateTimePickerConfirm(date)}}
                         onCancel={() => {this.onDateTimePickerCancel()}}
                         maximumDate={this.props.maximumDate}
+                        minimumDate={this.props.minimumDate}
                     />
                 </View>
             </TouchableWithoutFeedback>

@@ -92,7 +92,7 @@ export class VaccinationScreen extends Component<Props> {
                                                         isVerticalLineVisible={!isLastPeriod}
                                                         vaccineList={period.vaccineList}
                                                         doctorVisitBtn={() => this.props.navigation.navigate('HomeStackNavigator_NewDoctorVisitScreen', {screenType: NewDoctorVisitScreenType.Vaccination})}
-                                                        reminderBtn={() => this.props.navigation.navigate('HomeStackNavigator_VaccinationDataScreen')}
+                                                        reminderBtn={() => this.props.navigation.navigate('HomeStackNavigator_AddDoctorVisitReminderScreen')}
                                                     />
                                                 )
                                             })}
