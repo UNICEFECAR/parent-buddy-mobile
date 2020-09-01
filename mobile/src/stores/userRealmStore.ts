@@ -1068,6 +1068,80 @@ class UserRealmStore {
         return activePeriodReminders.length > 0 ? activePeriodReminders : null;
     }
 
+    /**
+     * Check all doctor visit periods to se if reminders should be added for them.
+     */
+    public shouldAddRemindersForDoctorVisits(currentChildAgeInDays: number): {periodId: string, shouldAddReminder: boolean}[] {
+        let rval: {periodId: string, shouldAddReminder: boolean}[] = [];
+
+        // SET doctorVisitPeriods
+        const doctorVisitPeriods = translateData('doctorVisitPeriods') as (TranslateDataDoctorVisitPeriods);
+
+        // VALIDATE currentChildAgeInDays
+        if (currentChildAgeInDays === 0) {
+            return doctorVisitPeriods.map((doctorVisit) => {
+                return {
+                    periodId: doctorVisit.uuid,
+                    shouldAddReminder: false,
+                };
+            });
+        }
+
+        // SET regularAndAdditionalMeasures
+        const regularAndAdditionalMeasures = this.getRegularAndAdditionalMeasures();
+
+        // GO OVER doctorVisitPeriods AND SET rvalForPeriod
+
+        doctorVisitPeriods.forEach((doctorVisit) => {
+            let rvalForPeriod: {periodId: string, shouldAddReminder: boolean} = {
+                periodId: doctorVisit.uuid,
+                shouldAddReminder: false,
+            };
+            
+            // SET isPeriodActive
+            let isPeriodActive = false;
+
+            if (
+                (currentChildAgeInDays >= doctorVisit.planDoctorVisitMessageInDays.from)
+                && (currentChildAgeInDays <= doctorVisit.planDoctorVisitMessageInDays.to)
+            ) {
+                isPeriodActive = true;
+            }
+
+            if (isPeriodActive) {
+                // SET arePeriodMeasuresEntered
+                let arePeriodMeasuresEntered = false;
+
+                regularAndAdditionalMeasures.regularMeasures.forEach(measures => {
+                    if (measures.doctorVisitPeriodUuid === doctorVisit.uuid) {
+                        arePeriodMeasuresEntered = true;
+                    }
+                });
+
+                if (!arePeriodMeasuresEntered) {
+                    const remindersForPeriod = this.getReminderForPeriod(doctorVisit.uuid);
+
+                    // SET isPeriodReminderEntered
+                    let isPeriodReminderEntered = false;
+
+                    if (remindersForPeriod && remindersForPeriod.length > 0) {
+                        isPeriodReminderEntered = true;
+                    }
+
+                    if (!isPeriodReminderEntered) {
+                        // SET rvalForPeriod.shouldAddReminder TO TRUE
+                        rvalForPeriod.shouldAddReminder = true;
+                    }
+                }
+            }
+
+            // ADD TO rval
+            rval.push(rvalForPeriod);
+        });
+
+        return rval;
+    }
+
 };
 
 export type VaccineForPeriod = {
