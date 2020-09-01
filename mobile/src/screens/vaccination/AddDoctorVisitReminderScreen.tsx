@@ -1,51 +1,69 @@
-import React, { Component } from 'react'
-import { View, StyleSheet, ViewStyle, Text, TextStyle } from 'react-native'
-import { ScrollView } from 'react-native-gesture-handler';
+import React, { Component, useDebugValue } from 'react'
+import { View, StyleSheet, ViewStyle, } from 'react-native'
 import { ThemeConsumer, ThemeContextValue } from '../../themes/ThemeContext';
-import { RadioButtons } from '../../components/RadioButtons';
 import { DateTimePicker, DateTimePickerType } from '../../components/DateTimePicker';
-import { RoundedTextArea } from '../../components/RoundedTextArea';
 import { Typography, TypographyType } from '../../components/Typography';
-import { RoundedTextInput } from '../../components/RoundedTextInput';
 import { RoundedButton, RoundedButtonType } from '../../components/RoundedButton';
 import { scale, moderateScale } from 'react-native-size-matters';
 import { translate } from '../../translations/translate';
-import { userRealmStore, dataRealmStore } from '../../stores';
-import { Vaccine } from '../../components/vaccinations/oneVaccinations';
+import { userRealmStore } from '../../stores';
 import Icon from 'react-native-vector-icons/EvilIcons';
-import { Checkbox, Snackbar } from 'react-native-paper';
-import { Measures } from '../../stores/ChildEntity';
+
 import { NavigationStackState, NavigationStackProp } from 'react-navigation-stack';
-import { StackActions } from 'react-navigation';
-import { navigation } from '../../app';
 import { DateTime } from 'luxon';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { Reminder } from '../../stores/ChildEntity';
+import { stat } from 'react-native-fs';
 
 const colorError = "#EB4747"
 
 export interface AddDoctorVisitReminderScreenParams {
-    screenType: AddDoctorVisitReminderScreenType;
+    reminder: Reminder
 }
 export interface Props {
     navigation: NavigationStackProp<NavigationStackState, AddDoctorVisitReminderScreenParams>;
 }
 
 export interface State {
-    doctorVisitDate: Date | null,
-    doctorVisitTime: Date | null,
+    doctorVisitDate: DateTime | null,
+    doctorVisitTime: DateTime | null,
+    screenType: AddDoctorVisitReminderScreenType,
+    uuid?: string,
 };
 
 
 export class AddDoctorVisitReminderScreen extends Component<Props, State> {
     public constructor(props: Props) {
         super(props);
-        this.initState()
+        this.initState();
     };
 
     private initState = () => {
+
+        let date = null;
+        let time = null;
+        let uuid = "";
+        let screenType = AddDoctorVisitReminderScreenType.newReminder;
+
+        if(this.props.navigation.state.params?.reminder){
+
+            date = DateTime.fromMillis(this.props.navigation.state.params.reminder.date);
+            time = DateTime.fromMillis(this.props.navigation.state.params.reminder.time);
+            uuid = this.props.navigation.state.params.reminder.uuid;
+            screenType = AddDoctorVisitReminderScreenType.updateReminder;
+
+        }else{
+            date = null;
+            time = null;
+            uuid = "";
+            screenType = AddDoctorVisitReminderScreenType.newReminder;
+        }
+
         let state = {
-            doctorVisitDate: null,
-            doctorVisitTime: null,
+            doctorVisitDate: date,
+            doctorVisitTime: time,
+            uuid: uuid,
+            screenType: screenType,
         };
 
         this.state = state;
@@ -54,11 +72,11 @@ export class AddDoctorVisitReminderScreen extends Component<Props, State> {
     private setDateAndTIme = (value: Date, type: "date" | "time") => {
         if(type === "date"){
             this.setState({
-                doctorVisitDate: value,
+                doctorVisitDate: DateTime.fromJSDate(value),
             });
         }else{
             this.setState({
-                doctorVisitTime: value,
+                doctorVisitTime: DateTime.fromJSDate(value),
             });
         };
     };
@@ -66,14 +84,23 @@ export class AddDoctorVisitReminderScreen extends Component<Props, State> {
     private setReminder(){
         if(this.state.doctorVisitDate !== null && this.state.doctorVisitTime !== null){
 
-            let date = DateTime.fromJSDate(this.state.doctorVisitDate).toMillis();
-            let time = DateTime.fromJSDate(this.state.doctorVisitTime).toMillis();
+            let date = this.state.doctorVisitDate.toMillis();
+            let time = this.state.doctorVisitTime.toMillis();
+            let uuid = this.state.uuid;
             
-            userRealmStore.addReminder(date, time);
+            if(this.state.screenType === AddDoctorVisitReminderScreenType.newReminder){
+                userRealmStore.addReminder(date, time);
+            }else{
+                // fuunction for update reminder here 
+            }
         };
     };
 
     render() {
+
+        let date = this.state.doctorVisitDate ? this.state.doctorVisitDate.toJSDate() : undefined;
+        let time = this.state.doctorVisitTime ? this.state.doctorVisitTime.toJSDate() : undefined;
+
         return (
             <ThemeConsumer>
                 {(themeContext: ThemeContextValue) => (
@@ -93,7 +120,7 @@ export class AddDoctorVisitReminderScreen extends Component<Props, State> {
                                     onChange={(value) => this.setDateAndTIme(value, "date")}
                                     minimumDate={new Date()}
                                     style={{marginBottom: 20}}
-                                // style={this.state.visitDateError !== "" ? { borderColor: colorError, borderWidth: 1, borderRadius: 27 } : null}
+                                    value={date}
                                 />
                                 <DateTimePicker
                                     type={DateTimePickerType.time}
@@ -101,6 +128,7 @@ export class AddDoctorVisitReminderScreen extends Component<Props, State> {
                                     onChange={(value) => this.setDateAndTIme(value, "time")}
                                     minimumDate={new Date()}
                                     style={{marginBottom: 20}}
+                                    value={time}
                                 // style={this.state.visitDateError !== "" ? { borderColor: colorError, borderWidth: 1, borderRadius: 27 } : null}
                                 />
                                 {/* {
@@ -119,22 +147,6 @@ export class AddDoctorVisitReminderScreen extends Component<Props, State> {
                                 />
                             </View>
                         </KeyboardAwareScrollView>
-                        {/* <Snackbar
-                            visible={this.state.isSnackbarVisible}
-                            duration={Snackbar.DURATION_SHORT}
-                            onDismiss={() => { this.setState({ isSnackbarVisible: false }) }}
-                            theme={{ colors: { onSurface: "red", accent: 'white' } }}
-                            action={{
-                                label: 'Ok',
-                                onPress: () => {
-                                    this.setState({ isSnackbarVisible: false });
-                                },
-                            }}
-                        >
-                            <Text style={{ fontSize: moderateScale(16) }}>
-                                {this.state.snackbarMessage}
-                            </Text>
-                        </Snackbar> */}
                     </>
                 )}
             </ThemeConsumer>
@@ -143,6 +155,11 @@ export class AddDoctorVisitReminderScreen extends Component<Props, State> {
     }
 }
 
+
+enum AddDoctorVisitReminderScreenType{
+    newReminder,
+    updateReminder,
+};
 
 export interface AddDoctorVisitReminderScreenStyles {
     container: ViewStyle,
