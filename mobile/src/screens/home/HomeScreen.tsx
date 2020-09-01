@@ -46,7 +46,7 @@ export class HomeScreen extends React.Component<Props, object> {
 
 
     public componentWillUnmount() {
-        
+
     }
 
     private setDefaultScreenParams() {
@@ -62,8 +62,12 @@ export class HomeScreen extends React.Component<Props, object> {
     }
 
     private onTestButtonPress() {
+        const currentChild = userRealmStore.getCurrentChild();
+        const currentChildAgeInDays = userRealmStore.getCurrentChildAgeInDays();
+
         // console.log(JSON.stringify(userRealmStore.getAllMeasuresForCurrentChild(), null, 4));
-        console.log(JSON.stringify(userRealmStore.getRegularAndAdditionalMeasures(), null, 4));
+        // console.log(JSON.stringify(userRealmStore.getRegularAndAdditionalMeasures(), null, 4));
+        console.log(JSON.stringify(userRealmStore.shouldAddRemindersForDoctorVisits(currentChildAgeInDays), null, 4));
     }
 
     public render() {

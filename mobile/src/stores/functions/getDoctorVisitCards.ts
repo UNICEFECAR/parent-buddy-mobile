@@ -51,12 +51,18 @@ export function getDoctorVisitCardsBirthdayIsNotSet(): DoctorVisitCardProps[] {
 export function getDoctorVisitCardsBirthdayIsSet(currentChild: ChildEntity & Realm.Object): DoctorVisitCardProps[] {
     let rval: DoctorVisitCardProps[] = [];
 
+    // SET currentChildAgeInDays
+    const currentChildAgeInDays = userRealmStore.getCurrentChildAgeInDays();
+
     // SET doctorVisitPeriods
     const doctorVisitPeriods = translateData('doctorVisitPeriods') as (TranslateDataDoctorVisitPeriods);
     if (!doctorVisitPeriods) return [];
 
     // SET regularAndAdditionalMeasures
     const regularAndAdditionalMeasures = userRealmStore.getRegularAndAdditionalMeasures();
+
+    // SET shouldAddRemindersForDoctorVisits
+    const shouldAddRemindersForDoctorVisits = userRealmStore.shouldAddRemindersForDoctorVisits(currentChildAgeInDays);
 
     // ADD REGULAR CARDS
     const regularCards: DoctorVisitCardProps[] = [];
@@ -128,6 +134,27 @@ export function getDoctorVisitCardsBirthdayIsSet(currentChild: ChildEntity & Rea
             }
         ]
 
+        // Buttons: shoulShowButtonEnterDoctorVisitReminder
+        let shoulShowButtonEnterDoctorVisitReminder = false;
+
+        shouldAddRemindersForDoctorVisits.forEach((reminder) => {
+            if (
+                reminder.periodId === doctorVisitPeriod.uuid
+                && reminder.shouldAddReminder
+            ) {
+                shoulShowButtonEnterDoctorVisitReminder = true;
+            }
+        });
+
+        if (shoulShowButtonEnterDoctorVisitReminder) {
+            buttons.push({
+                type: DoctorVisitCardButtonType.HollowPurple,
+                text: translate('doctorVisitsAddReminderButton'),
+                onPress: () => { navigation.navigate('HomeStackNavigator_AddDoctorVisitReminderScreen', { screenType: NewDoctorVisitScreenType.HeltCheckUp }) },
+            });
+        }
+
+        // Buttons: shoulShowButtonEnterDoctorVisit
         const shoulShowButtonEnterDoctorVisit = showButtonEnterDoctorVisit(
             doctorVisitPeriod,
             thisPeriodMeasures,
@@ -236,6 +263,11 @@ export function getDoctorVisitCardsBirthdayIsSet(currentChild: ChildEntity & Rea
         items: [],
         titleIcon: DoctorVisitTitleIconType.Add,
         buttons: [
+            {
+                type: DoctorVisitCardButtonType.HollowPurple,
+                text: translate('doctorVisitsAddReminderButton'),
+                onPress: () => { navigation.navigate('HomeStackNavigator_AddDoctorVisitReminderScreen', { screenType: NewDoctorVisitScreenType.HeltCheckUp }) },
+            },
             {
                 type: DoctorVisitCardButtonType.Purple,
                 text: translate('doctorVisitsAddMeasuresButton'),
