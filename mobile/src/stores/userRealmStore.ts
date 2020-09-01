@@ -3,7 +3,7 @@ import { userRealmConfig } from "./userRealmConfig";
 import { VariableEntity, VariableEntitySchema } from './VariableEntity';
 import { appConfig } from '../app/appConfig';
 import { ChildEntity } from '.';
-import { ChildEntitySchema, ChildGender, Measures } from './ChildEntity';
+import { ChildEntitySchema, ChildGender, Measures, Reminder } from './ChildEntity';
 import { DateTime } from 'luxon';
 import { translateData, TranslateDataImmunizationsPeriod, TranslateDataInterpretationLenghtForAge, TranslateDataInterpretationWeightForHeight, TranslateDataDoctorVisitPeriods, TranslateDataImmunizationsPeriods } from '../translationsData/translateData';
 import { ChartData as Data, GrowthChart0_2Type, GrowthChartHeightAgeType } from '../components/growth/growthChartData';
@@ -16,6 +16,7 @@ import { utils } from '../app/utils';
 import { Props as DoctorVisitCardProps, DoctorVisitCardItemIcon, DoctorVisitCardButtonType } from '../components/doctor-visit/DoctorVisitCard';
 import { getDoctorVisitCardsBirthdayIsNotSet, getDoctorVisitCardsBirthdayIsSet } from './functions/getDoctorVisitCards';
 import { Vaccine, VaccinationPeriod } from '../components/vaccinations/oneVaccinations';
+import { uniqueId, indexOf } from 'lodash';
 
 type Variables = {
     'userChildren': any;
@@ -112,7 +113,7 @@ class UserRealmStore {
 
             if (currentImmunizationsPeriods && immunizationsPeriods) {
                 // get all vaccines for previous period 
-                
+
                 for (let i = 0; i < immunizationsPeriods?.length; i++) {
                     if (immunizationsPeriods[i].uuid === currentImmunizationsPeriods.uuid) {
                         break;
@@ -147,7 +148,7 @@ class UserRealmStore {
                 /*
                 * Compare received vaccines with vaccines for previous period 
                 * Return all nonReceived vaccines 
-                */ 
+                */
                 vaccines.forEach(item => {
                     if (recivedVaccinationIds.indexOf(item.uuid) === -1) {
                         finalyVaccinesList.push(item)
@@ -209,12 +210,12 @@ class UserRealmStore {
             period.vaccines.forEach(vaccine => {
                 let isCompleted = false;
                 let date: number | undefined = undefined;
-                
+
                 receivedVaccination.forEach(item => {
                     if (item.uuid.indexOf(vaccine.uuid) !== -1) {
                         isCompleted = true;
                         date = item.date;
-                    } 
+                    }
                 });
 
                 allVaccines.push({
@@ -811,7 +812,7 @@ class UserRealmStore {
 
         const currentChild = this.getCurrentChild();
         // console.log('getDoctorVisitCards', JSON.stringify(JSON.parse(currentChild?.measures ? currentChild?.measures : ''), null, 4));
-        
+
         if (!currentChild) return [];
 
         // Birthday is NOT given
@@ -826,7 +827,248 @@ class UserRealmStore {
 
         return rval;
     }
-}
+
+    private removePassedReminders(reminders: Reminder[]): Reminder[] {
+        let activeReminders: Reminder[] = [];
+        let currentDate = DateTime.local();
+
+        reminders.forEach(reminder => {
+            if (DateTime.fromMillis(reminder.date) >= currentDate) {
+                activeReminders.push(reminder);
+            }
+        })
+
+        return activeReminders;
+    }
+
+    private removeRegularFinishedReminders(reminders: Reminder[], periodId: string): Reminder[] {
+        let regularMeasures = this.getRegularAndAdditionalMeasures().regularMeasures.filter(measure => measure.doctorVisitPeriodUuid === periodId);
+
+        let filteredReminders = reminders;
+
+        if (regularMeasures.length && filteredReminders.length > 0) {
+            regularMeasures.forEach(item => {
+                let measuresDate = false;
+
+                filteredReminders.forEach((active, index) => {
+                    if (item.measures.measurementDate === active.date) {
+                        measuresDate = true;
+                        filteredReminders.splice(index, 1);
+                    };
+                });
+
+                if (!measuresDate) {
+                    filteredReminders.sort((a, b) => a.date - b.date);
+                    filteredReminders.slice(0, 1);
+                };
+            });
+        };
+
+        return filteredReminders;
+    }
+
+    private removeAditionalFinishedReminders(reminders: Reminder[]): Reminder[] {
+        let additionalMeasures = this.getRegularAndAdditionalMeasures().additionalMeasures;
+
+        let filteredReminders = reminders;
+
+        if (additionalMeasures && additionalMeasures.length > 0 && filteredReminders.length > 0) {
+            additionalMeasures.forEach(item => {
+                filteredReminders.forEach((active, index) => {
+                    if (active.date === item.measurementDate) {
+                        filteredReminders.splice(index, 1);
+                    };
+                });
+            });
+        };
+
+        return filteredReminders;
+    };
+
+    private getAllNonPeriodReminders(reminders: Reminder[], periods: TranslateDataDoctorVisitPeriods | null): Reminder[] {
+        let filteredReminders = reminders;
+
+        if (periods) {
+            periods.forEach(period => {
+                filteredReminders.forEach((reminder, index) => {
+                    let reminderDateInDays = Math.round(this.getCurrentChildAgeInDays(undefined, reminder.date));
+                    if (period.childAgeInDays.from <= reminderDateInDays && period.childAgeInDays.to >= reminderDateInDays) {
+                        filteredReminders.splice(index, 1);
+                    };
+                });
+            });
+        };
+
+        return filteredReminders;
+    };
+
+    /**
+    * Add reminder to the current child.
+    */
+    public addReminder(date: number, time: number) {
+        let newReminder: Reminder | null = null;
+
+        return new Promise((resolve, reject) => {
+            const currentChild = this.getCurrentChild();
+            if (!currentChild) {
+                resolve();
+                return;
+            }
+
+            try {
+                let remindersString = currentChild.reminders;
+                if (!remindersString || remindersString === '') {
+                    remindersString = '[]';
+                }
+
+                const allReminders: Reminder[] = JSON.parse(remindersString);
+
+                let reminderExist = false;
+
+                if (allReminders.length !== 0) {
+
+                    let check = allReminders.find(item => item.date === date);
+
+                    if (check) {
+                        reminderExist = true;
+                    };
+                };
+
+                if (reminderExist) {
+                    resolve();
+                    return;
+                } else {
+                    newReminder = {
+                        date: date,
+                        time: time,
+                        uuid: uniqueId(date.toString()),
+                    }
+                };
+
+
+                // OVDE URADIM PROVERE ~PRE PUSHA
+                if (newReminder) {
+                    allReminders.push(newReminder);
+                }
+
+                this.realm?.write(() => {
+                    currentChild.reminders = JSON.stringify(allReminders);
+                    resolve();
+                });
+            } catch (e) {
+                resolve();
+            };
+        });
+    }
+
+    /**
+    *   Get all active reminders for the current child.
+    *
+    * - If current date is bigger then reminder date, reminder is no longer active.
+    * - Or if user has done a doctor visit for the period for which reminder is set, reminder is not active
+    */
+    public getReminders(): Reminder[] {
+        let activeReminders: Reminder[] = [];
+        let allactiveReminders: Reminder[] = [];
+
+        const allRemindersSting = this.getCurrentChild()?.reminders;
+
+        // get just dont pass reminders 
+        if (allRemindersSting && allRemindersSting !== "") {
+            const allReminders: Reminder[] = JSON.parse(allRemindersSting);
+
+            if (allReminders.length > 0) {
+                activeReminders = this.removePassedReminders(allReminders);
+            };
+        };
+
+        let doctorVisitPeriods = translateData('doctorVisitPeriods') as (TranslateDataDoctorVisitPeriods | null);
+
+        let activeRemindersForPeriod: Reminder[] = [];
+
+        if (doctorVisitPeriods) {
+            doctorVisitPeriods.forEach(period => {
+                activeRemindersForPeriod = activeReminders.filter(reminder =>
+                    this.getCurrentChildAgeInDays(undefined, reminder.date) >= period.childAgeInDays.from &&
+                    this.getCurrentChildAgeInDays(undefined, reminder.date) <= period.childAgeInDays.to);
+
+
+                let filteredActiveRegularReminders = this.removeRegularFinishedReminders(activeRemindersForPeriod, period.uuid);
+
+                if (filteredActiveRegularReminders.length > 0) {
+                    let filteredActiveAditionalReminders = this.removeAditionalFinishedReminders(filteredActiveRegularReminders);
+                    allactiveReminders = allactiveReminders.concat(filteredActiveAditionalReminders);
+                } else {
+                    allactiveReminders = allactiveReminders.concat(filteredActiveRegularReminders);
+                }
+
+
+            });
+        };
+
+        activeReminders = this.getAllNonPeriodReminders(activeReminders, doctorVisitPeriods).concat(allactiveReminders).sort((a, b) => a.date - b.date);
+        return activeReminders;
+    };
+
+    /**
+    * Returns doctor visit period ID or null if reminder is
+    * not belonging to any period.
+    */
+    public getReminderPeriod(reminderDate: DateTime): string | null {
+        let periodId: string | null = null;
+
+        let doctorVisitPeriods = translateData('doctorVisitPeriods') as (TranslateDataDoctorVisitPeriods | null);
+
+        let dateInDays = this.getCurrentChildAgeInDays(undefined, reminderDate.toMillis());
+
+        let filteredPeriods = doctorVisitPeriods?.find(period => period.childAgeInDays.from >= dateInDays && period.childAgeInDays.to <= dateInDays);
+
+        if (filteredPeriods) {
+            periodId = filteredPeriods.uuid
+        } else {
+            periodId = null
+        }
+
+        return periodId;
+    };
+
+    /**
+    * For given doctor visit period ID, it returns set reminder or null.
+    */
+    public getReminderForPeriod(periodId: string): Reminder[] | null {
+        
+        let doctorVisitPeriods = translateData('doctorVisitPeriods') as (TranslateDataDoctorVisitPeriods | null);
+        let givenPeriod = doctorVisitPeriods?.find(period => period.uuid === periodId);
+
+        const allRemindersSting = this.getCurrentChild()?.reminders;
+        let activeReminders: Reminder[] = [];
+        let activePeriodReminders: Reminder[] = [];
+        
+        if (allRemindersSting && allRemindersSting !== "") {
+            const allReminders: Reminder[] = JSON.parse(allRemindersSting);
+
+            if (allReminders.length > 0) {
+                activeReminders = this.removePassedReminders(allReminders);
+            };
+        };
+
+
+        if (givenPeriod) {
+            activeReminders.forEach(reminder => {
+                let reminderDateInDays = this.getCurrentChildAgeInDays(undefined, reminder.date);
+
+                if(givenPeriod?.childAgeInDays){
+                    if(givenPeriod?.childAgeInDays.from >= reminderDateInDays && givenPeriod?.childAgeInDays.to <= reminderDateInDays){
+                        activePeriodReminders.push(reminder);
+                    };
+                };
+            });
+        };
+
+        return activePeriodReminders.length > 0 ? activePeriodReminders : null;
+    }
+
+};
 
 export type VaccineForPeriod = {
     uuid: string[];

@@ -47,6 +47,7 @@ import { ResetPasswordScreen } from "../screens/login";
 import { UserRealmConsumer } from "../stores/UserRealmContext";
 import { getFontScale } from "react-native-device-info";
 import { DoctorVisitsScreen } from "../screens/doctor-visit/DoctorVisitsScreen";
+import { AddDoctorVisitReminderScreen } from "../screens/vaccination/AddDoctorVisitReminderScreen";
 
 /**
 * Use it to [navigate screens](https://reactnavigation.org/docs/en/navigating-without-navigation-prop.html)
@@ -287,6 +288,15 @@ const HomeStackNavigator = createStackNavigator({
 
     HomeStackNavigator_NewDoctorVisitScreen: {
         screen: NewDoctorVisitScreen,
+        navigationOptions: ({ navigation }: NavigationScreenConfigProps<NavigationStackProp<NavigationStackState, any>>): NavigationStackOptions => {
+            return {
+                title: translate('NewDoctorVisitScreenTitle'),
+                ...secondaryHomeNavigationOptions
+            }
+        }
+    },
+    HomeStackNavigator_AddDoctorVisitReminderScreen: {
+        screen: AddDoctorVisitReminderScreen,
         navigationOptions: ({ navigation }: NavigationScreenConfigProps<NavigationStackProp<NavigationStackState, any>>): NavigationStackOptions => {
             return {
                 title: translate('NewDoctorVisitScreenTitle'),

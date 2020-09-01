@@ -1,6 +1,5 @@
 import { ObjectSchema } from "realm";
 
-
 export type Measures = {
     isChildMeasured: boolean;
 
@@ -32,7 +31,13 @@ export type Measures = {
     vaccineIds?: string[];
 
     doctorComment?: string;
-}
+};
+
+export type Reminder = {
+    date: number; // timestamp
+    time: number; // timestamp
+    uuid: string;
+};
 
 export type ChildEntity = {
     uuid: string;
@@ -46,7 +51,8 @@ export type ChildEntity = {
     babyRating?: number;
     measures: string;
     comment?: string;
-    checkedMilestones?: number[]
+    checkedMilestones?: number[];
+    reminders?: string;
 };
 
 /**
@@ -70,7 +76,8 @@ export const ChildEntitySchema: ObjectSchema = {
         babyRating: { type: 'int', optional: true },
         measures: { type: 'string', optional: true },
         comment: { type: 'string', optional: true },
-        checkedMilestones: { type: 'int[]', optional: true }
+        checkedMilestones: { type: 'int[]', optional: true },
+        reminders: {type: 'string', optional: true},
     }
 };
 
