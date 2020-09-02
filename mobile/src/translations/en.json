@@ -209,6 +209,7 @@
     "doctorVisitsMeasuresEnteredAndGiven": "Child has %WEIGHT%kg and %LENGTH%cm TODO",
     "doctorVisitsReadMore": "Read more about health checkups in this period TODO",
     "doctorVisitsAddMeasuresButton": "Add doctor visit data TODO",
+    "doctorVisitsPlanDoctorVisitInThisMonth": "Plan doctor visit in this month TODO",
     "doctorVisitsAddReminderButton": "Add doctor visit reminder TODO",
     "doctorVisitsAddtionalCheckUpTitle": "Additional check-up TODO",
 
