@@ -97,7 +97,9 @@ export class AddDoctorVisitReminderScreen extends Component<Props, State> {
     };
 
     render() {
-
+        
+        
+        console.log(JSON.stringify(userRealmStore.getActiveReminders(), null, 4), "ACTIVE REMINDERS")
         let date = this.state.doctorVisitDate ? this.state.doctorVisitDate.toJSDate() : undefined;
         let time = this.state.doctorVisitTime ? this.state.doctorVisitTime.toJSDate() : undefined;
 

@@ -16,7 +16,7 @@ import { utils } from '../app/utils';
 import { Props as DoctorVisitCardProps, DoctorVisitCardItemIcon, DoctorVisitCardButtonType } from '../components/doctor-visit/DoctorVisitCard';
 import { getDoctorVisitCardsBirthdayIsNotSet, getDoctorVisitCardsBirthdayIsSet } from './functions/getDoctorVisitCards';
 import { Vaccine, VaccinationPeriod } from '../components/vaccinations/oneVaccinations';
-import { uniqueId, indexOf } from 'lodash';
+import { uniqueId, indexOf, uniqBy } from 'lodash';
 
 type Variables = {
     'userChildren': any;
@@ -833,7 +833,7 @@ class UserRealmStore {
         let currentDate = DateTime.local();
 
         reminders.forEach(reminder => {
-            if (DateTime.fromMillis(reminder.date) >= currentDate) {
+            if (DateTime.fromMillis(reminder.date).startOf('day') >= currentDate.startOf('day')) {
                 activeReminders.push(reminder);
             }
         })
@@ -841,25 +841,35 @@ class UserRealmStore {
         return activeReminders;
     }
 
-    private removeRegularFinishedReminders(reminders: Reminder[], periodId: string): Reminder[] {
-        let regularMeasures = this.getRegularAndAdditionalMeasures().regularMeasures.filter(measure => measure.doctorVisitPeriodUuid === periodId);
+    private removeRegularFinishedReminders(reminders: Reminder[]): Reminder[] {
+        let doctorVisitPeriods = translateData('doctorVisitPeriods') as (TranslateDataDoctorVisitPeriods | null);
 
         let filteredReminders = reminders;
+        if (doctorVisitPeriods && doctorVisitPeriods.length) {
+            doctorVisitPeriods.forEach(period => {
+                let regularMeasures = this.getRegularAndAdditionalMeasures().regularMeasures.filter(measure => measure.doctorVisitPeriodUuid === period.uuid);
+                
+                if (regularMeasures.length > 0 && filteredReminders.length > 0) {
+                    regularMeasures.forEach(item => {
+                        let measuresDate = false;
 
-        if (regularMeasures.length && filteredReminders.length > 0) {
-            regularMeasures.forEach(item => {
-                let measuresDate = false;
+                        if(item.measures.measurementDate){
+                            let date = DateTime.fromMillis(item.measures.measurementDate);
+                            filteredReminders.forEach((active, index) => {
 
-                filteredReminders.forEach((active, index) => {
-                    if (item.measures.measurementDate === active.date) {
-                        measuresDate = true;
-                        filteredReminders.splice(index, 1);
-                    };
-                });
+                                if (date.diff(DateTime.fromMillis(active.date), "days").days === 0) {
+                                    measuresDate = true;
+                                    filteredReminders.splice(index, 1);
+                                };
+                            });
+                        };
 
-                if (!measuresDate) {
-                    filteredReminders.sort((a, b) => a.date - b.date);
-                    filteredReminders.slice(0, 1);
+                        let reminderForPeriod = this.getRemindersForPeriod(period.uuid);
+                        if (!measuresDate && reminderForPeriod && reminderForPeriod.length > 0) {
+                            filteredReminders.sort((a, b) => a.date - b.date);
+                            filteredReminders = filteredReminders.slice(0, 1);
+                        };
+                    });
                 };
             });
         };
@@ -874,11 +884,16 @@ class UserRealmStore {
 
         if (additionalMeasures && additionalMeasures.length > 0 && filteredReminders.length > 0) {
             additionalMeasures.forEach(item => {
-                filteredReminders.forEach((active, index) => {
-                    if (active.date === item.measurementDate) {
-                        filteredReminders.splice(index, 1);
-                    };
-                });
+                if (item.measurementDate) {
+
+                    let measurementDate = item.measurementDate
+
+                    filteredReminders.forEach((active, index) => {
+                        if (DateTime.fromMillis(active.date).diff(DateTime.fromMillis(measurementDate), "days").days === 0) {
+                            filteredReminders.splice(index, 1);
+                        };
+                    });
+                };
             });
         };
 
@@ -887,19 +902,20 @@ class UserRealmStore {
 
     private getAllNonPeriodReminders(reminders: Reminder[], periods: TranslateDataDoctorVisitPeriods | null): Reminder[] {
         let filteredReminders = reminders;
+        let arrayForFIltering: Reminder[] = [];
 
         if (periods) {
             periods.forEach(period => {
                 filteredReminders.forEach((reminder, index) => {
                     let reminderDateInDays = Math.round(this.getCurrentChildAgeInDays(undefined, reminder.date));
                     if (period.childAgeInDays.from <= reminderDateInDays && period.childAgeInDays.to >= reminderDateInDays) {
-                        filteredReminders.splice(index, 1);
+                        arrayForFIltering.push(reminder)
                     };
                 });
             });
         };
 
-        return filteredReminders;
+        return filteredReminders.filter(x => !arrayForFIltering.includes(x));;
     };
 
     /**
@@ -983,35 +999,38 @@ class UserRealmStore {
         };
 
         let doctorVisitPeriods = translateData('doctorVisitPeriods') as (TranslateDataDoctorVisitPeriods | null);
+        let nonPeriodReminder = this.getAllNonPeriodReminders(activeReminders, doctorVisitPeriods);
 
         let activeRemindersForPeriod: Reminder[] = [];
         let filteredActiveRegularReminders: Reminder[] = [];
         let filteredActiveAditionalReminders: Reminder[] = [];
 
         if (doctorVisitPeriods) {
-
-
             doctorVisitPeriods.forEach(period => {
                 activeReminders.forEach(reminder => {
-                    if (Math.round(this.getCurrentChildAgeInDays(undefined, reminder.date)) >= period.childAgeInDays.from &&
-                        Math.round(this.getCurrentChildAgeInDays(undefined, reminder.date)) <= period.childAgeInDays.to) {
+
+                    let reminderDateInDays = Math.round(this.getCurrentChildAgeInDays(undefined, reminder.date));
+
+                    if (reminderDateInDays >= period.childAgeInDays.from && reminderDateInDays <= period.childAgeInDays.to) {
                         activeRemindersForPeriod.push(reminder);
                     }
                 });
-
-                filteredActiveRegularReminders.concat(this.removeRegularFinishedReminders(activeRemindersForPeriod, period.uuid));
-
-                if (filteredActiveRegularReminders.length > 0) {
-                    filteredActiveAditionalReminders = this.removeAditionalFinishedReminders(filteredActiveRegularReminders);
-                    allactiveReminders = allactiveReminders.concat(filteredActiveAditionalReminders);
-                } else {
-                    allactiveReminders = allactiveReminders.concat(filteredActiveRegularReminders);
-                }
             });
         };
 
-        activeReminders = this.getAllNonPeriodReminders(activeReminders, doctorVisitPeriods).concat(allactiveReminders).sort((a, b) => a.date - b.date);
-        return activeReminders;
+        filteredActiveRegularReminders = this.removeRegularFinishedReminders(activeRemindersForPeriod);
+        if (filteredActiveRegularReminders.length > 0) {
+            filteredActiveAditionalReminders = this.removeAditionalFinishedReminders(filteredActiveRegularReminders);
+
+            allactiveReminders = allactiveReminders.concat(filteredActiveAditionalReminders);
+        } else {
+            allactiveReminders = allactiveReminders.concat(filteredActiveRegularReminders);
+        };
+
+
+
+        activeReminders = nonPeriodReminder.concat(allactiveReminders).sort((a, b) => a.date - b.date);
+        return uniqBy(activeReminders, "uuid");
     };
 
     /**
@@ -1050,7 +1069,6 @@ class UserRealmStore {
 
         if (allRemindersSting && allRemindersSting !== "") {
             const allReminders: Reminder[] = JSON.parse(allRemindersSting);
-
             if (allReminders.length > 0) {
                 activeReminders = this.removePassedReminders(allReminders);
             };
@@ -1060,9 +1078,8 @@ class UserRealmStore {
         if (givenPeriod) {
             activeReminders.forEach(reminder => {
                 let reminderDateInDays = this.getCurrentChildAgeInDays(undefined, reminder.date);
-
                 if (givenPeriod?.childAgeInDays) {
-                    if (givenPeriod?.childAgeInDays.from >= reminderDateInDays && givenPeriod?.childAgeInDays.to <= reminderDateInDays) {
+                    if (givenPeriod?.childAgeInDays.from <= reminderDateInDays && givenPeriod?.childAgeInDays.to >= reminderDateInDays) {
                         activePeriodReminders.push(reminder);
                     };
                 };
