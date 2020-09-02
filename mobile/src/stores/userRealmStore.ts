@@ -1123,7 +1123,7 @@ class UserRealmStore {
                 });
 
                 if (!arePeriodMeasuresEntered) {
-                    const remindersForPeriod = this.getReminderForPeriod(doctorVisit.uuid);
+                    const remindersForPeriod = this.getRemindersForPeriod(doctorVisit.uuid);
 
                     // SET isPeriodReminderEntered
                     let isPeriodReminderEntered = false;
