@@ -1033,6 +1033,49 @@ class UserRealmStore {
         return uniqBy(activeReminders, "uuid");
     };
 
+    public getMissedReminders() {
+        let allRegularMeasures = this.getRegularAndAdditionalMeasures().regularMeasures;
+        let doctorVisitPeriods = translateData('doctorVisitPeriods') as (TranslateDataDoctorVisitPeriods | null);
+
+        let allRemindersString = this.getCurrentChild()?.reminders;
+        let reminderss: Reminder[] = [];
+
+        if (allRemindersString && allRemindersString !== "") {
+            let allReminders: Reminder[] = JSON.parse(allRemindersString);
+
+            if (allReminders.length > 0) {
+
+                doctorVisitPeriods?.forEach(period => {
+
+                    let measuresForPeriod = allRegularMeasures.filter(measuresPeriod => measuresPeriod.doctorVisitPeriodUuid === period.uuid);
+
+                    if (measuresForPeriod.length === 0) {
+                        allReminders.forEach(reminder => {
+                            let date = this.getCurrentChildAgeInDays(undefined, reminder.date)
+                            if (period.childAgeInDays.from <= date && period.childAgeInDays.to >= date) {
+                                reminderss.push(reminder);
+                            };
+                        });
+                    }
+
+                });
+            };
+        };
+
+
+        let remindersForReturn: Reminder[] = [];
+
+        reminderss.forEach(item => {
+            let diff = Math.floor(DateTime.fromMillis(item.date).diffNow('days').days * -1);
+
+            if(diff <= 5){
+                remindersForReturn.push(item)
+            };
+        });
+
+        return remindersForReturn;
+    };
+
     /**
     * Returns doctor visit period ID or null if reminder is
     * not belonging to any period.

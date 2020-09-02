@@ -97,7 +97,6 @@ export class AddDoctorVisitReminderScreen extends Component<Props, State> {
     };
 
     render() {
-        
         let date = this.state.doctorVisitDate ? this.state.doctorVisitDate.toJSDate() : undefined;
         let time = this.state.doctorVisitTime ? this.state.doctorVisitTime.toJSDate() : undefined;
 
