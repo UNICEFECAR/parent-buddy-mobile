@@ -848,16 +848,15 @@ class UserRealmStore {
         if (doctorVisitPeriods && doctorVisitPeriods.length) {
             doctorVisitPeriods.forEach(period => {
                 let regularMeasures = this.getRegularAndAdditionalMeasures().regularMeasures.filter(measure => measure.doctorVisitPeriodUuid === period.uuid);
-                
+
                 if (regularMeasures.length > 0 && filteredReminders.length > 0) {
                     regularMeasures.forEach(item => {
                         let measuresDate = false;
 
-                        if(item.measures.measurementDate){
+                        if (item.measures.measurementDate) {
                             let date = DateTime.fromMillis(item.measures.measurementDate);
                             filteredReminders.forEach((active, index) => {
-
-                                if (date.diff(DateTime.fromMillis(active.date), "days").days === 0) {
+                                if (DateTime.fromMillis(active.date).toISODate() === date.toISODate()) {
                                     measuresDate = true;
                                     filteredReminders.splice(index, 1);
                                 };
@@ -867,7 +866,7 @@ class UserRealmStore {
                         let reminderForPeriod = this.getRemindersForPeriod(period.uuid);
                         if (!measuresDate && reminderForPeriod && reminderForPeriod.length > 0) {
                             filteredReminders.sort((a, b) => a.date - b.date);
-                            filteredReminders = filteredReminders.slice(0, 1);
+                            filteredReminders.splice(0, 1);
                         };
                     });
                 };
@@ -889,7 +888,7 @@ class UserRealmStore {
                     let measurementDate = item.measurementDate
 
                     filteredReminders.forEach((active, index) => {
-                        if (DateTime.fromMillis(active.date).diff(DateTime.fromMillis(measurementDate), "days").days === 0) {
+                        if (DateTime.fromMillis(active.date).toISODate() === DateTime.fromMillis(measurementDate).toISODate()) {
                             filteredReminders.splice(index, 1);
                         };
                     });
@@ -1019,6 +1018,7 @@ class UserRealmStore {
         };
 
         filteredActiveRegularReminders = this.removeRegularFinishedReminders(activeRemindersForPeriod);
+
         if (filteredActiveRegularReminders.length > 0) {
             filteredActiveAditionalReminders = this.removeAditionalFinishedReminders(filteredActiveRegularReminders);
 
