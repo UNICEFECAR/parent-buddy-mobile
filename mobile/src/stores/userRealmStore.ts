@@ -986,11 +986,11 @@ class UserRealmStore {
         let activeReminders: Reminder[] = [];
         let allactiveReminders: Reminder[] = [];
 
-        const allRemindersSting = this.getCurrentChild()?.reminders;
+        const allRemindersString = this.getCurrentChild()?.reminders;
 
         // get just dont pass reminders 
-        if (allRemindersSting && allRemindersSting !== "") {
-            const allReminders: Reminder[] = JSON.parse(allRemindersSting);
+        if (allRemindersString && allRemindersString !== "") {
+            const allReminders: Reminder[] = JSON.parse(allRemindersString);
 
             if (allReminders.length > 0) {
                 activeReminders = this.removePassedReminders(allReminders);
@@ -1063,12 +1063,12 @@ class UserRealmStore {
         let doctorVisitPeriods = translateData('doctorVisitPeriods') as (TranslateDataDoctorVisitPeriods | null);
         let givenPeriod = doctorVisitPeriods?.find(period => period.uuid === periodId);
 
-        const allRemindersSting = this.getCurrentChild()?.reminders;
+        const allRemindersString = this.getCurrentChild()?.reminders;
         let activeReminders: Reminder[] = [];
         let activePeriodReminders: Reminder[] = [];
 
-        if (allRemindersSting && allRemindersSting !== "") {
-            const allReminders: Reminder[] = JSON.parse(allRemindersSting);
+        if (allRemindersString && allRemindersString !== "") {
+            const allReminders: Reminder[] = JSON.parse(allRemindersString);
             if (allReminders.length > 0) {
                 activeReminders = this.removePassedReminders(allReminders);
             };
