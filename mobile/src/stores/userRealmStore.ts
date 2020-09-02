@@ -994,23 +994,23 @@ class UserRealmStore {
             doctorVisitPeriods.forEach(period => {
                 activeReminders.forEach(reminder => {
                     if (Math.round(this.getCurrentChildAgeInDays(undefined, reminder.date)) >= period.childAgeInDays.from &&
-                        Math.round(this.getCurrentChildAgeInDays(undefined, reminder.date)) <= period.childAgeInDays.to){
-                    activeRemindersForPeriod.push(reminder);
+                        Math.round(this.getCurrentChildAgeInDays(undefined, reminder.date)) <= period.childAgeInDays.to) {
+                        activeRemindersForPeriod.push(reminder);
+                    }
+                });
+
+                filteredActiveRegularReminders.concat(this.removeRegularFinishedReminders(activeRemindersForPeriod, period.uuid));
+
+                if (filteredActiveRegularReminders.length > 0) {
+                    filteredActiveAditionalReminders = this.removeAditionalFinishedReminders(filteredActiveRegularReminders);
+                    allactiveReminders = allactiveReminders.concat(filteredActiveAditionalReminders);
+                } else {
+                    allactiveReminders = allactiveReminders.concat(filteredActiveRegularReminders);
                 }
             });
+        };
 
-            filteredActiveRegularReminders.concat(this.removeRegularFinishedReminders(activeRemindersForPeriod, period.uuid));
-
-            if (filteredActiveRegularReminders.length > 0) {
-                filteredActiveAditionalReminders = this.removeAditionalFinishedReminders(filteredActiveRegularReminders);
-                allactiveReminders = allactiveReminders.concat(filteredActiveAditionalReminders);
-            } else {
-                allactiveReminders = allactiveReminders.concat(filteredActiveRegularReminders);
-            }
-        });
-    };
-
-    activeReminders = this.getAllNonPeriodReminders(activeReminders, doctorVisitPeriods).concat(allactiveReminders).sort((a, b) => a.date - b.date);
+        activeReminders = this.getAllNonPeriodReminders(activeReminders, doctorVisitPeriods).concat(allactiveReminders).sort((a, b) => a.date - b.date);
         return activeReminders;
     };
 
@@ -1019,64 +1019,64 @@ class UserRealmStore {
     * not belonging to any period.
     */
     public getReminderPeriod(reminderDate: DateTime): string | null {
-    let periodId: string | null = null;
+        let periodId: string | null = null;
 
-    let doctorVisitPeriods = translateData('doctorVisitPeriods') as (TranslateDataDoctorVisitPeriods | null);
+        let doctorVisitPeriods = translateData('doctorVisitPeriods') as (TranslateDataDoctorVisitPeriods | null);
 
-    let dateInDays = this.getCurrentChildAgeInDays(undefined, reminderDate.toMillis());
+        let dateInDays = this.getCurrentChildAgeInDays(undefined, reminderDate.toMillis());
 
-    let filteredPeriods = doctorVisitPeriods?.find(period => period.childAgeInDays.from >= dateInDays && period.childAgeInDays.to <= dateInDays);
+        let filteredPeriods = doctorVisitPeriods?.find(period => period.childAgeInDays.from >= dateInDays && period.childAgeInDays.to <= dateInDays);
 
-    if (filteredPeriods) {
-        periodId = filteredPeriods.uuid
-    } else {
-        periodId = null
-    }
+        if (filteredPeriods) {
+            periodId = filteredPeriods.uuid
+        } else {
+            periodId = null
+        }
 
-    return periodId;
-};
+        return periodId;
+    };
 
     /**
     * For given doctor visit period ID, it returns set reminder or null.
     */
     public getRemindersForPeriod(periodId: string): Reminder[] | null {
 
-    let doctorVisitPeriods = translateData('doctorVisitPeriods') as (TranslateDataDoctorVisitPeriods | null);
-    let givenPeriod = doctorVisitPeriods?.find(period => period.uuid === periodId);
+        let doctorVisitPeriods = translateData('doctorVisitPeriods') as (TranslateDataDoctorVisitPeriods | null);
+        let givenPeriod = doctorVisitPeriods?.find(period => period.uuid === periodId);
 
-    const allRemindersSting = this.getCurrentChild()?.reminders;
-    let activeReminders: Reminder[] = [];
-    let activePeriodReminders: Reminder[] = [];
+        const allRemindersSting = this.getCurrentChild()?.reminders;
+        let activeReminders: Reminder[] = [];
+        let activePeriodReminders: Reminder[] = [];
 
-    if (allRemindersSting && allRemindersSting !== "") {
-        const allReminders: Reminder[] = JSON.parse(allRemindersSting);
+        if (allRemindersSting && allRemindersSting !== "") {
+            const allReminders: Reminder[] = JSON.parse(allRemindersSting);
 
-        if (allReminders.length > 0) {
-            activeReminders = this.removePassedReminders(allReminders);
-        };
-    };
-
-
-    if (givenPeriod) {
-        activeReminders.forEach(reminder => {
-            let reminderDateInDays = this.getCurrentChildAgeInDays(undefined, reminder.date);
-
-            if (givenPeriod?.childAgeInDays) {
-                if (givenPeriod?.childAgeInDays.from >= reminderDateInDays && givenPeriod?.childAgeInDays.to <= reminderDateInDays) {
-                    activePeriodReminders.push(reminder);
-                };
+            if (allReminders.length > 0) {
+                activeReminders = this.removePassedReminders(allReminders);
             };
-        });
-    };
+        };
 
-    return activePeriodReminders.length > 0 ? activePeriodReminders : null;
-}
+
+        if (givenPeriod) {
+            activeReminders.forEach(reminder => {
+                let reminderDateInDays = this.getCurrentChildAgeInDays(undefined, reminder.date);
+
+                if (givenPeriod?.childAgeInDays) {
+                    if (givenPeriod?.childAgeInDays.from >= reminderDateInDays && givenPeriod?.childAgeInDays.to <= reminderDateInDays) {
+                        activePeriodReminders.push(reminder);
+                    };
+                };
+            });
+        };
+
+        return activePeriodReminders.length > 0 ? activePeriodReminders : null;
+    }
 
     /**
      * Check all doctor visit periods to se if reminders should be added for them.
      */
-    public shouldAddRemindersForDoctorVisits(currentChildAgeInDays: number): {periodId: string, shouldAddReminder: boolean}[] {
-        let rval: {periodId: string, shouldAddReminder: boolean}[] = [];
+    public shouldAddRemindersForDoctorVisits(currentChildAgeInDays: number): { periodId: string, shouldAddReminder: boolean }[] {
+        let rval: { periodId: string, shouldAddReminder: boolean }[] = [];
 
         // SET doctorVisitPeriods
         const doctorVisitPeriods = translateData('doctorVisitPeriods') as (TranslateDataDoctorVisitPeriods);
@@ -1097,11 +1097,11 @@ class UserRealmStore {
         // GO OVER doctorVisitPeriods AND SET rvalForPeriod
 
         doctorVisitPeriods.forEach((doctorVisit) => {
-            let rvalForPeriod: {periodId: string, shouldAddReminder: boolean} = {
+            let rvalForPeriod: { periodId: string, shouldAddReminder: boolean } = {
                 periodId: doctorVisit.uuid,
                 shouldAddReminder: false,
             };
-            
+
             // SET isPeriodActive
             let isPeriodActive = false;
 
