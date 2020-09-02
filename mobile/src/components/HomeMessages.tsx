@@ -90,6 +90,11 @@ export class HomeMessages extends React.Component<Props, State> {
             rval.color = '#ED2223';
         }
 
+        if (message.iconType === IconType.reminder) {
+            rval.color = '#AA40BF';
+        }
+
+        // WARNING: This should be last
         if (this.props.cardType === "purple") {
             rval.color = 'white';
         }
@@ -107,6 +112,7 @@ export class HomeMessages extends React.Component<Props, State> {
         if (message.iconType === IconType.celebrate) rval = 'crown'; // centos, crown, fire
         if (message.iconType === IconType.syringe) rval = 'syringe';
         if (message.iconType === IconType.user) rval = 'user';
+        if (message.iconType === IconType.reminder) rval = 'bell';
 
         return rval;
     }
@@ -278,4 +284,5 @@ export enum IconType {
     heart = 'heart',
     checked = 'checked',
     user = 'user',
+    reminder = 'reminder',
 };

@@ -85,6 +85,12 @@ class HomeMessages {
             if (updateMilestonesMessage) rval.push(updateMilestonesMessage);
         }
 
+        // Doctor visits, add reminders messages
+        if (settingsNotificationsApp && settingsFollowDoctorVisits) {
+            const doctorVisitAddReminderMessages = this.getDoctorVisitAddReminderMessages();
+            if (doctorVisitAddReminderMessages.length > 0) rval = rval.concat(doctorVisitAddReminderMessages);
+        }
+
         return rval;
     }
 
@@ -460,6 +466,43 @@ class HomeMessages {
                     }
                 };
             }
+        }
+
+        return rval;
+    }
+
+    private getDoctorVisitAddReminderMessages(): Message[] {
+        let rval: Message[] = [];
+
+        // VALIDATION
+        if (!this.childAgeInDays || this.childAgeInDays === 0) {
+            return [];
+        }
+
+        // SET shouldAddRemindersForDoctorVisits
+        const shouldAddRemindersForDoctorVisits = userRealmStore.shouldAddRemindersForDoctorVisits(this.childAgeInDays);
+
+        // CREATE MESSAGES
+        const allMessages: Message[] = [];
+
+        shouldAddRemindersForDoctorVisits.forEach((doctorVisit) => {
+            if (doctorVisit.shouldAddReminder) {
+                allMessages.push({
+                    text: translate('doctorVisitsPlanDoctorVisitInThisMonth'),
+                    iconType: IconType.reminder,
+                    button: {
+                        text: translate('doctorVisitsAddReminderButton'),
+                        type: RoundedButtonType.purple,
+                        onPress: () => {
+                            navigation.navigate('HomeStackNavigator_AddDoctorVisitReminderScreen');
+                        },
+                    },
+                });
+            }
+        });
+
+        if (allMessages.length > 0) {
+            rval.push(allMessages[0]);
         }
 
         return rval;
