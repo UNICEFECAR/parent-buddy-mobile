@@ -306,6 +306,19 @@ class UserRealmStore {
         return allChildrenList;
     };
 
+    public removeEmptyChild(){
+        let allChildren = this.realm?.objects<ChildEntity>(ChildEntitySchema.name).map(child => child);
+
+
+        if(allChildren && allChildren.length > 0){
+            allChildren.forEach(child => {
+                if(child.name === ""){
+                    this.delete(child)
+                }
+            });
+        }
+    }
+
     public async setVariable<T extends VariableKey>(key: T, value: Variables[T] | null): Promise<boolean> {
         return new Promise((resolve, reject) => {
             if (!this.realm) {

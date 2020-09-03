@@ -10,7 +10,7 @@ import { UserRealmProvider } from '../stores/UserRealmContext';
 import { localize } from './localize';
 // @ts-ignore
 import { decode as atob, encode as btoa } from 'base-64';
-import { apiStore, dataRealmConfig, dataRealmStore } from '../stores';
+import { apiStore, dataRealmConfig, dataRealmStore, userRealmStore } from '../stores';
 import { initGlobalErrorHandler, sendErrorReportWithCrashlytics } from './errors';
 import { ErrorBoundary } from 'react-error-boundary';
 import { ErrorFallback } from '../components/ErrorFallback';
@@ -51,6 +51,8 @@ export class App extends React.Component<object> {
     }
 
     public async componentDidMount() {
+        userRealmStore.removeEmptyChild();
+
         // crashlytics().log(‘APP MOUNTED’);
         crashlytics().log('Updating user count.');
         AppState.addEventListener("change", state => {

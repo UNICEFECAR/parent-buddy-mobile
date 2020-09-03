@@ -1,5 +1,5 @@
 import React, { createRef, Fragment, RefObject } from 'react';
-import { SafeAreaView, StyleSheet, Text, View, ViewStyle, Platform } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, View, ViewStyle, Platform, AppState } from 'react-native';
 import { copyFile, DocumentDirectoryPath, exists, mkdir, unlink } from "react-native-fs";
 import 'react-native-get-random-values';
 import { Image as ImageObject } from 'react-native-image-crop-picker';
@@ -20,7 +20,7 @@ import { UserRealmConsumer, UserRealmContextValue } from '../../stores/UserRealm
 import { translate } from '../../translations/translate';
 import Orientation from 'react-native-orientation-locker';
 import { utils } from '../../app/utils';
-
+import { BackHandler } from 'react-native';
 export interface Props {
     navigation: NavigationStackProp<NavigationStackState>;
 }
@@ -29,6 +29,7 @@ export interface State {
     isSnackbarVisible: boolean;
     snackbarMessage: string;
     screenType: ScreenTypes;
+    previousScreen: string;
 }
 
 export class AddChildrenScreen extends React.Component<Props, State> {
@@ -40,15 +41,23 @@ export class AddChildrenScreen extends React.Component<Props, State> {
         this.scrollView = createRef<KeyboardAwareScrollView>();
         this.initState();
         this.addFirstChild();
+        this.handleBackButtonClick = this.handleBackButtonClick.bind(this)
     }
 
     public componentDidMount() {
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
         Orientation.lockToPortrait();
     }
 
     private initState() {
         let screenType = "";
         let screenParam: ScreenTypes = this.props.navigation.state.params?.screenParam
+        let previousScreen = "";
+        
+        if(this.props.navigation.state.params?.previousScreen){
+            previousScreen = this.props.navigation.state.params?.previousScreen;
+        }
+
         if (screenParam) {
             screenType = screenParam;
         };
@@ -61,6 +70,7 @@ export class AddChildrenScreen extends React.Component<Props, State> {
             isSnackbarVisible: false,
             snackbarMessage: '',
             screenType: screenType as ScreenTypes,
+            previousScreen: previousScreen,
         };
 
         this.state = state;
@@ -76,6 +86,19 @@ export class AddChildrenScreen extends React.Component<Props, State> {
 
         userRealmStore.create<ChildEntity>(ChildEntitySchema, this.getNewChild());
     }
+
+    componentWillUnmount(){
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+
+    }
+
+    handleBackButtonClick() {
+        if(this.state.previousScreen === "ChildProfileScreen"){
+            userRealmStore.removeEmptyChild()
+            this.props.navigation.goBack(null);
+            return true;
+        };
+    };
 
     private getNewChild(): ChildEntity {
         return {
