@@ -215,7 +215,7 @@
     "doctorVisitsAddReminderButton": "Add doctor visit reminder TODO",
     "doctorVisitsAddtionalCheckUpTitle": "Additional check-up TODO",
     "doctorVisitsYouHaveAReminder": "You have a health checkup at %DATE%.",
-    "doctorVisitsMissedReminder": "If you had a check up at %DATE% bili na pregledu, enter data",
+    "doctorVisitsMissedReminder": "If you had a check up at %DATE%, enter data",
 
     "growthChartLegendSilverLabel": "-Typical values for age",
     "growthChartLegendOrangeLabel": "-Suboptimal values for age",
