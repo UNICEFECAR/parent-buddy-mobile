@@ -99,6 +99,7 @@ export class ChildProfileScreen extends React.Component<Props, State> {
         let screenParam = {
             screenParam: "",
             id: "",
+            previousScreen: "ChildProfileScreen"
         };
 
         if (screnType === "EditChild") {
