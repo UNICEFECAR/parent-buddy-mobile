@@ -91,8 +91,11 @@ export class AddDoctorVisitReminderScreen extends Component<Props, State> {
             if(this.state.screenType === AddDoctorVisitReminderScreenType.newReminder){
                 userRealmStore.addReminder(date, time);
             }else{
-                // fuunction for update reminder here 
-            }
+
+                if(uuid){
+                    userRealmStore.updateReminder({date, time, uuid});
+                };
+            };
         };
     };
 

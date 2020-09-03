@@ -16,7 +16,7 @@ import { utils } from '../app/utils';
 import { Props as DoctorVisitCardProps, DoctorVisitCardItemIcon, DoctorVisitCardButtonType } from '../components/doctor-visit/DoctorVisitCard';
 import { getDoctorVisitCardsBirthdayIsNotSet, getDoctorVisitCardsBirthdayIsSet } from './functions/getDoctorVisitCards';
 import { Vaccine, VaccinationPeriod } from '../components/vaccinations/oneVaccinations';
-import { uniqueId, indexOf, uniqBy } from 'lodash';
+import { uniqueId, indexOf, uniqBy, reject } from 'lodash';
 
 type Variables = {
     'userChildren': any;
@@ -976,6 +976,43 @@ class UserRealmStore {
         });
     }
 
+    public updateReminder(reminder: Reminder) {
+
+        return new Promise((resolve, reject) => {
+            const currentChild = this.getCurrentChild();
+            if (!currentChild) {
+                resolve();
+                return;
+            }
+
+            try {
+                let remindersString = currentChild.reminders;
+                if (!remindersString || remindersString === '') {
+                    remindersString = '[]';
+                }
+
+                let allReminders: Reminder[] = JSON.parse(remindersString);
+
+
+                if (allReminders.length !== 0) {
+
+                    let index = allReminders.findIndex(item => item.uuid === reminder.uuid);
+
+                    allReminders[index].date = reminder.date;
+                    allReminders[index].time = reminder.time;
+                    allReminders[index].uuid = reminder.uuid;
+
+                    this.realm?.write(() => {
+                        currentChild.reminders = JSON.stringify(allReminders);
+                        resolve();
+                    });
+                }
+            } catch (e) {
+                resolve();
+            };
+        });
+    };
+
     /**
     *   Get all active reminders for the current child.
     *
@@ -1068,7 +1105,7 @@ class UserRealmStore {
         reminderss.forEach(item => {
             let diff = Math.floor(DateTime.fromMillis(item.date).diffNow('days').days * -1);
 
-            if(diff <= 5){
+            if (diff <= 5) {
                 remindersForReturn.push(item)
             };
         });
