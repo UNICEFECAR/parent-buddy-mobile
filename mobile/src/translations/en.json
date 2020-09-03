@@ -212,6 +212,7 @@
 
     "Iam": "I am",
     "privacyPolicyCheckBox": "I have read, I understand and accept the",
+    "acceptTermsAndConditions": "Accept terms and conditions",
     "privacyPolicyLinkText": "Privacy Policy of the application",
     "termsAndConditionsCheckBox": "I have read, I understand and accept Terms and Conditions of the application",
     "dataUsageCheckbox": "I accept that the anonymized data on my use of the app will be used to inform improvements of the app (it is not mandatory)",

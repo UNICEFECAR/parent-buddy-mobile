@@ -198,7 +198,7 @@ export class TermsScreen extends React.Component<Props, State> {
 
                                 {/* ACCEPT BUTTON */}
                                 <RoundedButton
-                                    text="Prihvatam uslove korišćenja"
+                                    text={translate('acceptTermsAndConditions')}
                                     disabled={this.state.checkPrivateData && this.state.checkOtherConditions ? false : true}
                                     type={RoundedButtonType.purple}
                                     onPress={() => { this.onAcceptButtonClick() }}
