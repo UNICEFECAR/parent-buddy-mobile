@@ -576,7 +576,7 @@ class HomeMessages {
                 iconType: IconType.reminder,
                 button:  {
                     type: RoundedButtonType.purple,
-                    text: translate('/Users/misha/Library/Developer/CoreSimulator/Devices/C1F2D8A6-4D33-4C09-B9E5-141FA0AF7DE1/data/Containers/Data/Application/875D71A1-C145-4401-8DA0-354021491409/Documents'),
+                    text: translate('doctorVisitsAddMeasuresButton'),
                     onPress: () => { navigation.navigate('HomeStackNavigator_NewDoctorVisitScreen', { screenType: NewDoctorVisitScreenType.HeltCheckUp }) },
                 },
             });
