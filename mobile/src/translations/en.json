@@ -152,6 +152,8 @@
     "examReminderDate": "Date",
     "examReminderTime": "Time",
     "buttonAddExamReminder": "Add reminder for the check-up",
+    "reminderDateError": "TODO Unesite datum",
+    "reminderTimeError": "TODO Unesite vreme",
 
     "childProfileTitle": "Child and parent profile",
     "childProfileBirthday": "Birthday",

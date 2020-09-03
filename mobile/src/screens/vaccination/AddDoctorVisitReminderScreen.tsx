@@ -27,6 +27,8 @@ export interface Props {
 export interface State {
     doctorVisitDate: DateTime | null,
     doctorVisitTime: DateTime | null,
+    doctorVisitDateError: string,
+    doctorVisitTimeError: string,
     screenType: AddDoctorVisitReminderScreenType,
     uuid?: string,
 };
@@ -45,14 +47,14 @@ export class AddDoctorVisitReminderScreen extends Component<Props, State> {
         let uuid = "";
         let screenType = AddDoctorVisitReminderScreenType.newReminder;
 
-        if(this.props.navigation.state.params?.reminder){
+        if (this.props.navigation.state.params?.reminder) {
 
             date = DateTime.fromMillis(this.props.navigation.state.params.reminder.date);
             time = DateTime.fromMillis(this.props.navigation.state.params.reminder.time);
             uuid = this.props.navigation.state.params.reminder.uuid;
             screenType = AddDoctorVisitReminderScreenType.updateReminder;
 
-        }else{
+        } else {
             date = null;
             time = null;
             uuid = "";
@@ -64,39 +66,58 @@ export class AddDoctorVisitReminderScreen extends Component<Props, State> {
             doctorVisitTime: time,
             uuid: uuid,
             screenType: screenType,
+            doctorVisitDateError: "",
+            doctorVisitTimeError: "",
         };
 
         this.state = state;
     };
 
     private setDateAndTIme = (value: Date, type: "date" | "time") => {
-        if(type === "date"){
+        if (type === "date") {
             this.setState({
                 doctorVisitDate: DateTime.fromJSDate(value),
+                doctorVisitDateError: "",
             });
-        }else{
+        } else {
             this.setState({
                 doctorVisitTime: DateTime.fromJSDate(value),
+                doctorVisitTimeError: "",
             });
         };
     };
 
-    private setReminder(){
-        if(this.state.doctorVisitDate !== null && this.state.doctorVisitTime !== null){
+    private setReminder() {
+        if (this.state.doctorVisitDate !== null && this.state.doctorVisitTime !== null) {
 
             let date = this.state.doctorVisitDate.toMillis();
             let time = this.state.doctorVisitTime.toMillis();
             let uuid = this.state.uuid;
-            
-            if(this.state.screenType === AddDoctorVisitReminderScreenType.newReminder){
-                userRealmStore.addReminder(date, time);
-            }else{
 
-                if(uuid){
-                    userRealmStore.updateReminder({date, time, uuid});
+            if (this.state.screenType === AddDoctorVisitReminderScreenType.newReminder) {
+                userRealmStore.addReminder(date, time);
+            } else {
+
+                if (uuid) {
+                    userRealmStore.updateReminder({ date, time, uuid });
                 };
             };
-        };
+
+            this.props.navigation.goBack();
+
+        } else {
+            if (this.state.doctorVisitDate === null) {
+                this.setState({
+                    doctorVisitDateError: translate('reminderDateError')
+                });
+            };
+
+            if (this.state.doctorVisitTime === null) {
+                this.setState({
+                    doctorVisitTimeError: translate('reminderTimeError')
+                });
+            };
+        }
     };
 
     render() {
@@ -113,37 +134,46 @@ export class AddDoctorVisitReminderScreen extends Component<Props, State> {
                             contentContainerStyle={[styles.container]}
                         >
                             <View>
-                                <View style={{flexDirection: 'row', alignContent: "center",marginBottom: 20, marginLeft: -10}}>
-                                    <Icon name="clock" style={{fontSize: moderateScale(22), color: '#2BABEE'}} />
-                                    <Typography>TODO Upišite datum i vreme zakazanog pregleda i HaloBeba će Vas podsetiti.</Typography>
+                                <View style={{ flexDirection: 'row', alignContent: "center", marginBottom: 20, marginLeft: -10 }}>
+                                    <Icon name="clock" style={{ fontSize: moderateScale(22), color: '#2BABEE' }} />
+                                    <Typography style={{marginTop: -2, fontSize: moderateScale(16), marginRight: moderateScale(10), marginLeft: moderateScale(7)}}>{translate("examReminderDescription")}</Typography>
                                 </View>
-                                <DateTimePicker
-                                    label={translate("NewDoctorVisitScreenDatePickerLabel")}
-                                    onChange={(value) => this.setDateAndTIme(value, "date")}
-                                    minimumDate={new Date()}
-                                    style={{marginBottom: 20}}
-                                    value={date}
-                                />
-                                <DateTimePicker
-                                    type={DateTimePickerType.time}
-                                    label={translate("NewDoctorVisitScreenDatePickerLabel")}
-                                    onChange={(value) => this.setDateAndTIme(value, "time")}
-                                    minimumDate={new Date()}
-                                    style={{marginBottom: 20}}
-                                    value={time}
-                                // style={this.state.visitDateError !== "" ? { borderColor: colorError, borderWidth: 1, borderRadius: 27 } : null}
-                                />
-                                {/* {
-                                    this.state.visitDateError !== "" ?
-                                        <Typography style={{ color: colorError, fontSize: moderateScale(15) }}>{this.state.visitDateError}</Typography>
-                                        : null
-                                } */}
+                                <View style={{marginBottom: 10}}>
+                                    <DateTimePicker
+                                        label={translate("examReminderDate")}
+                                        onChange={(value) => this.setDateAndTIme(value, "date")}
+                                        minimumDate={new Date()}
+                                        // style={{ marginBottom: 20 }}
+                                        style={this.state.doctorVisitDateError !== "" ? { borderColor: colorError, borderWidth: 1, borderRadius: 27 } : null}
+                                        value={date}
+                                    />
+                                    {
+                                        this.state.doctorVisitDateError !== "" ?
+                                            <Typography style={{ color: colorError, fontSize: moderateScale(15) }}>{this.state.doctorVisitDateError}</Typography>
+                                            : null
+                                    }
+                                </View>
+                                <View style={{marginBottom: 30}}>
+                                    <DateTimePicker
+                                        type={DateTimePickerType.time}
+                                        label={translate("examReminderTime")}
+                                        onChange={(value) => this.setDateAndTIme(value, "time")}
+                                        minimumDate={new Date()}
+                                        value={time}
+                                        style={this.state.doctorVisitTimeError !== "" ? { borderColor: colorError, borderWidth: 1, borderRadius: 27 } : null}
+                                    />
+                                    {
+                                        this.state.doctorVisitTimeError !== "" ?
+                                            <Typography style={{ color: colorError, fontSize: moderateScale(15) }}>{this.state.doctorVisitTimeError}</Typography>
+                                            : null
+                                    }
+                                </View>
                             </View>
 
 
                             <View>
                                 <RoundedButton
-                                    text={translate("newMeasureScreenSaveBtn")}
+                                    text={translate("buttonAddExamReminder")}
                                     type={RoundedButtonType.purple}
                                     onPress={() => this.setReminder()}
                                 />
@@ -158,7 +188,7 @@ export class AddDoctorVisitReminderScreen extends Component<Props, State> {
 }
 
 
-enum AddDoctorVisitReminderScreenType{
+enum AddDoctorVisitReminderScreenType {
     newReminder,
     updateReminder,
 };
