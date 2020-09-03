@@ -6,9 +6,10 @@ import { DateTime } from 'luxon';
 import { translate } from "../translations/translate";
 import { RoundedButtonType } from "../components/RoundedButton";
 import { navigation } from ".";
-import { translateData, TranslateDataGrowthPeriodsMessages, TranslateDataGrowthMessagesPeriod, TranslateDataDevelopmentPeriods } from "../translationsData/translateData";
+import { translateData, TranslateDataGrowthPeriodsMessages, TranslateDataGrowthMessagesPeriod, TranslateDataDevelopmentPeriods, TranslateDataImmunizationsPeriod } from "../translationsData/translateData";
 import { utils } from "./utils";
 import { Measures } from "../stores/ChildEntity";
+import { getImmunizationPeriodForDoctorVisitPeriod } from "../translationsData/translationsDataUtils";
 
 /**
  * Home messages logic is here.
@@ -89,6 +90,12 @@ class HomeMessages {
         if (settingsNotificationsApp && settingsFollowDoctorVisits) {
             const doctorVisitAddReminderMessages = this.getDoctorVisitAddReminderMessages();
             if (doctorVisitAddReminderMessages.length > 0) rval = rval.concat(doctorVisitAddReminderMessages);
+        }
+
+        // Doctor visits, show reminders messages
+        if (settingsNotificationsApp && settingsFollowDoctorVisits) {
+            const doctorVisitShowRemindersMessages = this.getDoctorVisitShowRemindersMessages();
+            if (doctorVisitShowRemindersMessages.length > 0) rval = rval.concat(doctorVisitShowRemindersMessages);
         }
 
         return rval;
@@ -504,6 +511,46 @@ class HomeMessages {
         if (allMessages.length > 0) {
             rval.push(allMessages[0]);
         }
+
+        return rval;
+    }
+
+    private getDoctorVisitShowRemindersMessages(): Message[] {
+        const rval: Message[] = [];
+
+        const activeReminders = userRealmStore.getActiveReminders();
+
+        activeReminders.forEach((reminder) => {
+            const reminderDateTime = DateTime.fromMillis(reminder.date);
+            const reminderPeriodId = userRealmStore.getReminderPeriod(reminderDateTime);
+
+            // SET messageFinal
+            let messageFinal = translate('doctorVisitsYouHaveAReminder').replace('%DATE%', reminderDateTime.toLocaleString(DateTime.DATE_MED));
+
+            // SET immunizationPeriod
+            let immunizationPeriod: TranslateDataImmunizationsPeriod | null = null;
+
+            if (reminderPeriodId) {
+                immunizationPeriod = getImmunizationPeriodForDoctorVisitPeriod(reminderPeriodId);
+            }
+
+            // SET messageVaccines
+            if (immunizationPeriod) {
+                let messageVaccines: string | null = null;
+
+                messageVaccines = immunizationPeriod.vaccines.map((vaccine) => {
+                    return '• ' + vaccine.title;
+                }).join("\n");
+
+                messageFinal += '\n' + messageVaccines;
+            }
+
+            // CREATE MESSAGE
+            rval.push({
+                text: messageFinal,
+                iconType: IconType.reminder,
+            });
+        });
 
         return rval;
     }

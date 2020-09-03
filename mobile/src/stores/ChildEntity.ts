@@ -34,8 +34,8 @@ export type Measures = {
 };
 
 export type Reminder = {
-    date: number; // timestamp
-    time: number; // timestamp
+    date: number; // timestamp in milliseconds
+    time: number; // timestamp in milliseconds
     uuid: string;
 };
 

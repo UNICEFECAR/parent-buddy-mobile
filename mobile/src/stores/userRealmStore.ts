@@ -1124,7 +1124,7 @@ class UserRealmStore {
 
         let dateInDays = this.getCurrentChildAgeInDays(undefined, reminderDate.toMillis());
 
-        let filteredPeriods = doctorVisitPeriods?.find(period => period.childAgeInDays.from >= dateInDays && period.childAgeInDays.to <= dateInDays);
+        let filteredPeriods = doctorVisitPeriods?.find(period => dateInDays >= period.childAgeInDays.from && dateInDays <= period.childAgeInDays.to);
 
         if (filteredPeriods) {
             periodId = filteredPeriods.uuid
@@ -1167,6 +1167,17 @@ class UserRealmStore {
         };
 
         return activePeriodReminders.length > 0 ? activePeriodReminders : null;
+    }
+
+    public getReminderDateTime(reminder: Reminder): DateTime {
+        const reminderDate = DateTime.fromMillis(reminder.date);
+        const reminderTime = DateTime.fromMillis(reminder.time);
+
+        reminderDate.set({hour: reminderTime.hour});
+        reminderDate.set({minute: reminderTime.minute});
+        reminderDate.set({second: reminderTime.second});
+
+        return reminderDate;
     }
 
     /**

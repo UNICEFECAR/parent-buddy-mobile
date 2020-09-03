@@ -212,6 +212,7 @@
     "doctorVisitsPlanDoctorVisitInThisMonth": "Plan doctor visit in this month TODO",
     "doctorVisitsAddReminderButton": "Add doctor visit reminder TODO",
     "doctorVisitsAddtionalCheckUpTitle": "Additional check-up TODO",
+    "doctorVisitsYouHaveAReminder": "You have a health checkup at %DATE%.",
 
     "growthChartLegendSilverLabel": "-Typical values for age",
     "growthChartLegendOrangeLabel": "-Suboptimal values for age",
