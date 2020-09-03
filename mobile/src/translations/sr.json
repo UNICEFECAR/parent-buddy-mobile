@@ -212,7 +212,8 @@
     "doctorVisitsPlanDoctorVisitInThisMonth": "Planirajte posetu doktoru u ovom mesecu TODO",
     "doctorVisitsAddReminderButton": "Dodajte podsetnik za pregled TODO",
     "doctorVisitsAddtionalCheckUpTitle": "Vanredni pregled TODO",
-    "doctorVisitsYouHaveAReminder": "U pon %DATE% imate pregled. TODO",
+    "doctorVisitsYouHaveAReminder": "%DATE% imate pregled. TODO",
+    "doctorVisitsMissedReminder": "Ukoliko ste %DATE% bili na pregledu, upišite podatke",
 
     "growthChartLegendSilverLabel": " - Uobičajene vrednosti za uzrast",
     "growthChartLegendOrangeLabel": " - Odstupajuće vrednosti za uzrast",
