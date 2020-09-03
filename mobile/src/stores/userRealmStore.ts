@@ -1103,13 +1103,12 @@ class UserRealmStore {
         let remindersForReturn: Reminder[] = [];
 
         reminderss.forEach(item => {
-            let diff = Math.floor(DateTime.fromMillis(item.date).diffNow('days').days * -1);
-
-            if (diff <= 5) {
+            let diff = DateTime.fromMillis(item.date).diffNow('days').days;
+            if (diff >= -5 && diff <= 0) {
                 remindersForReturn.push(item)
             };
+          
         });
-
         return remindersForReturn;
     };
 

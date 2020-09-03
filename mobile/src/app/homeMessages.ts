@@ -566,7 +566,6 @@ class HomeMessages {
     private getDoctorVisitMissedRemindersMessages(): Message[] {
         const rval: Message[] = [];
         const missedReminders = userRealmStore.getMissedReminders();
-
         missedReminders.forEach((missedReminder) => {
             const reminderDateTime = DateTime.fromMillis(missedReminder.date);
             let message = translate('doctorVisitsMissedReminder').replace('%DATE%', reminderDateTime.toLocaleString(DateTime.DATE_MED));
