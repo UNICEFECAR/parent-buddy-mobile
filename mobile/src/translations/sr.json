@@ -152,7 +152,9 @@
     "examReminderDate": "Datum",
     "examReminderTime": "Vreme",
     "buttonAddExamReminder": "Dodajte podsetnik za pregled",
-
+    "reminderDateError": "TODO Unesite datum",
+    "reminderTimeError": "TODO Unesite vreme",
+    
     "childProfileTitle": "Profil Deteta i roditelja",
     "childProfileBirthday": "Rodjendan",
     "childProfileChange": "Izmenite profil",
