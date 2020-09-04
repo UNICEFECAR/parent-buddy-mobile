@@ -92,12 +92,14 @@ export class AboutScreen extends React.Component<Props, State> {
         if(polls){
 
             const appPoll = polls.filtered(`category == "Application Feedback"`).find(item => item.tags.length === 0);
-            
-            this.props.navigation.navigate(
-                "HomeStackNavigator_PollsScreen", 
-                {polls: appPoll}
-            );
-        }
+
+            if(appPoll){
+                this.props.navigation.navigate(
+                    "HomeStackNavigator_PollsScreen", 
+                    {polls: appPoll}
+                );
+            };
+        };
     };
 
     private gotoTermsScreen() {
