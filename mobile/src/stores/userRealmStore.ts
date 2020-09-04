@@ -848,7 +848,6 @@ class UserRealmStore {
         if (doctorVisitPeriods && doctorVisitPeriods.length) {
             doctorVisitPeriods.forEach(period => {
                 let regularMeasures = this.getRegularAndAdditionalMeasures().regularMeasures.filter(measure => measure.doctorVisitPeriodUuid === period.uuid);
-
                 if (regularMeasures.length > 0 && filteredReminders.length > 0) {
                     regularMeasures.forEach(item => {
                         let measuresDate = false;
@@ -871,14 +870,13 @@ class UserRealmStore {
                     });
                 };
             });
-        };
+        };  
 
         return filteredReminders;
     }
 
     private removeAditionalFinishedReminders(reminders: Reminder[]): Reminder[] {
         let additionalMeasures = this.getRegularAndAdditionalMeasures().additionalMeasures;
-
         let filteredReminders = reminders;
 
         if (additionalMeasures && additionalMeasures.length > 0 && filteredReminders.length > 0) {
@@ -1055,7 +1053,7 @@ class UserRealmStore {
         };
 
         filteredActiveRegularReminders = this.removeRegularFinishedReminders(activeRemindersForPeriod);
-
+        
         if (filteredActiveRegularReminders.length > 0) {
             filteredActiveAditionalReminders = this.removeAditionalFinishedReminders(filteredActiveRegularReminders);
 
@@ -1064,7 +1062,9 @@ class UserRealmStore {
             allactiveReminders = allactiveReminders.concat(filteredActiveRegularReminders);
         };
 
-
+        // Remove finished (regular and aditional) non period reminder 
+        nonPeriodReminder = this.removeRegularFinishedReminders(nonPeriodReminder);
+        nonPeriodReminder = this.removeAditionalFinishedReminders(nonPeriodReminder);
 
         activeReminders = nonPeriodReminder.concat(allactiveReminders).sort((a, b) => a.date - b.date);
         return uniqBy(activeReminders, "uuid");
