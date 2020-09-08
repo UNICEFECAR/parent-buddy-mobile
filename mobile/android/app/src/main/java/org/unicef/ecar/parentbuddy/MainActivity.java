@@ -9,8 +9,15 @@ import com.tkporter.sendsms.SendSMSPackage;
 
 import android.content.Intent;
 import android.content.res.Configuration;
-
+import android.os.Bundle; // required for onCreate parameter
+import org.devio.rn.splashscreen.SplashScreen; // required for react-native-splash-screen >= 0.3.1
 public class MainActivity extends ReactActivity {
+
+  @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        SplashScreen.show(this);  // here
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {

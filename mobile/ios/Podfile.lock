@@ -327,6 +327,8 @@ PODS:
     - React
   - react-native-sms (1.10.0):
     - React
+  - react-native-splash-screen (3.2.0):
+    - React
   - react-native-webview (9.0.2):
     - React
   - React-RCTActionSheet (0.61.5):
@@ -457,6 +459,7 @@ DEPENDENCIES:
   - react-native-orientation-locker (from `../node_modules/react-native-orientation-locker`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-sms (from `../node_modules/react-native-sms`)
+  - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
   - react-native-webview (from `../node_modules/react-native-webview`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `../node_modules/react-native/Libraries/NativeAnimation`)
@@ -564,6 +567,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-sms:
     :path: "../node_modules/react-native-sms"
+  react-native-splash-screen:
+    :path: "../node_modules/react-native-splash-screen"
   react-native-webview:
     :path: "../node_modules/react-native-webview"
   React-RCTActionSheet:
@@ -672,6 +677,7 @@ SPEC CHECKSUMS:
   react-native-orientation-locker: f0ca1a8e5031dab6b74bfb4ab33a17ed2c2fcb0d
   react-native-safe-area-context: 8260e5157617df4b72865f44006797f895b2ada7
   react-native-sms: 12219e91750e7b778b29bde402c5eca843e8d66c
+  react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
   react-native-webview: 838be111a7805977e5fc4fa6b66ae293f6c17384
   React-RCTActionSheet: 600b4d10e3aea0913b5a92256d2719c0cdd26d76
   React-RCTAnimation: 791a87558389c80908ed06cc5dfc5e7920dfa360
@@ -707,6 +713,6 @@ SPEC CHECKSUMS:
   SDWebImageWebPCoder: 36f8f47bd9879a8aea6044765c1351120fd8e3a8
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
 
-PODFILE CHECKSUM: 9ffd84d2b3208243eeb0562f93e94e558257a771
+PODFILE CHECKSUM: 2fa63c90c33e2fe44d8620acec49a60e8bd681c2
 
 COCOAPODS: 1.9.3

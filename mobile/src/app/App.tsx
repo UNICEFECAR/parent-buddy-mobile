@@ -16,6 +16,7 @@ import { ErrorBoundary } from 'react-error-boundary';
 import { ErrorFallback } from '../components/ErrorFallback';
 import { utils } from '.';
 import crashlytics from '@react-native-firebase/crashlytics';
+import SplashScreen from 'react-native-splash-screen'
 // ADD GLOBAL POLYFILLS: atob, btoa
 if (!(global as any).btoa) (global as any).btoa = btoa;
 if (!(global as any).atob) (global as any).atob = atob;
@@ -51,8 +52,9 @@ export class App extends React.Component<object> {
     }
 
     public async componentDidMount() {
-        userRealmStore.removeEmptyChild();
+        SplashScreen.hide();
 
+        userRealmStore.removeEmptyChild();
         // crashlytics().log(‘APP MOUNTED’);
         crashlytics().log('Updating user count.');
         AppState.addEventListener("change", state => {
