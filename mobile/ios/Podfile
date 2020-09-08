@@ -37,6 +37,8 @@ target 'HaloBeba' do
   pod 'GoogleSignIn', '~> 5.0.2'
   pod 'RNFS', :path => '../node_modules/react-native-fs'
 
+  pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
+
   target 'HaloBebaTests' do
     inherit! :search_paths
     # Pods for testing
