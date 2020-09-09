@@ -1104,7 +1104,7 @@ class UserRealmStore {
 
         reminderss.forEach(item => {
             let diff = DateTime.fromMillis(item.date).diffNow('days').days;
-            if (diff >= -5 && diff <= 0) {
+            if (diff >= -10 && diff <= -1) {
                 remindersForReturn.push(item)
             };
           

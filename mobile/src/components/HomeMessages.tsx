@@ -213,6 +213,17 @@ export class HomeMessages extends React.Component<Props, State> {
                             />
                         ) : null}
 
+
+                        {message.textButton ? (
+                            <TextButton 
+                                textStyle={{textAlign: 'center', marginTop: 10}}
+                                color={message.textButton.color}
+                                onPress={() => {if (message.textButton?.onPress) message.textButton.onPress()}}
+                            >
+                                {message.textButton.text}
+                            </TextButton>
+                        ) : null}
+
                         {messages?.length !== (index + 1) ? (
                             <View style={{ height: scale(15) }} />
                         ) : null}
@@ -270,7 +281,12 @@ export type Message = {
     subText?: string;
     iconType?: IconType;
     button?: {
-        type: RoundedButtonType.purple | RoundedButtonType.hollowPurple,
+        type: RoundedButtonType.purple | RoundedButtonType.hollowPurple | RoundedButtonType.default,
+        text: string;
+        onPress?: () => void
+    };
+    textButton?: {
+        color: TextButtonColor,
         text: string;
         onPress?: () => void
     };

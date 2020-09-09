@@ -216,6 +216,9 @@
     "doctorVisitsAddtionalCheckUpTitle": "Vanredni pregled TODO",
     "doctorVisitsYouHaveAReminder": "%DATE% imate pregled. TODO",
     "doctorVisitsMissedReminder": "Ukoliko ste %DATE% bili na pregledu, upišite podatke",
+    "updateDoctorVisitReminder": "Promenite datum i vreme pregleda",
+    "doctorVisitTomorowMessage": "Sutra u %TIME% imate zakazan pregled.",
+    "doctorVisitTodayMessage": "Danas u %TIME% imate zakazan pregled.",
 
     "growthChartLegendSilverLabel": " - Uobičajene vrednosti za uzrast",
     "growthChartLegendOrangeLabel": " - Odstupajuće vrednosti za uzrast",

@@ -12,6 +12,7 @@ import { Measures } from "../stores/ChildEntity";
 import { getImmunizationPeriodForDoctorVisitPeriod } from "../translationsData/translationsDataUtils";
 import { DoctorVisitCardButtonType } from "../components/doctor-visit/DoctorVisitCard";
 import { NewDoctorVisitScreenType } from "../screens/vaccination/NewDoctorVisitScreen";
+import { TextButtonColor } from "../components/TextButton";
 
 /**
  * Home messages logic is here.
@@ -526,14 +527,26 @@ class HomeMessages {
     private getDoctorVisitShowRemindersMessages(): Message[] {
         const rval: Message[] = [];
 
-        const activeReminders = userRealmStore.getActiveReminders();
+        const nextActiveReminder = userRealmStore.getActiveReminders()[0];
 
-        activeReminders.forEach((reminder) => {
-            const reminderDateTime = DateTime.fromMillis(reminder.date);
+        if (nextActiveReminder) {
+
+            const reminderDateTime = DateTime.fromMillis(nextActiveReminder.date);
             const reminderPeriodId = userRealmStore.getReminderPeriod(reminderDateTime);
 
             // SET messageFinal
             let messageFinal = translate('doctorVisitsYouHaveAReminder').replace('%DATE%', reminderDateTime.toLocaleString(DateTime.DATE_MED));
+
+            let dateDiffFromNow = Math.round(reminderDateTime.diffNow('day').days);
+
+            if (dateDiffFromNow === 0) {
+                // "doctorVisitTomorowMessage": "TODO Sutra u %TIME% imate zakazan pregled.",
+                messageFinal = translate('doctorVisitTodayMessage').replace('%TIME%', DateTime.fromMillis(nextActiveReminder.time).toISOTime().substr(0,5));
+            };
+
+            if (dateDiffFromNow === 1) {
+                messageFinal = translate('doctorVisitTomorowMessage').replace('%TIME%', DateTime.fromMillis(nextActiveReminder.time).toISOTime().substr(0,5));
+            }
 
             // SET immunizationPeriod
             let immunizationPeriod: TranslateDataImmunizationsPeriod | null = null;
@@ -557,8 +570,13 @@ class HomeMessages {
             rval.push({
                 text: messageFinal,
                 iconType: IconType.reminder,
+                textButton: {
+                    color: TextButtonColor.purple,
+                    text: translate('updateDoctorVisitReminder'),
+                    onPress: () => { navigation.navigate('HomeStackNavigator_AddDoctorVisitReminderScreen', { reminder: nextActiveReminder }) },
+                },
             });
-        });
+        }
 
         return rval;
     }
@@ -573,11 +591,16 @@ class HomeMessages {
             rval.push({
                 text: message,
                 iconType: IconType.reminder,
-                button:  {
+                button: {
                     type: RoundedButtonType.purple,
                     text: translate('/Users/misha/Library/Developer/CoreSimulator/Devices/C1F2D8A6-4D33-4C09-B9E5-141FA0AF7DE1/data/Containers/Data/Application/875D71A1-C145-4401-8DA0-354021491409/Documents'),
                     onPress: () => { navigation.navigate('HomeStackNavigator_NewDoctorVisitScreen', { screenType: NewDoctorVisitScreenType.HeltCheckUp }) },
                 },
+                textButton: {
+                    color: TextButtonColor.purple,
+                    text: translate('updateDoctorVisitReminder'),
+                    onPress: () => { navigation.navigate('HomeStackNavigator_AddDoctorVisitReminderScreen', { reminder: missedReminder }) },
+                }
             });
         });
 
