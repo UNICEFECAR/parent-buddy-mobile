@@ -6,13 +6,14 @@ import { DateTime } from 'luxon';
 import { translate } from "../translations/translate";
 import { RoundedButtonType } from "../components/RoundedButton";
 import { navigation } from ".";
-import { translateData, TranslateDataGrowthPeriodsMessages, TranslateDataGrowthMessagesPeriod, TranslateDataDevelopmentPeriods, TranslateDataImmunizationsPeriod } from "../translationsData/translateData";
+import { translateData, TranslateDataGrowthPeriodsMessages, TranslateDataGrowthMessagesPeriod, TranslateDataDevelopmentPeriods, TranslateDataImmunizationsPeriod, TranslateDataImmunizationsPeriods } from "../translationsData/translateData";
 import { utils } from "./utils";
 import { Measures } from "../stores/ChildEntity";
 import { getImmunizationPeriodForDoctorVisitPeriod } from "../translationsData/translationsDataUtils";
 import { DoctorVisitCardButtonType } from "../components/doctor-visit/DoctorVisitCard";
 import { NewDoctorVisitScreenType } from "../screens/vaccination/NewDoctorVisitScreen";
 import { TextButtonColor } from "../components/TextButton";
+import { Vaccine } from "../components/vaccinations/oneVaccinations";
 
 /**
  * Home messages logic is here.
@@ -106,6 +107,130 @@ class HomeMessages {
             const doctorVisitMissedRemindersMessages = this.getDoctorVisitMissedRemindersMessages();
             if (doctorVisitMissedRemindersMessages.length > 0) rval = rval.concat(doctorVisitMissedRemindersMessages);
         }
+
+        if (settingsNotificationsApp && settingsFollowDoctorVisits) {
+            const getVaccinationMessages = this.getVaccinationMessage();
+            if (getVaccinationMessages) rval.push(getVaccinationMessages);
+        }
+
+        return rval;
+    }
+
+    private getVaccinationMessage(): Message | null {
+        let rval: Message | null = null;
+        let nonRecivedVaccinations: Vaccine[] = [];
+
+        const immunizationsPeriods = translateData('immunizationsPeriods') as (TranslateDataImmunizationsPeriods | null);
+        const childAgeInDays = userRealmStore.getCurrentChildAgeInDays();
+
+        if (childAgeInDays) {
+            let currentImmunizationPeriod = immunizationsPeriods?.find(period => period.notificationDayStart <= childAgeInDays && period.notificationDayEnd >= childAgeInDays);
+
+            let recivedVaccinations = userRealmStore.getAllReceivedVaccines();
+            let messageFinal = "";
+            let childName = userRealmStore.getCurrentChild()?.name;
+            let genderStringSerbian = userRealmStore.getCurrentChild()?.gender === "boy" ? "primio" : "primila";
+            let recivedVacinationDate: number[] = [];
+
+            if (currentImmunizationPeriod && currentImmunizationPeriod.vaccines && currentImmunizationPeriod.vaccines.length > 0) {
+                if (recivedVaccinations) {
+
+                    let recivedVaccinationIds: string[] = [];
+                    recivedVaccinations.forEach(item => {
+                        item.uuid.forEach(uid => {
+                            recivedVaccinationIds.push(uid.toString());
+                        });
+                    });
+
+                    currentImmunizationPeriod.vaccines?.map(vaccine => {
+                        let complete = true;
+
+                        if (recivedVaccinationIds.indexOf(vaccine.uuid) === -1) {
+                            complete = false;
+                        }else{
+                            if(recivedVaccinations.find(item => item.uuid.find(uuid => vaccine.uuid))?.date){
+                                let date = recivedVaccinations.find(item => item.uuid.find(uuid => vaccine.uuid))?.date;
+                                if(date){
+                                    recivedVacinationDate.push(date)
+                                };
+                            };
+                        };
+
+                        if (!complete) {
+                            nonRecivedVaccinations.push({
+                                complete: false,
+                                hardcodedArticleId: vaccine.hardcodedArticleId,
+                                title: vaccine.title,
+                                uuid: vaccine.uuid,
+                            })
+                        }
+                    });
+
+                    if (nonRecivedVaccinations.length > 0) {
+                        // SET messageVaccines
+                        messageFinal =  translate('vaccinationMessages').replace('%NAME%', utils.upperCaseFirstLetter(childName ? childName : ""));
+                        let messageVaccines: string | null = null;
+
+                        messageVaccines = nonRecivedVaccinations.map((vaccine) => {
+                            return '• ' + vaccine.title;
+                        }).join("\n");
+
+                        messageFinal += '\n' + messageVaccines;
+                    } else {
+
+                        // If last vaccination checked this month get message 10 days from days of last received vaccination 
+
+                        let currentDate = DateTime.local();
+                        let currentMonth = currentDate.month;
+                        let currentDayInMonth = currentDate.day;
+
+                        let lastReceivedVaccinationMonth = recivedVacinationDate.length > 0 ? recivedVacinationDate.sort((a,b) => a - b) : null;
+
+                        if(lastReceivedVaccinationMonth){
+
+                            let lastVaccinationDay = DateTime.fromMillis(lastReceivedVaccinationMonth[lastReceivedVaccinationMonth.length - 1]).day
+                            let lastVaccinationMonth = DateTime.fromMillis(lastReceivedVaccinationMonth[lastReceivedVaccinationMonth.length - 1]).month;
+
+                            if(currentMonth === lastVaccinationMonth){
+                                if(
+                                    currentDayInMonth - lastVaccinationDay >= 0 && 
+                                    currentDayInMonth - lastVaccinationDay <= 10
+                                ){
+                                    messageFinal =  translate('vaccinationAllVaccinesReceivedMessage').replace('%NAME%', utils.upperCaseFirstLetter(childName ? childName : "")).replace('%GENDER%', genderStringSerbian);
+                                }
+                            }else{
+                                // If last vaccination not received this month get message 10 days from month start 
+                                if(currentDayInMonth <= 10){
+                                    messageFinal =  translate('vaccinationAllVaccinesReceivedMessage').replace('%NAME%', utils.upperCaseFirstLetter(childName ? childName : "")).replace('%GENDER%', genderStringSerbian);
+                                };
+                            };
+                        };
+                    };
+                } else {
+                    nonRecivedVaccinations = currentImmunizationPeriod.vaccines.map(item => {
+                        return {
+                            complete: false,
+                            hardcodedArticleId: item.hardcodedArticleId,
+                            title: item.title,
+                            uuid: item.uuid,
+                        };
+                    });
+                };
+            };
+
+            let dayInMonth = DateTime.local().day;
+
+
+            if (messageFinal !== "") {
+                rval = {
+                    text: messageFinal,
+                    iconType: IconType.syringe
+                };
+            }
+
+
+        };
+
 
         return rval;
     }
@@ -541,30 +666,30 @@ class HomeMessages {
 
             if (dateDiffFromNow === 0) {
                 // "doctorVisitTomorowMessage": "TODO Sutra u %TIME% imate zakazan pregled.",
-                messageFinal = translate('doctorVisitTodayMessage').replace('%TIME%', DateTime.fromMillis(nextActiveReminder.time).toISOTime().substr(0,5));
+                messageFinal = translate('doctorVisitTodayMessage').replace('%TIME%', DateTime.fromMillis(nextActiveReminder.time).toISOTime().substr(0, 5));
             };
 
             if (dateDiffFromNow === 1) {
-                messageFinal = translate('doctorVisitTomorowMessage').replace('%TIME%', DateTime.fromMillis(nextActiveReminder.time).toISOTime().substr(0,5));
+                messageFinal = translate('doctorVisitTomorowMessage').replace('%TIME%', DateTime.fromMillis(nextActiveReminder.time).toISOTime().substr(0, 5));
             }
 
             // SET immunizationPeriod
-            let immunizationPeriod: TranslateDataImmunizationsPeriod | null = null;
+            // let immunizationPeriod: TranslateDataImmunizationsPeriod | null = null;
 
-            if (reminderPeriodId) {
-                immunizationPeriod = getImmunizationPeriodForDoctorVisitPeriod(reminderPeriodId);
-            }
+            // if (reminderPeriodId) {
+            //     immunizationPeriod = getImmunizationPeriodForDoctorVisitPeriod(reminderPeriodId);
+            // }
 
-            // SET messageVaccines
-            if (immunizationPeriod) {
-                let messageVaccines: string | null = null;
+            // // SET messageVaccines
+            // if (immunizationPeriod) {
+            //     let messageVaccines: string | null = null;
 
-                messageVaccines = immunizationPeriod.vaccines.map((vaccine) => {
-                    return '• ' + vaccine.title;
-                }).join("\n");
+            //     messageVaccines = immunizationPeriod.vaccines.map((vaccine) => {
+            //         return '• ' + vaccine.title;
+            //     }).join("\n");
 
-                messageFinal += '\n' + messageVaccines;
-            }
+            //     messageFinal += '\n' + messageVaccines;
+            // }
 
             // CREATE MESSAGE
             rval.push({
