@@ -165,6 +165,7 @@ class UserRealmStore {
     public getVaccinationsForCurrentPeriod() {
         let childBirthDay = this.getCurrentChild()?.birthDate;
         let vaccines: Vaccine[] = [];
+        let receivedVaccinations = this.getAllReceivedVaccines();
 
         if (childBirthDay) {
             let childAgeInDays = this.getCurrentChildAgeInDays();
@@ -172,16 +173,42 @@ class UserRealmStore {
             const immunizationsPeriods = translateData('immunizationsPeriods') as (TranslateDataImmunizationsPeriods | null);
 
             let currentImmunizationsPeriods = immunizationsPeriods?.find(period => period.dayStart <= childAgeInDays && period.dayEnd >= childAgeInDays);
-
             if (currentImmunizationsPeriods) {
-                vaccines = currentImmunizationsPeriods.vaccines.map(vaccine => {
-                    return {
-                        complete: false,
-                        title: vaccine.title,
-                        hardcodedArticleId: vaccine.hardcodedArticleId,
-                        uuid: vaccine.uuid,
-                    };
-                });
+                if (receivedVaccinations === null || receivedVaccinations === undefined || receivedVaccinations.length === 0) {
+                    vaccines = currentImmunizationsPeriods.vaccines.map(vaccine => {
+                        return {
+                            complete: false,
+                            title: vaccine.title,
+                            hardcodedArticleId: vaccine.hardcodedArticleId,
+                            uuid: vaccine.uuid,
+                        };
+                    });
+                } else {
+                    let recivedVaccinationIds: string[] = [];
+                    receivedVaccinations.forEach(item => {
+                        item.uuid.forEach(uid => {
+                            recivedVaccinationIds.push(uid.toString());
+                        })
+                    });
+
+                    /*
+                    * Compare received vaccines with vaccines for previous period 
+                    * Return all nonReceived vaccines 
+                    */
+                   vaccines = currentImmunizationsPeriods.vaccines.map(vaccine => {
+                        let isCompleted = true;
+                        if (recivedVaccinationIds.indexOf(vaccine.uuid) === -1) {
+                            isCompleted = false;
+                        };
+
+                        return {
+                            complete: isCompleted,
+                            title: vaccine.title,
+                            hardcodedArticleId: vaccine.hardcodedArticleId,
+                            uuid: vaccine.uuid,
+                        };
+                    });
+                };
             };
         };
 
@@ -870,7 +897,7 @@ class UserRealmStore {
                     });
                 };
             });
-        };  
+        };
 
         return filteredReminders;
     }
@@ -1053,7 +1080,7 @@ class UserRealmStore {
         };
 
         filteredActiveRegularReminders = this.removeRegularFinishedReminders(activeRemindersForPeriod);
-        
+
         if (filteredActiveRegularReminders.length > 0) {
             filteredActiveAditionalReminders = this.removeAditionalFinishedReminders(filteredActiveRegularReminders);
 
@@ -1107,7 +1134,7 @@ class UserRealmStore {
             if (diff >= -10 && diff <= -1) {
                 remindersForReturn.push(item)
             };
-          
+
         });
         return remindersForReturn;
     };
@@ -1172,9 +1199,9 @@ class UserRealmStore {
         const reminderDate = DateTime.fromMillis(reminder.date);
         const reminderTime = DateTime.fromMillis(reminder.time);
 
-        reminderDate.set({hour: reminderTime.hour});
-        reminderDate.set({minute: reminderTime.minute});
-        reminderDate.set({second: reminderTime.second});
+        reminderDate.set({ hour: reminderTime.hour });
+        reminderDate.set({ minute: reminderTime.minute });
+        reminderDate.set({ second: reminderTime.second });
 
         return reminderDate;
     }

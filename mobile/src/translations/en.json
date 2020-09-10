@@ -219,6 +219,8 @@
     "updateDoctorVisitReminder": "TODO Promenite datum i vreme pregleda",
     "doctorVisitTomorowMessage": "TODO Sutra u %TIME% imate zakazan pregled.",
     "doctorVisitTodayMessage": "TODO Danas u %TIME% imate zakazan pregled.",
+    "vaccinationMessages": "TODO U ovom periodu %NAME% treba da primi ",
+    "vaccinationAllVaccinesReceivedMessage": "TODO %NAME% je %GENDER% sve vakcine za svoj uzrast. ",
 
     "growthChartLegendSilverLabel": "-Typical values for age",
     "growthChartLegendOrangeLabel": "-Suboptimal values for age",

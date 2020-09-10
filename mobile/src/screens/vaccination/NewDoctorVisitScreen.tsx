@@ -16,8 +16,6 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { Checkbox, Snackbar } from 'react-native-paper';
 import { Measures } from '../../stores/ChildEntity';
 import { NavigationStackState, NavigationStackProp } from 'react-navigation-stack';
-import { StackActions } from 'react-navigation';
-import { navigation } from '../../app';
 import { DateTime } from 'luxon';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
@@ -57,7 +55,17 @@ export class NewDoctorVisitScreen extends Component<Props, State> {
 
     private initState = () => {
 
-        let vaccinesForCurrenPeriod = userRealmStore.getVaccinationsForCurrentPeriod();
+        let vaccinesForCurrenPeriod: Vaccine[] = [];
+        let allVaccinesForCurrenPeriod = userRealmStore.getVaccinationsForCurrentPeriod();
+
+        if(allVaccinesForCurrenPeriod.length > 0){
+            allVaccinesForCurrenPeriod.forEach(vaccine => {
+                if(vaccine.complete === false){
+                    vaccinesForCurrenPeriod.push(vaccine)
+                };
+            });
+        };
+
         let vaccinesForPreviousPeriod = userRealmStore.getPreviousVaccines();
 
         let isVaccineReceived = "";
@@ -237,7 +245,7 @@ export class NewDoctorVisitScreen extends Component<Props, State> {
                                     </View>
                                 ))
                             }
-                        </> : null
+                        </> : <Typography>Nema vakcina za ovaj period</Typography>
                 }
             </>
         )
