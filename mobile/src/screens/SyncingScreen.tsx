@@ -76,7 +76,7 @@ export class SyncingScreen extends React.Component<Props, object> {
                     <SliderBox
                         ImageComponent={FastImage}
                         images={images}
-                        autoplayInterval={100}
+                        autoplayInterval={20000}
                         sliderBoxHeight={100}
                         autoplay={20}
                         resizeMethod={'resize'}

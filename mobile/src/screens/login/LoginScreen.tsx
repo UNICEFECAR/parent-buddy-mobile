@@ -395,8 +395,8 @@ export class LoginScreen extends React.Component<Props, State & AnimationsState>
                                     />
                                     <View style={{ flex: 1 }}></View>
                                     <Image
-                                        source={require('../../themes/assets/unicef.png')}
-                                        style={{ width: '48%', maxWidth: 140, aspectRatio: 4 }}
+                                        source={require('../../themes/assets/unicefSRB.png')}
+                                        style={{ width: '48%', maxWidth: 140, aspectRatio: 2, }}
                                         resizeMode="cover"
                                     />
                                 </View>
