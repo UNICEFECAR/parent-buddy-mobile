@@ -79,7 +79,6 @@ export class ArticleScreen extends React.Component<Props, object> {
 
     public render() {
         const screenParams = this.props.navigation.state.params!;
-        console.log(screenParams.article, "screen PARAMS")
         return (
             <ThemeConsumer>
                 {(themeContext: ThemeContextValue) => (

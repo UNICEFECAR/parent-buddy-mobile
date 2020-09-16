@@ -172,7 +172,7 @@ const HomeStackNavigator = createStackNavigator({
     HomeStackNavigator_TermsScreen: {
         screen: TermsScreen,
         navigationOptions: {
-            
+
             title: translate('termsAndConditionsTitle'),
         }
     },
@@ -266,6 +266,17 @@ const HomeStackNavigator = createStackNavigator({
                 ...secondaryHomeNavigationOptions
             }
         }
+    },
+
+    HomeStackNavigator_PollsScreen: {
+        screen: PollsScreen,
+        navigationOptions: ({ navigation }: NavigationScreenConfigProps<NavigationStackProp<NavigationStackState, any>>): NavigationStackOptions => {
+            return {
+                title: navigation.state.params?.title ? navigation.state.params?.title : "",
+                ...secondaryHomeNavigationOptions
+
+            }
+        },
     },
 
     HomeStackNavigator_AllMeasurementScreen: {
@@ -534,15 +545,6 @@ const RootModalStackNavigator = createStackNavigator({
     },
     RootModalStackNavigator_PrivacyPolicyScreen: {
         screen: PrivacyPolocyScreen,
-        navigationOptions: ({ navigation }: NavigationScreenConfigProps<NavigationStackProp<NavigationStackState, any>>): NavigationStackOptions => {
-            return {
-                title: translate('termsAndConditionsTitle'),
-                ...secondaryHomeNavigationOptions
-            }
-        }
-    },
-    RootModalStackNavigator_PollsScreen: {
-        screen: PollsScreen,
         navigationOptions: ({ navigation }: NavigationScreenConfigProps<NavigationStackProp<NavigationStackState, any>>): NavigationStackOptions => {
             return {
                 title: translate('termsAndConditionsTitle'),

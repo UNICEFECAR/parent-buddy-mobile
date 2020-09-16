@@ -46,7 +46,7 @@ export class HomeScreen extends React.Component<Props, object> {
 
 
     public componentWillUnmount() {
-        
+
     }
 
     private setDefaultScreenParams() {
@@ -86,7 +86,10 @@ export class HomeScreen extends React.Component<Props, object> {
                             {(dataRealmContext: DataRealmContextValue) => (
                                 <UserRealmConsumer>
                                     {(userRealmContext: UserRealmContextValue) => (
-                                        <HomeMessages showCloseButton={true}></HomeMessages>
+                                        <>
+                                            <HomeMessages showCloseButton={true} cardType="blue" homeMessagesType="polls"></HomeMessages>
+                                            <HomeMessages showCloseButton={true} ></HomeMessages>
+                                        </>
                                     )}
                                 </UserRealmConsumer>
                             )}

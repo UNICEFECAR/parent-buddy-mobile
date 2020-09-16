@@ -84,7 +84,7 @@ export class App extends React.Component<object> {
         if (followGrowth === null) await dataRealmStore.setVariable('followGrowth', true);
         if (followDevelopment === null) await dataRealmStore.setVariable('followDevelopment', true);
         if (followDoctorVisits === null) await dataRealmStore.setVariable('followDoctorVisits', true);
-    }
+    };
 
     private addItemsToDevMenu() {
         if (__DEV__) {
