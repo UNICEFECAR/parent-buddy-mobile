@@ -16,8 +16,6 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { Checkbox, Snackbar } from 'react-native-paper';
 import { Measures } from '../../stores/ChildEntity';
 import { NavigationStackState, NavigationStackProp } from 'react-navigation-stack';
-import { StackActions } from 'react-navigation';
-import { navigation } from '../../app';
 import { DateTime } from 'luxon';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
@@ -57,7 +55,17 @@ export class NewDoctorVisitScreen extends Component<Props, State> {
 
     private initState = () => {
 
-        let vaccinesForCurrenPeriod = userRealmStore.getVaccinationsForCurrentPeriod();
+        let vaccinesForCurrenPeriod: Vaccine[] = [];
+        let allVaccinesForCurrenPeriod = userRealmStore.getVaccinationsForCurrentPeriod();
+
+        if(allVaccinesForCurrenPeriod.length > 0){
+            allVaccinesForCurrenPeriod.forEach(vaccine => {
+                if(vaccine.complete === false){
+                    vaccinesForCurrenPeriod.push(vaccine)
+                };
+            });
+        };
+
         let vaccinesForPreviousPeriod = userRealmStore.getPreviousVaccines();
 
         let isVaccineReceived = "";
@@ -225,7 +233,9 @@ export class NewDoctorVisitScreen extends Component<Props, State> {
                             {
                                 vaccinesList.map(item => (
                                     <View style={styles.vaccineContainerBody}>
-                                        <Checkbox.Android status={item.complete ? "checked" : "unchecked"} color="#2BABEE" onPress={() => this.onCheckBox(periodType, item.uuid)} />
+                                        <View>
+                                            <Checkbox.Android status={item.complete ? "checked" : "unchecked"} color="#2BABEE" onPress={() => this.onCheckBox(periodType, item.uuid)} />
+                                        </View>
                                         <View style={styles.vaccineContainerText}>
                                             <Typography style={styles.vaccineText}>
                                                 {item.title}
@@ -235,7 +245,7 @@ export class NewDoctorVisitScreen extends Component<Props, State> {
                                     </View>
                                 ))
                             }
-                        </> : null
+                        </> : <Typography>Nema vakcina za ovaj period</Typography>
                 }
             </>
         )
@@ -437,8 +447,8 @@ const styles = StyleSheet.create<NewDoctorVisitScreenStyles>({
         fontSize: moderateScale(14),
         width: moderateScale(260),
         padding: scale(5),
-        marginRight: scale(20),
-        marginLeft: moderateScale(5),
+        marginRight: scale(10),
+        marginLeft: scale(5),
         lineHeight: moderateScale(18)
     },
     vaccineContainerBody: {
