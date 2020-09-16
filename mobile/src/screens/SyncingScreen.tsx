@@ -58,21 +58,33 @@ export class SyncingScreen extends React.Component<Props, object> {
         />
         return (
             <SafeAreaView style={styles.container}>
-                <View style={{ flex: 0, marginTop: scale(20) }}>
+                {/* <View style={{ flex: 0, marginTop: scale(20) }}>
                     <Typography type={TypographyType.headingPrimary} style={{ marginBottom: 0, textAlign: 'center' }}>
                         Halo beba 
                     </Typography>
                     <Typography type={TypographyType.headingSecondary}>
                         Saputnik u roditeljstvu!
                     </Typography>
+                </View> */}
+                <View style={{ flex: 0, marginTop: scale(20) }}>
+                    <Typography type={TypographyType.headingPrimary} style={{ marginBottom: 0 }}>
+                        {translate('syncScreenText')}
+                    </Typography>
+                    <Typography type={TypographyType.headingSecondary}>
+                        {translate('syncScreenSubText')}
+                    </Typography>
                 </View>
 
                 <FastImage
-                    source={require('../themes/assets/sync_data.png')}
-                    style={{ flex: 6, height: 300, width: '100%' }}
+                    source={ require('../themes/assets/sync_data.png') }
+                    style={{ flex:1, width:'100%' }}
                     resizeMode="cover"
                 />
-                <View style={{ flex: 2}}>
+
+                <View style={{ flex: 0, marginBottom: scale(20) }}>
+                    <ActivityIndicator size="large" />
+                </View>
+                {/* <View style={{ flex: 2}}>
                     <SliderBox
                         ImageComponent={FastImage}
                         images={images}
@@ -84,18 +96,8 @@ export class SyncingScreen extends React.Component<Props, object> {
                         circleLoop
                         parentWidth={Dimensions.get('window').width}
                     />
-                </View>
-                <View style={{ flex: 0, marginTop: scale(20) }}>
-                    <Typography type={TypographyType.headingPrimary} style={{ marginBottom: 0 }}>
-                        {translate('syncScreenText')}
-                    </Typography>
-                    <Typography type={TypographyType.headingSecondary}>
-                        {translate('syncScreenSubText')}
-                    </Typography>
-                </View>
-                <View style={{ flex: 0, marginBottom: scale(20) }}>
-                    <ActivityIndicator size="large" />
-                </View>
+                </View> */}
+
                 {/* <SliderBox
                     images={this.sliderImages()}
                     sliderBoxHeight={200}
