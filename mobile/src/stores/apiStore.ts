@@ -10,6 +10,7 @@ import { Platform } from "react-native";
 import { DailyMessageEntity } from "./DailyMessageEntity";
 import { dataRealmStore } from "./dataRealmStore";
 import { UnknownError } from "../app/errors";
+import { PollsEntity } from "./PollsEntity";
 
 /**
  * Communication with API.
@@ -179,6 +180,57 @@ class ApiStore {
             };
         };
 
+        return response;
+    };
+
+    public async getPolls(): Promise<PollsResponse> {
+        const language = localize.getLanguage();
+
+        let url = `${appConfig.apiUrl}/list-webform/${language}`;
+
+        url = this.addBasicAuthForIOS(url);
+        let response: PollsResponse = {
+            data: [],
+            total: 0,
+        };
+        try {
+            let axiosResponse: AxiosResponse = await axios({
+                url: url,
+                method: 'GET',
+                responseType: 'json',
+                headers: { "Content-type": "application/json" },
+                timeout: appConfig.apiTimeout,
+                auth: {
+                    username: appConfig.apiUsername,
+                    password: appConfig.apiPassword,
+                }
+            });
+            let rawResponseJson = axiosResponse.data;
+
+            if (rawResponseJson) {
+                response.total = parseInt(rawResponseJson.total);
+                response.data = rawResponseJson.data.map((item: any): PollsEntity => {
+                    return {
+                        category: item.category,
+                        link: item.link,
+                        tags: item.tags.length ? item.tags.map((value: any) => parseInt(value)) : [],
+                        title: item.title,
+                        created_at: parseInt(item.created_at),
+                        updated_at: parseInt(item.updated_at),
+                        id: parseInt(item.id),
+                        langcode: item.langcode,
+                        type: item.type
+                    };
+                });
+            };
+
+        } catch (rejectError) {
+            const netError = new UnknownError(rejectError);
+            // dataRealmStore.setVariable('lastDataSyncError’, 'getPolls failed'  + netError.message);
+            if (appConfig.showLog) {
+                console.log(rejectError, "REJECT ERROR")
+            };
+        };
         return response;
     };
 
@@ -932,6 +984,8 @@ interface GetMilestoneArgs {
     updatedFromDate?: number;
 }
 
+
+
 interface GetDailyMessagesArgs {
     /**
      * Defaults to 10
@@ -952,6 +1006,11 @@ interface GetDailyMessagesArgs {
 export interface ContentResponse {
     total: number;
     data: ContentEntity[];
+}
+
+interface PollsResponse {
+    total: number,
+    data: PollsEntity[];
 }
 
 export interface MilestonesResponse {

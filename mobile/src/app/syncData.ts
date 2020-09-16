@@ -8,6 +8,7 @@ import { BasicPageEntity, BasicPagesEntitySchema } from "../stores/BasicPageEnti
 import { MilestoneEntity, MilestoneEntitySchema } from "../stores/MilestoneEntity";
 import { DailyMessageEntitySchema } from "../stores/DailyMessageEntity";
 import { UnknownError } from "./errors";
+import { PollsEntity, PollsEntitySchema } from "../stores/PollsEntity";
 
 /**
  * Sync data between API and realm.
@@ -181,6 +182,30 @@ class SyncData {
         };
 
         syncDataReport.push(`BASIC PAGES = Total:${basicPages.data.length}`);
+
+
+        // DELETE POLLS 
+        dataRealmStore.deletePolls();
+
+        // DOWNLOAD POLLS
+        const polls = await apiStore.getPolls();
+        // save polls
+        if (polls?.data && polls.data.length > 0) {
+            const pollsCreateOrUpdate: Promise<PollsEntity>[] = [];
+            polls.data.forEach((value) => {
+                pollsCreateOrUpdate.push(dataRealmStore.createOrUpdate(PollsEntitySchema, value));
+            });
+            try {
+                await Promise.all(pollsCreateOrUpdate);
+                if (appConfig.showLog) {
+                    console.log('syncData.sync(): Saved polls');
+                };
+            } catch (e) {
+                console.log(e, "e")
+                const netError = new UnknownError(e);
+                // dataRealmStore.setVariable('lastDataSyncError' ‘PollsCreateOrUpdate failed, ’ + netError.message);
+            };
+        };
 
         // DOWNLOAD COVER IMAGES
         let numberOfFailedImageDownloads: number | undefined = 0;

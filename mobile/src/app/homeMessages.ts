@@ -88,6 +88,41 @@ class HomeMessages {
         return rval;
     }
 
+    public getHomePollMessages(): Message[]{
+        let rval: Message[] = [];
+        // Polls messages 
+        const pollsMessages = this.getPollsMessages();
+        rval = rval.concat(pollsMessages);
+
+        return rval;
+    }
+
+    private getPollsMessages(): Message[] {
+        let rval: Message[] = [];
+
+        let activePolls = dataRealmStore.getActivePolls();
+
+        if(activePolls.length === 0) return [];
+
+        activePolls.forEach(poll => {
+            rval.push({
+                text: poll.title,
+                iconType: IconType.message,
+                button: {
+                    text: translate('goToPollsBtn'),
+                    type: RoundedButtonType.hollowWhite,
+                    showArrow: true,
+                    onPress: () => {
+                        navigation.navigate('HomeStackNavigator_PollsScreen', {polls: poll, title: poll.title});
+                    }
+                }
+            });
+        });
+
+
+        return rval;
+    }
+
     private getDailyMessage(): Message | null {
         let rval: Message | null = null;
 

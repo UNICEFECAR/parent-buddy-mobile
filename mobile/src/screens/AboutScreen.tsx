@@ -12,6 +12,8 @@ import HTML from 'react-native-render-html';
 import { RoundedButton } from '../components';
 import { RoundedButtonType } from '../components/RoundedButton';
 import { navigation } from '../app';
+import { PollsScreen } from './PollsScreen';
+import { PollsEntitySchema, PollsEntity } from '../stores/PollsEntity';
 
 export interface AboutScreenParams {
     showSearchInput?: boolean;
@@ -83,6 +85,23 @@ export class AboutScreen extends React.Component<Props, State> {
         Linking.openURL('https://www.halobeba.rs/');
     }
 
+    private goToPolls(){
+
+        const polls = dataRealmStore.realm?.objects<PollsEntity>(PollsEntitySchema.name);
+
+        if(polls){
+
+            const appPoll = polls.filtered(`category == "Application Feedback"`).find(item => item.tags.length === 0);
+
+            if(appPoll){
+                this.props.navigation.navigate(
+                    "HomeStackNavigator_PollsScreen", 
+                    {polls: appPoll, title: translate('surveyParticipateBtn')}
+                );
+            };
+        };
+    };
+
     private gotoTermsScreen() {
         let screenParams: TermsScreenParams = {
             hideCheckboxes: true,
@@ -111,7 +130,7 @@ export class AboutScreen extends React.Component<Props, State> {
                         />
 
                         <View>
-                            <RoundedButton type={RoundedButtonType.purple} text={translate('surveyParticipateBtn')} onPress={() => {}} />
+                            <RoundedButton type={RoundedButtonType.purple} text={translate('surveyParticipateBtn')} onPress={() => this.goToPolls()} />
                             <TextButton 
                                 style={{marginTop: scale(20), marginBottom: scale(20)}} 
                                 color={TextButtonColor.purple}
