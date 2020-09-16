@@ -113,7 +113,7 @@ class HomeMessages {
                     type: RoundedButtonType.hollowWhite,
                     showArrow: true,
                     onPress: () => {
-                        navigation.navigate('HomeStackNavigator_PollsScreen', {polls: poll});
+                        navigation.navigate('HomeStackNavigator_PollsScreen', {polls: poll, title: poll.title});
                     }
                 }
             });
