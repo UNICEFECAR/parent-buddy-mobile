@@ -96,7 +96,7 @@ export class AboutScreen extends React.Component<Props, State> {
             if(appPoll){
                 this.props.navigation.navigate(
                     "HomeStackNavigator_PollsScreen", 
-                    {polls: appPoll}
+                    {polls: appPoll, title: translate('surveyParticipateBtn')}
                 );
             };
         };

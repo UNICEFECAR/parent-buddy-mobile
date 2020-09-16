@@ -3,6 +3,7 @@ import { ViewStyle, Text, View, Dimensions } from 'react-native';
 import { NavigationStackProp, NavigationStackState, NavigationStackOptions } from 'react-navigation-stack';
 import { ThemeContextValue, ThemeConsumer } from '../themes/ThemeContext';
 import NetInfo from "@react-native-community/netinfo";
+import { NavigationScreenConfigProps } from 'react-navigation';
 
 // @ts-ignore
 import WebView from 'react-native-webview';
@@ -36,7 +37,12 @@ export class PollsScreen extends React.Component<Props, State> {
         this.setDefaultScreenParams();
         this.initState();
     }
-
+   public static navigationOptions = ({ navigation }: NavigationScreenConfigProps<NavigationStackProp<NavigationStackState>>): NavigationStackOptions => {
+        return {
+            // API: https://bit.ly/2koKtOw
+            headerTitle: "asdasdasdas",
+        };
+    };
     private initState() {
 
         const polls = this.props.navigation.state.params?.polls;
