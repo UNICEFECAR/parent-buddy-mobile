@@ -138,6 +138,8 @@ export class BirthDataScreen extends React.Component<Props, State> {
             let birthDateTimeStamp = birthDate?.toMillis()
             let planetBirthDateTimeStamp = plannedTermDate?.toMillis()
     
+            let isChildMeasured: boolean = true;
+
             if (currentChild.measures !== null && currentChild.measures !== "" && currentChild.measures !== "[]") {
                 measures = JSON.parse(currentChild.measures);
     
@@ -152,7 +154,7 @@ export class BirthDataScreen extends React.Component<Props, State> {
                 measures[0].measurementDate = birthDateTimeStamp;
             } else {
                 if(weight !== "" && length !== "")
-                    measures.push({ length: length, weight: weight, measurementDate: birthDateTimeStamp })
+                    measures.push({ length: length, weight: weight, measurementDate: birthDateTimeStamp, isChildMeasured: isChildMeasured,  didChildGetVaccines: false})
             }
     
             userRealmStore.realm?.write(() => {

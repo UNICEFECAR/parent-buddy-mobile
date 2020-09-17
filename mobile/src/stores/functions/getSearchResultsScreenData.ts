@@ -1,9 +1,9 @@
-import { SearchResultsScreenDataResponse, dataRealmStore } from "./dataRealmStore"
-import { ContentEntity } from ".";
-import { ContentEntitySchema } from "./ContentEntity";
-import { TermChildren, VocabulariesAndTermsResponse } from "./apiStore";
-import { ChildGender } from "./ChildEntity";
-import { userRealmStore } from "./userRealmStore";
+import { SearchResultsScreenDataResponse, dataRealmStore } from "../dataRealmStore"
+import { ContentEntity } from "..";
+import { ContentEntitySchema } from "../ContentEntity";
+import { TermChildren, VocabulariesAndTermsResponse } from "../apiStore";
+import { ChildGender } from "../ChildEntity";
+import { userRealmStore } from "../userRealmStore";
 
 
 export function getSearchResultsScreenData(searchTerm: string): SearchResultsScreenDataResponse {

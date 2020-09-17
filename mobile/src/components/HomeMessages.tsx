@@ -108,6 +108,11 @@ export class HomeMessages extends React.Component<Props, State> {
             rval.color = "white";
         }
 
+        if (message.iconType === IconType.reminder) {
+            rval.color = '#AA40BF';
+        }
+
+        // WARNING: This should be last
         if (this.props.cardType === "purple" || this.props.cardType === "blue") {
             rval.color = 'white';
         }
@@ -126,7 +131,7 @@ export class HomeMessages extends React.Component<Props, State> {
         if (message.iconType === IconType.syringe) rval = 'syringe';
         if (message.iconType === IconType.user) rval = 'user';
         if (message.iconType === IconType.message) rval = 'comments'
-
+        if (message.iconType === IconType.reminder) rval = 'bell';
 
         return rval;
     }
@@ -188,7 +193,7 @@ export class HomeMessages extends React.Component<Props, State> {
         }
         this.oldMessages = messages;
 
-        // Sre messages hidden?
+        // Are messages hidden?
         if (this.props.homeMessagesType !== "polls" && this.state.messagesAreHidden) {
             return (
                 <TextButton onPress={() => { this.onShowMessagesPress() }} style={{ justifyContent: 'center', marginBottom: scale(15) }} color={TextButtonColor.purple}>{translate('showHomeMessages')}</TextButton>
@@ -254,6 +259,17 @@ export class HomeMessages extends React.Component<Props, State> {
                             />
                         ) : null}
 
+
+                        {message.textButton ? (
+                            <TextButton 
+                                textStyle={{textAlign: 'center', marginTop: 10}}
+                                color={message.textButton.color}
+                                onPress={() => {if (message.textButton?.onPress) message.textButton.onPress()}}
+                            >
+                                {message.textButton.text}
+                            </TextButton>
+                        ) : null}
+
                         {messages?.length !== (index + 1) ? (
                             <View style={{ height: scale(15) }} />
                         ) : null}
@@ -316,7 +332,12 @@ export type Message = {
     subText?: string;
     iconType?: IconType;
     button?: {
-        type: RoundedButtonType.purple | RoundedButtonType.hollowPurple | RoundedButtonType.hollowWhite,
+        type: RoundedButtonType.purple | RoundedButtonType.hollowPurple | RoundedButtonType.default,
+        text: string;
+        onPress?: () => void
+    };
+    textButton?: {
+        color: TextButtonColor,
         text: string;
         showArrow?: boolean;
         onPress?: () => void
@@ -332,4 +353,5 @@ export enum IconType {
     checked = 'checked',
     user = 'user',
     message = 'message'
+    reminder = 'reminder',
 };

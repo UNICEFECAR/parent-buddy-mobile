@@ -14,7 +14,7 @@ import { dataRealmStore, ContentEntity } from '../../stores';
 import { content } from '../../app';
 import { SearchResultsScreenDataResponse } from '../../stores/dataRealmStore';
 import { Button } from 'react-native-paper';
-import { getSearchResultsScreenData } from '../../stores/getSearchResultsScreenData';
+import { getSearchResultsScreenData } from '../../stores/functions/getSearchResultsScreenData';
 
 export interface SearchResultsScreenParams {
     searchTerm?: string;

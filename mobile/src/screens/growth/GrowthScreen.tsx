@@ -122,7 +122,8 @@ export class GrowthScreen extends Component<Props, State> {
         };
 
         let childAgeInDays: number | null = null;
-
+        
+        let allMeasures: Measures[] = [];
         let measures: Measures[] = [];
         let periodIntroductionText: string = '';
         let defaultMessage = "";
@@ -160,7 +161,9 @@ export class GrowthScreen extends Component<Props, State> {
 
             // if measures is empty return just box for adding a new measure 
             if (currentChild?.measures !== "" && currentChild.measures !== undefined && currentChild.measures !== null) {
-                measures = JSON.parse(currentChild?.measures);
+                allMeasures = JSON.parse(currentChild?.measures);
+
+                measures = allMeasures.filter(item => parseInt(item.length) > 0 && parseInt(item.weight) > 0);
 
                 let lastMeasurementDate: string | undefined = undefined;
                 let lastMeasuresWeight: number = 0;
