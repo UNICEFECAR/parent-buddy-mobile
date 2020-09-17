@@ -51,7 +51,6 @@ export class SearchResultsScreen extends React.Component<Props, State> {
 
     private gotoArticle(item: ListCardItem, categoryName: string) {
         const article = dataRealmStore.getContentFromId(item.id);
-        console.log(article);
         if (!article) return;
 
         const pushAction = StackActions.push({

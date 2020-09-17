@@ -55,7 +55,7 @@ export class HomeMessages extends React.Component<Props, State> {
             rval.color = 'white';
         }
 
-        if(this.props.cardType === "blue"){
+        if (this.props.cardType === "blue") {
             rval.fontSize = scale(20);
             rval.fontWeight = "bold";
         }
@@ -64,7 +64,7 @@ export class HomeMessages extends React.Component<Props, State> {
     }
 
     private getIconSolidStyle(message: Message): boolean {
-        if(message.iconType === IconType.message){
+        if (message.iconType === IconType.message) {
             return true;
         }
 
@@ -104,7 +104,7 @@ export class HomeMessages extends React.Component<Props, State> {
             rval.color = '#ED2223';
         }
 
-        if(message.iconType === IconType.message){
+        if (message.iconType === IconType.message) {
             rval.color = "white";
         }
 
@@ -176,8 +176,8 @@ export class HomeMessages extends React.Component<Props, State> {
         // Get new messages
         let messages = homeMessages.getMessages();
 
-        if(messagesType){
-            if(messagesType === "polls"){
+        if (messagesType) {
+            if (messagesType === "polls") {
                 messages = homeMessages.getHomePollMessages();
             }
         }
@@ -208,84 +208,84 @@ export class HomeMessages extends React.Component<Props, State> {
 
         let cardType = styles.cardWhite;
 
-        if(this.props.cardType === "purple"){
+        if (this.props.cardType === "purple") {
             cardType = styles.cardPurple
         }
 
-        if(this.props.cardType === "blue"){
-             cardType = styles.cardBlue
+        if (this.props.cardType === "blue") {
+            cardType = styles.cardBlue
         }
 
         return (
             messages?.length > 0 && (
-            <View style={[
-                styles.container,
-                cardType,
-                this.props.style
-            ]}>
-                {messages?.map((message, index) => (
-                    <View style={{ paddingRight: moderateScale(22) }}>
-                        {message.text && (
-                            <View style={{ flexDirection: 'row' }}>
-                                {message.iconType ? (
-                                    <IconFontAwesome5
-                                        name={this.getIconName(message)}
-                                        style={this.getIconStyle(message)}
-                                        solid={this.getIconSolidStyle(message)}
-                                    />
-                                ) : null}
-
-                                <View style={{ flex: 1 }}>
-                                    <Typography style={[this.getTextStyle(), message.textStyle]}>
-                                        {message.text}
-                                    </Typography>
-
-                                    {message.subText ? (
-                                        <Typography style={{ fontSize: moderateScale(14), color: (this.props.cardType === 'white' ? 'grey' : 'white') }} type={TypographyType.bodyRegular}>
-                                            {message.subText}
-                                        </Typography>
+                <View style={[
+                    styles.container,
+                    cardType,
+                    this.props.style
+                ]}>
+                    {messages?.map((message, index) => (
+                        <View style={{ paddingRight: moderateScale(22) }}>
+                            {message.text && (
+                                <View style={{ flexDirection: 'row' }}>
+                                    {message.iconType ? (
+                                        <IconFontAwesome5
+                                            name={this.getIconName(message)}
+                                            style={this.getIconStyle(message)}
+                                            solid={this.getIconSolidStyle(message)}
+                                        />
                                     ) : null}
+
+                                    <View style={{ flex: 1 }}>
+                                        <Typography style={[this.getTextStyle(), message.textStyle]}>
+                                            {message.text}
+                                        </Typography>
+
+                                        {message.subText ? (
+                                            <Typography style={{ fontSize: moderateScale(14), color: (this.props.cardType === 'white' ? 'grey' : 'white') }} type={TypographyType.bodyRegular}>
+                                                {message.subText}
+                                            </Typography>
+                                        ) : null}
+                                    </View>
                                 </View>
-                            </View>
-                        )}
+                            )}
 
-                        {message.button ? (
-                            <RoundedButton
-                                style={{ width: '100%', marginTop: message.text ? scale(10) : 0, marginBottom: scale(10), marginLeft: moderateScale(11) }}
-                                type={message.button.type}
-                                showArrow={message.button.showArrow}
-                                text={message.button.text}
-                                onPress={() => { if (message.button?.onPress) message.button?.onPress() }}
-                            />
-                        ) : null}
+                            {message.button ? (
+                                <RoundedButton
+                                    style={{ width: '100%', marginTop: message.text ? scale(10) : 0, marginBottom: scale(10), marginLeft: moderateScale(11) }}
+                                    type={message.button.type}
+                                    showArrow={message.button.showArrow}
+                                    text={message.button.text}
+                                    onPress={() => { if (message.button?.onPress) message.button?.onPress() }}
+                                />
+                            ) : null}
 
 
-                        {message.textButton ? (
-                            <TextButton 
-                                textStyle={{textAlign: 'center', marginTop: 10}}
-                                color={message.textButton.color}
-                                onPress={() => {if (message.textButton?.onPress) message.textButton.onPress()}}
-                            >
-                                {message.textButton.text}
-                            </TextButton>
-                        ) : null}
+                            {message.textButton ? (
+                                <TextButton
+                                    textStyle={{ textAlign: 'center', marginTop: 10 }}
+                                    color={message.textButton.color}
+                                    onPress={() => { if (message.textButton?.onPress) message.textButton.onPress() }}
+                                >
+                                    {message.textButton.text}
+                                </TextButton>
+                            ) : null}
 
-                        {messages?.length !== (index + 1) ? (
-                            <View style={{ height: scale(15) }} />
-                        ) : null}
-                    </View>
-                ))}
+                            {messages?.length !== (index + 1) ? (
+                                <View style={{ height: scale(15) }} />
+                            ) : null}
+                        </View>
+                    ))}
 
-                {this.props.showCloseButton ? (
-                    <IconButton
-                        icon="close"
-                        color={this.props.cardType === "white" ? 'grey' : 'white'}
-                        size={moderateScale(20)}
-                        style={{ position: 'absolute', right: scale(5), top: scale(5) }}
-                        onPress={() => { this.onCloseButtonPress() }}
-                    />
-                ) : null}
-            </View>
+                    {this.props.showCloseButton ? (
+                        <IconButton
+                            icon="close"
+                            color={this.props.cardType === "white" ? 'grey' : 'white'}
+                            size={moderateScale(20)}
+                            style={{ position: 'absolute', right: scale(5), top: scale(5) }}
+                            onPress={() => { this.onCloseButtonPress() }}
+                        />
+                    ) : null}
+                </View>
             )
         );
     }
@@ -332,8 +332,9 @@ export type Message = {
     subText?: string;
     iconType?: IconType;
     button?: {
-        type: RoundedButtonType.purple | RoundedButtonType.hollowPurple | RoundedButtonType.default,
+        type: RoundedButtonType.purple | RoundedButtonType.hollowPurple | RoundedButtonType.default | RoundedButtonType.hollowWhite,
         text: string;
+        showArrow?: boolean,
         onPress?: () => void
     };
     textButton?: {
@@ -352,6 +353,6 @@ export enum IconType {
     heart = 'heart',
     checked = 'checked',
     user = 'user',
-    message = 'message'
+    message = 'message',
     reminder = 'reminder',
 };

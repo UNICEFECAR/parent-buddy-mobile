@@ -222,7 +222,7 @@
     "doctorVisitTomorowMessage": "Sutra u %TIME% imate zakazan pregled.",
     "doctorVisitTodayMessage": "Danas u %TIME% imate zakazan pregled.",
     "vaccinationMessages": "U ovom periodu %NAME% treba da primi ",
-    "vaccinationAllVaccinesReceivedMessage": "%NAME% je %GENDER% sve vakcine za svoj uzrast. ",
+    "vaccinationAllVaccinesReceivedMessage": "%NAME% je %RECEIVED% sve vakcine za svoj uzrast.",
 
     "growthChartLegendSilverLabel": " - Uobičajene vrednosti za uzrast",
     "growthChartLegendOrangeLabel": " - Odstupajuće vrednosti za uzrast",
