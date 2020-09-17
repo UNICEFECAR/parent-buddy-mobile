@@ -6,9 +6,14 @@ import { DateTime } from 'luxon';
 import { translate } from "../translations/translate";
 import { RoundedButtonType } from "../components/RoundedButton";
 import { navigation } from ".";
-import { translateData, TranslateDataHealthCheckPeriods, HealthCheckPeriod, TranslateDataDevelopmentPeriods } from "../translationsData/translateData";
+import { translateData, TranslateDataGrowthPeriodsMessages, TranslateDataGrowthMessagesPeriod, TranslateDataDevelopmentPeriods, TranslateDataImmunizationsPeriod, TranslateDataImmunizationsPeriods } from "../translationsData/translateData";
 import { utils } from "./utils";
 import { Measures } from "../stores/ChildEntity";
+import { getImmunizationPeriodForDoctorVisitPeriod } from "../translationsData/translationsDataUtils";
+import { DoctorVisitCardButtonType } from "../components/doctor-visit/DoctorVisitCard";
+import { NewDoctorVisitScreenType } from "../screens/vaccination/NewDoctorVisitScreen";
+import { TextButtonColor } from "../components/TextButton";
+import { Vaccine } from "../components/vaccinations/oneVaccinations";
 
 /**
  * Home messages logic is here.
@@ -84,6 +89,148 @@ class HomeMessages {
             const updateMilestonesMessage = this.getUpdateMilestonesMessage();
             if (updateMilestonesMessage) rval.push(updateMilestonesMessage);
         }
+
+        // Doctor visits, add reminders messages
+        if (settingsNotificationsApp && settingsFollowDoctorVisits) {
+            const doctorVisitAddReminderMessages = this.getDoctorVisitAddReminderMessages();
+            if (doctorVisitAddReminderMessages.length > 0) rval = rval.concat(doctorVisitAddReminderMessages);
+        }
+
+        // Doctor visits, show reminders messages
+        if (settingsNotificationsApp && settingsFollowDoctorVisits) {
+            const doctorVisitShowRemindersMessages = this.getDoctorVisitShowRemindersMessages();
+            if (doctorVisitShowRemindersMessages.length > 0) rval = rval.concat(doctorVisitShowRemindersMessages);
+        }
+
+        // Doctor visits, show missed reminders messages
+        if (settingsNotificationsApp && settingsFollowDoctorVisits) {
+            const doctorVisitMissedRemindersMessages = this.getDoctorVisitMissedRemindersMessages();
+            if (doctorVisitMissedRemindersMessages.length > 0) rval = rval.concat(doctorVisitMissedRemindersMessages);
+        }
+
+        if (settingsNotificationsApp && settingsFollowDoctorVisits) {
+            const getVaccinationMessages = this.getVaccinationMessage();
+            if (getVaccinationMessages) rval.push(getVaccinationMessages);
+        }
+
+        return rval;
+    }
+
+    private getVaccinationMessage(): Message | null {
+        let rval: Message | null = null;
+        let nonRecivedVaccinations: Vaccine[] = [];
+
+        const immunizationsPeriods = translateData('immunizationsPeriods') as (TranslateDataImmunizationsPeriods | null);
+        const childAgeInDays = userRealmStore.getCurrentChildAgeInDays();
+
+        if (childAgeInDays) {
+            let currentImmunizationPeriod = immunizationsPeriods?.find(period => period.notificationDayStart <= childAgeInDays && period.notificationDayEnd >= childAgeInDays);
+
+            let recivedVaccinations = userRealmStore.getAllReceivedVaccines();
+            let messageFinal = "";
+            let childName = userRealmStore.getCurrentChild()?.name;
+            let genderStringSerbian = userRealmStore.getCurrentChild()?.gender === "boy" ? "primio" : "primila";
+            let recivedVacinationDate: number[] = [];
+
+            if (currentImmunizationPeriod && currentImmunizationPeriod.vaccines && currentImmunizationPeriod.vaccines.length > 0) {
+                if (recivedVaccinations) {
+
+                    let recivedVaccinationIds: string[] = [];
+                    recivedVaccinations.forEach(item => {
+                        item.uuid.forEach(uid => {
+                            recivedVaccinationIds.push(uid.toString());
+                        });
+                    });
+
+                    currentImmunizationPeriod.vaccines?.map(vaccine => {
+                        let complete = true;
+
+                        if (recivedVaccinationIds.indexOf(vaccine.uuid) === -1) {
+                            complete = false;
+                        }else{
+                            if(recivedVaccinations.find(item => item.uuid.find(uuid => vaccine.uuid))?.date){
+                                let date = recivedVaccinations.find(item => item.uuid.find(uuid => vaccine.uuid))?.date;
+                                if(date){
+                                    recivedVacinationDate.push(date)
+                                };
+                            };
+                        };
+
+                        if (!complete) {
+                            nonRecivedVaccinations.push({
+                                complete: false,
+                                hardcodedArticleId: vaccine.hardcodedArticleId,
+                                title: vaccine.title,
+                                uuid: vaccine.uuid,
+                            })
+                        }
+                    });
+
+                    if (nonRecivedVaccinations.length > 0) {
+                        // SET messageVaccines
+                        messageFinal =  translate('vaccinationMessages').replace('%NAME%', utils.upperCaseFirstLetter(childName ? childName : ""));
+                        let messageVaccines: string | null = null;
+
+                        messageVaccines = nonRecivedVaccinations.map((vaccine) => {
+                            return '• ' + vaccine.title;
+                        }).join("\n");
+
+                        messageFinal += '\n' + messageVaccines;
+                    } else {
+
+                        // If last vaccination checked this month get message 10 days from days of last received vaccination 
+
+                        let currentDate = DateTime.local();
+                        let currentMonth = currentDate.month;
+                        let currentDayInMonth = currentDate.day;
+
+                        let lastReceivedVaccinationMonth = recivedVacinationDate.length > 0 ? recivedVacinationDate.sort((a,b) => a - b) : null;
+
+                        if(lastReceivedVaccinationMonth){
+
+                            let lastVaccinationDay = DateTime.fromMillis(lastReceivedVaccinationMonth[lastReceivedVaccinationMonth.length - 1]).day
+                            let lastVaccinationMonth = DateTime.fromMillis(lastReceivedVaccinationMonth[lastReceivedVaccinationMonth.length - 1]).month;
+
+                            if(currentMonth === lastVaccinationMonth){
+                                if(
+                                    currentDayInMonth - lastVaccinationDay >= 0 && 
+                                    currentDayInMonth - lastVaccinationDay <= 10
+                                ){
+                                    messageFinal =  translate('vaccinationAllVaccinesReceivedMessage').replace('%NAME%', utils.upperCaseFirstLetter(childName ? childName : "")).replace('%GENDER%', genderStringSerbian);
+                                }
+                            }else{
+                                // If last vaccination not received this month get message 10 days from month start 
+                                if(currentDayInMonth <= 10){
+                                    messageFinal =  translate('vaccinationAllVaccinesReceivedMessage').replace('%NAME%', utils.upperCaseFirstLetter(childName ? childName : "")).replace('%GENDER%', genderStringSerbian);
+                                };
+                            };
+                        };
+                    };
+                } else {
+                    nonRecivedVaccinations = currentImmunizationPeriod.vaccines.map(item => {
+                        return {
+                            complete: false,
+                            hardcodedArticleId: item.hardcodedArticleId,
+                            title: item.title,
+                            uuid: item.uuid,
+                        };
+                    });
+                };
+            };
+
+            let dayInMonth = DateTime.local().day;
+
+
+            if (messageFinal !== "") {
+                rval = {
+                    text: messageFinal,
+                    iconType: IconType.syringe
+                };
+            }
+
+
+        };
+
 
         return rval;
     }
@@ -500,23 +647,143 @@ class HomeMessages {
         return rval;
     }
 
-    private currentHealthCheckPeriod(): HealthCheckPeriod | null {
-        let rval: HealthCheckPeriod | null = null;
+    private getDoctorVisitAddReminderMessages(): Message[] {
+        let rval: Message[] = [];
+
+        // VALIDATION
+        if (!this.childAgeInDays || this.childAgeInDays === 0) {
+            return [];
+        }
+
+        // SET shouldAddRemindersForDoctorVisits
+        const shouldAddRemindersForDoctorVisits = userRealmStore.shouldAddRemindersForDoctorVisits(this.childAgeInDays);
+
+        // CREATE MESSAGES
+        const allMessages: Message[] = [];
+
+        shouldAddRemindersForDoctorVisits.forEach((doctorVisit) => {
+            if (doctorVisit.shouldAddReminder) {
+                allMessages.push({
+                    text: translate('doctorVisitsPlanDoctorVisitInThisMonth'),
+                    iconType: IconType.reminder,
+                    button: {
+                        text: translate('doctorVisitsAddReminderButton'),
+                        type: RoundedButtonType.purple,
+                        onPress: () => {
+                            navigation.navigate('HomeStackNavigator_AddDoctorVisitReminderScreen');
+                        },
+                    },
+                });
+            }
+        });
+
+        if (allMessages.length > 0) {
+            rval.push(allMessages[0]);
+        }
+
+        return rval;
+    }
+
+    private getDoctorVisitShowRemindersMessages(): Message[] {
+        const rval: Message[] = [];
+
+        const nextActiveReminder = userRealmStore.getActiveReminders()[0];
+
+        if (nextActiveReminder) {
+
+            const reminderDateTime = DateTime.fromMillis(nextActiveReminder.date);
+            const reminderPeriodId = userRealmStore.getReminderPeriod(reminderDateTime);
+
+            // SET messageFinal
+            let messageFinal = translate('doctorVisitsYouHaveAReminder').replace('%DATE%', reminderDateTime.toLocaleString(DateTime.DATE_MED));
+
+            let dateDiffFromNow = Math.round(reminderDateTime.diffNow('day').days);
+
+            if (dateDiffFromNow === 0) {
+                // "doctorVisitTomorowMessage": "TODO Sutra u %TIME% imate zakazan pregled.",
+                messageFinal = translate('doctorVisitTodayMessage').replace('%TIME%', DateTime.fromMillis(nextActiveReminder.time).toISOTime().substr(0, 5));
+            };
+
+            if (dateDiffFromNow === 1) {
+                messageFinal = translate('doctorVisitTomorowMessage').replace('%TIME%', DateTime.fromMillis(nextActiveReminder.time).toISOTime().substr(0, 5));
+            }
+
+            // SET immunizationPeriod
+            // let immunizationPeriod: TranslateDataImmunizationsPeriod | null = null;
+
+            // if (reminderPeriodId) {
+            //     immunizationPeriod = getImmunizationPeriodForDoctorVisitPeriod(reminderPeriodId);
+            // }
+
+            // // SET messageVaccines
+            // if (immunizationPeriod) {
+            //     let messageVaccines: string | null = null;
+
+            //     messageVaccines = immunizationPeriod.vaccines.map((vaccine) => {
+            //         return '• ' + vaccine.title;
+            //     }).join("\n");
+
+            //     messageFinal += '\n' + messageVaccines;
+            // }
+
+            // CREATE MESSAGE
+            rval.push({
+                text: messageFinal,
+                iconType: IconType.reminder,
+                textButton: {
+                    color: TextButtonColor.purple,
+                    text: translate('updateDoctorVisitReminder'),
+                    onPress: () => { navigation.navigate('HomeStackNavigator_AddDoctorVisitReminderScreen', { reminder: nextActiveReminder }) },
+                },
+            });
+        }
+
+        return rval;
+    }
+
+    private getDoctorVisitMissedRemindersMessages(): Message[] {
+        const rval: Message[] = [];
+        const missedReminders = userRealmStore.getMissedReminders();
+        missedReminders.forEach((missedReminder) => {
+            const reminderDateTime = DateTime.fromMillis(missedReminder.date);
+            let message = translate('doctorVisitsMissedReminder').replace('%DATE%', reminderDateTime.toLocaleString(DateTime.DATE_MED));
+
+            rval.push({
+                text: message,
+                iconType: IconType.reminder,
+                button: {
+                    type: RoundedButtonType.purple,
+                    text: translate('doctorVisitsAddMeasuresButton'),
+                    onPress: () => { navigation.navigate('HomeStackNavigator_NewDoctorVisitScreen', { screenType: NewDoctorVisitScreenType.HeltCheckUp }) },
+                },
+                textButton: {
+                    color: TextButtonColor.purple,
+                    text: translate('updateDoctorVisitReminder'),
+                    onPress: () => { navigation.navigate('HomeStackNavigator_AddDoctorVisitReminderScreen', { reminder: missedReminder }) },
+                }
+            });
+        });
+
+        return rval;
+    }
+
+    private currentHealthCheckPeriod(): TranslateDataGrowthMessagesPeriod | null {
+        let rval: TranslateDataGrowthMessagesPeriod | null = null;
 
         // Validation
         if (this.childAgeInDays === undefined || this.childAgeInDays == 0) return null;
 
-        // Set healthCheckPeriods
-        let healthCheckPeriods = translateData('healthCheckPeriods') as (TranslateDataHealthCheckPeriods | null);
+        // Set growthPeriodsMessages
+        let growthPeriodsMessages = translateData('growthPeriodsMessages') as (TranslateDataGrowthPeriodsMessages | null);
 
-        if (!healthCheckPeriods || healthCheckPeriods.length === 0) {
+        if (!growthPeriodsMessages || growthPeriodsMessages.length === 0) {
             return null;
         }
 
-        // Go over all healthCheckPeriods
+        // Go over all growthPeriodsMessages
         const childAgeInDays = this.childAgeInDays;
 
-        healthCheckPeriods.forEach((period) => {
+        growthPeriodsMessages.forEach((period) => {
             if (
                 childAgeInDays >= period.showGrowthMessageInDays.from
                 && childAgeInDays <= period.showGrowthMessageInDays.to
@@ -528,7 +795,7 @@ class HomeMessages {
         return rval;
     }
 
-    private measuresForHealthCheckPeriod(healthCheckPeriod: HealthCheckPeriod | null): Measures | null {
+    private measuresForHealthCheckPeriod(healthCheckPeriod: TranslateDataGrowthMessagesPeriod | null): Measures | null {
         let rval: Measures | null = null;
 
         // Validation

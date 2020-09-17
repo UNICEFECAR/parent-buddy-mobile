@@ -22,15 +22,21 @@ type TranslateDataKey = keyof typeof en;
 
 export type TranslateDataDevelopmentPeriods = typeof en['developmentPeriods'];
 export type TranslateDataGrowthPeriods = typeof en['growthPeriods'];
-export type TranslateDataHealthCheckPeriods = typeof en['healthCheckPeriods'];
-export type HealthCheckPeriod = TranslateDataHealthCheckPeriods[0];
+export type TranslateDataGrowthPeriodsMessages = typeof en['growthPeriodsMessages'];
+export type TranslateDataGrowthMessagesPeriod = TranslateDataGrowthPeriodsMessages[0];
+export type TranslateDataDoctorVisitPeriods = typeof en['doctorVisitPeriods'];
+export type TranslateDataDoctorVisitPeriod = TranslateDataDoctorVisitPeriods[0];
+export type TranslateDataImmunizationsPeriods = typeof en['immunizationsPeriods'];
+export type TranslateDataImmunizationsPeriod = TranslateDataImmunizationsPeriods[0];
 export type TranslateDataInterpretationWeightForHeight = typeof en['interpretationWeightForHeight'];
 export type TranslateDataInterpretationLenghtForAge = typeof en['interpretationLenghtForAge'];
 
 type TranslateDataValue =
     TranslateDataDevelopmentPeriods
     | TranslateDataGrowthPeriods
-    | TranslateDataHealthCheckPeriods
+    | TranslateDataGrowthPeriodsMessages
+    | TranslateDataDoctorVisitPeriods
+    | TranslateDataImmunizationsPeriods
     | TranslateDataInterpretationWeightForHeight
     | TranslateDataInterpretationLenghtForAge
     | null;

@@ -84,7 +84,7 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
             homeMessageAfter: '%CHILD% ima 3 meseca',
             moreAboutPeriodArticleIdMale: 3486,
             moreAboutPeriodArticleIdFemale: 3481,
-            subtitle: '3. i 4. mesec',    
+            subtitle: '3. i 4. mesec',
             description: `
 <p>
 Ovo je period raznovrsnih iskustava
@@ -407,71 +407,183 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
             text: 'Dete od treće godine ujednačeno raste. Dete u visini dobija  5-7,5 cm, a u težini 2-3 kg godišnje. ',
         },
     ],
-    healthCheckPeriods: [
+    growthPeriodsMessages: [
         {
             period: 'Na rodjenju',
-            childAgeInDays: {from:0, to:30},
-            showGrowthMessageInDays: {from:25, to:40},
+            childAgeInDays: { from: 0, to: 30 },
+            showGrowthMessageInDays: { from: 25, to: 40 },
         },
         {
             period: '1 mesec',
-            childAgeInDays: {from:31, to:60},
-            showGrowthMessageInDays: {from:55, to:70},
+            childAgeInDays: { from: 31, to: 60 },
+            showGrowthMessageInDays: { from: 55, to: 70 },
         },
         {
             period: '2 meseca',
-            childAgeInDays: {from:61, to:91},
-            showGrowthMessageInDays: {from:86, to:101},
+            childAgeInDays: { from: 61, to: 91 },
+            showGrowthMessageInDays: { from: 86, to: 101 },
         },
         {
             period: '3-5 meseci',
-            childAgeInDays: {from:92, to:122},
-            showGrowthMessageInDays: {from:115, to:130},
+            childAgeInDays: { from: 92, to: 122 },
+            showGrowthMessageInDays: { from: 115, to: 130 },
         },
         {
             period: '5 meseci',
-            childAgeInDays: {from:152, to:182},
-            showGrowthMessageInDays: {from:177, to:192},
+            childAgeInDays: { from: 152, to: 182 },
+            showGrowthMessageInDays: { from: 177, to: 192 },
         },
         {
             period: '6 meseci',
-            childAgeInDays: {from:183, to:213},
-            showGrowthMessageInDays: {from:208, to:223},
+            childAgeInDays: { from: 183, to: 213 },
+            showGrowthMessageInDays: { from: 208, to: 223 },
         },
         {
             period: '9 meseci',
-            childAgeInDays: {from:273, to:305},
-            showGrowthMessageInDays: {from:298, to:313},
+            childAgeInDays: { from: 273, to: 305 },
+            showGrowthMessageInDays: { from: 298, to: 313 },
         },
         {
             period: '12-15 meseci',
-            childAgeInDays: {from:365, to:460},
-            showGrowthMessageInDays: {from:450, to:465},
+            childAgeInDays: { from: 365, to: 460 },
+            showGrowthMessageInDays: { from: 450, to: 465 },
         },
         {
             period: '18 meseci',
-            childAgeInDays: {from:545, to:577},
-            showGrowthMessageInDays: {from:572, to:587},
+            childAgeInDays: { from: 545, to: 577 },
+            showGrowthMessageInDays: { from: 572, to: 587 },
         },
         {
             period: '24-30 meseci',
-            childAgeInDays: {from:730, to:915},
-            showGrowthMessageInDays: {from:907, to:922},
+            childAgeInDays: { from: 730, to: 915 },
+            showGrowthMessageInDays: { from: 907, to: 922 },
         },
         {
             period: '30-36 meseci',
-            childAgeInDays: {from:916, to:1095},
-            showGrowthMessageInDays: {from:1090, to:1105},
+            childAgeInDays: { from: 916, to: 1095 },
+            showGrowthMessageInDays: { from: 1090, to: 1105 },
         },
         {
             period: '36-48 meseci',
-            childAgeInDays: {from:1091, to:1460},
-            showGrowthMessageInDays: {from:1455, to:1470},
+            childAgeInDays: { from: 1091, to: 1460 },
+            showGrowthMessageInDays: { from: 1455, to: 1470 },
         },
         {
             period: '48-61 meseci',
-            childAgeInDays: {from:1456, to:1856},
-            showGrowthMessageInDays: {from:1851, to:1866},
+            childAgeInDays: { from: 1456, to: 1856 },
+            showGrowthMessageInDays: { from: 1851, to: 1866 },
+        },
+    ],
+    doctorVisitPeriods: [
+        {
+            uuid: '63072492-271f-4776-8b76-1dbae74e453f',
+            period: 'Na rodjenju',
+            childAgeInDays: { from: 0, to: 10 },
+            nameOfTheDoctorVisit: 'Redovan preventivni pregled',
+            periodSubtitle: 'Na rođenju',
+            immunizationsPeriodId: '78e0d1a9-bc54-4f47-af59-ef7268788e3e',
+            moreAboutDoctorVisitArticleId: 4526,
+            planDoctorVisitMessageInDays: { from: 0, to: 10 },
+        },
+        {
+            uuid: '2d2886f2-c99e-4720-8f59-bfe76b3d7d86',
+            period: 'Sa 1 mesec',
+            childAgeInDays: { from: 31, to: 60 },
+            nameOfTheDoctorVisit: 'Redovan preventivni pregled',
+            periodSubtitle: 'Sa punih mesec dana',
+            immunizationsPeriodId: '2c144a63-e39f-490e-852a-75ae694a75ca',
+            moreAboutDoctorVisitArticleId: 4441,
+            planDoctorVisitMessageInDays: { from: 20, to: 60 },
+        },
+        {
+            uuid: '4a431509-6d03-417f-92d5-b14fe11f5767',
+            period: 'Sa dva meseca',
+            childAgeInDays: { from: 61, to: 93 },
+            nameOfTheDoctorVisit: 'Redovan preventivni pregled',
+            periodSubtitle: 'Sa puna 2 meseca',
+            immunizationsPeriodId: 'bbd965ed-936a-4958-903e-8cf02f3e5617',
+            moreAboutDoctorVisitArticleId: 4446,
+            planDoctorVisitMessageInDays: { from: 50, to: 91 },
+        },
+        {
+            uuid: 'b3c69374-f593-4dea-b87a-662d195d0369',
+            period: 'Sa 3,5 meseca',
+            childAgeInDays: { from: 100, to: 130 },
+            nameOfTheDoctorVisit: 'Redovan preventivni pregled',
+            periodSubtitle: 'Sa 3,5 meseca',
+            immunizationsPeriodId: 'dc851707-b65f-48fd-be87-1ff2b084ed6b',
+            moreAboutDoctorVisitArticleId: 4451,
+            planDoctorVisitMessageInDays: { from: 90, to: 130 },
+        },
+        {
+            uuid: '445c09a5-57ad-45bf-8abe-76ac67178988',
+            period: 'Sa 5 meseci',
+            childAgeInDays: { from: 152, to: 182 },
+            nameOfTheDoctorVisit: 'Redovan preventivni pregled',
+            periodSubtitle: 'Sa punih 5 meseci',
+            immunizationsPeriodId: '41734989-f615-4d60-a9d8-75a823e84611',
+            moreAboutDoctorVisitArticleId: 4456,
+            planDoctorVisitMessageInDays: { from: 140, to: 182 },
+        },
+        {
+            uuid: '2126bff1-4f4e-4e23-a65b-3edf120dea32',
+            period: 'Sa 6 meseci',
+            childAgeInDays: { from: 183, to: 220 },
+            nameOfTheDoctorVisit: 'Redovan preventivni pregled',
+            periodSubtitle: 'Sa punih 6 meseci',
+            immunizationsPeriodId: '8755d225-0e47-441f-8360-74af954ae588',
+            moreAboutDoctorVisitArticleId: 4461,
+            planDoctorVisitMessageInDays: { from: 170, to: 220 },
+        },
+        {
+            uuid: '566692f0-2d24-4a8c-ac1d-2d0f16781fda',
+            period: 'Sa 9 meseci',
+            childAgeInDays: { from: 273, to: 305 },
+            nameOfTheDoctorVisit: 'Redovan preventivni pregled',
+            periodSubtitle: 'Sa punih 9 meseci',
+            immunizationsPeriodId: '',
+            moreAboutDoctorVisitArticleId: 4466,
+            planDoctorVisitMessageInDays: { from: 260, to: 305 },
+        },
+        {
+            uuid: '32491a94-d575-462b-90bc-39448904062f',
+            period: 'Od 12 do 15 meseci',
+            childAgeInDays: { from: 365, to: 460 },
+            nameOfTheDoctorVisit: 'Redovan preventivni pregled',
+            periodSubtitle: 'Između 12. i 15. meseca',
+            immunizationsPeriodId: 'b8cf588a-afb3-4689-8767-555179dc6d93',
+            moreAboutDoctorVisitArticleId: 4471,
+            planDoctorVisitMessageInDays: { from: 350, to: 460 },
+        },
+        {
+            uuid: 'd7b32a59-3943-4523-b84f-c7d84a63dddd',
+            period: 'Sa 18 meseci',
+            childAgeInDays: { from: 545, to: 600 },
+            nameOfTheDoctorVisit: 'Redovan preventivni pregled',
+            periodSubtitle: 'Sa godinu ipo dana (18. meseci)',
+            immunizationsPeriodId: '6a14f374-9cd8-4b69-a09a-78a105f88eb6',
+            moreAboutDoctorVisitArticleId: 4476,
+            planDoctorVisitMessageInDays: { from: 530, to: 600 },
+        },
+        {
+            uuid: 'e038f09c-bf5b-4cc3-bb79-fe1567b994c2',
+            period: 'Sa 3. godine (24 - 30 meseci)',
+            childAgeInDays: { from: 730, to: 920 },
+            nameOfTheDoctorVisit: 'Redovan preventivni pregled',
+            periodSubtitle: 'U trećoj godini (između 24 i 36 meseci)',
+            immunizationsPeriodId: '',
+            moreAboutDoctorVisitArticleId: 4511,
+            planDoctorVisitMessageInDays: { from: 720, to: 915 },
+        },
+        {
+            uuid: '0f130748-2e08-479a-9202-191ecfdaf5ff',
+            period: '6/7 godina',
+            childAgeInDays: { from: 2190, to: 2590 },
+            nameOfTheDoctorVisit: 'Redovan preventivni pregled',
+            periodSubtitle: 'Pred polazak u školu (6-7 godina)',
+            immunizationsPeriodId: 'ff8201be-f478-4f42-80fd-bb94470d78df',
+            moreAboutDoctorVisitArticleId: 4511,
+            planDoctorVisitMessageInDays: { from: 2160, to: 2690 },
         },
     ],
     interpretationWeightForHeight: [
@@ -558,13 +670,13 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
                 articleId: 3111
             },
             emergencyBigHeightText: {
-                name: 'Tipičan rast deteta: 10-12 mesecii- Vrednosti težine za dužinu/visinu deteta su iznad +3 SD',                
+                name: 'Tipičan rast deteta: 10-12 mesecii- Vrednosti težine za dužinu/visinu deteta su iznad +3 SD',
                 text: 'Hitno! Vaše dete je gojazno, odnosno ima ozbiljan višak težine za visinu. Ova težina može ozbiljno ugroziti zdravlje vašeg deteta. Razmislite šta je tome doprinelo: povećan unos energetski bogatije hrane (kao što su slatke i masne namirnice), unos bezvrednih namirnica- takozvane brze hrane, smanjena fizička aktivnost, produženo vreme boravka u sedećem položaju ili boravak ispred ekrana, promene u najbližem okružrnju i dr. Obavezno zakažite posetu kod pedijatra radi pregleda i dodatnog ispitivanja kao i određivanja dinamike daljeg praćenja rasta!',
                 articleId: 3131
             }
         },
         {
-            predefined_tags: [49,50],
+            predefined_tags: [49, 50],
             goodText: {
                 name: 'Tipičan rast deteta: 13-24 meseci - težine za dužinu/visinu deteta je između -2SD do +2 SD',
                 text: 'Bravo! Vaše dete dobro raste i njegova težina je u skladu sa njegovom visinom. Nastavite da se pridžavate preporuka za optimalnu  ishranu, fizičku aktivnost i spavanje. Pratite i dalje rast vašeg deteta.',
@@ -586,13 +698,13 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
                 articleId: 3116,
             },
             emergencyBigHeightText: {
-                name: 'Tipičan rast deteta: 13-24 mesecii- Vrednosti težine za dužinu/visinu deteta su iznad +3 SD',                
+                name: 'Tipičan rast deteta: 13-24 mesecii- Vrednosti težine za dužinu/visinu deteta su iznad +3 SD',
                 text: 'Hitno! Vaše dete je gojazno, odnosno ima ozbiljan višak težine za visinu. Ova težina može ozbiljno ugroziti zdravlje vašeg deteta. Razmislite šta je tome doprinelo: povećan unos energetski bogatije hrane (kao što su slatke i masne namirnice), unos bezvrednih namirnica- takozvane brze hrane, smanjena fizička aktivnost, produženo vreme boravka u sedećem položaju ili boravak ispred ekrana, promene u najbližem okružrnju i dr. Obavezno zakažite posetu kod pedijatra radi pregleda i dodatnog ispitivanja kao i određivanja dinamike daljeg praćenja rasta!',
                 articleId: 3141
             }
         },
         {
-            predefined_tags: [51,52,53,57,58],
+            predefined_tags: [51, 52, 53, 57, 58],
             goodText: {
                 name: 'Tipičan rast deteta: 25 -72  meseci - težine za dužinu/visinu deteta je između -2SD do +2 SD',
                 text: 'Bravo! Vaše dete dobro raste i njegova težina je u skladu sa njegovom visinom. Nastavite da se pridžavate preporuka za optimalnu  ishranu, fizičku aktivnost i spavanje. Pratite i dalje rast vašeg deteta.',
@@ -614,7 +726,7 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
                 articleId: 3121,
             },
             emergencyBigHeightText: {
-                name: 'Tipičan rast deteta: 25-72 mesecii- Vrednosti težine za dužinu/visinu deteta su iznad +3 SD',                
+                name: 'Tipičan rast deteta: 25-72 mesecii- Vrednosti težine za dužinu/visinu deteta su iznad +3 SD',
                 text: 'Hitno! Vaše dete je gojazno, odnosno ima ozbiljan višak težine za visinu. Ova težina može ozbiljno ugroziti zdravlje vašeg deteta. Razmislite šta je tome doprinelo: povećan unos energetski bogatije hrane (kao što su slatke i masne namirnice), unos bezvrednih namirnica- takozvane brze hrane, smanjena fizička aktivnost, produženo vreme boravka u sedećem položaju ili boravak ispred ekrana, promene u najbližem okružrnju i dr. Obavezno zakažite posetu kod pedijatra radi pregleda i dodatnog ispitivanja kao i određivanja dinamike daljeg praćenja rasta!',
                 articleId: 3146
             }
@@ -694,7 +806,7 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
             },
         },
         {
-            predefined_tags: [49,50],
+            predefined_tags: [49, 50],
             goodText: {
                 name: 'Tipičan rast deteta: 13-24 mesecii- rednost dužine/visine deteta za uzrast je između -2SD do +3D',
                 text: 'Bravo! Vaše dete raste u dužinu/visinu po zacrtanoj liniji ili malo iznad okvira za njegov uzrast i pol. Nastavite da se pridžavate preporuka dobre prakse u ishrani, fizičkoj aktivnosti i spavanju i pratite rast vašeg deteta.',
@@ -717,7 +829,7 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
             },
         },
         {
-            predefined_tags: [51,52,53,57,58],
+            predefined_tags: [51, 52, 53, 57, 58],
             goodText: {
                 name: 'Tipičan rast deteta: 25-72 mesecii- rednost dužine/visine deteta za uzrast je između -2SD do +3D',
                 text: 'Bravo! Vaše dete raste u dužinu/visinu po zacrtanoj liniji ili malo iznad okvira za njegov uzrast i pol. Nastavite da se pridžavate preporuka dobre prakse u ishrani, fizičkoj aktivnosti i spavanju i pratite rast vašeg deteta.',
@@ -740,5 +852,121 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
             },
         },
 
+    ],
+    immunizationsPeriods: [
+        {
+            uuid: '78e0d1a9-bc54-4f47-af59-ef7268788e3e',
+            title: 'Na rodjenju',
+            subtitle: 'Na rodjenju',
+            dayStart: 0,
+            dayEnd: 10,
+            notificationDayStart: 0,
+            notificationDayEnd: 10,
+            vaccines: [
+                { uuid: "0bd76915-b670-41d8-b20d-7af1cbf34c9c", title: "protiv hepatitisa B - prva doza", hardcodedArticleId: "4661" },
+                { uuid: "c19e6ab0-479c-4c06-afc3-99f67697ce48", title: "protiv tuberkuloze ", hardcodedArticleId: "4676" }
+            ]
+        },
+        {
+            uuid: '2c144a63-e39f-490e-852a-75ae694a75ca',
+            title: 'Sa 1 mesec',
+            subtitle: 'sa punih mesec dana',
+            dayStart: 20,
+            dayEnd: 60,
+            notificationDayStart: 31,
+            notificationDayEnd: 60,
+            vaccines: [
+                { uuid: "6bec3d74-20d3-4f6a-aa77-0a87b06cc931", title: "protiv hepatitisa B - druga doza", hardcodedArticleId: "4661" },
+            ]
+        },
+        {
+            uuid: 'bbd965ed-936a-4958-903e-8cf02f3e5617',
+            title: 'Sa dva meseca',
+            subtitle: 'sa puna 2 meseca',
+            dayStart: 50,
+            dayEnd: 91,
+            notificationDayStart: 61,
+            notificationDayEnd: 91,
+            vaccines: [
+                { uuid: "819755b6-7fea-4483-bcc6-310eaaf774fa", title: "protiv difterije, tetanusa, velikog kašlja, dečje paralize, oboljenja koje izaziva bakterija Hemofilus influence b - prva doza", hardcodedArticleId: "4896" },
+                { uuid: "4ceaf41b-0043-435a-9dce-d5767985197a", title: "protiv oboljenja koje izaziva bakterija Streptococus pneumonije - prva doza", hardcodedArticleId: "4796" },
+            ]
+        },
+        {
+            uuid: 'dc851707-b65f-48fd-be87-1ff2b084ed6b',
+            title: 'Sa 3,5 meseca',
+            subtitle: 'Sa 3,5 meseca',
+            dayStart: 90,
+            dayEnd: 130,
+            notificationDayStart: 100,
+            notificationDayEnd: 130,
+            vaccines: [
+                { uuid: "3a936eb7-99ca-4e05-ab58-1b277b77943d", title: "protiv difterije, tetanusa, velikog kašlja, dečje paralize, oboljenja koje izaziva bakterija Hemofilus influence b - druga doza", hardcodedArticleId: "4896" },
+                { uuid: "7739b3d4-f8d1-4f24-b4ad-0cfe751c6220", title: "protiv oboljenja koje izaziva bakterija Streptococus pneumonije - druga doza", hardcodedArticleId: "4796" },
+            ]
+        },
+        {
+            uuid: '41734989-f615-4d60-a9d8-75a823e84611',
+            title: 'Sa 5 meseci',
+            subtitle: 'sa punih 5 meseci',
+            dayStart: 140,
+            dayEnd: 182,
+            notificationDayStart: 152,
+            notificationDayEnd: 182,
+            vaccines: [
+                { uuid: "2b2d6afc-7244-4aad-a4ea-ff5a63d295cc", title: "protiv difterije, tetanusa, velikog kašlja, dečje paralize, oboljenja koje izaziva bakterija Hemofilus influence b - treća doza", hardcodedArticleId: "4896" },
+                { uuid: "c243996c-b5ab-4392-a7e4-364b6dcdfd5a", title: "protiv oboljenja koje izaziva bakterija Streptococus pneumonije - treća doza", hardcodedArticleId: "4796" },
+            ]
+        },
+        {
+            uuid: '8755d225-0e47-441f-8360-74af954ae588',
+            title: 'Sa 6 meseci',
+            subtitle: 'sa punih 6 meseci',
+            dayStart: 170,
+            dayEnd: 220,
+            notificationDayStart: 183,
+            notificationDayEnd: 220,
+            vaccines: [
+                { uuid: "0870563f-1bd5-4d18-b282-27f76abc6e91", title: "protiv hepatitisa B - treća doza", hardcodedArticleId: "4661" },
+            ]
+        },
+        {
+            uuid: 'b8cf588a-afb3-4689-8767-555179dc6d93',
+            title: 'Od 12 do 15 meseci',
+            subtitle: 'između 12. i 15. meseca',
+            dayStart: 350,
+            dayEnd: 460,
+            notificationDayStart: 365,
+            notificationDayEnd: 460,
+            vaccines: [
+                { uuid: "56714192-64c9-4b51-a837-934bf3947836", title: "protiv malih boginja, zauški, rubeole (crvenka)", hardcodedArticleId: "5071" },
+                { uuid: "5e0638e8-cc8f-4372-be70-c9b951bcd23e", title: "protiv oboljenja koje izaziva bakterija Streptococus pneumonije ' revakcinacija", hardcodedArticleId: "4796" },
+            ]
+        },
+        {
+            uuid: '6a14f374-9cd8-4b69-a09a-78a105f88eb6',
+            title: 'Sa 18 meseci',
+            subtitle: 'sa godinu ipo dana (18. meseci)',
+            dayStart: 530,
+            dayEnd: 600,
+            notificationDayStart: 545,
+            notificationDayEnd: 600,
+            vaccines: [
+                { uuid: "fbe5157e-5221-42fb-9663-48d3257757f0", title: "protiv difterije, tetanusa, velikog kašlja, dečje paralize, oboljenja koje izaziva bakterija Hemofilus influence b - prva revakcinacija", hardcodedArticleId: "4896" },
+            ]
+        },
+        {
+            uuid: 'ff8201be-f478-4f42-80fd-bb94470d78df',
+            title: '6/7 godina',
+            subtitle: 'pred polazak u školu (6-7 godina)',
+            dayStart: 2160,
+            dayEnd: 2190,
+            notificationDayStart: 2160,
+            notificationDayEnd: 2190,
+            vaccines: [
+                { uuid: "85d98c51-bf2c-4eba-af25-8795f9211da4", title: "protiv malih boginja, zauški, rubeole (crvenka) - revakcinacija", hardcodedArticleId: "5071" },
+                { uuid: "79ae380e-d42a-4d9c-8ab8-a06485dc8d40", title: "protiv difterije, tetanusa, velikog kašlja i dečje paralize - druga revakcinacija", hardcodedArticleId: "" },
+            ]
+        },
     ]
 };

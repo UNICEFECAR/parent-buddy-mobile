@@ -89,7 +89,7 @@ Watch your baby's behavior and talk to your paediatrician or visiting nurse if y
             homeMessageBefore: '%CHILD% will soon have 3 months',
             homeMessageAfter: '%CHILD% has 3 months',
             moreAboutPeriodArticleIdMale: 3486,
-            subtitle: '3rd and 4th month',    
+            subtitle: '3rd and 4th month',
             moreAboutPeriodArticleIdFemale: 3481,
             description: `
 <p>
@@ -427,71 +427,183 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
             text: `The growth from the third years onwards becomes more even. A child gains 5-7.5 cm in height and 2-3 kg in weight per year.`,
         },
     ],
-    healthCheckPeriods: [
+    growthPeriodsMessages: [
         {
             period: 'On birth',
-            childAgeInDays: {from:0, to:30},
-            showGrowthMessageInDays: {from:25, to:40},
+            childAgeInDays: { from: 0, to: 30 },
+            showGrowthMessageInDays: { from: 25, to: 40 },
         },
         {
             period: '1 month',
-            childAgeInDays: {from:31, to:60},
-            showGrowthMessageInDays: {from:55, to:70},
+            childAgeInDays: { from: 31, to: 60 },
+            showGrowthMessageInDays: { from: 55, to: 70 },
         },
         {
             period: '2 months',
-            childAgeInDays: {from:61, to:91},
-            showGrowthMessageInDays: {from:86, to:101},
+            childAgeInDays: { from: 61, to: 91 },
+            showGrowthMessageInDays: { from: 86, to: 101 },
         },
         {
             period: '3-5 months',
-            childAgeInDays: {from:92, to:122},
-            showGrowthMessageInDays: {from:115, to:130},
+            childAgeInDays: { from: 92, to: 122 },
+            showGrowthMessageInDays: { from: 115, to: 130 },
         },
         {
             period: '5 months',
-            childAgeInDays: {from:152, to:182},
-            showGrowthMessageInDays: {from:177, to:192},
+            childAgeInDays: { from: 152, to: 182 },
+            showGrowthMessageInDays: { from: 177, to: 192 },
         },
         {
             period: '6 months',
-            childAgeInDays: {from:183, to:213},
-            showGrowthMessageInDays: {from:208, to:223},
+            childAgeInDays: { from: 183, to: 213 },
+            showGrowthMessageInDays: { from: 208, to: 223 },
         },
         {
             period: '9 months',
-            childAgeInDays: {from:273, to:305},
-            showGrowthMessageInDays: {from:298, to:313},
+            childAgeInDays: { from: 273, to: 305 },
+            showGrowthMessageInDays: { from: 298, to: 313 },
         },
         {
             period: '12-15 monts',
-            childAgeInDays: {from:365, to:460},
-            showGrowthMessageInDays: {from:450, to:465},
+            childAgeInDays: { from: 365, to: 460 },
+            showGrowthMessageInDays: { from: 450, to: 465 },
         },
         {
             period: '18 months',
-            childAgeInDays: {from:545, to:577},
-            showGrowthMessageInDays: {from:572, to:587},
+            childAgeInDays: { from: 545, to: 577 },
+            showGrowthMessageInDays: { from: 572, to: 587 },
         },
         {
             period: '24-30 months',
-            childAgeInDays: {from:730, to:915},
-            showGrowthMessageInDays: {from:907, to:922},
+            childAgeInDays: { from: 730, to: 915 },
+            showGrowthMessageInDays: { from: 907, to: 922 },
         },
         {
             period: '30-36 months',
-            childAgeInDays: {from:916, to:1095},
-            showGrowthMessageInDays: {from:1090, to:1105},
+            childAgeInDays: { from: 916, to: 1095 },
+            showGrowthMessageInDays: { from: 1090, to: 1105 },
         },
         {
             period: '36-48 months',
-            childAgeInDays: {from:1091, to:1460},
-            showGrowthMessageInDays: {from:1455, to:1470},
+            childAgeInDays: { from: 1091, to: 1460 },
+            showGrowthMessageInDays: { from: 1455, to: 1470 },
         },
         {
             period: '48-61 months',
-            childAgeInDays: {from:1456, to:1856},
-            showGrowthMessageInDays: {from:1851, to:1866},
+            childAgeInDays: { from: 1456, to: 1856 },
+            showGrowthMessageInDays: { from: 1851, to: 1866 },
+        },
+    ],
+    doctorVisitPeriods: [
+        {
+            uuid: '67c0169d-8d5f-4d28-9943-43985824370a',
+            period: 'At birth',
+            childAgeInDays: { from: 0, to: 10 },
+            nameOfTheDoctorVisit: 'Health check-up',
+            periodSubtitle: 'At birth',
+            immunizationsPeriodId: '5edc9c03-4066-4d1e-9d28-fea7ceb36b33',
+            moreAboutDoctorVisitArticleId: 4526,
+            planDoctorVisitMessageInDays: { from: 0, to: 10 },
+        },
+        {
+            uuid: '33949b8f-124b-44b4-876f-fefab9ad348c',
+            period: 'At 1 month',
+            childAgeInDays: { from: 31, to: 60 },
+            nameOfTheDoctorVisit: 'Health check-up',
+            periodSubtitle: 'With full 1 month',
+            immunizationsPeriodId: 'bc428a1a-b9d1-41cf-922e-6f5bb22b4a77',
+            moreAboutDoctorVisitArticleId: 4441,
+            planDoctorVisitMessageInDays: { from: 20, to: 60 },
+        },
+        {
+            uuid: '841a9c37-0fd4-4680-afb4-8ff4e3b46179',
+            period: 'At 2 months',
+            childAgeInDays: { from: 61, to: 93 },
+            nameOfTheDoctorVisit: 'Health check-up',
+            periodSubtitle: 'With full 2 months',
+            immunizationsPeriodId: '2ee47528-f52a-48c1-8925-b694132384d1',
+            moreAboutDoctorVisitArticleId: 4446,
+            planDoctorVisitMessageInDays: { from: 50, to: 90 },
+        },
+        {
+            uuid: 'cc17d35c-0c00-4605-a7f9-ab58acaa61e3',
+            period: 'At 3.5 months',
+            childAgeInDays: { from: 100, to: 130 },
+            nameOfTheDoctorVisit: 'Health check-up',
+            periodSubtitle: 'With 3,5 months',
+            immunizationsPeriodId: 'd9aa2bca-01a2-4372-a911-0e02f259a66f',
+            moreAboutDoctorVisitArticleId: 4451,
+            planDoctorVisitMessageInDays: { from: 90, to: 130 },
+        },
+        {
+            uuid: '11c000ae-16c6-4a21-8563-1901ae2a2d10',
+            period: 'At 5 months',
+            childAgeInDays: { from: 152, to: 182 },
+            nameOfTheDoctorVisit: 'Health check-up',
+            periodSubtitle: 'With full 5 months',
+            immunizationsPeriodId: '4c7ad009-df70-45e0-91ef-81ee75f0e8d5',
+            moreAboutDoctorVisitArticleId: 4456,
+            planDoctorVisitMessageInDays: { from: 140, to: 180 },
+        },
+        {
+            uuid: '4ba2ebd8-3ece-4a39-b3b0-a73a4f7459ac',
+            period: 'At 6 months',
+            childAgeInDays: { from: 183, to: 220 },
+            nameOfTheDoctorVisit: 'Health check-up',
+            periodSubtitle: 'With full 6 months',
+            immunizationsPeriodId: 'd43b92e1-9ec5-4ca8-ae41-3f68814cc1f1',
+            moreAboutDoctorVisitArticleId: 4461,
+            planDoctorVisitMessageInDays: { from: 170, to: 220 },
+        },
+        {
+            uuid: 'e74fbcd2-0381-428e-a6a5-81221562a1e0',
+            period: 'At 9 months',
+            childAgeInDays: { from: 273, to: 305 },
+            nameOfTheDoctorVisit: 'Health check-up',
+            periodSubtitle: 'With full 9 months',
+            immunizationsPeriodId: '',
+            moreAboutDoctorVisitArticleId: 4466,
+            planDoctorVisitMessageInDays: { from: 260, to: 300 },
+        },
+        {
+            uuid: 'ac9763f3-9588-4034-998b-69327c75bb09',
+            period: 'From 12-15 months',
+            childAgeInDays: { from: 365, to: 460 },
+            nameOfTheDoctorVisit: 'Health check-up',
+            periodSubtitle: 'Between 12th and 15th months',
+            immunizationsPeriodId: '9ef94154-46eb-4db9-95f0-663b1a0b33e9',
+            moreAboutDoctorVisitArticleId: 4471,
+            planDoctorVisitMessageInDays: { from: 350, to: 450 },
+        },
+        {
+            uuid: 'a66a6b43-8370-410d-9195-a6347ecb2d10',
+            period: 'At 18 months',
+            childAgeInDays: { from: 545, to: 600 },
+            nameOfTheDoctorVisit: 'Health check-up',
+            periodSubtitle: 'With full 18 months',
+            immunizationsPeriodId: '4c9c0536-274d-45b5-a657-ef4ce7f19e38',
+            moreAboutDoctorVisitArticleId: 4476,
+            planDoctorVisitMessageInDays: { from: 530, to: 600 },
+        },
+        {
+            uuid: '145d6f2d-3179-44fd-a0ce-0013cd712c24',
+            period: 'at 3 years (24-36 months)',
+            childAgeInDays: { from: 730, to: 920 },
+            nameOfTheDoctorVisit: 'Health check-up',
+            periodSubtitle: 'Between 24th and 36th months',
+            immunizationsPeriodId: '',
+            moreAboutDoctorVisitArticleId: 4511,
+            planDoctorVisitMessageInDays: { from: 720, to: 1080 },
+        },
+        {
+            uuid: '21781895-05a1-4eb5-bbd1-7436cd020873',
+            period: '6-7 years',
+            childAgeInDays: { from: 2190, to: 2590 },
+            nameOfTheDoctorVisit: 'Health check-up',
+            periodSubtitle: 'Between 6 and 7 years',
+            immunizationsPeriodId: '868e2ee6-34d9-44f0-b0aa-8d4011fc3666',
+            moreAboutDoctorVisitArticleId: 4511,
+            planDoctorVisitMessageInDays: { from: 2160, to: 2690 },
         },
     ],
     interpretationWeightForHeight: [
@@ -578,13 +690,13 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
                 articleId: 3111
             },
             emergencyBigHeightText: {
-                name: `Typical growth of a child: 10-12 months- weight for length / height of the child are above +3 SD`,                
+                name: `Typical growth of a child: 10-12 months- weight for length / height of the child are above +3 SD`,
                 text: `Urgent attention! Your child is obese, that is, s/he has a serious excess weight for height. This weight can seriously endanger your child's health. Think about what contributed to that: excess intake of energy-rich foods (such as sweet and oily products), intake of junk foods, reduced physical activity, increased screen time or changes in the immediate environment, etc. Be sure to schedule a visit to the pediatrician for an examination and additional diagnostics, as well as to determine the dynamics of further growth monitoring!`,
                 articleId: 3136
             }
         },
         {
-            predefined_tags: [49,50],
+            predefined_tags: [49, 50],
             goodText: {
                 name: `Typical growth of a child:13-24  months- weight for the length / height of the child is between -2SD to + 2 SD`,
                 text: `Bravo! Your child grows well and her/ his weight is in harmonious with her/his height. Continue to follow the recommendations for optimal nutrition, physical activity and sleep. Keep track of your child's growth.`,
@@ -606,13 +718,13 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
                 articleId: 3111
             },
             emergencyBigHeightText: {
-                name: `Typical growth of a child: 13-24 months- weight for length / height of the child are above +3 SD`,                
+                name: `Typical growth of a child: 13-24 months- weight for length / height of the child are above +3 SD`,
                 text: `Urgent attention! Your child is obese, that is, s/he has a serious excess weight for height. This weight can seriously endanger your child's health. Think about what contributed to that: excess intake of energy-rich foods (such as sweet and oily products), intake of junk foods, reduced physical activity, increased screen time or changes in the immediate environment, etc. Be sure to schedule a visit to the pediatrician for an examination and additional diagnostics, as well as to determine the dynamics of further growth monitoring!`,
                 articleId: 3141
             }
         },
         {
-            predefined_tags: [51,52,53,57,58],
+            predefined_tags: [51, 52, 53, 57, 58],
             goodText: {
                 name: `Typical growth of a child:25-72  months- weight for the length / height of the child is between -2SD to + 2 SD`,
                 text: `Bravo! Your child grows well and her/ his weight is in harmonious with her/his height. Continue to follow the recommendations for optimal nutrition, physical activity and sleep. Keep track of your child's growth.`,
@@ -629,12 +741,12 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
                 articleId: 3096,
             },
             warrningBigHeightText: {
-                name: 'Typical growth of a child: 25-72 months- weight for length / height of the child are between +2 and +3 SD',                
+                name: 'Typical growth of a child: 25-72 months- weight for length / height of the child are between +2 and +3 SD',
                 text: `Attention! Your child is moderately overweight for height. This overweight can endanger his/her health, so think about what contributed to that: excess intake of energy-rich foods (such as sweet and oily products), intake of junk foods, reduced physical activity, increased screen time or changes in the immediate environment, etc. Be sure to make an appointment with a pediatrician to get additional recommendations and determine the dynamics of monitoring your child's growth.`,
                 articleId: 3121,
             },
             emergencyBigHeightText: {
-                name: 'Typical growth of a child: 25-72 months- weight for length / height of the child are above +3 SD',                
+                name: 'Typical growth of a child: 25-72 months- weight for length / height of the child are above +3 SD',
                 text: `Urgent attention! Your child is obese, that is, s/he has a serious excess weight for height. This weight can seriously endanger your child's health. Think about what contributed to that: excess intake of energy-rich foods (such as sweet and oily products), intake of junk foods, reduced physical activity, increased screen time or changes in the immediate environment, etc. Be sure to schedule a visit to the pediatrician for an examination and additional diagnostics, as well as to determine the dynamics of further growth monitoring!`,
                 articleId: 3146
             }
@@ -714,7 +826,7 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
             },
         },
         {
-            predefined_tags: [49,50],
+            predefined_tags: [49, 50],
             goodText: {
                 name: `Typical growth of the child: 13-24 months - values of the length / height of the child for the age are between -2SD to + 3SD`,
                 text: `Bravo! Your child grows in length / height in line or slightly above the range expected for his age and gender. Continue to follow the recommendations of good practice in nutrition, physical activity and sleep and monitor your child's growth.`,
@@ -737,7 +849,7 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
             },
         },
         {
-            predefined_tags: [51,52,53,57,58],
+            predefined_tags: [51, 52, 53, 57, 58],
             goodText: {
                 name: `Typical growth of the child: 25-72 months - values of the length / height of the child for the age are between -2SD to + 3SD`,
                 text: `Bravo! Your child grows in length / height in line or slightly above the range expected for his age and gender. Continue to follow the recommendations of good practice in nutrition, physical activity and sleep and monitor your child's growth.`,
@@ -760,6 +872,121 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
             },
         },
 
+    ],
+    immunizationsPeriods: [
+        {
+            uuid: '5edc9c03-4066-4d1e-9d28-fea7ceb36b33',
+            title: 'At birth',
+            subtitle: 'At birth',
+            dayStart: 0,
+            dayEnd: 25,
+            notificationDayStart: 0,
+            notificationDayEnd: 10,
+            vaccines: [
+                { uuid: "0bd76915-b670-41d8-b20d-7af1cbf34c9c", title: "against Hepatitis B - the first dose", hardcodedArticleId: "" },
+                { uuid: "c19e6ab0-479c-4c06-afc3-99f67697ce48", title: "against tuberculosis ", hardcodedArticleId: "" }
+            ]
+        },
+        {
+            uuid: 'bc428a1a-b9d1-41cf-922e-6f5bb22b4a77',
+            title: 'At 1 month',
+            subtitle: 'with full 1 month',
+            dayStart: 25,
+            dayEnd: 50,
+            notificationDayStart: 30,
+            notificationDayEnd: 60,
+            vaccines: [
+                { uuid: "6bec3d74-20d3-4f6a-aa77-0a87b06cc931", title: "against Hepatitis B - the second dose", hardcodedArticleId: "" }
+            ]
+        },
+        {
+            uuid: '2ee47528-f52a-48c1-8925-b694132384d1',
+            title: 'At 2 months',
+            subtitle: 'with full 2 months',
+            dayStart: 50,
+            dayEnd: 90,
+            notificationDayStart: 60,
+            notificationDayEnd: 90,
+            vaccines: [
+                { uuid: "4ceaf41b-0043-435a-9dce-d5767985197a", title: "against diphtheria, tetanus, pertussis, polio, diseases caused by Haemophilus influenzaeType b - the first dose", hardcodedArticleId: "" },
+                { uuid: "3a936eb7-99ca-4e05-ab58-1b277b77943d", title: "against diseases caused by bacteria Streptococus pneumoniae - the first dose", hardcodedArticleId: "" },
+            ],
+        },
+        {
+            uuid: 'd9aa2bca-01a2-4372-a911-0e02f259a66f',
+            title: 'At 3.5 months',
+            subtitle: 'with 3,5 months',
+            dayStart: 90,
+            dayEnd: 140,
+            notificationDayStart: 100,
+            notificationDayEnd: 130,
+            vaccines: [
+                { uuid: "7739b3d4-f8d1-4f24-b4ad-0cfe751c6220", title: "against diphtheria, tetanus, pertussis, polio, diseases caused by Haemophilus influenzaeType b - the second dose", hardcodedArticleId: "" },
+                { uuid: "2b2d6afc-7244-4aad-a4ea-ff5a63d295cc", title: "against diseases caused by bacteria Streptococus pneumoniae - the second dose", hardcodedArticleId: "" },
+            ]
+        },
+        {
+            uuid: '4c7ad009-df70-45e0-91ef-81ee75f0e8d5',
+            title: 'At 5 months',
+            subtitle: 'with full 5 months',
+            dayStart: 140,
+            dayEnd: 170,
+            notificationDayStart: 150,
+            notificationDayEnd: 180,
+            vaccines: [
+                { uuid: "c243996c-b5ab-4392-a7e4-364b6dcdfd5a", title: "against diphtheria, tetanus, pertussis, polio, diseases caused by Haemophilus influenzaeType b - the third dose", hardcodedArticleId: "" },
+                { uuid: "0870563f-1bd5-4d18-b282-27f76abc6e91", title: "against diseases caused by bacteria Streptococus pneumoniae - the third dose", hardcodedArticleId: "" },
+            ]
+        },
+        {
+            uuid: 'd43b92e1-9ec5-4ca8-ae41-3f68814cc1f1',
+            title: 'At 6 months',
+            subtitle: 'with full 6 months',
+            dayStart: 170,
+            dayEnd: 350,
+            notificationDayStart: 180,
+            notificationDayEnd: 220,
+            vaccines: [
+                { uuid: "56714192-64c9-4b51-a837-934bf3947836", title: "against Hepatitis B - the third dose", hardcodedArticleId: "" },
+            ]
+        },
+        {
+            uuid: '9ef94154-46eb-4db9-95f0-663b1a0b33e9',
+            title: 'From 12-15 months ',
+            subtitle: 'between 12th and 15th months',
+            dayStart: 350,
+            dayEnd: 530,
+            notificationDayStart: 360,
+            notificationDayEnd: 450,
+            vaccines: [
+                { uuid: "5e0638e8-cc8f-4372-be70-c9b951bcd23e", title: "against measles, mumps, rubella", hardcodedArticleId: "" },
+                { uuid: "fbe5157e-5221-42fb-9663-48d3257757f0", title: "against diseases caused by bacteria Streptococus pneumoniae - revaccination", hardcodedArticleId: "" },
+            ]
+        },
+        {
+            uuid: '4c9c0536-274d-45b5-a657-ef4ce7f19e38',
+            title: 'At 18 months ',
+            subtitle: '',
+            dayStart: 530,
+            dayEnd: 2160,
+            notificationDayStart: 540,
+            notificationDayEnd: 600,
+            vaccines: [
+                { uuid: "85d98c51-bf2c-4eba-af25-8795f9211da4", title: "against diphtheria, tetanus, pertussis, polio, diseases caused by Haemophilus influenzaeType b - the first revaccination ", hardcodedArticleId: "" },
+            ]
+        },
+        {
+            uuid: '868e2ee6-34d9-44f0-b0aa-8d4011fc3666',
+            title: '6-7 years ',
+            dayStart: 2160,
+            dayEnd: 2190,
+            notificationDayStart: 2160,
+            notificationDayEnd: 2190,
+            subtitle: '',
+            vaccines: [
+                { uuid: "79ae380e-d42a-4d9c-8ab8-a06485dc8d40", title: "against measles, mumps, rubella - revaccination ", hardcodedArticleId: "" },
+                { uuid: "2279b64e-49fb-407e-88d2-bfa2c31ceaf4", title: "against diphtheria, tetanus, pertussis, polio, diseases caused by Haemophilus influenzaeType b - the second revaccination", hardcodedArticleId: "" },
+            ]
+        },
     ]
 };
-

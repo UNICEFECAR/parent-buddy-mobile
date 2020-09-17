@@ -46,6 +46,8 @@ import { utils } from "./utils";
 import { ResetPasswordScreen } from "../screens/login";
 import { UserRealmConsumer } from "../stores/UserRealmContext";
 import { getFontScale } from "react-native-device-info";
+import { DoctorVisitsScreen } from "../screens/doctor-visit/DoctorVisitsScreen";
+import { AddDoctorVisitReminderScreen } from "../screens/vaccination/AddDoctorVisitReminderScreen";
 import { PollsScreen } from "../screens/PollsScreen";
 
 /**
@@ -305,6 +307,15 @@ const HomeStackNavigator = createStackNavigator({
             }
         }
     },
+    HomeStackNavigator_AddDoctorVisitReminderScreen: {
+        screen: AddDoctorVisitReminderScreen,
+        navigationOptions: ({ navigation }: NavigationScreenConfigProps<NavigationStackProp<NavigationStackState, any>>): NavigationStackOptions => {
+            return {
+                title: translate('NewDoctorVisitScreenTitle'),
+                ...secondaryHomeNavigationOptions
+            }
+        }
+    },
     HomeStackNavigator_VaccinationDataScreen: {
         screen: VaccinationDataScreen,
         navigationOptions: ({ navigation }: NavigationScreenConfigProps<NavigationStackProp<NavigationStackState, any>>): NavigationStackOptions => {
@@ -313,6 +324,10 @@ const HomeStackNavigator = createStackNavigator({
                 ...secondaryHomeNavigationOptions
             }
         }
+    },
+
+    HomeStackNavigator_DoctorVisitsScreen: {
+        screen: DoctorVisitsScreen
     },
 
 }, {

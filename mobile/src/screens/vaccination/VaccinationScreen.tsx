@@ -7,6 +7,15 @@ import { scale } from 'react-native-size-matters';
 import { HomeScreenParams } from '../home/HomeScreen';
 import { translate } from '../../translations/translate';
 import { OneVaccinations } from '../../components/vaccinations/oneVaccinations';
+import { translateData } from '../../translationsData/translateData';
+import { userRealmStore, ChildEntity } from '../../stores';
+import { DataRealmConsumer } from '../../stores/DataRealmContext';
+import { UserRealmConsumer, UserRealmContextValue } from '../../stores/UserRealmContext';
+import { NewDoctorVisitScreenType } from './NewDoctorVisitScreen';
+import { Typography, HomeMessages } from '../../components';
+import { TypographyType } from '../../components/Typography';
+import { Child } from '../home/ChildProfileScreen';
+import { ChildEntitySchema } from '../../stores/ChildEntity';
 
 export interface VaccinationScreenParams {
 
@@ -21,7 +30,7 @@ export class VaccinationScreen extends Component<Props> {
         super(props);
 
         this.setDefaultScreenParams();
-    }
+    };
 
     private setDefaultScreenParams() {
         let defaultScreenParams: VaccinationScreenParams = {
@@ -32,10 +41,31 @@ export class VaccinationScreen extends Component<Props> {
             this.props.navigation.state.params = Object.assign({}, defaultScreenParams, this.props.navigation.state.params);
         } else {
             this.props.navigation.state.params = defaultScreenParams;
-        }
+        };
+    };
+
+    private getAllVaccinationsPeriods() {
+        let periods = translateData('immunizationsPeriods');
+
+        return periods;
     }
 
+    private renderHomeMessage(userRealm: UserRealmContextValue) {
+        let id = userRealmStore.getCurrentChild()?.uuid ? userRealmStore.getCurrentChild()?.uuid : "";
+        let user = userRealm.realm?.objects<ChildEntity>(ChildEntitySchema.name).find(item => item.uuid === id);
+
+        if (user?.birthDate) {
+            return null
+        } else {
+            return (
+                <HomeMessages showCloseButton={true}></HomeMessages>
+            );
+        };
+    };
+
     render() {
+
+
         return (
             <ThemeConsumer>
                 {(themeContext: ThemeContextValue) => (
@@ -43,40 +73,49 @@ export class VaccinationScreen extends Component<Props> {
                         style={{ backgroundColor: themeContext.theme.screenContainer?.backgroundColor }}
                         contentContainerStyle={styles.container}
                     >
-                        <OneVaccinations
-                            title="Na rođenju"
-                            isVerticalLineVisible={true}
-                            vaccineList={[
-                                { complete: true, title: "Protiv tuberkuloze", },
-                                { complete: true, title: "Protiv zarazne žutice B", },
-                            ]}
-                            onPress={() => this.props.navigation.navigate('HomeStackNavigator_NewDoctorVisitScreen')}
-                            onPress2={() => this.props.navigation.navigate('HomeStackNavigator_VaccinationDataScreen')}
+                        <DataRealmConsumer>
+                            {data => (
+                                <UserRealmConsumer>
+                                    {(user) => (
+                                        <>
+                                            <Typography type={TypographyType.headingPrimary}>{translate('vaccinationTitle')}</Typography>
+                                            {this.renderHomeMessage(user)}
 
-                        />
-                        <OneVaccinations
-                            vaccinationDate="21.7.2019."
-                            vaccineList={[
-                                { complete: false, title: "Protiv zarazne žutice B", description: "Vakcina dobijena genetskim inženjeringom, sadrži prečišćeni HbsAg" },
-                                { complete: true, title: "Protiv difterije, tetanusa, velikog kašlja - 14.6.2019.", description: "Vakcina koja sadrži toksoide difterije i tetanusa i inaktivisanu korpuskulu Bordetella pertusis" },
-                                { complete: true, title: "Protiv dečije paralize", description: "Živa oralna tritipna polio vakcina koja sadrži sva tri tipa živa oslabljena poliovirusa" },
-                                { complete: true, title: "Protiv oboljenja izazvanih hemofilusom influence tipa B - 15.5.2019.", description: "Konjugovana vakcina" },
-                            ]}
-                            title="5. Mesec"
-                            isVerticalLineVisible={true}
-                            onPress={() => this.props.navigation.navigate('HomeStackNavigator_NewDoctorVisitScreen')}
-                            onPress2={() => this.props.navigation.navigate('HomeStackNavigator_VaccinationDataScreen')}
+                                            {userRealmStore.getAllVaccinationPeriods().map((period, index) => {
+                                                let isComplete = true;
+                                                let isLastPeriod = false;
 
-                        />
-                        <OneVaccinations
-                            vaccinationDate="17. - 24. mesec"
-                            title="Predstojeća vakcinacija"
-                            vaccineList={[
-                                { complete: false, title: "Protiv zarazne žutice B", description: "Kombinovana vakcina koja sadrži toksoide difterije i tetanusa i inaktivisanu korpuskulu Bordetella pertusis" }
-                            ]}
-                            onPress={() => this.props.navigation.navigate('HomeStackNavigator_NewDoctorVisitScreen')}
-                            onPress2={() => this.props.navigation.navigate('HomeStackNavigator_VaccinationDataScreen')}
-                        />
+                                                period.vaccineList.forEach(vaccine => {
+                                                    if (vaccine.complete === false) {
+                                                        isComplete = false;
+                                                        return
+                                                    }
+                                                });
+
+                                                // remove verticalLine on last card
+                                                if (index === userRealmStore.getAllVaccinationPeriods().length - 1) {
+                                                    isLastPeriod = true;
+                                                };
+
+                                                return (
+                                                    <OneVaccinations
+                                                        title={period.title}
+                                                        isBirthDayEntered={period.isBirthDayEntered}
+                                                        isFeaturedPeriod={period.isFeaturedPeriod}
+                                                        isCurrentPeriod={period.isCurrentPeriod}
+                                                        isVaccinationComplete={isComplete}
+                                                        isVerticalLineVisible={!isLastPeriod}
+                                                        vaccineList={period.vaccineList}
+                                                        doctorVisitBtn={() => this.props.navigation.navigate('HomeStackNavigator_NewDoctorVisitScreen', { screenType: NewDoctorVisitScreenType.Vaccination })}
+                                                        reminderBtn={() => this.props.navigation.navigate('HomeStackNavigator_AddDoctorVisitReminderScreen')}
+                                                    />
+                                                )
+                                            })}
+                                        </>
+                                    )}
+                                </UserRealmConsumer>
+                            )}
+                        </DataRealmConsumer>
 
                     </ScrollView>
                 )}

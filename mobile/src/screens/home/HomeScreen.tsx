@@ -9,12 +9,12 @@ import { ArticlesSection, ArticlesSectionData } from './ArticlesSection';
 import { DataRealmContext, DataRealmContextValue, DataRealmConsumer } from '../../stores/DataRealmContext';
 import { ContentEntity, ContentEntitySchema } from '../../stores/ContentEntity';
 import { CategoryArticlesViewEntity } from '../../stores/CategoryArticlesViewEntity';
-import { dataRealmStore, apiStore } from '../../stores';
+import { dataRealmStore, apiStore, userRealmStore } from '../../stores';
 import { translate } from '../../translations/translate';
 import { content, localize, utils } from '../../app';
 import { Media } from '../../components';
 import Orientation from 'react-native-orientation-locker';
-import { getSearchResultsScreenData } from '../../stores/getSearchResultsScreenData';
+import { getSearchResultsScreenData } from '../../stores/functions/getSearchResultsScreenData';
 import axios, { AxiosResponse } from 'axios';
 import { appConfig } from "../../app/appConfig";
 import { HomeMessages, Message, IconType } from '../../components/HomeMessages';
@@ -62,10 +62,12 @@ export class HomeScreen extends React.Component<Props, object> {
     }
 
     private onTestButtonPress() {
-        const navigation = this.props.navigation;
-        // throw new Error('Greska');
+        const currentChild = userRealmStore.getCurrentChild();
+        const currentChildAgeInDays = userRealmStore.getCurrentChildAgeInDays();
 
-        console.log(JSON.stringify(navigation.state, null, 4));
+        // console.log(JSON.stringify(userRealmStore.getAllMeasuresForCurrentChild(), null, 4));
+        // console.log(JSON.stringify(userRealmStore.getRegularAndAdditionalMeasures(), null, 4));
+        console.log(JSON.stringify(userRealmStore.shouldAddRemindersForDoctorVisits(currentChildAgeInDays), null, 4));
     }
 
     public render() {
@@ -78,8 +80,8 @@ export class HomeScreen extends React.Component<Props, object> {
                         {/* <Text>{localize.getLanguage()}</Text> */}
 
                         {/* Test button */}
-                        {/* <Button onPress={() => { this.onTestButtonPress() }}>Test</Button>
-                        <View style={{ height: 30 }} /> */}
+                        <Button onPress={() => { this.onTestButtonPress() }}>Test</Button>
+                        <View style={{ height: 30 }} />
 
                         {/* HOME MESSAGES */}
                         <DataRealmConsumer>
