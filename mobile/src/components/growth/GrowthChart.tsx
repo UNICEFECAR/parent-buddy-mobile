@@ -168,7 +168,6 @@ export class GrowthChart extends React.Component<Props, State> {
     }
 
     private fullScreenEvents(){
-        console.log('uso u fullScreen events')
         if(this.props.openFullScreen){
             this.props.openFullScreen()
         }

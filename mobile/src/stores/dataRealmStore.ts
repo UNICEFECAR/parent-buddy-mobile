@@ -269,8 +269,6 @@ class DataRealmStore {
 
         if (finishedPolls && finishedPolls.length > 0) {
             finishedPolls.forEach(item => {
-                console.log(item.updatedTimestamp)
-                console.log(poll.updated_at)
                 if (item.id === poll.id && poll.updated_at === item.updatedTimestamp) {
                     isPollFinis = true;
                 };
@@ -310,9 +308,7 @@ class DataRealmStore {
 
             if (agePolls.length > 0) {
                 agePolls.forEach(item => {
-                    console.log("item", item)
                     if (!this.isPollsFinished(item)) {
-                        console.log('prosao')
                         activePolls.push(item)
                     }
                 });

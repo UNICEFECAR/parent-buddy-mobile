@@ -92,10 +92,8 @@ class UserRealmStore {
                 dataRealmStore.setVariable('currentActiveChildId', child.uuid);
                 return child;
             }
-        }
-
-
-    }
+        };
+    };
 
     public isChildInDevelopmentPeriod(){
         const childAge = this.getCurrentChild()?.birthDate;
@@ -108,7 +106,6 @@ class UserRealmStore {
             const developmentPeriods = translateData('developmentPeriods');
 
             developmentPeriods?.forEach((value: any, index: any) => {
-                console.log(value.daysStart)
                 if (
                     (childAgeInDays - value.daysStart > 0)
                     && (childAgeInDays - value.daysStart <= 20)

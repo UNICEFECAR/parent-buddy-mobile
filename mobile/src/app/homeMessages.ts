@@ -14,6 +14,7 @@ import { DoctorVisitCardButtonType } from "../components/doctor-visit/DoctorVisi
 import { NewDoctorVisitScreenType } from "../screens/vaccination/NewDoctorVisitScreen";
 import { TextButtonColor } from "../components/TextButton";
 import { Vaccine } from "../components/vaccinations/oneVaccinations";
+import { replace } from "lodash";
 
 /**
  * Home messages logic is here.
@@ -130,6 +131,7 @@ class HomeMessages {
             let messageFinal = "";
             let childName = userRealmStore.getCurrentChild()?.name;
             let genderStringSerbian = userRealmStore.getCurrentChild()?.gender === "boy" ? "primio" : "primila";
+            let hisHerString = userRealmStore.getCurrentChild()?.gender === "boy" ? "his" : "her";
             let recivedVacinationDate: number[] = [];
 
             if (currentImmunizationPeriod && currentImmunizationPeriod.vaccines && currentImmunizationPeriod.vaccines.length > 0) {
@@ -196,12 +198,12 @@ class HomeMessages {
                                     currentDayInMonth - lastVaccinationDay >= 0 && 
                                     currentDayInMonth - lastVaccinationDay <= 10
                                 ){
-                                    messageFinal =  translate('vaccinationAllVaccinesReceivedMessage').replace('%NAME%', utils.upperCaseFirstLetter(childName ? childName : "")).replace('%GENDER%', genderStringSerbian);
+                                    messageFinal =  translate('vaccinationAllVaccinesReceivedMessage').replace('%NAME%', utils.upperCaseFirstLetter(childName ? childName : "")).replace('%RECEIVED%', genderStringSerbian).replace('%HIS_HER%', hisHerString);
                                 }
                             }else{
                                 // If last vaccination not received this month get message 10 days from month start 
                                 if(currentDayInMonth <= 10){
-                                    messageFinal =  translate('vaccinationAllVaccinesReceivedMessage').replace('%NAME%', utils.upperCaseFirstLetter(childName ? childName : "")).replace('%GENDER%', genderStringSerbian);
+                                    messageFinal =  translate('vaccinationAllVaccinesReceivedMessage').replace('%NAME%', utils.upperCaseFirstLetter(childName ? childName : "")).replace('%GENDER%', genderStringSerbian).replace('%HIS_HER%', hisHerString);
                                 };
                             };
                         };
