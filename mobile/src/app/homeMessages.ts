@@ -203,7 +203,7 @@ class HomeMessages {
                             }else{
                                 // If last vaccination not received this month get message 10 days from month start 
                                 if(currentDayInMonth <= 10){
-                                    messageFinal =  translate('vaccinationAllVaccinesReceivedMessage').replace('%NAME%', utils.upperCaseFirstLetter(childName ? childName : "")).replace('%GENDER%', genderString).replace('%HIS_HER%', hisHerString);
+                                    messageFinal =  translate('vaccinationAllVaccinesReceivedMessage').replace('%NAME%', utils.upperCaseFirstLetter(childName ? childName : "")).replace('%RECEIVED%', genderString).replace('%HIS_HER%', hisHerString);
                                 };
                             };
                         };
