@@ -223,7 +223,11 @@
     "doctorVisitTodayMessage": "You have a checkup scheduled for today at %TIME%.",
     "vaccinationMessages": "In this period %NAME% should receive ",
     "vaccinationAllVaccinesReceivedMessage": "TODO %NAME% je %GENDER% sve vakcine za svoj uzrast. ",
-
+    "his": "his",
+    "her": "her",
+    "receivedMale": "primio",
+    "receivedFemale": "primila",
+    
     "growthChartLegendSilverLabel": "-Typical values for age",
     "growthChartLegendOrangeLabel": "-Suboptimal values for age",
     

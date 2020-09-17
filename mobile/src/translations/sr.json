@@ -223,6 +223,10 @@
     "doctorVisitTodayMessage": "Danas u %TIME% imate zakazan pregled.",
     "vaccinationMessages": "U ovom periodu %NAME% treba da primi ",
     "vaccinationAllVaccinesReceivedMessage": "%NAME% je %RECEIVED% sve vakcine za svoj uzrast.",
+    "his": "his",
+    "her": "her",
+    "receivedMale": "primio",
+    "receivedFemale": "primila",
 
     "growthChartLegendSilverLabel": " - Uobičajene vrednosti za uzrast",
     "growthChartLegendOrangeLabel": " - Odstupajuće vrednosti za uzrast",
