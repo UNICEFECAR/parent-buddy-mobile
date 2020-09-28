@@ -198,7 +198,7 @@ export function getDoctorVisitCardsBirthdayIsSet(currentChild: ChildEntity & Rea
     // ADD ADDITIONAL CARDS
     const additionalCards: DoctorVisitCardProps[] = [];
 
-    regularAndAdditionalMeasures.additionalMeasures.forEach((measures) => {
+    regularAndAdditionalMeasures.additionalMeasures.filter(item => item.measurementPlace === "doctor").forEach((measures) => {
         // SET measuresEnteredType
         let measuresEnteredType: MeasuresEnteredType = MeasuresEnteredType.NotEntered;
 
