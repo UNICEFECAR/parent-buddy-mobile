@@ -99,7 +99,7 @@ export class PollsScreen extends React.Component<Props, State> {
 
             dataRealmStore.onPollFinished(id, updated_at)
         };
-
+        
         this.props.navigation.goBack();
     };
 

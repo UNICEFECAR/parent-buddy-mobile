@@ -8,7 +8,7 @@ import { RoundedTextArea } from '../../components/RoundedTextArea';
 import { Typography, TypographyType } from '../../components/Typography';
 import { RoundedTextInput } from '../../components/RoundedTextInput';
 import { RoundedButton, RoundedButtonType } from '../../components/RoundedButton';
-import { Checkbox } from 'react-native-paper';
+import { Checkbox, Paragraph } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { scale, moderateScale } from 'react-native-size-matters';
 import { translate } from '../../translations/translate';
@@ -131,13 +131,13 @@ export class NewMeasurementScreen extends Component<Props, State> {
         let measures: Measures[] = [];
         let check = this.valueCheck();
 
-        if(check.isValid){
+        if (check.isValid) {
             if (currentChild.measures !== null && currentChild.measures !== "") {
                 measures = JSON.parse(currentChild.measures);
                 let sameDate = false;
                 measures.forEach(item => {
-                    if(item.measurementDate && measurementDate){
-                        if(Math.round(DateTime.fromMillis(item.measurementDate).diff(measurementDate, "days").days) === 0){
+                    if (item.measurementDate && measurementDate) {
+                        if (Math.round(DateTime.fromMillis(item.measurementDate).diff(measurementDate, "days").days) === 0) {
                             sameDate = true;
                             item.weight = weight;
                             item.length = length;
@@ -146,7 +146,7 @@ export class NewMeasurementScreen extends Component<Props, State> {
                     }
                 });
 
-                if(sameDate === false){
+                if (sameDate === false) {
                     measures.push({ length: length, weight: weight, measurementDate: measurementDate?.toMillis(), didChildGetVaccines: false, isChildMeasured: true });
                 };
             } else {
@@ -154,7 +154,7 @@ export class NewMeasurementScreen extends Component<Props, State> {
                 measures[0].length = length;
                 measures[0].measurementDate = measurementDate?.toMillis();
             }
-    
+
             await userRealmStore.realm?.write(() => {
                 currentChild.comment = comment;
                 currentChild.measures = JSON.stringify(measures);
@@ -173,24 +173,24 @@ export class NewMeasurementScreen extends Component<Props, State> {
                 lengthError: false,
                 defaultMessage: "",
             })
-            if(this.props.navigation.state.params?.screen){
+            if (this.props.navigation.state.params?.screen) {
                 // this will triger update on growth screen after measures added 
-                if(this.props.navigation.state.params.screen === "growth"){
+                if (this.props.navigation.state.params.screen === "growth") {
                     this.props.navigation.push('HomeStackNavigator_GrowthScreen')
                 };
-            }else{
+            } else {
                 this.props.navigation.goBack()
             }
-        }else{
+        } else {
             this.setState({
                 lengthError: check.lengthError,
                 weightError: check.weightError,
                 measurementDateError: check.measurementDateError
             })
         }
-     
 
-       
+
+
     }
 
     render() {
@@ -204,9 +204,9 @@ export class NewMeasurementScreen extends Component<Props, State> {
                         <View style={styles.dateTimePickerContainer}>
                             <DateTimePicker
                                 label={translate("newMeasureScreenDatePickerLabel")}
-                                onChange={(date) => this.setMeasurementDate(date)} 
+                                onChange={(date) => this.setMeasurementDate(date)}
                                 maximumDate={new Date()}
-                                style={this.state.measurementDateError ? {borderWidth: 1, borderColor: 'red'} : null}    
+                                style={this.state.measurementDateError ? { borderWidth: 1, borderColor: 'red' } : null}
                             />
                         </View>
                         <View style={styles.measurementPlaceContainer}>
@@ -227,7 +227,7 @@ export class NewMeasurementScreen extends Component<Props, State> {
                                 label={translate('weightLabel')}
                                 suffix="g"
                                 icon="weight"
-                                style={[{ width: 150 }, this.state.weightError ? {borderColor: 'red', borderWidth: 1} : null ]}
+                                style={[{ width: 150 }, this.state.weightError ? { borderColor: 'red', borderWidth: 1 } : null]}
                                 value={this.state.weight}
                                 keyboardType="numeric"
                                 onChange={value => this.measureChange(value, 'height')}
@@ -237,7 +237,7 @@ export class NewMeasurementScreen extends Component<Props, State> {
                                 suffix="cm"
                                 icon="weight"
                                 keyboardType="numeric"
-                                style={[{ width: 150, marginTop: 8 }, this.state.lengthError ? {borderColor: 'red', borderWidth: 1} : null ]}
+                                style={[{ width: 150, marginTop: 8 }, this.state.lengthError ? { borderColor: 'red', borderWidth: 1 } : null]}
                                 value={this.state.length}
                                 onChange={value => this.measureChange(value, 'length')}
 
@@ -329,6 +329,9 @@ export class NewMeasurementScreen extends Component<Props, State> {
                                 onPress={() => this.submit()}
                             />
                         </View>
+                        <Paragraph style={{textAlign: 'center', marginTop: scale(10), opacity: 0.6, fontSize: moderateScale(13)}}>
+                            {translate("HomeMeasurementsAlertText")}
+                        </Paragraph>
                     </ScrollView>
                 )}
             </ThemeConsumer>

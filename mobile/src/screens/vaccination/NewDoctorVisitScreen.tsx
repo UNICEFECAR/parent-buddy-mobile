@@ -245,7 +245,7 @@ export class NewDoctorVisitScreen extends Component<Props, State> {
                                     </View>
                                 ))
                             }
-                        </> : <Typography>Nema vakcina za ovaj period</Typography>
+                        </> : <Typography>{translate("NoVaccinationForPeriodAlert")}</Typography>
                 }
             </>
         )
