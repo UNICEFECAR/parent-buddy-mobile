@@ -221,7 +221,7 @@
     "updateDoctorVisitReminder": "Promenite datum i vreme pregleda",
     "doctorVisitTomorowMessage": "Sutra u %TIME% imate zakazan pregled.",
     "doctorVisitTodayMessage": "Danas u %TIME% imate zakazan pregled.",
-    "vaccinationMessages": "U ovom periodu %NAME% treba da primi ",
+    "vaccinationMessages": "U ovom periodu %NAME% treba da primi vakcinu",
     "vaccinationAllVaccinesReceivedMessage": "%NAME% je %RECEIVED% sve vakcine za svoj uzrast.",
     "his": "njegovu",
     "her": "njenu",
@@ -293,5 +293,8 @@
     "alertNoFunctionalityTitle": "Izabrali ste da ne koristite ovu funkcionalnost",
     "alertNoFunctionalityBody": "Da li želite da promenite podešavanja aplikacije i aktivirate ovu funkcionalnost?",
     "alertNoFunctionalityGotoSettings": "Podešavanja",
-    "alertNoFunctionalityCancel": "Otkaži"
+    "alertNoFunctionalityCancel": "Otkaži",
+
+    "HomeMeasurementsAlertText": "Merenje deteta kod kuće je manje precizno nego merenje kod doktora i može da utiče na tačnost grafika rasta.",
+    "NoVaccinationForPeriodAlert": "Nema vakcina za ovaj period."
 }

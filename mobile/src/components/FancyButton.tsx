@@ -66,7 +66,7 @@ export class FancyButton extends React.Component<Props, State> {
             textStyle: {
                 color: '#AA40BF',
                 fontSize: 17,
-                lineHeight: 17,
+                lineHeight: 20,
                 fontFamily: 'SFUIDisplay-Semibold',
             },
         };

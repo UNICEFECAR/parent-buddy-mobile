@@ -221,7 +221,7 @@
     "updateDoctorVisitReminder": "Change the date and time of the checkup",
     "doctorVisitTomorowMessage": "Yoo have a checkup scheduled for tomorrow at %TIME%.",
     "doctorVisitTodayMessage": "You have a checkup scheduled for today at %TIME%.",
-    "vaccinationMessages": "In this period %NAME% should receive ",
+    "vaccinationMessages": "In this period %NAME% should receive vaccines",
     "vaccinationAllVaccinesReceivedMessage": "%NAME% received all vaccines for %HIS_HER% age.",
     "his": "his",
     "her": "her",
@@ -293,5 +293,8 @@
     "alertNoFunctionalityTitle": "You choose not to use this functionality",
     "alertNoFunctionalityBody": "Do you want to activate this functionality in the settings?",
     "alertNoFunctionalityGotoSettings": "Settings",
-    "alertNoFunctionalityCancel": "Cancel"
+    "alertNoFunctionalityCancel": "Cancel",
+
+    "HomeMeasurementsAlertText": "Measuring a child at home is less accurate than measuring at a doctor's and can affect the accuracy of the growth chart.",
+    "NoVaccinationForPeriodAlert": "No vaccines for this period. "
 }

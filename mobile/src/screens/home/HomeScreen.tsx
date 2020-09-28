@@ -1,7 +1,7 @@
 import React from 'react';
 import Realm from 'realm';
 import { ScrollView, StyleSheet, View, ViewStyle, Alert, Text } from 'react-native';
-import { Button } from 'react-native-paper';
+import { Button, Dialog, Paragraph } from 'react-native-paper';
 import { scale } from 'react-native-size-matters';
 import { NavigationStackProp, NavigationStackState } from 'react-navigation-stack';
 import { ThemeConsumer, ThemeContextValue } from '../../themes/ThemeContext';
@@ -24,21 +24,41 @@ import { UserRealmConsumer, UserRealmContextValue } from '../../stores/UserRealm
 
 export interface HomeScreenParams {
     showSearchInput?: boolean;
+    showDialog?: boolean;
 }
 
 export interface Props {
     navigation: NavigationStackProp<NavigationStackState, HomeScreenParams>;
 }
 
+export interface State {
+    showDialog: boolean;
+}
+
 /**
  * Shows several ArticlesSection.
  */
-export class HomeScreen extends React.Component<Props, object> {
+export class HomeScreen extends React.Component<Props, State> {
 
     public constructor(props: Props) {
         super(props);
         this.setDefaultScreenParams();
-    }
+        this.initState();
+    };
+
+    private initState(){
+        let state: State = {
+            showDialog: false,
+        }
+
+        if(this.props.navigation.state.params?.showDialog !== null&& this.props.navigation.state.params?.showDialog === true){
+            state.showDialog = this.props.navigation.state.params?.showDialog;
+        }else{
+            state.showDialog = false;
+        };
+
+        this.state = state;
+    };
 
     public componentDidMount() {
         Orientation.lockToPortrait();
@@ -67,49 +87,58 @@ export class HomeScreen extends React.Component<Props, object> {
 
 
     }
-
+    
     public render() {
         const screenParams = this.props.navigation.state.params!;
         return (
             <ThemeConsumer>
                 {(themeContext: ThemeContextValue) => (
-                    <ScrollView style={{ backgroundColor: themeContext.theme.screenContainer?.backgroundColor }} contentContainerStyle={[styles.container, { padding: themeContext.theme.screenContainer?.padding }]}>
+                    <>
+                        <ScrollView style={{ backgroundColor: themeContext.theme.screenContainer?.backgroundColor }} contentContainerStyle={[styles.container, { padding: themeContext.theme.screenContainer?.padding }]}>
 
-                        {/* <Text>{localize.getLanguage()}</Text> */}
+                            {/* <Text>{localize.getLanguage()}</Text> */}
 
-                        {/* Test button */}
-                        {/* <Button onPress={() => { this.onTestButtonPress() }}>Test</Button>
+                            {/* Test button */}
+                            {/* <Button onPress={() => { this.onTestButtonPress() }}>Test</Button>
                         <View style={{ height: 30 }} /> */}
 
-                        {/* HOME MESSAGES */}
-                        <DataRealmConsumer>
-                            {(dataRealmContext: DataRealmContextValue) => (
-                                <UserRealmConsumer>
-                                    {(userRealmContext: UserRealmContextValue) => (
-                                        <>
-                                            <HomeMessages showCloseButton={true} cardType="blue" homeMessagesType="polls"></HomeMessages>
-                                            <HomeMessages showCloseButton={true} ></HomeMessages>
-                                        </>
-                                    )}
-                                </UserRealmConsumer>
-                            )}
-                        </DataRealmConsumer>
+                            {/* HOME MESSAGES */}
+                            <DataRealmConsumer>
+                                {(dataRealmContext: DataRealmContextValue) => (
+                                    <UserRealmConsumer>
+                                        {(userRealmContext: UserRealmContextValue) => (
+                                            <>
+                                                <HomeMessages showCloseButton={true} cardType="blue" homeMessagesType="polls"></HomeMessages>
+                                                <HomeMessages showCloseButton={true} ></HomeMessages>
+                                            </>
+                                        )}
+                                    </UserRealmConsumer>
+                                )}
+                            </DataRealmConsumer>
 
-                        {/* ARTICLES SECTION */}
-                        <DataRealmConsumer>
-                            {(dataRealmContext: DataRealmContextValue) => (
-                                <>
-                                    {
-                                        content.getHomeScreenDevelopmentArticles(dataRealmContext.realm ? dataRealmContext.realm : null).categoryArticles?.length !== 0 ?
-                                            <ArticlesSection data={content.getHomeScreenDevelopmentArticles(dataRealmContext.realm ? dataRealmContext.realm : null)} />
-                                            : null
-                                    }
-                                    <ArticlesSection data={content.getHomeScreenArticles(dataRealmContext.realm ? dataRealmContext.realm : null)} />
-                                </>
-                            )}
-                        </DataRealmConsumer>
-                    </ScrollView>
-                )}
+                            {/* ARTICLES SECTION */}
+                            <DataRealmConsumer>
+                                {(dataRealmContext: DataRealmContextValue) => (
+                                    <>
+                                        {
+                                            content.getHomeScreenDevelopmentArticles(dataRealmContext.realm ? dataRealmContext.realm : null).categoryArticles?.length !== 0 ?
+                                                <ArticlesSection data={content.getHomeScreenDevelopmentArticles(dataRealmContext.realm ? dataRealmContext.realm : null)} />
+                                                : null
+                                        }
+                                        <ArticlesSection data={content.getHomeScreenArticles(dataRealmContext.realm ? dataRealmContext.realm : null)} />
+                                    </>
+                                )}
+                            </DataRealmConsumer>
+
+                        </ScrollView>
+                        <Dialog visible={this.state.showDialog}>
+                            <View>
+                                <Paragraph>ASDASDA</Paragraph>
+                            </View>
+                        </Dialog>
+                    </>
+                )
+                }
             </ThemeConsumer>
         );
     }

@@ -107,7 +107,7 @@ export function getDoctorVisitCardsBirthdayIsSet(currentChild: ChildEntity & Rea
             let cardMeasurementMillis = (thisPeriodMeasures as Measures).measurementDate;
             if (cardMeasurementMillis) {
                 let cardMeasurementDateTime = DateTime.fromMillis(cardMeasurementMillis);
-                cardSubTitle = cardMeasurementDateTime.toLocaleString(DateTime.DATE_MED);
+                cardSubTitle = cardMeasurementDateTime.toFormat("dd.MM.yyyy");
             }
 
             // cardTitleIcon
@@ -228,7 +228,7 @@ export function getDoctorVisitCardsBirthdayIsSet(currentChild: ChildEntity & Rea
         let cardMeasurementMillis = measures.measurementDate;
         if (cardMeasurementMillis) {
             let cardMeasurementDateTime = DateTime.fromMillis(cardMeasurementMillis);
-            cardSubTitle = cardMeasurementDateTime.toLocaleString(DateTime.DATE_MED);
+            cardSubTitle = cardMeasurementDateTime.toFormat("dd.MM.yyyy");
         }
 
         // cardTitleIcon
