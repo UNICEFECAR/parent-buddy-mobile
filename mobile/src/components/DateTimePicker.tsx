@@ -130,8 +130,8 @@ export class DateTimePicker extends React.Component<Props, State> {
                         is24Hour={ true }
                         onConfirm={(date) => {this.onDateTimePickerConfirm(date)}}
                         onCancel={() => {this.onDateTimePickerCancel()}}
-                        // maximumDate={this.props.maximumDate}
-                        // minimumDate={this.props.minimumDate}
+                        maximumDate={this.props.maximumDate}
+                        minimumDate={this.props.minimumDate}
                     />
                 </View>
             </TouchableWithoutFeedback>

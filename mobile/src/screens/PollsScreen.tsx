@@ -10,8 +10,10 @@ import WebView from 'react-native-webview';
 import { GradientBackground, Typography, RoundedButton } from '../components';
 import { TypographyType } from '../components/Typography';
 import { dataRealmStore } from '../stores';
-import { ActivityIndicator } from 'react-native-paper';
-import { translate } from 'i18n-js';
+import { ActivityIndicator, Button, Dialog, Paragraph } from 'react-native-paper';
+import { translate } from '../translations/translate'
+import { moderateScale, scale } from 'react-native-size-matters';
+import IconFontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 
 export interface PollsScreenParams {
@@ -25,6 +27,7 @@ export interface Props {
 export interface State {
     title: string,
     url: string,
+    isFinished: boolean
 }
 
 /**
@@ -37,7 +40,7 @@ export class PollsScreen extends React.Component<Props, State> {
         this.setDefaultScreenParams();
         this.initState();
     }
-   public static navigationOptions = ({ navigation }: NavigationScreenConfigProps<NavigationStackProp<NavigationStackState>>): NavigationStackOptions => {
+    public static navigationOptions = ({ navigation }: NavigationScreenConfigProps<NavigationStackProp<NavigationStackState>>): NavigationStackOptions => {
         return {
             // API: https://bit.ly/2koKtOw
             headerTitle: "asdasdasdas",
@@ -50,6 +53,7 @@ export class PollsScreen extends React.Component<Props, State> {
         let state: State = {
             title: "",
             url: "",
+            isFinished: false,
         }
 
         if (polls) {
@@ -90,7 +94,15 @@ export class PollsScreen extends React.Component<Props, State> {
         }
     }
 
+    private goBack() {
+        this.props.navigation.goBack();
+    }
+
     private onMessage() {
+        this.setState({
+            isFinished: true
+        });
+
         let polls = this.props.navigation.state.params?.polls;
 
         if (polls) {
@@ -99,13 +111,12 @@ export class PollsScreen extends React.Component<Props, State> {
 
             dataRealmStore.onPollFinished(id, updated_at)
         };
-        
-        this.props.navigation.goBack();
+
     };
 
     private loader() {
         let top = Dimensions.get('window').height / 2;
-        return <ActivityIndicator size='large' style={{top: -top}} />
+        return <ActivityIndicator size='large' style={{ top: -top }} />
     }
 
     public render() {
@@ -117,17 +128,40 @@ export class PollsScreen extends React.Component<Props, State> {
             )
         }
         return (
-            <WebView
-                style={{ flex: 1 }}
-                renderLoading={this.loader}
-                startInLoadingState={true}
-                source={{
-                    uri: this.state.url
-                }}
+            <>
+                <WebView
+                    style={{ flex: 1 }}
+                    renderLoading={this.loader}
+                    startInLoadingState={true}
+                    source={{
+                        uri: this.state.url
+                    }}
 
-                onMessage={() => this.onMessage()}
-            />
-            // <RoundedButton text="TEST FINISH" onPress={() => this.onMessage()} />
+                    onMessage={() => this.onMessage()}
+                />
+                <Dialog visible={this.state.isFinished} style={{ backgroundColor: 'transparent' }}>
+                    <View style={{ backgroundColor: "#6967E4", padding: scale(20), borderRadius: 10, marginTop: scale(-15) }}>
+                        <View style={{ flexDirection: "row", }}>
+                            <IconFontAwesome5
+                                name="comments"
+                                style={{ lineHeight: 25, color: 'white', fontSize: moderateScale(22), marginRight: scale(10) }}
+                                solid={true}
+                            />
+                            <Paragraph style={{ fontSize: moderateScale(20), color: 'white', fontWeight: 'bold', lineHeight: 29, }}>
+                                {translate("PollsSuccessMessage")}
+                            </Paragraph>
+                        </View>
+
+                        <Button
+                            style={{ marginTop: 10 }}
+                            labelStyle={{ color: 'white' }}
+                            onPress={() => this.goBack()}
+                        >
+                            {translate("PollsBack")}
+                        </Button>
+                    </View>
+                </Dialog>
+            </>
         );
     }
 

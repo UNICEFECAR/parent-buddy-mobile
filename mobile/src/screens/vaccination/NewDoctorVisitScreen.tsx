@@ -151,6 +151,7 @@ export class NewDoctorVisitScreen extends Component<Props, State> {
 
             let measure: Measures = {
                 weight: this.state.weight,
+                measurementPlace: "doctor",
                 length: this.state.height,
                 measurementDate: measurementDate,
                 vaccineIds: completedVaccinations,
