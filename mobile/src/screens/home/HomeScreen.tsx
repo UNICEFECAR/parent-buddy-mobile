@@ -31,33 +31,16 @@ export interface Props {
     navigation: NavigationStackProp<NavigationStackState, HomeScreenParams>;
 }
 
-export interface State {
-    showDialog: boolean;
-}
+
 
 /**
  * Shows several ArticlesSection.
  */
-export class HomeScreen extends React.Component<Props, State> {
+export class HomeScreen extends React.Component<Props, object> {
 
     public constructor(props: Props) {
         super(props);
         this.setDefaultScreenParams();
-        this.initState();
-    };
-
-    private initState(){
-        let state: State = {
-            showDialog: false,
-        }
-
-        if(this.props.navigation.state.params?.showDialog !== null&& this.props.navigation.state.params?.showDialog === true){
-            state.showDialog = this.props.navigation.state.params?.showDialog;
-        }else{
-            state.showDialog = false;
-        };
-
-        this.state = state;
     };
 
     public componentDidMount() {
@@ -131,11 +114,6 @@ export class HomeScreen extends React.Component<Props, State> {
                             </DataRealmConsumer>
 
                         </ScrollView>
-                        <Dialog visible={this.state.showDialog}>
-                            <View>
-                                <Paragraph>ASDASDA</Paragraph>
-                            </View>
-                        </Dialog>
                     </>
                 )
                 }

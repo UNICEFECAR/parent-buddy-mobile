@@ -31,6 +31,8 @@ export type Measures = {
     vaccineIds?: string[];
 
     doctorComment?: string;
+
+    measurementPlace: string;
 };
 
 export type Reminder = {
@@ -53,6 +55,7 @@ export type ChildEntity = {
     comment?: string;
     checkedMilestones?: number[];
     reminders?: string;
+    measurementPlace: string;
 };
 
 /**

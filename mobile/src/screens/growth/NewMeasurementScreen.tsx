@@ -131,7 +131,10 @@ export class NewMeasurementScreen extends Component<Props, State> {
         let measures: Measures[] = [];
         let check = this.valueCheck();
 
-        if (check.isValid) {
+        if (check.isValid && this.state.measurementPlace !== undefined) {
+
+            let place = this.state.measurementPlace;
+
             if (currentChild.measures !== null && currentChild.measures !== "") {
                 measures = JSON.parse(currentChild.measures);
                 let sameDate = false;
@@ -147,7 +150,7 @@ export class NewMeasurementScreen extends Component<Props, State> {
                 });
 
                 if (sameDate === false) {
-                    measures.push({ length: length, weight: weight, measurementDate: measurementDate?.toMillis(), didChildGetVaccines: false, isChildMeasured: true });
+                    measures.push({ measurementPlace: place, length: length, weight: weight, measurementDate: measurementDate?.toMillis(), didChildGetVaccines: false, isChildMeasured: true });
                 };
             } else {
                 measures[0].weight = weight;

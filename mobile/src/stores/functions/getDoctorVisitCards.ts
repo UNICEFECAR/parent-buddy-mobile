@@ -279,6 +279,7 @@ export function getDoctorVisitCardsBirthdayIsSet(currentChild: ChildEntity & Rea
     // COMBINE CARDS
     rval = regularCards.concat(additionalCards);
 
+
     // SORT CARDS
     rval.sort((cardA, cardB) => {
         if ((cardA.ordering as number) > (cardB.ordering as number)) return 1;

@@ -154,7 +154,7 @@ export class BirthDataScreen extends React.Component<Props, State> {
                 measures[0].measurementDate = birthDateTimeStamp;
             } else {
                 if(weight !== "" && length !== "")
-                    measures.push({ length: length, weight: weight, measurementDate: birthDateTimeStamp, isChildMeasured: isChildMeasured,  didChildGetVaccines: false})
+                    measures.push({ measurementPlace: "doctor", length: length, weight: weight, measurementDate: birthDateTimeStamp, isChildMeasured: isChildMeasured,  didChildGetVaccines: false})
             }
     
             userRealmStore.realm?.write(() => {

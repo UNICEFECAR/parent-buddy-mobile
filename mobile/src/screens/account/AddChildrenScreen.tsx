@@ -108,6 +108,7 @@ export class AddChildrenScreen extends React.Component<Props, State> {
             createdAt: new Date(),
             updatedAt: new Date(),
             measures: "",
+            measurementPlace: "doctor"
         };
     }
 

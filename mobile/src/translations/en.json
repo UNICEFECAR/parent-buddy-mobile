@@ -296,5 +296,7 @@
     "alertNoFunctionalityCancel": "Cancel",
 
     "HomeMeasurementsAlertText": "Measuring a child at home is less accurate than measuring at a doctor's and can affect the accuracy of the growth chart.",
-    "NoVaccinationForPeriodAlert": "No vaccines for this period. "
+    "NoVaccinationForPeriodAlert": "TODO No vaccines for this period. ",
+    "PollsSuccessMessage": "TODO Thank you for feedback!",
+    "PollsBack": "Go back"
 }
