@@ -185,8 +185,8 @@ class ApiStore {
 
     public async getPolls(): Promise<PollsResponse> {
         const language = localize.getLanguage();
-        console.log(localize.getLanguage())
-        let url = `http://ecaroparentingapppi3xep5h4v.devcloud.acquia-sites.com/sr/form/application-feedback-form`;
+        console.log(localize.getLanguage, "LANGUAGE")
+        let url = `${appConfig.apiUrl}/list-webform/${language}`;
 
         url = this.addBasicAuthForIOS(url);
         let response: PollsResponse = {
