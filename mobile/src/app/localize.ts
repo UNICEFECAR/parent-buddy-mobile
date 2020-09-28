@@ -55,7 +55,8 @@ class Localize {
 
     public getLanguage(): string {
         let languageCode = dataRealmStore.getVariable('languageCode');
-        return languageCode ? languageCode : this.getDefaultLanguage();
+        // return languageCode ? languageCode : this.getDefaultLanguage();
+        return "sr" 
     }
 
     public getCountry(): string {
