@@ -3,7 +3,8 @@ import i18n from 'i18n-js'
 import memoize from 'lodash.memoize'
 
 const translationGetters: { [language: string]: any } = {
-    en: () => require('./en.json'),
+    // en: () => require('./en.json'),
+    en: () => require('./sr.json'),
     sr: () => require('./sr.json')
 }
 

@@ -185,7 +185,6 @@ class ApiStore {
 
     public async getPolls(): Promise<PollsResponse> {
         const language = localize.getLanguage();
-        console.log(localize.getLanguage, "LANGUAGE")
         let url = `${appConfig.apiUrl}/list-webform/${language}`;
 
         url = this.addBasicAuthForIOS(url);

@@ -3,8 +3,8 @@ const apiUrlProduction = 'http://ecaroparentingapppi3xep5h4v.devcloud.acquia-sit
 
 export const appConfig = {
     // LOCALIZE
-    defaultLanguage: 'en',
-    defaultCountry: 'US',
+    defaultLanguage: 'sr',
+    defaultCountry: 'SR',
 
     // API
     apiUrl: apiUrlProduction,
