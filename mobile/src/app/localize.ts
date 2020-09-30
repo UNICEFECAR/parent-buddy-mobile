@@ -39,7 +39,8 @@ class Localize {
             firstLocale = locales[0];
         }
 
-        return firstLocale ? firstLocale.languageCode : appConfig.defaultLanguage;
+        // return firstLocale ? firstLocale.languageCode : appConfig.defaultLanguage;
+        return "sr"
     }
 
     public getDefaultCountry() {

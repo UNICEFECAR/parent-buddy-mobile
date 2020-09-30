@@ -1,5 +1,5 @@
 import React from 'react';
-import { ViewStyle, Text, View, Dimensions } from 'react-native';
+import { ViewStyle, Text, View, Dimensions, KeyboardAvoidingView, Platform } from 'react-native';
 import { NavigationStackProp, NavigationStackState, NavigationStackOptions } from 'react-navigation-stack';
 import { ThemeContextValue, ThemeConsumer } from '../themes/ThemeContext';
 import NetInfo from "@react-native-community/netinfo";
@@ -129,16 +129,25 @@ export class PollsScreen extends React.Component<Props, State> {
         }
         return (
             <>
-                <WebView
-                    style={{ flex: 1 }}
-                    renderLoading={this.loader}
-                    startInLoadingState={true}
-                    source={{
-                        uri: this.state.url
-                    }}
+                <KeyboardAvoidingView
+                    style={{flex: 1}}
+                    keyboardVerticalOffset={-500}
+                    contentContainerStyle={{flex: 1}}
+                    behavior="padding"
+                    enabled={Platform.OS === "android"}
+                >
+                    <WebView
+                        style={{ flex: 1 }}
+                        renderLoading={this.loader}
+                        startInLoadingState={true}
+                        source={{
+                            uri: this.state.url
+                        }}
 
-                    onMessage={() => this.onMessage()}
-                />
+                        onMessage={() => this.onMessage()}
+                    />
+                </KeyboardAvoidingView>
+
                 <Dialog visible={this.state.isFinished} style={{ backgroundColor: 'transparent' }}>
                     <View style={{ backgroundColor: "#6967E4", padding: scale(20), borderRadius: 10, marginTop: scale(-15) }}>
                         <View style={{ flexDirection: "row", }}>
