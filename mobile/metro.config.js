@@ -4,7 +4,7 @@
  *
  * @format
  */
-
+// metro.config.js
 module.exports = {
   transformer: {
     getTransformOptions: async () => ({
