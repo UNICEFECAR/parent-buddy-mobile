@@ -7,11 +7,12 @@ import { utils, syncData } from '../app';
 import { appConfig } from '../app/appConfig';
 import { translate } from '../translations';
 import { ActivityIndicator } from 'react-native-paper';
-import { scale } from 'react-native-size-matters';
+import { moderateScale, scale } from 'react-native-size-matters';
 import FastImage from 'react-native-fast-image';
 // @ts-ignore
 import { SliderBox } from "react-native-image-slider-box";
 import { ceil } from 'lodash';
+import { color } from 'react-native-reanimated';
 
 export interface Props {
     navigation: NavigationStackProp<NavigationStackState>;
@@ -58,52 +59,22 @@ export class SyncingScreen extends React.Component<Props, object> {
         />
         return (
             <SafeAreaView style={styles.container}>
-                {/* <View style={{ flex: 0, marginTop: scale(20) }}>
-                    <Typography type={TypographyType.headingPrimary} style={{ marginBottom: 0, textAlign: 'center' }}>
-                        Halo beba 
-                    </Typography>
-                    <Typography type={TypographyType.headingSecondary}>
-                        Saputnik u roditeljstvu!
-                    </Typography>
-                </View> */}
-                <View style={{ flex: 0, marginTop: scale(20) }}>
-                    <Typography type={TypographyType.headingPrimary} style={{ marginBottom: 0 }}>
-                        {translate('syncScreenText')}
-                    </Typography>
-                    <Typography type={TypographyType.headingSecondary}>
-                        {translate('syncScreenSubText')}
-                    </Typography>
-                </View>
-
                 <FastImage
-                    source={ require('../themes/assets/sync_data.png') }
-                    style={{ flex:1, width:'100%' }}
+                    source={require('../themes/assets/sync_data.png')}
+                    style={{ flex: 1, width: '100%' }}
                     resizeMode="cover"
                 />
-
-                <View style={{ flex: 0, marginBottom: scale(20) }}>
-                    <ActivityIndicator size="large" />
+                <View style={{ flex: 0, marginTop: -10, marginBottom: -10}}>
+                    <ActivityIndicator size="large" color="white" />
                 </View>
-                {/* <View style={{ flex: 2}}>
-                    <SliderBox
-                        ImageComponent={FastImage}
-                        images={images}
-                        autoplayInterval={20000}
-                        sliderBoxHeight={100}
-                        autoplay={20}
-                        resizeMethod={'resize'}
-                        resizeMode={'cover'}
-                        circleLoop
-                        parentWidth={Dimensions.get('window').width}
-                    />
-                </View> */}
-
-                {/* <SliderBox
-                    images={this.sliderImages()}
-                    sliderBoxHeight={200}
-                   
-                    parentWidth={300}
-                /> */}
+                <View style={{ flex: 0, marginTop: scale(20) }}>
+                    <Typography type={TypographyType.headingPrimary} style={{ marginBottom: 0, textAlign: 'center', color: 'white' }}>
+                        {translate('syncScreenText')}
+                    </Typography>
+                    <Typography type={TypographyType.headingPrimary} style={{ textAlign: 'center', color: 'white' }}>
+                        {translate('syncScreenSubText')}...
+                    </Typography>
+                </View>
             </SafeAreaView>
         );
     }
@@ -120,6 +91,6 @@ const styles = StyleSheet.create<SyncingScreenStyles>({
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'white',
+        backgroundColor: '#A178A9',
     },
 });
