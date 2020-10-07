@@ -940,7 +940,7 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
             notificationDayEnd: 460,
             vaccines: [
                 { uuid: "56714192-64c9-4b51-a837-934bf3947836", title: "protiv malih boginja, zauški, rubeole (crvenka)", hardcodedArticleId: "5071" },
-                { uuid: "5e0638e8-cc8f-4372-be70-c9b951bcd23e", title: "protiv oboljenja koje izaziva bakterija Streptococus pneumonije ' revakcinacija", hardcodedArticleId: "4796" },
+                { uuid: "5e0638e8-cc8f-4372-be70-c9b951bcd23e", title: "protiv oboljenja koje izaziva bakterija Streptococus pneumonije - revakcinacija", hardcodedArticleId: "4796" },
             ]
         },
         {
