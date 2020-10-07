@@ -28,7 +28,6 @@
     "@react-native-community/netinfo": "5.9.5",
     "@react-native-firebase/analytics": "7.4.1",
     "@react-native-firebase/app": "8.3.0",
-    "@react-native-firebase/crashlytics": "8.3.0",
     "@react-navigation/core": "3.6.1",
     "@websanova/url": "2.6.3",
     "axios": "0.19.2",

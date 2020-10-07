@@ -11,11 +11,10 @@ import { localize } from './localize';
 // @ts-ignore
 import { decode as atob, encode as btoa } from 'base-64';
 import { apiStore, dataRealmConfig, dataRealmStore, userRealmStore } from '../stores';
-import { initGlobalErrorHandler, sendErrorReportWithCrashlytics } from './errors';
+import { initGlobalErrorHandler } from './errors';
 import { ErrorBoundary } from 'react-error-boundary';
 import { ErrorFallback } from '../components/ErrorFallback';
 import { utils } from '.';
-import crashlytics from '@react-native-firebase/crashlytics';
 import SplashScreen from 'react-native-splash-screen'
 
 // ADD GLOBAL POLYFILLS: atob, btoa
@@ -56,8 +55,6 @@ export class App extends React.Component<object> {
         SplashScreen.hide();
 
         userRealmStore.removeEmptyChild();
-        // crashlytics().log(‘APP MOUNTED’);
-        crashlytics().log('Updating user count.');
         AppState.addEventListener("change", state => {
             if (state === "active") {
                 utils.logAnalitic("appHasOpened", {eventName: "appHasOpened"});
@@ -100,7 +97,7 @@ export class App extends React.Component<object> {
     
     public render() {
         return (
-            <ErrorBoundary FallbackComponent={ErrorFallback} onError={sendErrorReportWithCrashlytics}>
+            <ErrorBoundary FallbackComponent={ErrorFallback} >
                 <ThemeProvider>
                     <PaperProvider>
                         <DataRealmProvider>

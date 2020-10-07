@@ -17,8 +17,6 @@ export function initGlobalErrorHandler() {
 
     // In production, RN will crash the app on error, and we don't want that.
     ErrorUtils.setGlobalHandler((error: any, isFatal?: boolean) => {
-        // Log error to Firebase Crashlytics
-        sendErrorReportWithCrashlytics(error);
 
         // Give user an option to send bug report
         Alert.alert(
@@ -126,9 +124,6 @@ Details: ${JSON.stringify(netInfo.details, null, 4)}\n\n`
     Linking.openURL(mailUrl);
 }
 
-export function sendErrorReportWithCrashlytics(error: any, componentStack?: string) {
-    const unknownError = new UnknownError(error);
-}
 
 // GENERAL ERRORS
 export class UnknownError extends Error {
