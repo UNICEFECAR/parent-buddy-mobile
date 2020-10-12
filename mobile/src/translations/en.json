@@ -47,7 +47,7 @@
     "accountErrorAllNamesMustBeGiven":  "Enter all names",
     "accountErrorEnterName": "Enter the name",
     "accountSendSmsText": "%PARENT% tells you to install this application: %APP_URL%",
-    "accountSendSmsAppUrl": "https://www.halobeba-TODO.rs",
+    "accountSendSmsAppUrl": "https://www.halobeba.rs/",
 
     "drawerTitleArticles": "Articles and advices",
     "drawerTitleGrowthDiary": "Developmental Diary",

@@ -47,7 +47,7 @@
     "accountErrorAllNamesMustBeGiven": "Popuni sva imena",
     "accountErrorEnterName": "Unesi ime",
     "accountSendSmsText": "%PARENT% ti kaže da instaliraš ovu aplikaciju: %APP_URL%",
-    "accountSendSmsAppUrl": "https://www.halobeba-TODO.rs",
+    "accountSendSmsAppUrl": "https://www.halobeba.rs/",
 
     "drawerTitleArticles": "Članci i saveti",
     "drawerTitleGrowthDiary": "Dnevnik razvoja",
