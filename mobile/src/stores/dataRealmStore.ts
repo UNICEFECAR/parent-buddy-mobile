@@ -318,16 +318,16 @@ class DataRealmStore {
         return activePolls;
     }
 
-    public onPollFinished(id: number, updatedTimestamp: number){
+    public onPollFinished(id: number, updatedTimestamp: number) {
         const finishedPolls = this.getVariable('finishedPolls');
 
         let allFinishedPolls: FinishedPolls[] = [];
 
-        if(finishedPolls && finishedPolls.length){
+        if (finishedPolls && finishedPolls.length) {
             allFinishedPolls = finishedPolls;
         }
-       
-        allFinishedPolls?.push({id: id, updatedTimestamp: updatedTimestamp});
+
+        allFinishedPolls?.push({ id: id, updatedTimestamp: updatedTimestamp });
         this.setVariable('finishedPolls', allFinishedPolls)
     };
 
@@ -341,9 +341,13 @@ class DataRealmStore {
 
         const childAge = userRealmStore.getCurrentChild()?.birthDate;
         let childAgeMonths = DateTime.local().diff(DateTime.fromJSDate(childAge ? childAge : new Date()), "months",).months;
+        
+        if(childAgeMonths < 1){
+            childAgeMonths = 1;
+        }
 
         const childAgeTagId = this.getTagIdFromChildAge(parseInt(childAgeMonths.toString()) + 1);
-
+        
         let allPeriods = this.getDevelopmentPeriods().filter(item => item.childAgeTagId ? item.childAgeTagId < childAgeTagId : null);
 
         for (let i = 0; i < allPeriods.length; i++) {

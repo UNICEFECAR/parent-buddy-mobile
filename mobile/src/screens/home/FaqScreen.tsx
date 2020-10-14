@@ -98,6 +98,7 @@ export class FaqScreen extends React.Component<Props, State> {
                             <>
                                 <ListCard
                                     mode={ListCardMode.simpleList}
+                                    defaultOpen={true}
                                     title={faqSection.title}
                                     items={faqSection.items}
                                     onItemPress={(item) => { this.gotoFaqCategoryScreen(faqSection, item) }}

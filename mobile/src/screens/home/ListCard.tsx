@@ -24,6 +24,7 @@ export interface Props {
     previewNumberOfItems?: number;
     showAllText?: string;
     style?: StyleProp<ViewStyle>;
+    defaultOpen?: boolean;
     onItemPress?: (item: ListCardItem) => void
 }
 
@@ -114,9 +115,11 @@ export class ListCard extends React.Component<Props, State> {
     private getSimpleListItems(themeContext: ThemeContextValue): JSX.Element[] {
         let items: JSX.Element[] = [];
 
-        for (let i = 0; i < this.numberOfItemsToShow; i++) {
-            let item = this.props.items[i];
+        let showNumber = this.props.defaultOpen ? this.props.items.length : this.numberOfItemsToShow;
 
+        for (let i = 0; i < showNumber; i++) {
+            let item = this.props.items[i];
+            console.log(this.props.items, "items")
             items.push((
                 <List.Item
                     key={i}
@@ -170,7 +173,7 @@ export class ListCard extends React.Component<Props, State> {
 
     public render() {
         this.setLocalValues();
-
+        console.log(this.props.mode)
         return (
             <ThemeConsumer>
                 {(themeContext: ThemeContextValue) => (
@@ -209,7 +212,8 @@ export class ListCard extends React.Component<Props, State> {
                         }
 
                         {/* SHOW ALL ITEMS BUTTON */}
-                        {this.showShowAllButton ? (
+                        
+                        {!this.props.defaultOpen ? this.showShowAllButton ? (
                             <RectButton
                                 style={{ alignItems: 'center' }}
                                 onPress={() => { this.toggleShowAllItems() }}
@@ -233,7 +237,7 @@ export class ListCard extends React.Component<Props, State> {
                                         />
                                     )}
                             </RectButton>
-                        ) : null}
+                        ) : null : null}
                     </Surface>
                 )}
             </ThemeConsumer>

@@ -131,8 +131,8 @@ export class PollsScreen extends React.Component<Props, State> {
             <>
                 <KeyboardAvoidingView
                     style={{flex: 1}}
-                    keyboardVerticalOffset={-500}
-                    contentContainerStyle={{flex: 1}}
+                    keyboardVerticalOffset={Platform.OS === 'android' ? 0 : -500}
+                    // contentContainerStyle={{flex: 1}}
                     behavior="padding"
                     enabled={Platform.OS === "android"}
                 >
