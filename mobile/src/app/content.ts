@@ -148,7 +148,7 @@ class Content {
         } else {
             const dateNow = DateTime.local();
             const diff = dateNow.diff(DateTime.fromJSDate(childBirthDay), ["month", "day"],).toObject();
-            console.log(diff.months, "diff months")
+            
             // get info is child in development period 
             if (diff.days) {
                 if (diff.days >= 0 && diff.days <= 10.9) {
@@ -165,7 +165,7 @@ class Content {
             } else {
                 let diffInMonths = diff.months ? diff.months : 0;
                 let childAgeTagid = dataRealmStore.getTagIdFromChildAge(diffInMonths);
-                console.log(childAgeTagid, "childAgeTagId")
+
                 let childGender: ChildGender | undefined = userRealmStore.getChildGender();
                 let oppositeChildGender: ChildGender | undefined = undefined;
 

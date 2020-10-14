@@ -14,7 +14,8 @@ import { DoctorVisitCardButtonType } from "../components/doctor-visit/DoctorVisi
 import { NewDoctorVisitScreenType } from "../screens/vaccination/NewDoctorVisitScreen";
 import { TextButtonColor } from "../components/TextButton";
 import { Vaccine } from "../components/vaccinations/oneVaccinations";
-import { replace } from "lodash";
+import { difference, replace } from "lodash";
+import { diff } from "react-native-reanimated";
 
 /**
  * Home messages logic is here.
@@ -544,11 +545,12 @@ class HomeMessages {
         if (!currentHealthCheckPeriod) {
             return [];
         }
-
         // Set measuresForHealthCheckPeriod
+        console.log(currentHealthCheckPeriod, "CURRENT")
         const measuresForHealthCheckPeriod = this.measuresForHealthCheckPeriod(currentHealthCheckPeriod);
-
+        console.log(measuresForHealthCheckPeriod, "measuresForHealthCheckPeriod")
         // Show "Measurement data is NOT entered"
+        
         if (!measuresForHealthCheckPeriod) {
             rval.push({
                 text: translate('homeMessageGrowthMeasurementNotEntered'),
@@ -622,12 +624,16 @@ class HomeMessages {
         const childAgeInDays = this.childAgeInDays;
 
         developmentPeriods?.forEach((period) => {
-            const difference = period.daysStart - childAgeInDays;
-            if (difference >= 0 && difference <= 10) {
+            let difference = period.daysStart - childAgeInDays;
+
+            if(difference < 0){
+                difference = difference * -1;
+            }
+
+            if (difference > 0 && difference <= 10.99) {
                 isTenDaysBefore = true;
             }
         });
-
         // Set message
         if (isTenDaysBefore) {
             // Set arePreviousMilestonesSet
@@ -643,9 +649,10 @@ class HomeMessages {
                         }
                     }
                 };
-            }
-        }
+            };
+        };
 
+    
         return rval;
     }
 
@@ -805,7 +812,10 @@ class HomeMessages {
             return null;
         }
 
-        if (!healthCheckPeriod || !healthCheckPeriod.childAgeInDays.from || !healthCheckPeriod.childAgeInDays.to) {
+        let a = 0;
+
+
+        if (!healthCheckPeriod || healthCheckPeriod.childAgeInDays.from === null || healthCheckPeriod.childAgeInDays.from === undefined|| !healthCheckPeriod.childAgeInDays.to) {
             return null;
         }
 
@@ -814,7 +824,7 @@ class HomeMessages {
 
         // Set importantMeasures
         const importantMeasures: Measures[] = [];
-
+        
         allMeasures.forEach((measure) => {
             const childBirtDateTimestampMills = this.currentChild?.birthDate?.getTime();
             const currentMesaureDateTimestampMills = measure.measurementDate;

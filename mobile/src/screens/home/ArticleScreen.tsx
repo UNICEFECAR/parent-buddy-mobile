@@ -77,8 +77,11 @@ export class ArticleScreen extends React.Component<Props, object> {
         this.props.navigation.goBack();
     }
 
+
     public render() {
         const screenParams = this.props.navigation.state.params!;
+        console.log(screenParams.article.body, "BODY")
+
         return (
             <ThemeConsumer>
                 {(themeContext: ThemeContextValue) => (
@@ -122,10 +125,10 @@ export class ArticleScreen extends React.Component<Props, object> {
                             {/* <ShareButton style={{ position: 'absolute', bottom: scale(0), right: scale(20) }} onPress={() => { }} /> */}
                         </View>
 
-                        <View style={{ flexDirection: 'column', justifyContent: 'flex-start', padding: themeContext.theme.screenContainer?.padding }}>
+                        <View style={{ flexDirection: 'column', justifyContent: 'flex-start', }}>
                             {/* ARTICLE SUMMARY */}
                             {screenParams.article.summary ? (
-                                <View>
+                                <View style={{ padding: themeContext.theme.screenContainer?.padding }}>
                                     <HTML
                                         html={screenParams.article.summary}
                                         baseFontStyle={{ fontSize: scale(19) }}
@@ -137,7 +140,7 @@ export class ArticleScreen extends React.Component<Props, object> {
                                         }}
                                     />
 
-                                    <Divider style={{marginTop:scale(30)}} />
+                                    <Divider style={{ marginTop: scale(30) }} />
                                 </View>
                             ) : null}
 
@@ -161,14 +164,16 @@ export class ArticleScreen extends React.Component<Props, object> {
                                 {translate('buttonShare')}
                             </TextButton> */}
 
-                            <Divider style={{ marginTop: scale(30), marginBottom: scale(30) }} />
+                            <View style={{ padding: themeContext.theme.screenContainer?.padding }}>
+                                <Divider style={{ marginTop: scale(30), marginBottom: scale(30) }} />
 
-                            {/* RELATED ARTICLES */}
-                            <DataRealmConsumer>
-                                {(dataRealmContext: DataRealmContextValue) => (
-                                    <ArticlesSection data={content.getRelatedArticles(dataRealmContext.realm, screenParams.article)} hideTitleUnderline={true} />
-                                )}
-                            </DataRealmConsumer>
+                                {/* RELATED ARTICLES */}
+                                <DataRealmConsumer>
+                                    {(dataRealmContext: DataRealmContextValue) => (
+                                        <ArticlesSection data={content.getRelatedArticles(dataRealmContext.realm, screenParams.article)} hideTitleUnderline={true} />
+                                    )}
+                                </DataRealmConsumer>
+                            </View>
                         </View>
                     </ScrollView>
                 )}
@@ -189,8 +194,19 @@ const styles = StyleSheet.create<ArticleScreenStyles>({
 });
 
 const htmlStyles = {
-    p: { marginBottom: 15 },
+    p: {marginLeft: scale(25),marginRight: scale(20), marginBottom: 15,  },
+    ul: {marginLeft: scale(25),marginRight: scale(20)},
+    h2: {marginLeft: scale(25), marginRight: scale(20)},
     a: { fontWeight: 'bold', textDecorationLine: 'none' },
     // img: ,
-    blockquote: { backgroundColor: '#F0F1FF', padding: scale(15) },
+    blockquote: { 
+        backgroundColor: '#F0F1FF', 
+        paddingTop: scale(20),
+        paddingBottom: scale(20), 
+        paddingLeft: scale(5), 
+        paddingRight: scale(5), 
+        fontSize: moderateScale(21), 
+        lineHeight: 36, 
+        marginBottom: 25  
+    },
 };

@@ -6,8 +6,8 @@
     "dataCantDownload": "Prvi put kada se otvori, aplikacija mora da preuzme podatke. Molimo vas povežite se na internet i probajte ponovo.", 
     "downloadData": "Preuzmi podatke",
     
-    "loginGoogle": "Povežite se preko Google naloga",
-    "loginFacebook": "Povežite se preko Facebook naloga",
+    "loginGoogle": "Koristite Google nalog",
+    "loginFacebook": "Koristite Facebook nalog",
     "registerAccount": "Napravite nalog koristeći email",
     "loginButton": "Login",
     "loginForgotPassword": "Zaboravili ste lozinku?",
@@ -94,7 +94,7 @@
     "searchCategoryFaq": "Kategorija: Česta pitanja",
 
     "faq": "Česta pitanja",
-    "faqYourChild": "Vaše dete",
+    "faqYourChild": "Po temama",
     "faqPerAge": "Po uzrastu",
 
     "writeUsEmail": "Pišite nam na e-mail",
