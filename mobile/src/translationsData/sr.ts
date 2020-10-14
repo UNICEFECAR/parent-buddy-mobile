@@ -477,7 +477,7 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
     doctorVisitPeriods: [
         {
             uuid: '63072492-271f-4776-8b76-1dbae74e453f',
-            period: 'Na rodjenju',
+            period: 'Na rođenju',
             childAgeInDays: { from: 0, to: 10 },
             nameOfTheDoctorVisit: 'Redovan preventivni pregled',
             periodSubtitle: 'Na rođenju',
@@ -560,7 +560,7 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
             period: 'Sa 18 meseci',
             childAgeInDays: { from: 545, to: 600 },
             nameOfTheDoctorVisit: 'Redovan preventivni pregled',
-            periodSubtitle: 'Sa godinu ipo dana (18. meseci)',
+            periodSubtitle: 'Sa godinu i po dana (18 meseci)',
             immunizationsPeriodId: '6a14f374-9cd8-4b69-a09a-78a105f88eb6',
             moreAboutDoctorVisitArticleId: 4476,
             planDoctorVisitMessageInDays: { from: 530, to: 600 },
@@ -856,8 +856,8 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
     immunizationsPeriods: [
         {
             uuid: '78e0d1a9-bc54-4f47-af59-ef7268788e3e',
-            title: 'Na rodjenju',
-            subtitle: 'Na rodjenju',
+            title: 'Na rođenju',
+            subtitle: 'Na rođenju',
             dayStart: 0,
             dayEnd: 10,
             notificationDayStart: 0,
@@ -870,7 +870,7 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
         {
             uuid: '2c144a63-e39f-490e-852a-75ae694a75ca',
             title: 'Sa 1 mesec',
-            subtitle: 'sa punih mesec dana',
+            subtitle: 'Sa punih mesec dana',
             dayStart: 20,
             dayEnd: 60,
             notificationDayStart: 31,
@@ -882,7 +882,7 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
         {
             uuid: 'bbd965ed-936a-4958-903e-8cf02f3e5617',
             title: 'Sa dva meseca',
-            subtitle: 'sa puna 2 meseca',
+            subtitle: 'Sa puna 2 meseca',
             dayStart: 50,
             dayEnd: 91,
             notificationDayStart: 61,
@@ -908,7 +908,7 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
         {
             uuid: '41734989-f615-4d60-a9d8-75a823e84611',
             title: 'Sa 5 meseci',
-            subtitle: 'sa punih 5 meseci',
+            subtitle: 'Sa punih 5 meseci',
             dayStart: 140,
             dayEnd: 182,
             notificationDayStart: 152,
@@ -921,7 +921,7 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
         {
             uuid: '8755d225-0e47-441f-8360-74af954ae588',
             title: 'Sa 6 meseci',
-            subtitle: 'sa punih 6 meseci',
+            subtitle: 'Sa punih 6 meseci',
             dayStart: 170,
             dayEnd: 220,
             notificationDayStart: 183,
@@ -933,7 +933,7 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
         {
             uuid: 'b8cf588a-afb3-4689-8767-555179dc6d93',
             title: 'Od 12 do 15 meseci',
-            subtitle: 'između 12. i 15. meseca',
+            subtitle: 'Između 12. i 15. meseca',
             dayStart: 350,
             dayEnd: 460,
             notificationDayStart: 365,
@@ -946,7 +946,7 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
         {
             uuid: '6a14f374-9cd8-4b69-a09a-78a105f88eb6',
             title: 'Sa 18 meseci',
-            subtitle: 'sa godinu ipo dana (18. meseci)',
+            subtitle: 'Sa godinu i po dana (18 meseci)',
             dayStart: 530,
             dayEnd: 600,
             notificationDayStart: 545,
@@ -958,7 +958,7 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
         {
             uuid: 'ff8201be-f478-4f42-80fd-bb94470d78df',
             title: '6/7 godina',
-            subtitle: 'pred polazak u školu (6-7 godina)',
+            subtitle: 'Pred polazak u školu (6-7 godina)',
             dayStart: 2160,
             dayEnd: 2190,
             notificationDayStart: 2160,
