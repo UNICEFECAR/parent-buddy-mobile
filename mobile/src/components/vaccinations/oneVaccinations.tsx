@@ -178,7 +178,7 @@ export class OneVaccinations extends Component<VaccinationPeriod, State> {
                                             <View style={styles.vaccineItemContent}>
                                                 <TextButton
                                                     color={TextButtonColor.purple}
-                                                    style={{ marginTop: scale(5), marginBottom: scale(10) }}
+                                                    style={{ marginTop: scale(5), marginBottom: scale(10), marginLeft: -5 }}
                                                     onPress={() => dataRealmStore.openArticleScreen(parseInt(item.hardcodedArticleId))}
                                                 >
                                                     {translate('moreAboutDisease')}

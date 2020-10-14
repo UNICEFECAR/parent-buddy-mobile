@@ -697,7 +697,7 @@ class HomeMessages {
             const reminderPeriodId = userRealmStore.getReminderPeriod(reminderDateTime);
 
             // SET messageFinal
-            let messageFinal = translate('doctorVisitsYouHaveAReminder').replace('%DATE%', reminderDateTime.toLocaleString(DateTime.DATE_MED));
+            let messageFinal = translate('doctorVisitsYouHaveAReminder').replace('%DATE%', reminderDateTime.toFormat("dd'.'MM'.'yyyy"));
 
             let dateDiffFromNow = Math.round(reminderDateTime.diffNow('day').days);
 
@@ -748,7 +748,7 @@ class HomeMessages {
         const missedReminders = userRealmStore.getMissedReminders();
         missedReminders.forEach((missedReminder) => {
             const reminderDateTime = DateTime.fromMillis(missedReminder.date);
-            let message = translate('doctorVisitsMissedReminder').replace('%DATE%', reminderDateTime.toLocaleString(DateTime.DATE_MED));
+            let message = translate('doctorVisitsMissedReminder').replace('%DATE%', reminderDateTime.toFormat("dd'.'MM'.'yyyy"));
 
             rval.push({
                 text: message,

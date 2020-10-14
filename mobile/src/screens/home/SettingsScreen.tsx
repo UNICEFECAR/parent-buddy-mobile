@@ -303,7 +303,7 @@ export class SettingsScreen extends React.Component<Props, State> {
 
                                 {/* Notifications help */}
                                 <Caption style={{ fontSize: moderateScale(14) }}>
-                                    {translate('settingsNotificationsHelp')}
+                                    <Typography  style={{ fontSize: moderateScale(14), opacity: 0.7 }}>{translate('settingsNotificationsHelp')}</Typography>
                                 </Caption>
 
                                 <View style={{ height: themeContext.theme.variables?.sizes.verticalPaddingLarge }} />
