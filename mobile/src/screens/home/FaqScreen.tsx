@@ -24,7 +24,7 @@ export type State = {
     data: FaqScreenDataResponse;
 };
 
-export class FaqScreen extends React.Component<Props, State> {
+export class  FaqScreen extends React.Component<Props, State> {
 
     public constructor(props: Props) {
         super(props);
