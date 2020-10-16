@@ -20,7 +20,7 @@ import { TextButtonColor } from '../../components/TextButton';
 import { navigation, utils } from '../../app';
 import { ActivityIndicator } from 'react-native-paper';
 import { DataRealmContext, DataRealmContextValue, DataRealmConsumer } from '../../stores/DataRealmContext';
-import { UserRealmConsumer, UserRealmContextValue } from '../../stores/UserRealmContext';
+import { UserRealmConsumer, UserRealmContext, UserRealmContextValue } from '../../stores/UserRealmContext';
 import { HomeMessages, Message, IconType } from '../../components/HomeMessages';
 
 export interface GrowthScreenParams {
@@ -50,9 +50,9 @@ export class GrowthScreen extends Component<Props, State> {
     public constructor(props: Props) {
         super(props);
         this.state = this.initState()
-        utils.logAnalitic("mainMenuItemClick", {eventName: "mainMenuItemClick", screen: "Growth"});
+        utils.logAnalitic("mainMenuItemClick", { eventName: "mainMenuItemClick", screen: "Growth" });
         this.setDefaultScreenParams();
-    }
+    };
 
     private convertMeasuresData(measures: Measures[], childBirthDay: Date) {
         let measurementDateInDays: number = 0;
@@ -68,7 +68,7 @@ export class GrowthScreen extends Component<Props, State> {
 
                 measurementDateInDays = days ? days : 0;
             };
-            
+
             if (measurementDateInDays < 1855) {
                 measuresData.push({
                     weight: item.weight ? parseFloat(item.weight) / 1000 : 0,
@@ -93,7 +93,7 @@ export class GrowthScreen extends Component<Props, State> {
                 isSecoundChartLoaded: true,
             })
         }, 250)
-    }
+    };
 
     public initState() {
         // initialize state 
@@ -122,7 +122,7 @@ export class GrowthScreen extends Component<Props, State> {
         };
 
         let childAgeInDays: number | null = null;
-        
+
         let allMeasures: Measures[] = [];
         let measures: Measures[] = [];
         let periodIntroductionText: string = '';
@@ -147,7 +147,7 @@ export class GrowthScreen extends Component<Props, State> {
                     defaultMessage = "";
                 };
 
-                
+
                 let allPeriods = translateData('growthPeriods') as (TranslateDataGrowthPeriods | null)
 
                 allPeriods?.filter(item => (ageInDays >= item.dayMin && ageInDays <= item.dayMax))[0]
@@ -178,14 +178,14 @@ export class GrowthScreen extends Component<Props, State> {
                     if (dt) {
                         date = DateTime.fromMillis(dt);
                     }
-                    
+
                     lastMeasurementDateObject = date;
                     lastMeasurementDate = date.toFormat("dd'.'MM'.'yyyy");
                     lastMeasuresWeight = measures[measures.length - 1].weight ? parseFloat(measures[measures.length - 1].weight) / 1000 : 0
                     lastMeasuresLength = measures[measures.length - 1].length ? parseFloat(measures[measures.length - 1].length) : 0
                 }
 
-                let birthDay = new Date(currentChild.birthDate);                
+                let birthDay = new Date(currentChild.birthDate);
 
                 let ageInDaysLastMeasurement = lastMeasurementDateObject.diff(DateTime.fromJSDate(birthDay), "days").days;
 
@@ -278,134 +278,137 @@ export class GrowthScreen extends Component<Props, State> {
                         style={{ backgroundColor: themeContext.theme.screenContainer?.backgroundColor }}
                         contentContainerStyle={styles.container}
                     >
-                        {
-                            this.state.childBirthDate === null ?
-                                <DataRealmConsumer>
-                                    {(dataRealmContext: DataRealmContextValue) => (
-                                        <UserRealmConsumer>
-                                            {(userRealmContext: UserRealmContextValue) => (
-                                                <HomeMessages showCloseButton={true}></HomeMessages>
+                        <UserRealmConsumer>
+                            {(UserRealmContext: UserRealmContextValue) => (
+                                    this.state.childBirthDate === null ?
+                                        <DataRealmConsumer>
+                                            {(dataRealmContext: DataRealmContextValue) => (
+                                                <UserRealmConsumer>
+                                                    {(userRealmContext: UserRealmContextValue) => (
+                                                        <HomeMessages showCloseButton={true}></HomeMessages>
+                                                    )}
+                                                </UserRealmConsumer>
                                             )}
-                                        </UserRealmConsumer>
-                                    )}
-                                </DataRealmConsumer>
-                                :
-                                <View>
-                                    <View style={styles.header}>
-                                        <View style={{ alignSelf: 'center' }}>
-                                            <Typography type={TypographyType.headingPrimary}>
-                                                {translate('growScreenTitle')}
-                                            </Typography>
-                                        </View>
-                                        {
-                                            measuresData.length !== 0 ?
-                                                <View style={styles.allMeasuresBtn}>
-                                                    <TextButton
-                                                        color={TextButtonColor.purple}
-                                                        onPress={() => {
-                                                            this.props.navigation.push('HomeStackNavigator_AllMeasurementScreen')
-                                                        }}
-                                                    >
-                                                        {translate('allMeasurements')}
-                                                    </TextButton>
-                                                </View> : null
-                                        }
-                                    </View>
-                                    <View style={styles.card}>
-                                        <Typography>
-                                            {periodIntroductionText}
-                                        </Typography>
-                                    </View>
-                                    {
-                                        measuresData.length === 0 ?
-                                            <NoMeasurements
-                                                addNewMeasures={() => this.goToNewMeasurements()}
-                                            />
-                                            :
-                                            <>
-                                                {this.state.isFirstChartLoaded ?
-                                                    <View style={styles.chartCard}>
-                                                        <GrowthChart
-                                                            title={translate('weightForLength')}
-                                                            chartType={chartTypes.heightLength}
-                                                            childBirthDate={childBirthDate ? childBirthDate : DateTime.local()}
-                                                            childGender={childGender === "boy" ? "male" : 'female'}
-                                                            lineChartData={measuresData}
-                                                            showFullscreen={false}
-                                                            openFullScreen={() => this.openFullScreenChart(chartTypes.heightLength)}
-
-                                                        />
-                                                    </View>
-                                                    : <View style={styles.card}><ActivityIndicator /></View>
-
-                                                }
-
-                                                {
-                                                    this.state.defaultMessage === "" ?
-                                                        interpretationTextWeightLength?.text ?
-                                                            <View style={styles.card}>
-                                                                <Typography>
-                                                                    {interpretationTextWeightLength.text}
-                                                                </Typography>
-                                                                <TextButton
-                                                                    color={TextButtonColor.purple}
-                                                                    onPress={() => this.goToArticle(interpretationTextWeightLength.articleId)}
-                                                                >
-                                                                    {translate('moreAboutChildGrowth')}
-                                                                </TextButton>
-                                                            </View> : null
-                                                        : null
-                                                }
-                                                {
-                                                    this.state.isSecoundChartLoaded ?
-                                                        <View style={styles.chartCard}>
-                                                            <GrowthChart
-                                                                title={translate('lengthForAge')}
-                                                                chartType={chartTypes.lengthAge}
-                                                                childBirthDate={childBirthDate ? childBirthDate : DateTime.local()}
-                                                                childGender={childGender === "boy" ? "male" : 'female'}
-                                                                lineChartData={measuresData}
-                                                                showFullscreen={false}
-                                                                openFullScreen={() => this.openFullScreenChart(chartTypes.lengthAge)}
-
-                                                            />
-                                                        </View> : <View style={styles.card}><ActivityIndicator /></View>
-                                                }
-
-                                                {
-                                                    this.state.defaultMessage === "" ?
-                                                        interpretationTextLenghtAge?.text ?
-                                                            <View style={styles.card}>
-                                                                <Typography>
-                                                                    {interpretationTextLenghtAge.text}
-                                                                </Typography>
-                                                                <TextButton
-                                                                    color={TextButtonColor.purple}
-                                                                    onPress={() => this.goToArticle(interpretationTextLenghtAge.articleId)}
-                                                                >
-                                                                    {translate('moreAboutChildGrowth')}
-                                                                </TextButton>
-                                                            </View> : null
-                                                        : <View style={styles.card}>
-                                                            <Typography>
-                                                                {this.state.defaultMessage}
-                                                            </Typography>
-                                                        </View>
-                                                }
-                                                <View>
-                                                    {/* <NewMeasurements onPress={() => this.goToNewMeasurements()} /> */}
-                                                    <LastMeasurements
-                                                        measureDate={this.state.lastMeasurementDate ? this.state.lastMeasurementDate : ""}
-                                                        measureLength={this.state.lastMeasuresLength.toString()}
-                                                        measureMass={this.state.lastMeasuresWeight.toString()}
-                                                        onPress={() => this.goToNewMeasurements()}
-                                                    />
+                                        </DataRealmConsumer>
+                                        :
+                                        <View>
+                                            <View style={styles.header}>
+                                                <View style={{ alignSelf: 'center' }}>
+                                                    <Typography type={TypographyType.headingPrimary}>
+                                                        {translate('growScreenTitle')}
+                                                    </Typography>
                                                 </View>
-                                            </>
-                                    }
+                                                {
+                                                    measuresData.length !== 0 ?
+                                                        <View style={styles.allMeasuresBtn}>
+                                                            <TextButton
+                                                                color={TextButtonColor.purple}
+                                                                onPress={() => {
+                                                                    this.props.navigation.push('HomeStackNavigator_AllMeasurementScreen')
+                                                                }}
+                                                            >
+                                                                {translate('allMeasurements')}
+                                                            </TextButton>
+                                                        </View> : null
+                                                }
+                                            </View>
+                                            <View style={styles.card}>
+                                                <Typography>
+                                                    {periodIntroductionText}
+                                                </Typography>
+                                            </View>
+                                            {
+                                                measuresData.length === 0 ?
+                                                    <NoMeasurements
+                                                        addNewMeasures={() => this.goToNewMeasurements()}
+                                                    />
+                                                    :
+                                                    <>
+                                                        {this.state.isFirstChartLoaded ?
+                                                            <View style={styles.chartCard}>
+                                                                <GrowthChart
+                                                                    title={translate('weightForLength')}
+                                                                    chartType={chartTypes.heightLength}
+                                                                    childBirthDate={childBirthDate ? childBirthDate : DateTime.local()}
+                                                                    childGender={childGender === "boy" ? "male" : 'female'}
+                                                                    lineChartData={measuresData}
+                                                                    showFullscreen={false}
+                                                                    openFullScreen={() => this.openFullScreenChart(chartTypes.heightLength)}
 
-                                </View>
-                        }
+                                                                />
+                                                            </View>
+                                                            : <View style={styles.card}><ActivityIndicator /></View>
+
+                                                        }
+
+                                                        {
+                                                            this.state.defaultMessage === "" ?
+                                                                interpretationTextWeightLength?.text ?
+                                                                    <View style={styles.card}>
+                                                                        <Typography>
+                                                                            {interpretationTextWeightLength.text}
+                                                                        </Typography>
+                                                                        <TextButton
+                                                                            color={TextButtonColor.purple}
+                                                                            onPress={() => this.goToArticle(interpretationTextWeightLength.articleId)}
+                                                                        >
+                                                                            {translate('moreAboutChildGrowth')}
+                                                                        </TextButton>
+                                                                    </View> : null
+                                                                : null
+                                                        }
+                                                        {
+                                                            this.state.isSecoundChartLoaded ?
+                                                                <View style={styles.chartCard}>
+                                                                    <GrowthChart
+                                                                        title={translate('lengthForAge')}
+                                                                        chartType={chartTypes.lengthAge}
+                                                                        childBirthDate={childBirthDate ? childBirthDate : DateTime.local()}
+                                                                        childGender={childGender === "boy" ? "male" : 'female'}
+                                                                        lineChartData={measuresData}
+                                                                        showFullscreen={false}
+                                                                        openFullScreen={() => this.openFullScreenChart(chartTypes.lengthAge)}
+
+                                                                    />
+                                                                </View> : <View style={styles.card}><ActivityIndicator /></View>
+                                                        }
+
+                                                        {
+                                                            this.state.defaultMessage === "" ?
+                                                                interpretationTextLenghtAge?.text ?
+                                                                    <View style={styles.card}>
+                                                                        <Typography>
+                                                                            {interpretationTextLenghtAge.text}
+                                                                        </Typography>
+                                                                        <TextButton
+                                                                            color={TextButtonColor.purple}
+                                                                            onPress={() => this.goToArticle(interpretationTextLenghtAge.articleId)}
+                                                                        >
+                                                                            {translate('moreAboutChildGrowth')}
+                                                                        </TextButton>
+                                                                    </View> : null
+                                                                : <View style={styles.card}>
+                                                                    <Typography>
+                                                                        {this.state.defaultMessage}
+                                                                    </Typography>
+                                                                </View>
+                                                        }
+                                                        <View>
+                                                            {/* <NewMeasurements onPress={() => this.goToNewMeasurements()} /> */}
+                                                            <LastMeasurements
+                                                                measureDate={this.state.lastMeasurementDate ? this.state.lastMeasurementDate : ""}
+                                                                measureLength={this.state.lastMeasuresLength.toString()}
+                                                                measureMass={this.state.lastMeasuresWeight.toString()}
+                                                                onPress={() => this.goToNewMeasurements()}
+                                                            />
+                                                        </View>
+                                                    </>
+                                            }
+
+                                        </View>
+                            )}
+                        </UserRealmConsumer>
+
                     </ScrollView>
                 )}
             </ThemeConsumer>

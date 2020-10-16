@@ -356,9 +356,10 @@ const HomeStackNavigator = createStackNavigator({
         }
 
         function openBirthDataScreen() {
-            // navigation.navigate('HomeStackNavigator_BirthDataScreen');
-            navigation.navigate('HomeStackNavigator_ChildProfileScreen')
-        }
+            // @ts-ignore
+            const routeName = navigation.state.routeName;
+            navigation.navigate('HomeStackNavigator_ChildProfileScreen', { parrentRout: routeName })
+        };
 
         return {
             // API: https://bit.ly/2koKtOw

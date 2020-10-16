@@ -59,7 +59,7 @@ export class RoundedButton extends React.Component<Props, State> {
             state.text = translate('loginGoogle');
             state.textStyle = {
                 color: '#EB4747',
-                fontFamily: 'SFUIDisplay-Semibold',
+                fontFamily: 'SFUIDisplay-Semibold', 
             };
             state.icon = <IconAntDesign name={"google"} style={[styles.iconStyle, { color: state.textStyle.color }]} />;
         }

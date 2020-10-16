@@ -75,6 +75,7 @@ export class FaqCategoryScreen extends React.Component<Props, object> {
                         mode={ ListCardMode.accordionList }
                         items={ screenParams.listCardItems }
                         previewNumberOfItems={30}
+                        isFaqCategory={true}
                     />
 
                     {/* <View style={{height:scale(20)}} /> */}
