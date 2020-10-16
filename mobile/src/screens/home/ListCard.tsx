@@ -13,6 +13,7 @@ import { Dimensions } from 'react-native';
 import HTML from 'react-native-render-html';
 import { Typography, TypographyType } from '../../components/Typography';
 import { TextButton, TextButtonColor } from '../../components/TextButton';
+import { color } from 'react-native-reanimated';
 
 const DEFAULT_PREVIEW_NUMBER_OF_ITEMS = 5;
 
@@ -25,6 +26,7 @@ export interface Props {
     showAllText?: string;
     style?: StyleProp<ViewStyle>;
     defaultOpen?: boolean;
+    isFaqCategory?: boolean;
     onItemPress?: (item: ListCardItem) => void
 }
 
@@ -136,6 +138,29 @@ export class ListCard extends React.Component<Props, State> {
         return items;
     }
 
+    private itemTitleStile = () => {
+        if(this.props.isFaqCategory){
+            return {
+                theme: {colors: {primary: "#8940F3"}},
+                titleStyle: {
+                    fontFamily: 'SFUIDisplay-Regular',
+                    fontSize: moderateScale(17),
+                    lineHeight: moderateScale(18),
+                }
+            }
+        }else{
+            return {
+                titleStyle:{
+                    fontFamily: 'SFUIDisplay-Regular',
+                    fontSize: moderateScale(17),
+                    lineHeight: moderateScale(18),
+                    color: '#262626',
+                }
+            }
+        }
+        
+    }
+
     private getAccordionListItems(themeContext: ThemeContextValue): JSX.Element {
         let items: JSX.Element[] = [];
 
@@ -147,9 +172,12 @@ export class ListCard extends React.Component<Props, State> {
                     id={i+1}
                     key={i+1}
                     title={item?.title}
-                    titleStyle={styles.item}
+                    titleStyle={styles.title}
                     titleNumberOfLines={3}
                     style={{paddingVertical:scale(2)}}
+                    {
+                        ...this.itemTitleStile()
+                    }
                 >
                     <View style={{paddingHorizontal:scale(15), marginBottom:scale(20)}}>
                         <HTML

@@ -69,12 +69,17 @@ export class ChildProfileScreen extends React.Component<Props, State> {
     };
 
     private gotoBack() {
-        this.props.navigation.goBack();
+         this.props.navigation.dispatch({type: 'Navigation/BACK'});
     };
 
     private setActiveChildId(id: string) {
         dataRealmStore.setVariable('currentActiveChildId', id);
-        this.props.navigation.goBack();
+        console.log('this.props.navigation.state?.params?', this.props.navigation.state?.params)
+        if(this.props.navigation.state?.params?.parrentRout === "HomeStackNavigator_GrowthScreen"){
+            this.props.navigation.replace("HomeStackNavigator_GrowthScreen");
+        }else{
+            this.props.navigation.goBack();
+        };
     };
 
     private onParentNameChange(value: string) {
