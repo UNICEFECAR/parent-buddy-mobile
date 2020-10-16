@@ -172,7 +172,6 @@ export class ListCard extends React.Component<Props, State> {
                     id={i+1}
                     key={i+1}
                     title={item?.title}
-                    titleStyle={styles.title}
                     titleNumberOfLines={3}
                     style={{paddingVertical:scale(2)}}
                     {
