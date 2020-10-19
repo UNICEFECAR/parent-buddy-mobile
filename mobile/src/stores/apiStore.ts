@@ -36,7 +36,7 @@ class ApiStore {
         const urlParams: any = {};
 
         urlParams.page = args.page !== undefined ? args.page : 0;
-        urlParams.published = 0; // TODO: replace with appConfig.showPublishedContent
+        urlParams.published = appConfig.showPublishedContent;
         urlParams.numberOfItems = args.numberOfItems !== undefined ? args.numberOfItems : 10;
         if (args.updatedFromDate !== undefined) {
             urlParams.updateFromDate = args.updatedFromDate;
