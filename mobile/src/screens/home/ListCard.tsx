@@ -121,7 +121,6 @@ export class ListCard extends React.Component<Props, State> {
 
         for (let i = 0; i < showNumber; i++) {
             let item = this.props.items[i];
-            console.log(this.props.items, "items")
             items.push((
                 <List.Item
                     key={i}
@@ -200,7 +199,6 @@ export class ListCard extends React.Component<Props, State> {
 
     public render() {
         this.setLocalValues();
-        console.log(this.props.mode)
         return (
             <ThemeConsumer>
                 {(themeContext: ThemeContextValue) => (

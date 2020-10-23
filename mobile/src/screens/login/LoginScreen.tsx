@@ -118,7 +118,6 @@ export class LoginScreen extends React.Component<Props, State & AnimationsState>
             try {
                 userLoginResponse = await apiStore.drupalLogin(args)
             } catch (rejectError) { 
-                console.log(rejectError)
                 if(rejectError.Error === "Network Error"){
                     this.setState({
                         isSnackbarVisible: true,

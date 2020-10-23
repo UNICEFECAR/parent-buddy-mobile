@@ -58,16 +58,15 @@ export class NewDoctorVisitScreen extends Component<Props, State> {
         let vaccinesForCurrenPeriod: Vaccine[] = [];
         let allVaccinesForCurrenPeriod = userRealmStore.getVaccinationsForCurrentPeriod();
 
-        if(allVaccinesForCurrenPeriod.length > 0){
+        if (allVaccinesForCurrenPeriod.length > 0) {
             allVaccinesForCurrenPeriod.forEach(vaccine => {
-                if(vaccine.complete === false){
+                if (vaccine.complete === false) {
                     vaccinesForCurrenPeriod.push(vaccine)
                 };
             });
         };
 
         let vaccinesForPreviousPeriod = userRealmStore.getPreviousVaccines();
-
         let isVaccineReceived = "";
 
         if (this.props.navigation.state?.params?.screenType === NewDoctorVisitScreenType.Vaccination) {
@@ -246,7 +245,14 @@ export class NewDoctorVisitScreen extends Component<Props, State> {
                                     </View>
                                 ))
                             }
-                        </> : <Typography>{translate("NoVaccinationForPeriodAlert")}</Typography>
+                        </> : periodType === "previousPeriod" ? null :
+                            <View style={styles.vaccineContainerTitle}>
+                                <Typography type={TypographyType.bodyRegular} style={{ marginTop: -30, fontWeight: "bold" }}>
+                                    {translate('newVaccinesLabelTitle')}
+                                </Typography>
+                                <Typography>{translate("NoVaccinationForPeriodAlert")}</Typography>
+
+                            </View>
                 }
             </>
         )
@@ -290,6 +296,7 @@ export class NewDoctorVisitScreen extends Component<Props, State> {
             </>
         )
     }
+
 
     private renderChildMeasuresSection() {
         return (
