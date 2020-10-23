@@ -74,7 +74,6 @@ export class ChildProfileScreen extends React.Component<Props, State> {
 
     private setActiveChildId(id: string) {
         dataRealmStore.setVariable('currentActiveChildId', id);
-        console.log('this.props.navigation.state?.params?', this.props.navigation.state?.params)
         if(this.props.navigation.state?.params?.parrentRout === "HomeStackNavigator_GrowthScreen"){
             this.props.navigation.replace("HomeStackNavigator_GrowthScreen");
         }else{

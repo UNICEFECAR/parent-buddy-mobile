@@ -43,7 +43,6 @@ class HomeMessages {
     public getMessages(): Message[] {
         let rval: Message[] = [];
 
-        // console.log('this.childAgeInDays', this.childAgeInDays);
 
         // Set properties
         this.currentChild = userRealmStore.getCurrentChild();
@@ -546,9 +545,7 @@ class HomeMessages {
             return [];
         }
         // Set measuresForHealthCheckPeriod
-        console.log(currentHealthCheckPeriod, "CURRENT")
         const measuresForHealthCheckPeriod = this.measuresForHealthCheckPeriod(currentHealthCheckPeriod);
-        console.log(measuresForHealthCheckPeriod, "measuresForHealthCheckPeriod")
         // Show "Measurement data is NOT entered"
         
         if (!measuresForHealthCheckPeriod) {

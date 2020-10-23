@@ -124,24 +124,21 @@ class UserRealmStore {
     public getPreviousVaccines() {
         let childBirthDay = this.getCurrentChild()?.birthDate;
         let receivedVaccinations = this.getAllReceivedVaccines();
-
         let vaccines: Vaccine[] = [];
 
         if (childBirthDay) {
             let childAgeInDays = this.getCurrentChildAgeInDays();
 
             const immunizationsPeriods = translateData('immunizationsPeriods') as (TranslateDataImmunizationsPeriods | null);
-
             let currentImmunizationsPeriods = immunizationsPeriods?.find(period => period.dayStart <= childAgeInDays && period.dayEnd >= childAgeInDays);
 
-            if (currentImmunizationsPeriods && immunizationsPeriods) {
+            if (immunizationsPeriods) {
                 // get all vaccines for previous period 
 
                 for (let i = 0; i < immunizationsPeriods?.length; i++) {
-                    if (immunizationsPeriods[i].uuid === currentImmunizationsPeriods.uuid) {
+                    if (currentImmunizationsPeriods && immunizationsPeriods[i].uuid === currentImmunizationsPeriods.uuid) {
                         break;
                     };
-
                     vaccines = vaccines.concat(immunizationsPeriods[i].vaccines.map(vaccine => {
                         return {
                             complete: false,

@@ -89,7 +89,6 @@ export class DataUserRealmsProvider extends React.PureComponent<object, DataUser
     }
 
     private loadHomeMessages() {
-        console.log('loadHomeMessagesWithDebounce');
         
         let messages: Message[] = [];
         
