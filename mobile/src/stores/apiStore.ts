@@ -36,7 +36,7 @@ class ApiStore {
         const urlParams: any = {};
 
         urlParams.page = args.page !== undefined ? args.page : 0;
-        urlParams.published = 0; // TODO: replace with appConfig.showPublishedContent
+        urlParams.published = appConfig.showPublishedContent;
         urlParams.numberOfItems = args.numberOfItems !== undefined ? args.numberOfItems : 10;
         if (args.updatedFromDate !== undefined) {
             urlParams.updateFromDate = args.updatedFromDate;
@@ -741,7 +741,7 @@ class ApiStore {
             if (!(await RNFS.exists(args.destFolder))) {
                 await RNFS.mkdir(args.destFolder);
             }
-
+  
             // Download image: https://bit.ly/2S5CeEu
             let { jobId, promise: downloadPromise } = RNFS.downloadFile({
                 fromUrl: args.srcUrl,
@@ -751,14 +751,13 @@ class ApiStore {
             });
 
             let downloadResult = await downloadPromise;
-
             if (downloadResult.statusCode === 200) {
                 if (RNFS.exists(args.destFolder + '/' + args.destFilename)) {
                     rval = true;
+                    console.log('IMAGE DOWNLOADED: ', args.destFilename);
 
-                    // if (appConfig.showLog) {
-                    //     console.log('IMAGE DOWNLOADED: ', args.destFilename);
-                    // }
+                    if (appConfig.showLog) {
+                    }
                 }
             } else {
                 dataRealmStore.setVariable('lastDataSyncError', 'downloadImage failed, ' + downloadResult.statusCode);

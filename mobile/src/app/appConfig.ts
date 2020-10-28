@@ -15,7 +15,7 @@ export const appConfig = {
     apiTimeout: 15000,
     apiNumberOfItems: 50,
     showPublishedContent: 1,
-    downloadImagesBatchSize: 20, // Works for 20
+    downloadImagesBatchSize: 15, // Works for 20
     downloadImagesIntervalBetweenBatches: 3000, // In milliseconds. Works for 3000
 
     // BACKUP
@@ -25,6 +25,6 @@ export const appConfig = {
     // DEVELOPMENT
     // Set to true only during development
     showLog: false,
-    preventSync: true,
+    preventSync: false,
     deleteRealmFilesBeforeOpen: false,
 };

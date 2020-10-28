@@ -59,7 +59,7 @@ export class App extends React.Component<object> {
             if (state === "active") {
                 utils.logAnalitic("appHasOpened", {eventName: "appHasOpened"});
             } else if (state === "background") {
-                console.log("BACKGROUND")
+                // console.log("BACKGROUND")
             } else if (state === "inactive") {
                 utils.logAnalitic("ExitApp", {eventName: "ExitApp"})
             }
@@ -69,7 +69,7 @@ export class App extends React.Component<object> {
         googleAuth.configure();
         localize.setLocalesIfNotSet();
         this.initOnboarding();
-        initGlobalErrorHandler();
+        // initGlobalErrorHandler();
     }
 
     private async initOnboarding() {

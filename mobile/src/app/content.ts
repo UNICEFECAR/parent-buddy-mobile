@@ -38,20 +38,19 @@ class Content {
         }
 
         const imageExt = utils.getExtensionFromUrl(content.coverImageUrl);
-
+        let timeStamp = DateTime.fromJSDate(content.updatedAt).toMillis().toString()
         rval = {
             srcUrl: content.coverImageUrl,
             destFolder: RNFS.DocumentDirectoryPath + '/content',
-            destFilename: `cover_image_${content.id}${imageExt ? '.' + imageExt : ''}`
+            destFilename: `cover_image_${content.id}${timeStamp}${imageExt ? '.' + imageExt : ''}`
         };
-
         return rval;
     }
 
     public getCoverImageFilepath(content: ContentEntity): string | undefined {
         let rval: string | undefined = undefined;
         let coverImageData = this.getCoverImageData(content);
-
+    
         if (coverImageData) {
             rval = (Platform.OS === 'android' ? 'file://' : '') + `${coverImageData.destFolder}/${coverImageData.destFilename}`;
         }
