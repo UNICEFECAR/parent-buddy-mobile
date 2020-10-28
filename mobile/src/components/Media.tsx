@@ -144,7 +144,6 @@ export class Media extends React.Component<Props, State> {
                 </View>
             );
         };
-
         return (
             <View style={[styles.container, this.props.style]}>
                 {/* COVER IMAGE */}

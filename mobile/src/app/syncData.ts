@@ -90,7 +90,6 @@ class SyncData {
 
         // DOWNLOAD ALL CONTENT
         let allContent: ContentResponse = { total: 0, data: [] };
-
         try {
             if (lastSyncTimestamp) {
                 allContent = await apiStore.getAllContent(undefined, lastSyncTimestamp);
@@ -209,7 +208,7 @@ class SyncData {
 
         // DOWNLOAD COVER IMAGES
         let numberOfFailedImageDownloads: number | undefined = 0;
-
+        
         if (allContent?.data && allContent.data.length > 0) {
             const apiImagesData: ApiImageData[] = [];
 
