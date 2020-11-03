@@ -3,6 +3,8 @@ export const en = {
         {
             period: '1st month',
             daysStart: 30,
+            dayShowStart: 10,
+            dayShowEnd: 30.99, 
             name: 'The period of getting to know each other',
             subtitle: '1st month',
             homeMessageBefore: '%CHILD% will soon have 1 month',
@@ -42,6 +44,8 @@ Watch your baby's behaviour and talk to your paediatrician or visiting nurse if 
         {
             period: '2nd month',
             daysStart: 60,
+            dayShowStart: 41,
+            dayShowEnd: 61.99, 
             name: 'The period of mutual adjustments  and establishing routines',
             subtitle: '2nd month',
             homeMessageBefore: '%CHILD% will soon have 2 months',
@@ -85,6 +89,8 @@ Watch your baby's behavior and talk to your paediatrician or visiting nurse if y
         {
             period: '3-4 months',
             daysStart: 90,
+            dayShowStart: 72,
+            dayShowEnd: 112.99, 
             name: 'The period of diverse experiences',
             homeMessageBefore: '%CHILD% will soon have 3 months',
             homeMessageAfter: '%CHILD% has 3 months',
@@ -127,6 +133,8 @@ Watch your baby's behaviour and talk to your paediatrician or visiting nurse if 
         {
             period: '5-6 months',
             daysStart: 150,
+            dayShowStart: 113,
+            dayShowEnd: 143.99, 
             name: 'The period of intensive exploration  ',
             homeMessageBefore: '%CHILD% will soon have 5 months',
             homeMessageAfter: '%CHILD% has 5 months',
@@ -170,6 +178,8 @@ Watch your baby's behaviour and talk to your paediatrician or visiting nurse if 
         {
             period: '7-9 months',
             daysStart: 210,
+            dayShowStart: 174,
+            dayShowEnd: 204.99, 
             name: 'The period of new discoveries',
             homeMessageBefore: '%CHILD% will soon have 7 months',
             homeMessageAfter: '%CHILD% has 7 months',
@@ -214,6 +224,8 @@ Watch your baby’s behaviour and talk to your paediatrician or visiting nurse i
         {
             period: '10-12 months',
             daysStart: 300,
+            dayShowStart: 265,
+            dayShowEnd: 295.99, 
             name: 'The period of establishing habits and consistency',
             homeMessageBefore: '%CHILD% will soon have 10 months',
             homeMessageAfter: '%CHILD% has 10 months',
@@ -256,6 +268,8 @@ Watch your child’s behaviour and talk to your paediatrician if you notice that
         {
             period: '13-18 months',
             daysStart: 390,
+            dayShowStart: 356,
+            dayShowEnd: 416.99, 
             name: 'The first step and the first word',
             homeMessageBefore: '%CHILD% will soon have 13 months',
             homeMessageAfter: '%CHILD% has 13 months',
@@ -300,6 +314,8 @@ Watch your child’s behaviour and talk to your paediatrician if you notice that
         {
             period: '19-24 months',
             daysStart: 570,
+            dayShowStart: 549,
+            dayShowEnd: 730.99, 
             name: 'The period of becoming independent',
             homeMessageBefore: '%CHILD% will soon have 19 months',
             homeMessageAfter: '%CHILD% has 19 months',
@@ -343,6 +359,8 @@ Follow your child's behaviour and talk to your paediatrician if you notice that 
         {
             period: '25-36 months',
             daysStart: 750,
+            dayShowStart: 721,
+            dayShowEnd: 900.99, 
             name: 'The period when imagination flourishes ',
             homeMessageBefore: '%CHILD% will soon have 25 months',
             homeMessageAfter: '%CHILD% has 25 months',
@@ -602,7 +620,7 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
             nameOfTheDoctorVisit: 'Health check-up',
             periodSubtitle: 'Between 6 and 7 years',
             immunizationsPeriodId: '868e2ee6-34d9-44f0-b0aa-8d4011fc3666',
-            moreAboutDoctorVisitArticleId: 4511,
+            moreAboutDoctorVisitArticleId: 6896,
             planDoctorVisitMessageInDays: { from: 2160, to: 2690 },
         },
     ],
@@ -985,7 +1003,7 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
             subtitle: '',
             vaccines: [
                 { uuid: "79ae380e-d42a-4d9c-8ab8-a06485dc8d40", title: "against measles, mumps, rubella - revaccination ", hardcodedArticleId: "" },
-                { uuid: "2279b64e-49fb-407e-88d2-bfa2c31ceaf4", title: "against diphtheria, tetanus, pertussis, polio, diseases caused by Haemophilus influenzaeType b - the second revaccination", hardcodedArticleId: "" },
+                { uuid: "2279b64e-49fb-407e-88d2-bfa2c31ceaf4", title: "against diphtheria, tetanus, pertussis, polio, diseases caused by Haemophilus influenzaeType b - the second revaccination", hardcodedArticleId: "6891" },
             ]
         },
     ]
