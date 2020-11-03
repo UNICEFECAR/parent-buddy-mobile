@@ -3,6 +3,8 @@ export const sr = {
         {
             period: '1. mesec',
             daysStart: 30,
+            dayShowStart: 10,
+            dayShowEnd: 30.99, 
             name: 'Period upoznavanja',
             subtitle: '1. mesec',
             homeMessageBefore: '%CHILD% uskoro puni 1 mesec',
@@ -40,6 +42,8 @@ export const sr = {
         {
             period: '2 meseca',
             daysStart: 60,
+            dayShowStart: 41,
+            dayShowEnd: 61.99, 
             name: 'Period međusobnog usklađivanja',
             subtitle: '2. mesec',
             homeMessageBefore: '%CHILD% uskoro puni 2 meseca',
@@ -76,9 +80,11 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
             predefinedTagId: 44,
         },
 
-        {
+        {   
             period: '3-4 meseca',
             daysStart: 90,
+            dayShowStart: 72,
+            dayShowEnd: 112.99, 
             name: 'Period raznovrsnih iskustava ',
             homeMessageBefore: '%CHILD% uskoro puni 3 meseca',
             homeMessageAfter: '%CHILD% ima 3 meseca',
@@ -119,6 +125,8 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
         {
             period: '5-6 meseci',
             daysStart: 150,
+            dayShowStart: 113,
+            dayShowEnd: 143.99, 
             name: 'Period intenzivnog istraživanja',
             subtitle: '5. i 6. mesec',
             homeMessageBefore: '%CHILD% uskoro puni 5 meseci',
@@ -160,6 +168,8 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
         {
             period: '7-9 meseci',
             daysStart: 210,
+            dayShowStart: 174,
+            dayShowEnd: 204.99, 
             name: 'Vreme za nova otkrića',
             subtitle: '7. do 9. mesec',
             homeMessageBefore: '%CHILD% uskoro puni 7 meseci',
@@ -202,6 +212,8 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
         {
             period: '10-12 meseci',
             daysStart: 300,
+            dayShowStart: 265,
+            dayShowEnd: 295.99, 
             name: 'Vreme ustaljivanja navika i doslednosti',
             subtitle: '10. do 12. mesec',
             homeMessageBefore: '%CHILD% uskoro puni 10 meseci',
@@ -242,6 +254,8 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
         {
             period: '13-18 meseci',
             daysStart: 390,
+            dayShowStart: 356,
+            dayShowEnd: 416.99, 
             name: 'Period prvog koraka i prve reči',
             subtitle: '13. do 18. mesec',
             homeMessageBefore: '%CHILD% uskoro puni 13 meseci',
@@ -284,6 +298,8 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
         {
             period: '19-24 meseca',
             daysStart: 570,
+            dayShowStart: 549,
+            dayShowEnd: 730.99, 
             name: 'Period osamostaljivanja',
             homeMessageBefore: '%CHILD% uskoro puni 19 meseci',
             homeMessageAfter: '%CHILD% ima 19 meseci',
@@ -325,6 +341,8 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
         {
             period: '25-36 meseci',
             daysStart: 750,
+            dayShowStart: 721,
+            dayShowEnd: 900.99, 
             name: 'Period kad mašta cveta',
             subtitle: '25. do 36. mesec',
             homeMessageBefore: '%CHILD% uskoro puni 25 meseci',
@@ -582,7 +600,7 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
             nameOfTheDoctorVisit: 'Redovan preventivni pregled',
             periodSubtitle: 'Pred polazak u školu (6-7 godina)',
             immunizationsPeriodId: 'ff8201be-f478-4f42-80fd-bb94470d78df',
-            moreAboutDoctorVisitArticleId: 4511,
+            moreAboutDoctorVisitArticleId: 6896,
             planDoctorVisitMessageInDays: { from: 2160, to: 2690 },
         },
     ],
@@ -965,7 +983,7 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
             notificationDayEnd: 2190,
             vaccines: [
                 { uuid: "85d98c51-bf2c-4eba-af25-8795f9211da4", title: "protiv malih boginja, zauški, rubeole (crvenka) - revakcinacija", hardcodedArticleId: "5071" },
-                { uuid: "79ae380e-d42a-4d9c-8ab8-a06485dc8d40", title: "protiv difterije, tetanusa, velikog kašlja i dečje paralize - druga revakcinacija", hardcodedArticleId: "" },
+                { uuid: "79ae380e-d42a-4d9c-8ab8-a06485dc8d40", title: "protiv difterije, tetanusa, velikog kašlja i dečje paralize - druga revakcinacija", hardcodedArticleId: "6891" },
             ]
         },
     ]

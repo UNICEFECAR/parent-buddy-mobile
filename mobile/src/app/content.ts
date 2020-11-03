@@ -50,7 +50,7 @@ class Content {
     public getCoverImageFilepath(content: ContentEntity): string | undefined {
         let rval: string | undefined = undefined;
         let coverImageData = this.getCoverImageData(content);
-    
+
         if (coverImageData) {
             rval = (Platform.OS === 'android' ? 'file://' : '') + `${coverImageData.destFolder}/${coverImageData.destFilename}`;
         }
@@ -125,7 +125,7 @@ class Content {
 
     public getHomeScreenDevelopmentArticles(realm: Realm | null): ArticlesSectionData {
         let isChildInDevelopmentPeriod = false;
-        
+
         const rval: ArticlesSectionData = {
             title: translate('developmentArticles'),
             categoryArticles: [],
@@ -147,23 +147,36 @@ class Content {
         } else {
             const dateNow = DateTime.local();
             const diff = dateNow.diff(DateTime.fromJSDate(childBirthDay), ["month", "day"],).toObject();
-            
+ 
+            const developmentPeriods = translateData('developmentPeriods') as (TranslateDataDevelopmentPeriods | null);
+
             // get info is child in development period 
-            if (diff.days) {
-                if (diff.days >= 0 && diff.days <= 10.9) {
-                    isChildInDevelopmentPeriod = true
-                } else if (diff.days >= 20 && diff.days <= 30.9) {
-                    isChildInDevelopmentPeriod = true
-                } else {
-                    isChildInDevelopmentPeriod = false
-                }
+            if(diff.days){
+                let days = diff.days
+                let period = developmentPeriods?.find(period => period.dayShowStart <= days && period.dayShowEnd >= days);
+                
+                if(period !== undefined && period !== null){
+                    isChildInDevelopmentPeriod = true;
+                };
             };
 
             if (!isChildInDevelopmentPeriod) {
                 return rval;
             } else {
-                let diffInMonths = diff.months ? diff.months : 0;
-                let childAgeTagid = dataRealmStore.getTagIdFromChildAge(diffInMonths);
+                const birthday = userRealmStore.getCurrentChild()?.birthDate;
+                const timeNow = DateTime.local();
+
+                if(!birthday) return rval;
+
+                let date = DateTime.fromJSDate(birthday);
+                let monthsDiff = timeNow.diff(date, "month").toObject();
+                let months: number = 0;
+
+                if (monthsDiff.months) {
+                    months = Math.round(monthsDiff.months);
+                };
+
+                let childAgeTagid = dataRealmStore.getTagIdFromChildAge(months);
 
                 let childGender: ChildGender | undefined = userRealmStore.getChildGender();
                 let oppositeChildGender: ChildGender | undefined = undefined;
@@ -176,7 +189,7 @@ class Content {
                     oppositeChildGenderTagId = oppositeChildGender === 'boy' ? 40 : 41;
                 };
 
-                const featuredArticles = translateData('developmentPeriods') as (TranslateDataDevelopmentPeriods | null);;
+                const featuredArticles = translateData('developmentPeriods') as (TranslateDataDevelopmentPeriods | null);
 
                 if (childAgeTagid && childAgeTagid > 51) {
                     childAgeTagid = 51
@@ -225,7 +238,6 @@ class Content {
 
                     try {
                         const childAgeTagId = dataRealmStore.getChildAgeTagWithArticles(categoryId, true, false)?.id;
-
                         if (childAgeTagId !== undefined) {
                             const filteredRecords = allContent?.
                                 filtered(`category == ${categoryId} AND type == 'article'`)
@@ -314,18 +326,18 @@ class Content {
             try {
                 const childAgeTagId = dataRealmStore.getChildAgeTagWithArticles(categoryId, true, true)?.id;
                 const allContent = realm?.objects<ContentEntity>(ContentEntitySchema.name);
-                
+
                 if (childAgeTagId !== null && childAgeTagId !== undefined) {
-                    
+
                     title = translate("todayArticles")
 
                     const filteredRecordsWithAge = allContent?.
                         filtered(`category == ${categoryId} AND type == 'article'`)
                         .filter(item => item.predefinedTags.indexOf(4756) === -1)
-                        .filter(item => 
-                                item.predefinedTags.indexOf(childAgeTagId) !== -1 || 
-                                item.predefinedTags.indexOf(446) !== -1
-                            );
+                        .filter(item =>
+                            item.predefinedTags.indexOf(childAgeTagId) !== -1 ||
+                            item.predefinedTags.indexOf(446) !== -1
+                        );
 
 
                     filteredRecordsWithAge?.forEach((record, index, collection) => {
@@ -349,7 +361,7 @@ class Content {
             };
 
 
-            for (let item in categoryArticles) { 
+            for (let item in categoryArticles) {
                 categoryArticles.articles = utils.randomizeArray(categoryArticles.articles).slice(0, 5)
             };
 
@@ -413,8 +425,8 @@ class Content {
                 .filter(item => item.predefinedTags.indexOf(4756) === -1)
                 // Filter articles with this child age tag
                 .filter((article) => {
-                    return article.predefinedTags.indexOf(childAgeTag.id) !== -1 || 
-                    article.predefinedTags.indexOf(446) !== -1;
+                    return article.predefinedTags.indexOf(childAgeTag.id) !== -1 ||
+                        article.predefinedTags.indexOf(446) !== -1;
                 })
 
                 // Remove opposite gender
@@ -475,7 +487,7 @@ class Content {
 
             if (contentEntity.referencedArticles.length !== 0) {
                 allContent?.forEach(item => {
-                    if(contentEntity.referencedArticles.indexOf(item.id) !== -1){
+                    if (contentEntity.referencedArticles.indexOf(item.id) !== -1) {
                         allArticles.push(item);
                     };
                 });
