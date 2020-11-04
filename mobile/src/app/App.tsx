@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 import React from 'react';
 import { navigation, AppNavigationContainer } from './Navigators';
 import { NavigationContainerComponent } from 'react-navigation';
@@ -69,7 +70,7 @@ export class App extends React.Component<object> {
         googleAuth.configure();
         localize.setLocalesIfNotSet();
         this.initOnboarding();
-        // initGlobalErrorHandler();
+        initGlobalErrorHandler();
     }
 
     private async initOnboarding() {
