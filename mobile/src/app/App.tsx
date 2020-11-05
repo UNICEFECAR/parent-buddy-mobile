@@ -70,7 +70,7 @@ export class App extends React.Component<object> {
         googleAuth.configure();
         localize.setLocalesIfNotSet();
         this.initOnboarding();
-        initGlobalErrorHandler();
+        // initGlobalErrorHandler();
     }
 
     private async initOnboarding() {
