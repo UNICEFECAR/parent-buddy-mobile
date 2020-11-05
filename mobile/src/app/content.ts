@@ -37,10 +37,16 @@ class Content {
             return null;
         }
 
-        const imageExt = utils.getExtensionFromUrl(content.coverImageUrl);
+        let tmpUrl = content.coverImageUrl;
+        // tmpUrl = tmpUrl.replace(
+        //     'http://ecaroparentingapppi3xep5h4v.devcloud.acquia-sites.com/sites/default/files/',
+        //     'http://quiz.byteout.com/'
+        // );
+
+        const imageExt = utils.getExtensionFromUrl(tmpUrl);
         let timeStamp = DateTime.fromJSDate(content.updatedAt).toMillis().toString()
         rval = {
-            srcUrl: content.coverImageUrl,
+            srcUrl: tmpUrl,
             destFolder: RNFS.DocumentDirectoryPath + '/content',
             destFilename: `cover_image_${content.id}${timeStamp}${imageExt ? '.' + imageExt : ''}`
         };

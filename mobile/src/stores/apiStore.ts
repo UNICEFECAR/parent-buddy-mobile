@@ -754,10 +754,10 @@ class ApiStore {
             if (downloadResult.statusCode === 200) {
                 if (RNFS.exists(args.destFolder + '/' + args.destFilename)) {
                     rval = true;
-                    console.log('IMAGE DOWNLOADED: ', args.destFilename);
 
-                    if (appConfig.showLog) {
-                    }
+                    // if (appConfig.showLog) {
+                    //     console.log('IMAGE DOWNLOADED: ', args.destFilename);
+                    // }
                 }
             } else {
                 dataRealmStore.setVariable('lastDataSyncError', 'downloadImage failed, ' + downloadResult.statusCode);
