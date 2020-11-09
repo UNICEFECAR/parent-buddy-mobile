@@ -6,13 +6,9 @@ import { TypographyType } from '../components/Typography';
 import { utils, syncData } from '../app';
 import { appConfig } from '../app/appConfig';
 import { translate } from '../translations';
-import { ActivityIndicator } from 'react-native-paper';
-import { moderateScale, scale } from 'react-native-size-matters';
+import { ActivityIndicator, ProgressBar } from 'react-native-paper';
+import { scale } from 'react-native-size-matters';
 import FastImage from 'react-native-fast-image';
-// @ts-ignore
-import { SliderBox } from "react-native-image-slider-box";
-import { ceil } from 'lodash';
-import { color } from 'react-native-reanimated';
 
 export interface Props {
     navigation: NavigationStackProp<NavigationStackState>;
@@ -33,7 +29,8 @@ export class SyncingScreen extends React.Component<Props, object> {
             setTimeout(() => { utils.gotoNextScreenOnAppOpen() }, 0);
             setTimeout(() => {
                 if (syncResponse instanceof Error && !canAppBeOpened) {
-                    throw syncResponse;
+                    // throw syncResponse;
+                    console.log(syncResponse);
                 }
             }, 1000);
         } else {
@@ -66,13 +63,15 @@ export class SyncingScreen extends React.Component<Props, object> {
                 />
                 <View style={{ flex: 0, marginTop: -10, marginBottom: -10}}>
                     <ActivityIndicator size="large" color="white" />
+                    {/* <ProgressBar indeterminate={true} progress={0.5} color={'white'} style={{width: '100%', height: scale(20), borderWidth:10, borderColor:'transparent'}} /> */}
                 </View>
                 <View style={{ flex: 0, marginTop: scale(20) }}>
-                    <Typography type={TypographyType.headingPrimary} style={{ marginBottom: 0, textAlign: 'center', color: 'white' }}>
+                    <Typography type={TypographyType.headingPrimary} style={{ fontSize: scale(18), lineHeight:scale(20), marginBottom: 0, textAlign: 'center', color: 'white', marginHorizontal: scale(15) }}>
                         {translate('syncScreenText')}
                     </Typography>
-                    <Typography type={TypographyType.headingPrimary} style={{ textAlign: 'center', color: 'white' }}>
-                        {translate('syncScreenSubText')}...
+
+                    <Typography type={TypographyType.headingPrimary} style={{ fontSize: scale(18), lineHeight:scale(20), textAlign: 'center', color: 'white', marginTop: scale(15), marginHorizontal: scale(15) }}>
+                        {translate('syncScreenSubText')}
                     </Typography>
                 </View>
             </SafeAreaView>

@@ -16,8 +16,8 @@ export const appConfig = {
     apiTimeout: 15000,
     apiNumberOfItems: 50,
     showPublishedContent: 1,
-    downloadImagesBatchSize: 15, // Works for 15
-    downloadImagesIntervalBetweenBatches: 1000, // In milliseconds. Works for 3000
+    downloadImagesBatchSize: 50, // Works for 15
+    downloadImagesIntervalBetweenBatches: 200, // In milliseconds. Works for 3000
 
     // BACKUP
     backupGDriveFolderName: 'ParentBuddy',
@@ -25,7 +25,7 @@ export const appConfig = {
 
     // DEVELOPMENT
     // Set to true only during development
-    showLog: false,
+    showLog: true,
     preventSync: false,
     deleteRealmFilesBeforeOpen: false,
 };
