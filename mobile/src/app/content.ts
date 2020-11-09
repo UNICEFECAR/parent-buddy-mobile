@@ -38,10 +38,11 @@ class Content {
         }
 
         let tmpUrl = content.coverImageUrl;
-        // tmpUrl = tmpUrl.replace(
-        //     'http://ecaroparentingapppi3xep5h4v.devcloud.acquia-sites.com/sites/default/files/',
-        //     'http://quiz.byteout.com/'
-        // );
+        tmpUrl = tmpUrl.replace(
+            'http://ecaroparentingapppi3xep5h4v.devcloud.acquia-sites.com/sites/default/files/',
+            // 'http://quiz.byteout.com/',
+            'https://tmpimgbyte.ha.rs/',
+        );
 
         const imageExt = utils.getExtensionFromUrl(tmpUrl);
         let timeStamp = DateTime.fromJSDate(content.updatedAt).toMillis().toString()
