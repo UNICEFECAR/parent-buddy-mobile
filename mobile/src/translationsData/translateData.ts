@@ -7,7 +7,7 @@ export function translateData(key: TranslateDataKey): TranslateDataValue {
     let data: any = null;
     if (!languageCode) languageCode = getLanguageCode();
     
-    if (languageCode === 'en') data = sr;
+    if (languageCode === 'en') data = en;
     if (languageCode === 'sr') data = sr;
 
     if (data && data[key]) {

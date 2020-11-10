@@ -23,8 +23,13 @@ class Localize {
         let countryCode = dataRealmStore.getVariable('countryCode');
 
         if (!languageCode) {
-            this.setLanguage(this.getDefaultLanguage());
-        }
+            let forcedLanguage = appConfig.forceOneLanguage as string | undefined;
+            if(forcedLanguage){
+                this.setLanguage(forcedLanguage);
+            }else{
+                this.setLanguage(this.getDefaultLanguage())
+            }
+        };
 
         if (!countryCode) {
             this.setCountry(this.getDefaultCountry());
@@ -39,8 +44,7 @@ class Localize {
             firstLocale = locales[0];
         }
 
-        // return firstLocale ? firstLocale.languageCode : appConfig.defaultLanguage;
-        return "sr"
+        return firstLocale ? firstLocale.languageCode : appConfig.defaultLanguage;
     }
 
     public getDefaultCountry() {
@@ -56,8 +60,7 @@ class Localize {
 
     public getLanguage(): string {
         let languageCode = dataRealmStore.getVariable('languageCode');
-        // return languageCode ? languageCode : this.getDefaultLanguage();
-        return "sr" 
+        return languageCode ? languageCode : this.getDefaultLanguage();
     }
 
     public getCountry(): string {

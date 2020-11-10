@@ -360,6 +360,8 @@ PODS:
   - RealmJS (5.0.3):
     - GCDWebServer
     - React
+  - RNAppleAuthentication (2.1.0):
+    - React-Core
   - RNCAsyncStorage (1.8.1):
     - React
   - RNCMaskedView (0.1.7):
@@ -459,6 +461,7 @@ DEPENDENCIES:
   - ReactCommon/jscallinvoker (from `../node_modules/react-native/ReactCommon`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - RealmJS (from `../node_modules/realm`)
+  - "RNAppleAuthentication (from `../node_modules/@invertase/react-native-apple-authentication`)"
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
@@ -577,6 +580,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   RealmJS:
     :path: "../node_modules/realm"
+  RNAppleAuthentication:
+    :path: "../node_modules/@invertase/react-native-apple-authentication"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-community/async-storage"
   RNCMaskedView:
@@ -671,6 +676,7 @@ SPEC CHECKSUMS:
   React-RCTVibration: a49a1f42bf8f5acf1c3e297097517c6b3af377ad
   ReactCommon: 198c7c8d3591f975e5431bec1b0b3b581aa1c5dd
   RealmJS: 85d246ec57ac1420faf933c282c0b379e61f38a0
+  RNAppleAuthentication: 46cbc67739bae83ca229497f9b0038f3f5431443
   RNCAsyncStorage: 00bdf63f7f1e0f11d3323533dba4f222e58bf092
   RNCMaskedView: 90dd32f5b786bd562e876e1421ea77c700cbf71e
   RNDateTimePicker: 501ab152e78882c183607e05074c37ce19ace5bf

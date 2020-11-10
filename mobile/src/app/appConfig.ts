@@ -2,11 +2,15 @@ const apiUrlDevelop = 'http://ecaroparentingappt8q2psucpz.devcloud.acquia-sites.
 const apiUrlProduction = 'http://ecaroparentingapppi3xep5h4v.devcloud.acquia-sites.com/api';
 // const apiUrlProduction = 'https://parentbuddyapp.org/api';
 
+const forceOneLanguage: string | undefined = "";
+const apiImagesUrl: string | undefined = undefined;
+
 export const appConfig = {
     // LOCALIZE
-    defaultLanguage: 'sr',
+    defaultLanguage: 'en',
     defaultCountry: 'SR',
-
+    forceOneLanguage: forceOneLanguage,
+    apiImagesUrl: apiImagesUrl,
     // API
     apiUrl: apiUrlProduction,
     apiUsername: 'access_content',
