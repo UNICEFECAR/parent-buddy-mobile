@@ -21,6 +21,8 @@ import { apiStore, DrupalLoginArgs } from '../../stores/apiStore';
 import { ScrollView } from 'react-native-gesture-handler';
 import { AppNavigationContainer } from '../../app/Navigators';
 import NetInfo from "@react-native-community/netinfo";
+import { AppleButton } from '@invertase/react-native-apple-authentication';
+import { appleAuth } from '@invertase/react-native-apple-authentication';
 
 export interface Props {
     navigation: NavigationSwitchProp<NavigationState>;
@@ -95,8 +97,8 @@ export class LoginScreen extends React.Component<Props, State & AnimationsState>
 
 
         // Check if app can be opened
-        
-        if(!netInfo.isConnected || !netInfo.isInternetReachable){
+
+        if (!netInfo.isConnected || !netInfo.isInternetReachable) {
             this.setState({
                 isSnackbarVisible: true,
                 snackbarMessage: translate('appCantOpen'),
@@ -117,8 +119,8 @@ export class LoginScreen extends React.Component<Props, State & AnimationsState>
 
             try {
                 userLoginResponse = await apiStore.drupalLogin(args)
-            } catch (rejectError) { 
-                if(rejectError.Error === "Network Error"){
+            } catch (rejectError) {
+                if (rejectError.Error === "Network Error") {
                     this.setState({
                         isSnackbarVisible: true,
                         snackbarMessage: "Network error"
@@ -130,7 +132,7 @@ export class LoginScreen extends React.Component<Props, State & AnimationsState>
                 dataRealmStore.setVariable('userEmail', email);
                 dataRealmStore.setVariable('userIsLoggedIn', true);
                 dataRealmStore.setVariable('loginMethod', 'cms');
-                utils.logAnalitic("userHasLoggedIn", {eventName: "userHasLoggedIn"});
+                utils.logAnalitic("userHasLoggedIn", { eventName: "userHasLoggedIn" });
                 utils.gotoNextScreenOnAppOpen();
 
             } else {
@@ -234,7 +236,7 @@ export class LoginScreen extends React.Component<Props, State & AnimationsState>
             dataRealmStore.setVariable('userEmail', response.user.email);
             dataRealmStore.setVariable('userIsLoggedIn', true);
             dataRealmStore.setVariable('loginMethod', 'google');
-            utils.logAnalitic("userHasLoggedIn", {eventName: "userHasLoggedIn"});
+            utils.logAnalitic("userHasLoggedIn", { eventName: "userHasLoggedIn" });
             utils.gotoNextScreenOnAppOpen();
         } else {
             this.setState({
@@ -267,7 +269,7 @@ export class LoginScreen extends React.Component<Props, State & AnimationsState>
                 dataRealmStore.setVariable('userEmail', facebookUser.email);
                 dataRealmStore.setVariable('userIsLoggedIn', true);
                 dataRealmStore.setVariable('loginMethod', 'facebook');
-                utils.logAnalitic("userHasLoggedIn", {eventName: "userHasLoggedIn"});
+                utils.logAnalitic("userHasLoggedIn", { eventName: "userHasLoggedIn" });
                 utils.gotoNextScreenOnAppOpen();
             } else {
                 this.setState({
@@ -283,6 +285,28 @@ export class LoginScreen extends React.Component<Props, State & AnimationsState>
         }
     }
 
+
+    private appleLogin() {
+        // performs login request
+        appleAuth.performRequest({
+            requestedOperation: appleAuth.Operation.LOGIN,
+            requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+        }).then(respone => {
+            console.log(respone)
+        });
+
+
+        // get current authentication state for user
+        // /!\ This method must be tested on a real device. On the iOS simulator it always throws an error.
+        // const credentialState = await appleAuth.getCredentialStateForUser(appleAuthRequestResponse.user);
+        // console.log(credentialState, "credentialState")
+        // // use credentialState response to ensure the user is authenticated
+        // if (credentialState === appleAuth.State.AUTHORIZED) {
+        //   // user is authenticated
+        //   console.log("USO")
+        // }
+    }
+
     public render() {
         const anim = this.state.animatedStyles;
         const snackbarErrorStyle = themes.getCurrentTheme().theme.snackbarError;
@@ -293,16 +317,16 @@ export class LoginScreen extends React.Component<Props, State & AnimationsState>
 
                 {
                     !utils.canAppBeOpened() ?
-                        <ScrollView contentContainerStyle={{padding: scale(30), flex: 1, justifyContent: 'center'}}>    
-                            <Typography 
-                                type={TypographyType.headingSecondary} 
-                                style={{color: 'white', textAlign: 'center', marginTop: scale(-90), marginBottom: scale(30)}}
+                        <ScrollView contentContainerStyle={{ padding: scale(30), flex: 1, justifyContent: 'center' }}>
+                            <Typography
+                                type={TypographyType.headingSecondary}
+                                style={{ color: 'white', textAlign: 'center', marginTop: scale(-90), marginBottom: scale(30) }}
                             >
                                 {translate('dataCantDownload')}
                             </Typography>
-                            <RoundedButton 
-                                type={RoundedButtonType.purple} 
-                                onPress={() => navigation.resetStackAndNavigate('RootModalStackNavigator_SyncingScreen')}  
+                            <RoundedButton
+                                type={RoundedButtonType.purple}
+                                onPress={() => navigation.resetStackAndNavigate('RootModalStackNavigator_SyncingScreen')}
                                 text={translate('downloadData')}
                             />
                         </ScrollView>
@@ -322,6 +346,23 @@ export class LoginScreen extends React.Component<Props, State & AnimationsState>
                                 </Typography>
 
                                 <Animated.View style={[{ overflow: 'hidden' }, { height: anim.toggleButtons.height }]}>
+                                    {/* LOGIN WITH APPLE */}
+                                    <AppleButton
+                                        buttonStyle={AppleButton.Style.WHITE}
+                                        buttonType={AppleButton.Type.SIGN_IN}
+                                        style={{
+                                            width: 160, // You must specify a width
+                                            height: 45, // You must specify a height
+                                        }}
+                                        onPress={() => this.appleLogin()}
+                                    />
+
+                                    <RoundedButton
+                                        type={RoundedButtonType.google}
+                                        onPress={() => { this.appleLogin() }}
+                                        style={{ marginBottom: 15, width: '100%' }}
+                                    />
+
                                     {/* LOGIN WITH GOOGLE */}
                                     <RoundedButton
                                         type={RoundedButtonType.google}
