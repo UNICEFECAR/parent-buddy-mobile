@@ -21,6 +21,7 @@
     "metro-symbolicate": "npx metro-symbolicate ./stacktrace/index.android.bundle.map < ./stacktrace/stacktrace.txt"
   },
   "dependencies": {
+    "@invertase/react-native-apple-authentication": "^2.1.0",
     "@react-native-community/async-storage": "1.8.1",
     "@react-native-community/datetimepicker": "2.2.2",
     "@react-native-community/google-signin": "4.0.0",

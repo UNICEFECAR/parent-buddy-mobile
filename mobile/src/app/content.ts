@@ -14,6 +14,7 @@ import { Collection } from "realm";
 import { JsonFormatter } from "cucumber";
 import { ChildGender } from "../stores/ChildEntity";
 import { exp } from "react-native-reanimated";
+import { appConfig } from "./appConfig";
 
 /**
  * Utility methods related to ContentEntity.
@@ -38,11 +39,20 @@ class Content {
         }
 
         let tmpUrl = content.coverImageUrl;
-        tmpUrl = tmpUrl.replace(
-            'http://ecaroparentingapppi3xep5h4v.devcloud.acquia-sites.com/sites/default/files/',
-            // 'http://quiz.byteout.com/',
-            'https://tmpimgbyte.ha.rs/',
-        );
+
+        let urlForReplace = appConfig.apiImagesUrl as string | undefined;
+        
+        if(urlForReplace){
+            tmpUrl = tmpUrl.replace(
+                'http://ecaroparentingapppi3xep5h4v.devcloud.acquia-sites.com/sites/default/files/',
+                urlForReplace,
+            );
+        }else{
+            tmpUrl = tmpUrl.replace(
+                'http://ecaroparentingapppi3xep5h4v.devcloud.acquia-sites.com/sites/default/files/',
+                'https://tmpimgbyte.ha.rs/',
+            );
+        };
 
         const imageExt = utils.getExtensionFromUrl(tmpUrl);
         let timeStamp = DateTime.fromJSDate(content.updatedAt).toMillis().toString()
@@ -52,7 +62,7 @@ class Content {
             destFilename: `cover_image_${content.id}${timeStamp}${imageExt ? '.' + imageExt : ''}`
         };
         return rval;
-    }
+    };
 
     public getCoverImageFilepath(content: ContentEntity): string | undefined {
         let rval: string | undefined = undefined;
