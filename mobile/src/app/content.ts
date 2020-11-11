@@ -41,7 +41,7 @@ class Content {
         let tmpUrl = content.coverImageUrl;
 
         let urlForReplace = appConfig.apiImagesUrl as string | undefined;
-        
+
         if(urlForReplace){
             tmpUrl = tmpUrl.replace(
                 'http://ecaroparentingapppi3xep5h4v.devcloud.acquia-sites.com/sites/default/files/',
