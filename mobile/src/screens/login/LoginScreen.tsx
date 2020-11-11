@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, SafeAreaView, View, StyleSheet, ViewStyle, Image, StatusBar, Keyboard, LayoutAnimation, LayoutAnimationConfig } from 'react-native';
+import { Text, SafeAreaView, View, StyleSheet, ViewStyle, Image, StatusBar, Keyboard, LayoutAnimation, LayoutAnimationConfig, Platform } from 'react-native';
 import { NavigationSwitchProp, NavigationState } from 'react-navigation';
 import { GradientBackground } from '../../components/GradientBackground';
 import { Typography, TypographyType } from '../../components/Typography';
@@ -197,11 +197,12 @@ export class LoginScreen extends React.Component<Props, State & AnimationsState>
 
         // DEFINE ANIMATION: toggleButtons
         const toggleButtonsValue = new Animated.Value(0);
+        let outpoutValue = Platform.OS === "ios" ? 240 : 180;
 
         let toggleButtonsStyles = {
             height: toggleButtonsValue.interpolate({
                 inputRange: [0, 1],
-                outputRange: [180, 0]
+                outputRange: [outpoutValue, 0]
             }),
 
             spaceHeight: toggleButtonsValue.interpolate({
@@ -286,25 +287,40 @@ export class LoginScreen extends React.Component<Props, State & AnimationsState>
     }
 
 
-    private appleLogin() {
-        // performs login request
+    private async appleLogin() {
+        const canAppBeOpened = utils.canAppBeOpened();
+
+        if (!canAppBeOpened) {
+            this.setState({
+                isSnackbarVisible: true,
+                snackbarMessage: translate('appCantOpen'),
+            });
+
+            return;
+        };
+
         appleAuth.performRequest({
             requestedOperation: appleAuth.Operation.LOGIN,
             requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
-        }).then(respone => {
-            console.log(respone)
+        }).then(response => {
+            if (response.email) {
+                dataRealmStore.setVariable('userEmail', response.email);
+                dataRealmStore.setVariable('userIsLoggedIn', true);
+                dataRealmStore.setVariable('loginMethod', 'apple');
+                utils.logAnalitic("userHasLoggedIn", { eventName: "userHasLoggedIn" });
+                utils.gotoNextScreenOnAppOpen();
+            } else {
+                this.setState({
+                    isSnackbarVisible: true,
+                    snackbarMessage: 'Login failed',
+                });
+            }
+        }).catch(e => {
+            this.setState({
+                isSnackbarVisible: true,
+                snackbarMessage: 'Login failed',
+            });
         });
-
-
-        // get current authentication state for user
-        // /!\ This method must be tested on a real device. On the iOS simulator it always throws an error.
-        // const credentialState = await appleAuth.getCredentialStateForUser(appleAuthRequestResponse.user);
-        // console.log(credentialState, "credentialState")
-        // // use credentialState response to ensure the user is authenticated
-        // if (credentialState === appleAuth.State.AUTHORIZED) {
-        //   // user is authenticated
-        //   console.log("USO")
-        // }
     }
 
     public render() {
@@ -346,22 +362,15 @@ export class LoginScreen extends React.Component<Props, State & AnimationsState>
                                 </Typography>
 
                                 <Animated.View style={[{ overflow: 'hidden' }, { height: anim.toggleButtons.height }]}>
-                                    {/* LOGIN WITH APPLE */}
-                                    <AppleButton
-                                        buttonStyle={AppleButton.Style.WHITE}
-                                        buttonType={AppleButton.Type.SIGN_IN}
-                                        style={{
-                                            width: 160, // You must specify a width
-                                            height: 45, // You must specify a height
-                                        }}
-                                        onPress={() => this.appleLogin()}
-                                    />
-
-                                    <RoundedButton
-                                        type={RoundedButtonType.google}
-                                        onPress={() => { this.appleLogin() }}
-                                        style={{ marginBottom: 15, width: '100%' }}
-                                    />
+                                    {/* LOGIN WITH APPLE SHOW JUST ON IOS DEVICES  */}
+                                    {
+                                        Platform.OS === "ios" &&
+                                        <RoundedButton
+                                            type={RoundedButtonType.apple}
+                                            onPress={() => { this.appleLogin() }}
+                                            style={{ marginBottom: 15, width: '100%' }}
+                                        />
+                                    }
 
                                     {/* LOGIN WITH GOOGLE */}
                                     <RoundedButton

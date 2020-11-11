@@ -8,6 +8,7 @@
 
     "loginGoogle":  "Login with Google account",
     "loginFacebook": "Login with Facebook account",
+    "LoginApple": "Login with Apple account",
     "registerAccount": "Register account using Email",
     "loginButton": "Login",
     "loginForgotPassword": "Forgot your password?",
