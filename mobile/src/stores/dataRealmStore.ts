@@ -22,7 +22,7 @@ import { PollsEntity, PollsEntitySchema } from './PollsEntity';
 export type Variables = {
     'userEmail': string;
     'userName': string;
-    "loginMethod": "facebook" | "google" | "cms";
+    "loginMethod": "facebook" | "google" | "cms" | "apple";
     'userIsLoggedIn': boolean;
     'userIsOnboarded': boolean;
     'userEnteredChildData': boolean;
