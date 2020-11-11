@@ -30,6 +30,7 @@ export enum RoundedButtonType {
     default,
     google,
     facebook,
+    apple,
     purple,
     hollowWhite,
     hollowPurple,
@@ -72,6 +73,16 @@ export class RoundedButton extends React.Component<Props, State> {
                 fontFamily: 'SFUIDisplay-Semibold',
             };
             state.icon = <IconFontAwesome name={"facebook"} style={[styles.iconStyle, { color: state.textStyle.color, fontSize: 24 }]} />;
+        }
+
+        // apple
+        if (this.props.type === RoundedButtonType.apple) {
+            state.text = translate('LoginApple');
+            state.textStyle = {
+                color: '#000',
+                fontFamily: 'SFUIDisplay-Semibold',
+            };
+            state.icon = <IconFontAwesome name={"apple"} style={[styles.iconStyle, { color: state.textStyle.color, fontSize: 24 }]} />;
         }
 
         // Purple
