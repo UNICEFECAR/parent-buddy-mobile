@@ -605,13 +605,13 @@ Follow your child’s behaviour and talk to your paediatrician if you notice tha
         },
         {
             uuid: '145d6f2d-3179-44fd-a0ce-0013cd712c24',
-            period: 'at 3 years (24-36 months)',
-            childAgeInDays: { from: 730, to: 920 },
+            period: 'at 4 years (36-48 months)',
+            childAgeInDays: { from: 1095, to: 1460 },
             nameOfTheDoctorVisit: 'Health check-up',
             periodSubtitle: 'Between 24th and 36th months',
             immunizationsPeriodId: '',
             moreAboutDoctorVisitArticleId: 4511,
-            planDoctorVisitMessageInDays: { from: 720, to: 1080 },
+            planDoctorVisitMessageInDays: { from: 1095, to: 1460 },
         },
         {
             uuid: '21781895-05a1-4eb5-bbd1-7436cd020873',

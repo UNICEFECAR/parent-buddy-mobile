@@ -21,7 +21,7 @@ class Localize {
     public setLocalesIfNotSet() {
         let languageCode = dataRealmStore.getVariable('languageCode');
         let countryCode = dataRealmStore.getVariable('countryCode');
-
+        console.log(this.getDefaultLanguage())
         if (!languageCode) {
             let forcedLanguage = appConfig.forceOneLanguage as string | undefined;
             if(forcedLanguage){
@@ -39,13 +39,29 @@ class Localize {
     public getDefaultLanguage() {
         const locales = RNLocalize.getLocales();
         
+        let forcedLanguage = appConfig.forceOneLanguage as string | undefined;
         let firstLocale: Locale|null = null;
-        if (locales && locales.length > 0) {
-            firstLocale = locales[0];
-        }
 
-        return firstLocale ? firstLocale.languageCode : appConfig.defaultLanguage;
-    }
+        let language = "";
+        
+        if(forcedLanguage){
+            language = forcedLanguage;
+        }else{
+            if (locales && locales.length > 0) {
+                firstLocale = locales[0];
+            }
+        };
+
+        if(language !== ""){
+            if(firstLocale){
+                return firstLocale.languageCode
+            }else{
+                return appConfig.defaultLanguage
+            }
+        }else{
+            return language
+        }
+    };
 
     public getDefaultCountry() {
         const locales = RNLocalize.getLocales();
