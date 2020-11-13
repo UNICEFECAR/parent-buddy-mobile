@@ -5,6 +5,7 @@ import { SyncingScreen } from "./SyncingScreen";
 import { TestScreen } from "./TestScreen";
 import { VideoScreen } from "./VideoScreen";
 import { ChartFullScreen } from './growth/ChartFullScreen';
+import { DownloadScreen} from './DownloadScreen';
 
 export { StorybookScreen };
 export { SyncingScreen };
@@ -13,3 +14,4 @@ export { AboutScreen };
 export { TestScreen };
 export { VideoScreen };
 export {ChartFullScreen}
+export {DownloadScreen}

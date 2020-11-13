@@ -10,7 +10,7 @@ import { RoundedTextInput, RoundedTextInputStyles } from "../../components/Round
 import { RoundedButton, RoundedButtonType } from '../../components/RoundedButton';
 import { TextButton, TextButtonSize, TextButtonColor } from "../../components/TextButton";
 import { dataRealmStore } from '../../stores';
-import { utils } from '../../app';
+import { navigation, utils } from '../../app';
 import { Snackbar, Colors } from 'react-native-paper';
 import { ScrollView } from 'react-native-gesture-handler';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';

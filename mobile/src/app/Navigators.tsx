@@ -49,6 +49,7 @@ import { getFontScale } from "react-native-device-info";
 import { DoctorVisitsScreen } from "../screens/doctor-visit/DoctorVisitsScreen";
 import { AddDoctorVisitReminderScreen } from "../screens/vaccination/AddDoctorVisitReminderScreen";
 import { PollsScreen } from "../screens/PollsScreen";
+import { DownloadScreen } from "../screens/DownloadScreen";
 
 /**
 * Use it to [navigate screens](https://reactnavigation.org/docs/en/navigating-without-navigation-prop.html)
@@ -174,7 +175,6 @@ const HomeStackNavigator = createStackNavigator({
     HomeStackNavigator_TermsScreen: {
         screen: TermsScreen,
         navigationOptions: {
-
             title: translate('termsAndConditionsTitle'),
         }
     },
@@ -587,6 +587,12 @@ const RootModalStackNavigator = createStackNavigator({
         screen: ChartFullScreen,
         navigationOptions: {
             title: "Video"
+        }
+    },
+    RootModalStackNavigator_DownloadScreen:{
+        screen: DownloadScreen,
+        navigationOptions:{
+            title: "Download"
         }
     },
     DrawerNavigator: {

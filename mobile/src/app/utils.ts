@@ -7,6 +7,7 @@ import { appConfig } from './appConfig';
 import analytics from '@react-native-firebase/analytics';
 import { Platform } from 'react-native';
 import { ContentEntitySchema } from '../stores/ContentEntity';
+import NetInfo from "@react-native-community/netinfo";
 
 /**
  * Various utils methods.
@@ -233,7 +234,11 @@ class Utils {
         } catch(e) {}
 
         return rval;
-    }
-}
+    };
+
+};
+
+
+
 
 export const utils = Utils.getInstance();

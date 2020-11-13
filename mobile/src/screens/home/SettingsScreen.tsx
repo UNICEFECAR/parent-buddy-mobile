@@ -119,6 +119,8 @@ export class SettingsScreen extends React.Component<Props, State> {
                     dataRealmStore.deleteVariable("userParentalRole");
                     dataRealmStore.deleteVariable("userName");
                     dataRealmStore.deleteVariable("currentActiveChildId");
+                    dataRealmStore.deleteVariable("acceptTerms");
+                    dataRealmStore.deleteVariable("acceptDownload");
 
                     userRealmStore.deleteAll(ChildEntitySchema);
                     // navigation.navigate('LoginStackNavigator_LoginScreen');
@@ -169,6 +171,8 @@ export class SettingsScreen extends React.Component<Props, State> {
         dataRealmStore.deleteVariable("userName");
         dataRealmStore.deleteVariable("userParentalRole");
         dataRealmStore.deleteVariable("vocabulariesAndTerms");
+        dataRealmStore.deleteVariable("acceptTerms");
+        dataRealmStore.deleteVariable("acceptDownload");
 
         // reset variables
         dataRealmStore.setVariable("followDevelopment", true);

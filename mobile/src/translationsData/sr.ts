@@ -586,12 +586,12 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
         {
             uuid: 'e038f09c-bf5b-4cc3-bb79-fe1567b994c2',
             period: 'Sa 3. godine (24 - 30 meseci)',
-            childAgeInDays: { from: 730, to: 920 },
+            childAgeInDays: { from: 1095, to: 1460 },
             nameOfTheDoctorVisit: 'Redovan preventivni pregled',
-            periodSubtitle: 'U trećoj godini (između 24 i 36 meseci)',
+            periodSubtitle: 'U četvrtoj godini (između 36 i 48 meseci)',
             immunizationsPeriodId: '',
-            moreAboutDoctorVisitArticleId: 4511,
-            planDoctorVisitMessageInDays: { from: 720, to: 915 },
+            moreAboutDoctorVisitArticleId: 6901,
+            planDoctorVisitMessageInDays: { from: 1095, to: 1460 },
         },
         {
             uuid: '0f130748-2e08-479a-9202-191ecfdaf5ff',

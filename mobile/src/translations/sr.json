@@ -29,7 +29,7 @@
     "notValidEmail": "Email nije validan.",
     "passwordToShort": "Lozinka mora imati najmanje 6 karaktera.",
     "passwordDosntMatch": "Lozinke se ne podudaraju.",
-    "syncScreenText": "Pripremamo sadržaj za vas i vašeg mališana.",
+    "syncScreenText": "Pripremamo sadržaj za vas i vaše mališane.",
     "syncScreenSubText": "Neće trajati devet meseci, ali par minuta hoće :)",
 
     "accountTitle": "Upoznajmo Vaše dete",
@@ -299,5 +299,6 @@
     "HomeMeasurementsAlertText": "Merenje deteta kod kuće je manje precizno nego merenje kod doktora i može da utiče na tačnost grafika rasta.",
     "NoVaccinationForPeriodAlert": "Nema vakcina za ovaj period.",
     "PollsSuccessMessage": "Hvala na povratnim informacijama!",
-    "PollsBack": "Nazad"
+    "PollsBack": "Nazad",
+    "DataDownloadAlert": "Za puno funkcionisanje aplikacije potrebno je skinuti sa interneta najaktuelnije članke o roditeljstvu veličine oko 30MB podataka. Da li pristajete?"
 }

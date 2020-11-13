@@ -218,18 +218,6 @@ export class LoginScreen extends React.Component<Props, State & AnimationsState>
     }
 
     private async googleLogin() {
-        // Check if app can be opened
-        const canAppBeOpened = utils.canAppBeOpened();
-
-        if (!canAppBeOpened) {
-            this.setState({
-                isSnackbarVisible: true,
-                snackbarMessage: translate('appCantOpen'),
-            });
-
-            return;
-        }
-
         // Login
         let response = await googleAuth.signIn();
 
@@ -248,18 +236,6 @@ export class LoginScreen extends React.Component<Props, State & AnimationsState>
     }
 
     private async facebookLogin() {
-        // Check if app can be opened
-        const canAppBeOpened = utils.canAppBeOpened();
-
-        if (!canAppBeOpened) {
-            this.setState({
-                isSnackbarVisible: true,
-                snackbarMessage: translate('appCantOpen'),
-            });
-
-            return;
-        }
-
         // Login
         let loginResult = await facebook.logIn();
 
@@ -286,19 +262,7 @@ export class LoginScreen extends React.Component<Props, State & AnimationsState>
         }
     }
 
-
     private async appleLogin() {
-        const canAppBeOpened = utils.canAppBeOpened();
-
-        if (!canAppBeOpened) {
-            this.setState({
-                isSnackbarVisible: true,
-                snackbarMessage: translate('appCantOpen'),
-            });
-
-            return;
-        };
-
         appleAuth.performRequest({
             requestedOperation: appleAuth.Operation.LOGIN,
             requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
@@ -330,149 +294,129 @@ export class LoginScreen extends React.Component<Props, State & AnimationsState>
         return (
             <GradientBackground>
                 <StatusBar barStyle="light-content" />
+                <SafeAreaView style={[styles.container]}>
+                    <KeyboardAwareScrollView
+                        keyboardShouldPersistTaps='always'
+                        style={{ borderWidth: 0, borderColor: 'red' }} contentContainerStyle={{ borderWidth: 0, borderColor: 'green', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center', marginLeft: 30, marginRight: 30 }}
+                        onKeyboardWillShow={() => { this.onKeyboardWillShow() }}
+                        onKeyboardWillHide={() => { this.onKeyboardWillHide() }}
+                        onKeyboardDidShow={() => { this.onKeyboardWillShow() }}
+                        onKeyboardDidHide={() => { this.onKeyboardWillHide() }}
+                    >
+                        {/* TITLE */}
+                        <Typography type={TypographyType.logo} style={{ textAlign: 'center', color: 'white', marginTop: 20 }}>
+                            {translate('appName')}
+                        </Typography>
 
-                {
-                    !utils.canAppBeOpened() ?
-                        <ScrollView contentContainerStyle={{ padding: scale(30), flex: 1, justifyContent: 'center' }}>
-                            <Typography
-                                type={TypographyType.headingSecondary}
-                                style={{ color: 'white', textAlign: 'center', marginTop: scale(-90), marginBottom: scale(30) }}
-                            >
-                                {translate('dataCantDownload')}
-                            </Typography>
-                            <RoundedButton
-                                type={RoundedButtonType.purple}
-                                onPress={() => navigation.resetStackAndNavigate('RootModalStackNavigator_SyncingScreen')}
-                                text={translate('downloadData')}
-                            />
-                        </ScrollView>
-                        :
-                        <SafeAreaView style={[styles.container]}>
-                            <KeyboardAwareScrollView
-                                keyboardShouldPersistTaps='always'
-                                style={{ borderWidth: 0, borderColor: 'red' }} contentContainerStyle={{ borderWidth: 0, borderColor: 'green', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center', marginLeft: 30, marginRight: 30 }}
-                                onKeyboardWillShow={() => { this.onKeyboardWillShow() }}
-                                onKeyboardWillHide={() => { this.onKeyboardWillHide() }}
-                                onKeyboardDidShow={() => { this.onKeyboardWillShow() }}
-                                onKeyboardDidHide={() => { this.onKeyboardWillHide() }}
-                            >
-                                {/* TITLE */}
-                                <Typography type={TypographyType.logo} style={{ textAlign: 'center', color: 'white', marginTop: 20 }}>
-                                    {translate('appName')}
-                                </Typography>
-
-                                <Animated.View style={[{ overflow: 'hidden' }, { height: anim.toggleButtons.height }]}>
-                                    {/* LOGIN WITH APPLE SHOW JUST ON IOS DEVICES  */}
-                                    {
-                                        Platform.OS === "ios" &&
-                                        <RoundedButton
-                                            type={RoundedButtonType.apple}
-                                            onPress={() => { this.appleLogin() }}
-                                            style={{ marginBottom: 15, width: '100%' }}
-                                        />
-                                    }
-
-                                    {/* LOGIN WITH GOOGLE */}
-                                    <RoundedButton
-                                        type={RoundedButtonType.google}
-                                        onPress={() => { this.googleLogin() }}
-                                        style={{ marginBottom: 15, width: '100%' }}
-                                    />
-
-                                    {/* LOGIN WITH FACEBOOK */}
-                                    <RoundedButton
-                                        type={RoundedButtonType.facebook}
-                                        onPress={() => { this.facebookLogin() }}
-                                        style={{ marginBottom: 15, width: '100%' }}
-                                    />
-
-                                    {/* REGISTER ACCOUNT */}
-                                    <RoundedButton
-                                        text={translate('registerAccount')}
-                                        type={RoundedButtonType.purple}
-                                        onPress={() => { this.gotoRegisterScreen() }}
-                                        style={{ marginBottom: 15, width: '100%' }}
-                                    />
-                                </Animated.View>
-
-
-                                <Animated.View style={{ height: anim.toggleButtons.spaceHeight }}></Animated.View>
-
-                                {/* INPUT: email */}
-                                <RoundedTextInput
-                                    label={translate('fieldLabelEmail')}
-                                    icon="email-outline"
-                                    onChange={(value) => { this.setState({ email: value }) }}
-                                    onFocus={() => { this.onInputFocus() }}
-                                    style={{ marginBottom: 15 }}
-                                />
-
-                                {/* INPUT: password */}
-                                <RoundedTextInput
-                                    label={translate('fieldLabelPassword')}
-                                    icon="lock-outline"
-                                    onChange={(value) => { this.setState({ password: value }) }}
-                                    onFocus={() => { this.onInputFocus() }}
-                                    style={{ marginBottom: 15 }}
-                                    secureTextEntry={true}
-                                />
-
-                                {/* LOGIN BUTTON */}
+                        <Animated.View style={[{ overflow: 'hidden' }, { height: anim.toggleButtons.height }]}>
+                            {/* LOGIN WITH APPLE SHOW JUST ON IOS DEVICES  */}
+                            {
+                                Platform.OS === "ios" &&
                                 <RoundedButton
-                                    text={translate('loginButton')}
-                                    type={RoundedButtonType.hollowWhite}
-                                    onPress={() => { this.onLoginClick() }}
-                                    style={{ marginBottom: 15 }}
+                                    type={RoundedButtonType.apple}
+                                    onPress={() => { this.appleLogin() }}
+                                    style={{ marginBottom: 15, width: '100%' }}
                                 />
-                                <TextButton color={TextButtonColor.white} onPress={() => this.props.navigation.navigate('LoginStackNavigator_ResetPasswordScreen')}>
-                                    {translate('loginForgotPassword')}
-                                </TextButton>
+                            }
 
-                                {/* FORGOT THE PASSWORD */}
-                                {/* <TextButton size={TextButtonSize.small} textStyle={{ color: 'white', textAlign: 'center' }} onPress={() => { }}>
+                            {/* LOGIN WITH GOOGLE */}
+                            <RoundedButton
+                                type={RoundedButtonType.google}
+                                onPress={() => { this.googleLogin() }}
+                                style={{ marginBottom: 15, width: '100%' }}
+                            />
+
+                            {/* LOGIN WITH FACEBOOK */}
+                            <RoundedButton
+                                type={RoundedButtonType.facebook}
+                                onPress={() => { this.facebookLogin() }}
+                                style={{ marginBottom: 15, width: '100%' }}
+                            />
+
+                            {/* REGISTER ACCOUNT */}
+                            <RoundedButton
+                                text={translate('registerAccount')}
+                                type={RoundedButtonType.purple}
+                                onPress={() => { this.gotoRegisterScreen() }}
+                                style={{ marginBottom: 15, width: '100%' }}
+                            />
+                        </Animated.View>
+
+
+                        <Animated.View style={{ height: anim.toggleButtons.spaceHeight }}></Animated.View>
+
+                        {/* INPUT: email */}
+                        <RoundedTextInput
+                            label={translate('fieldLabelEmail')}
+                            icon="email-outline"
+                            onChange={(value) => { this.setState({ email: value }) }}
+                            onFocus={() => { this.onInputFocus() }}
+                            style={{ marginBottom: 15 }}
+                        />
+
+                        {/* INPUT: password */}
+                        <RoundedTextInput
+                            label={translate('fieldLabelPassword')}
+                            icon="lock-outline"
+                            onChange={(value) => { this.setState({ password: value }) }}
+                            onFocus={() => { this.onInputFocus() }}
+                            style={{ marginBottom: 15 }}
+                            secureTextEntry={true}
+                        />
+
+                        {/* LOGIN BUTTON */}
+                        <RoundedButton
+                            text={translate('loginButton')}
+                            type={RoundedButtonType.hollowWhite}
+                            onPress={() => { this.onLoginClick() }}
+                            style={{ marginBottom: 15 }}
+                        />
+                        <TextButton color={TextButtonColor.white} onPress={() => this.props.navigation.navigate('LoginStackNavigator_ResetPasswordScreen')}>
+                            {translate('loginForgotPassword')}
+                        </TextButton>
+
+                        {/* FORGOT THE PASSWORD */}
+                        {/* <TextButton size={TextButtonSize.small} textStyle={{ color: 'white', textAlign: 'center' }} onPress={() => { }}>
                             {translate('loginForgotPassword')}
                         </TextButton> */}
 
-                                <View style={{ height: 60 }}></View>
+                        <View style={{ height: 60 }}></View>
 
-                                {/* LOGO IMAGES */}
-                                <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
-                                    <Image
-                                        source={require('../../themes/assets/gradski_zavod.png')}
-                                        style={{ width: '48%', maxWidth: 150, aspectRatio: 3.26 }}
-                                        resizeMode="cover"
-                                    />
-                                    <View style={{ flex: 1 }}></View>
-                                    <Image
-                                        source={require('../../themes/assets/unicefSRB.png')}
-                                        style={{ width: '48%', maxWidth: 140, aspectRatio: 2, }}
-                                        resizeMode="cover"
-                                    />
-                                </View>
+                        {/* LOGO IMAGES */}
+                        <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
+                            <Image
+                                source={require('../../themes/assets/gradski_zavod.png')}
+                                style={{ width: '48%', maxWidth: 150, aspectRatio: 3.26 }}
+                                resizeMode="cover"
+                            />
+                            <View style={{ flex: 1 }}></View>
+                            <Image
+                                source={require('../../themes/assets/unicefSRB.png')}
+                                style={{ width: '48%', maxWidth: 140, aspectRatio: 2, }}
+                                resizeMode="cover"
+                            />
+                        </View>
 
-                                <View style={{ height: 30 }} />
-                            </KeyboardAwareScrollView>
+                        <View style={{ height: 30 }} />
+                    </KeyboardAwareScrollView>
 
-                            <Snackbar
-                                visible={this.state.isSnackbarVisible}
-                                duration={Snackbar.DURATION_SHORT}
-                                onDismiss={() => { this.setState({ isSnackbarVisible: false }) }}
-                                theme={{ colors: { onSurface: snackbarErrorStyle?.backgroundColor, accent: snackbarErrorStyle?.actionButtonColor, } }}
-                                action={{
-                                    label: 'Ok',
-                                    onPress: () => {
-                                        this.setState({ isSnackbarVisible: false });
-                                    },
-                                }}
-                            >
-                                <Text style={{ fontSize: snackbarErrorStyle?.fontSize }}>
-                                    {this.state.snackbarMessage}
-                                </Text>
-                            </Snackbar>
-                        </SafeAreaView>
-                }
-
-
+                    <Snackbar
+                        visible={this.state.isSnackbarVisible}
+                        duration={Snackbar.DURATION_SHORT}
+                        onDismiss={() => { this.setState({ isSnackbarVisible: false }) }}
+                        theme={{ colors: { onSurface: snackbarErrorStyle?.backgroundColor, accent: snackbarErrorStyle?.actionButtonColor, } }}
+                        action={{
+                            label: 'Ok',
+                            onPress: () => {
+                                this.setState({ isSnackbarVisible: false });
+                            },
+                        }}
+                    >
+                        <Text style={{ fontSize: snackbarErrorStyle?.fontSize }}>
+                            {this.state.snackbarMessage}
+                        </Text>
+                    </Snackbar>
+                </SafeAreaView>
             </GradientBackground>
         );
     }
