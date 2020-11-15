@@ -45,7 +45,9 @@ export type Variables = {
     'nextNavigationState': string;
     'syncDataReport': string[];
     'lastDataSyncError': string;
-    'finishedPolls': FinishedPolls[]
+    'finishedPolls': FinishedPolls[];
+    'acceptDownload': boolean;
+    'acceptTerms': boolean;
 };
 
 type VariableKey = keyof Variables;

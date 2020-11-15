@@ -80,7 +80,8 @@ export class WalkthroughScreen extends React.Component<Props, State> {
         if (params.step < 5) {
             this.props.navigation.push('WalkthroughStackNavigator_WalkthroughScreen', params);
         } else {
-            this.gotoTermsScreen();
+            // this.gotoTermsScreen();
+            this.props.navigation.navigate('RootModalStackNavigator_DownloadScreen')
         }
     }
 

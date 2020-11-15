@@ -1,6 +1,7 @@
 import * as RNLocalize from 'react-native-localize'
 import i18n from 'i18n-js'
 import memoize from 'lodash.memoize'
+import { appConfig } from '../app/appConfig';
 
 const translationGetters: { [language: string]: any } = {
     // en: () => require('./en.json'),
@@ -31,8 +32,17 @@ export const setI18nConfig = () => {
         translate.cache.clear();
     }
 
-    i18n.translations = { [languageTag]: translationGetters[languageTag]() }
-    i18n.locale = languageTag;
+    let tag = "";
+    let forcedLanguage = appConfig.forceOneLanguage;
+
+    if(forcedLanguage && forcedLanguage !== ""){
+        tag = forcedLanguage
+    }else{
+        tag = languageTag;
+    };
+
+    i18n.translations = { [tag]: translationGetters[tag]() }
+    i18n.locale = tag;
 }
 
 // Call setI18nConfig when user changes the language.

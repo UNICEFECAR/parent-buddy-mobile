@@ -84,6 +84,7 @@ export class TermsScreen extends React.Component<Props, State> {
 
     private onAcceptButtonClick() {
         dataRealmStore.setVariable('userIsOnboarded', true);
+        dataRealmStore.setVariable('acceptTerms', true);
         utils.gotoNextScreenOnAppOpen();
     }
 
