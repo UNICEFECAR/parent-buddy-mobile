@@ -7,7 +7,6 @@ import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
 import { Typography, TypographyType } from '../../components/Typography';
 import { TextButton, TextButtonColor } from '../../components/TextButton';
 import { ListCard, ListCardMode, ListCardItem } from './ListCard';
-import { listCardFaqYourChildDummyData, listCardFaqPerAgeDummyData, listCardFaqMamaDummyData } from '../../dummy-data/listCardDummyData';
 import { DidntFindAnswers } from './DidntFindAnswers';
 import { FaqCategoryScreenParams } from './FaqCategoryScreen';
 import { FaqScreenDataResponse, dataRealmStore, FaqScreenArticlesResponseItem } from '../../stores/dataRealmStore';

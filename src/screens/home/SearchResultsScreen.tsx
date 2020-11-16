@@ -7,7 +7,6 @@ import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
 import { Typography, TypographyType } from '../../components/Typography';
 import { TextButton, TextButtonColor } from '../../components/TextButton';
 import { ListCard, ListCardMode, ListCardItem } from './ListCard';
-import { listCardArticlesSearchResultsDummyData, listCardFaqSearchResultsDummyData } from "../../dummy-data/listCardDummyData";
 import { DidntFindAnswers } from './DidntFindAnswers';
 import { StackActions } from 'react-navigation';
 import { dataRealmStore, ContentEntity } from '../../stores';
