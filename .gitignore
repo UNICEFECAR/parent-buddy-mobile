@@ -67,3 +67,4 @@ buck-out/
 stacktrace/index.android.bundle.map
 ios/GoogleService-Info.plist
 android/app/google-services.json
+src/app/apiConfig.ts

@@ -96,17 +96,22 @@ npm install
 ```sh
 pod install
 ```
-4. Configure server variables in  "src/app/appConfig.ts"
+4. Create  "src/app/apiConfig.ts"
     - Server part of "Parent Buddy" is Drupal application
-    - Administrator of Drupal application should give you:
-        - apiUsername
-        - apiPassword
-        - apiAuthUsername
-        - apiAuthPassword
+    - Administrator of Drupal application should give you values that you should put in apiConfig.ts
+    - apiConfig.ts should look like this
+```
+export const apiConfig = {
+    apiUsername: '...',
+    apiPassword: '...',
+    apiAuthUsername: '...',
+    apiAuthPassword: '...',
+};
+```
 5. Configure Firebase services
     - [Create Firebase project](https://console.firebase.google.com/)
     - Add iOS and Android apps to Firebase project the standard way
-    - Use Firebase wizards to create thse:
+    - Use Firebase wizards to create these:
         - google-services.json
         - GoogleService-Info.plist
     - Copy files here:

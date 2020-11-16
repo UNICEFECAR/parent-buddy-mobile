@@ -1,3 +1,5 @@
+import { apiConfig } from './apiConfig';
+
 const apiUrlDevelop = 'http://ecaroparentingappt8q2psucpz.devcloud.acquia-sites.com/api';
 const apiUrlProduction = 'http://ecaroparentingapppi3xep5h4v.devcloud.acquia-sites.com/api';
 // const apiUrlProduction = 'https://parentbuddyapp.org/api';
@@ -11,13 +13,12 @@ export const appConfig = {
     defaultCountry: 'SR',
     forceOneLanguage: forceOneLanguage,
     apiImagesUrl: apiImagesUrl,
-
     // API
     apiUrl: apiUrlProduction,
-    apiUsername: '...',
-    apiPassword: '...',
-    apiAuthUsername: '...',
-    apiAuthPassword: '...',
+    apiUsername: apiConfig.apiUsername,
+    apiPassword: apiConfig.apiPassword,
+    apiAuthUsername: apiConfig.apiAuthUsername,
+    apiAuthPassword: apiConfig.apiAuthPassword,
     apiTimeout: 15000,
     apiNumberOfItems: 50,
     showPublishedContent: 1,
@@ -30,7 +31,7 @@ export const appConfig = {
 
     // DEVELOPMENT
     // Set to true only during development
-    showLog: false,
+    showLog: true,
     preventSync: false,
     deleteRealmFilesBeforeOpen: false,
 };
