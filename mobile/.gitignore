@@ -65,3 +65,5 @@ buck-out/
 
 # HaloBeba
 stacktrace/index.android.bundle.map
+ios/GoogleService-Info.plist
+android/app/google-services.json
