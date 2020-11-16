@@ -60,7 +60,7 @@ export class TermsScreen extends React.Component<Props, State> {
 
     private initState() {
         let allowAnonymousUsage = dataRealmStore.getVariable('allowAnonymousUsage');
-        
+
         let termsPageDate = dataRealmStore.getBasicPage(4836);
 
 
@@ -122,7 +122,7 @@ export class TermsScreen extends React.Component<Props, State> {
                     <View style={{height:scale(15)}} /> */}
 
                     <Typography type={TypographyType.headingPrimary} style={{ textAlign: 'center' }}>
-                        {this.state.title}
+                        {this?.state?.title}
                     </Typography>
 
                     <ScrollView contentContainerStyle={{ padding: scale(24), }}>
@@ -140,13 +140,15 @@ export class TermsScreen extends React.Component<Props, State> {
                         </View> */}
 
                         {/* OTHER PARAGRAPHS */}
-                        <HTML
-                            html={this.state.body}
-                            baseFontStyle={{ fontSize: scale(18) }}
-                            tagsStyles={htmlStyles}
-                            imagesMaxWidth={Dimensions.get('window').width}
-                            staticContentMaxWidth={Dimensions.get('window').width}
-                        />
+                        {this?.state?.body ? (
+                            <HTML
+                                html={this.state.body}
+                                baseFontStyle={{ fontSize: scale(18) }}
+                                tagsStyles={htmlStyles}
+                                imagesMaxWidth={Dimensions.get('window').width}
+                                staticContentMaxWidth={Dimensions.get('window').width}
+                            />
+                        ) : null}
 
                         {/* CHECKBOXES */}
                         {!screenParams.hideCheckboxes ? (
@@ -156,8 +158,8 @@ export class TermsScreen extends React.Component<Props, State> {
                                     {/* checkPrivateData */}
                                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                         <Checkbox.Android
-                                            status={this.state.checkPrivateData ? 'checked' : 'unchecked'}
-                                            onPress={() => { this.setState({ checkPrivateData: !this.state.checkPrivateData }); }}
+                                            status={this?.state?.checkPrivateData ? 'checked' : 'unchecked'}
+                                            onPress={() => { this.setState({ checkPrivateData: !this?.state?.checkPrivateData }); }}
                                             color={colors?.checkboxColor}
                                         />
                                         <TouchableWithoutFeedback style={{ padding: 5 }} onPress={() => { this.setState({ checkPrivateData: !this.state.checkPrivateData }); }}>
@@ -170,22 +172,22 @@ export class TermsScreen extends React.Component<Props, State> {
                                     {/* checkOtherConditions */}
                                     <View style={{ flexDirection: 'row', marginTop: scale(14), alignItems: 'center' }}>
                                         <Checkbox.Android
-                                            status={this.state.checkOtherConditions ? 'checked' : 'unchecked'}
+                                            status={this?.state?.checkOtherConditions ? 'checked' : 'unchecked'}
                                             onPress={() => { this.setState({ checkOtherConditions: !this.state.checkOtherConditions }); }}
                                             color={colors?.checkboxColor}
                                         />
                                         <View style={{ flex: 1, }}>
                                             <Typography type={TypographyType.bodyRegular} style={{ textAlign: 'left', marginLeft: scale(5) }}>
                                                 {translate('privacyPolicyCheckBox')}
-                                                <Text style={{fontWeight: "bold"}} onPress={() => this.props.navigation.navigate('RootModalStackNavigator_PrivacyPolicyScreen')}> {translate('privacyPolicyLinkText')}</Text>
+                                                <Text style={{ fontWeight: "bold" }} onPress={() => this.props.navigation.navigate('RootModalStackNavigator_PrivacyPolicyScreen')}> {translate('privacyPolicyLinkText')}</Text>
                                             </Typography>
                                         </View>
                                     </View>
 
                                     {/* checkAnonDataAccess */}
-                                    <View style={{ flexDirection: 'row', marginTop: scale(14), alignItems: 'center',  }}>
+                                    <View style={{ flexDirection: 'row', marginTop: scale(14), alignItems: 'center', }}>
                                         <Checkbox.Android
-                                            status={this.state.checkAnonDataAccess ? 'checked' : 'unchecked'}
+                                            status={this?.state?.checkAnonDataAccess ? 'checked' : 'unchecked'}
                                             onPress={() => { this.onAnonDataAccessPress() }}
                                             color={colors?.checkboxColor}
                                         />
@@ -200,7 +202,7 @@ export class TermsScreen extends React.Component<Props, State> {
                                 {/* ACCEPT BUTTON */}
                                 <RoundedButton
                                     text={translate('acceptTermsAndConditions')}
-                                    disabled={this.state.checkPrivateData && this.state.checkOtherConditions ? false : true}
+                                    disabled={this?.state?.checkPrivateData && this?.state?.checkOtherConditions ? false : true}
                                     type={RoundedButtonType.purple}
                                     onPress={() => { this.onAcceptButtonClick() }}
                                     style={{ marginTop: scale(20) }}
