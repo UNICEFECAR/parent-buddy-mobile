@@ -132,6 +132,10 @@ class UserRealmStore {
             const immunizationsPeriods = translateData('immunizationsPeriods') as (TranslateDataImmunizationsPeriods | null);
             let currentImmunizationsPeriods = immunizationsPeriods?.find(period => period.dayStart <= childAgeInDays && period.dayEnd >= childAgeInDays);
 
+            if(currentImmunizationsPeriods === undefined){
+                currentImmunizationsPeriods = immunizationsPeriods?.find(period => period.dayStart > childAgeInDays)
+            }
+
             if (immunizationsPeriods) {
                 // get all vaccines for previous period 
 
