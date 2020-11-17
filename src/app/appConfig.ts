@@ -12,8 +12,9 @@ export const appConfig = {
     defaultLanguage: 'en',
     defaultCountry: 'SR',
     forceOneLanguage: forceOneLanguage,
-    apiImagesUrl: apiImagesUrl,
+
     // API
+    apiImagesUrl: apiImagesUrl,
     apiUrl: apiUrlProduction,
     apiUsername: apiConfig.apiUsername,
     apiPassword: apiConfig.apiPassword,
@@ -31,7 +32,7 @@ export const appConfig = {
 
     // DEVELOPMENT
     // Set to true only during development
-    showLog: true,
+    showLog: false,
     preventSync: false,
     deleteRealmFilesBeforeOpen: false,
 };
