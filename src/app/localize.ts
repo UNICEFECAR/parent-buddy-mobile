@@ -2,6 +2,7 @@ import { dataRealmStore } from "../stores";
 import { appConfig } from "./appConfig";
 import * as RNLocalize from "react-native-localize";
 import { Locale } from "react-native-localize";
+import { setI18nConfig } from "../translations";
 
 class Localize {
     private static instance: Localize;
@@ -18,10 +19,10 @@ class Localize {
     /**
      * Set language & country if they are not set.
      */
-    public setLocalesIfNotSet() {
+    public async setLocalesIfNotSet() {
         let languageCode = dataRealmStore.getVariable('languageCode');
         let countryCode = dataRealmStore.getVariable('countryCode');
-        console.log(this.getDefaultLanguage())
+
         if (!languageCode) {
             let forcedLanguage = appConfig.forceOneLanguage as string | undefined;
             if(forcedLanguage){
@@ -29,12 +30,15 @@ class Localize {
             }else{
                 this.setLanguage(this.getDefaultLanguage())
             }
+        }else{
+            setI18nConfig(languageCode)
         };
+
 
         if (!countryCode) {
             this.setCountry(this.getDefaultCountry());
-        }
-    }
+        };
+    };
 
     public getDefaultLanguage() {
         const locales = RNLocalize.getLocales();
@@ -44,7 +48,7 @@ class Localize {
 
         let language = "";
         
-        if(forcedLanguage){
+        if(forcedLanguage !== undefined){
             language = forcedLanguage;
         }else{
             if (locales && locales.length > 0) {
@@ -52,7 +56,7 @@ class Localize {
             }
         };
 
-        if(language !== ""){
+        if(language === ""){
             if(firstLocale){
                 return firstLocale.languageCode
             }else{

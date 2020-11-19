@@ -17,6 +17,7 @@ import { ErrorBoundary } from 'react-error-boundary';
 import { ErrorFallback } from '../components/ErrorFallback';
 import { utils } from '.';
 import SplashScreen from 'react-native-splash-screen'
+import { setI18nConfig } from '../translations';
 
 // ADD GLOBAL POLYFILLS: atob, btoa
 if (!(global as any).btoa) (global as any).btoa = btoa;
@@ -70,6 +71,7 @@ export class App extends React.Component<object> {
         googleAuth.configure();
         localize.setLocalesIfNotSet();
         this.initOnboarding();
+  
         // initGlobalErrorHandler();
     }
 

@@ -50,6 +50,7 @@ import { DoctorVisitsScreen } from "../screens/doctor-visit/DoctorVisitsScreen";
 import { AddDoctorVisitReminderScreen } from "../screens/vaccination/AddDoctorVisitReminderScreen";
 import { PollsScreen } from "../screens/PollsScreen";
 import { DownloadScreen } from "../screens/DownloadScreen";
+import { LanguageChooser } from "../screens";
 
 /**
 * Use it to [navigate screens](https://reactnavigation.org/docs/en/navigating-without-navigation-prop.html)
@@ -572,6 +573,12 @@ const RootModalStackNavigator = createStackNavigator({
         screen: VideoScreen,
         navigationOptions: {
             title: "Video"
+        }
+    },
+    RootModalStackNavigtor_LanguageChooser:{
+        screen: LanguageChooser,
+        navigationOptions: {
+            title: "Language choose"
         }
     },
     RootModalStackNavigator_SettingsScreen: {

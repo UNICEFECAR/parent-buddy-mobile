@@ -6,7 +6,7 @@ import { VocabulariesAndTermsResponse, TermChildren, BasicPagesResponse } from '
 import { ListCardItem } from '../screens/home/ListCard';
 import { ContentEntity, ChildEntity } from '.';
 import { ContentEntitySchema } from './ContentEntity';
-import { translate } from '../translations/translate';
+import { setI18nConfig, translate } from '../translations/translate';
 import { DateTime } from "luxon";
 import { userRealmStore } from './userRealmStore';
 import { BasicPageEntity, BasicPagesEntitySchema } from './BasicPageEntity';
@@ -48,6 +48,7 @@ export type Variables = {
     'finishedPolls': FinishedPolls[];
     'acceptDownload': boolean;
     'acceptTerms': boolean;
+    'isUserSetLanguage': boolean;
 };
 
 type VariableKey = keyof Variables;
@@ -688,6 +689,11 @@ class DataRealmStore {
         return rval;
     }
 
+    public changeLanguage(languageCode: string){
+        this.setVariable("languageCode", languageCode);
+        setI18nConfig(languageCode);
+    }
+
     public getFaqScreenData(): FaqScreenDataResponse {
         const rval: FaqScreenDataResponse = [];
         const vocabulariesAndTerms = this.getVariable('vocabulariesAndTerms');
@@ -858,5 +864,15 @@ export type SearchResultsScreenDataResponse = {
     articles?: SearchResultsScreenDataCategoryArticles[];
     faqs?: ContentEntity[];
 };
+
+export type Language = {
+    code: string,
+    title: string,
+};
+
+export const languageList: Language[] = [
+    {code: "en", title: 'LanguageEnglish'},
+    {code: "sr", title: 'LanguageSerbian'},
+]
 
 export const dataRealmStore = DataRealmStore.getInstance();

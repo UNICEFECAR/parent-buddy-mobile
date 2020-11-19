@@ -300,5 +300,10 @@
     "NoVaccinationForPeriodAlert": "TODO No vaccines for this period. ",
     "PollsSuccessMessage": "TODO Thank you for feedback!",
     "PollsBack": "Go back",
-    "DataDownloadAlert": "TODO Za puno funkcionisanje aplikacije potrebno je skinuti sa interneta najaktuelnije članke o roditeljstvu veličine oko 30MB podataka. Da li pristajete?"
+    "DataDownloadAlert": "TODO Za puno funkcionisanje aplikacije potrebno je skinuti sa interneta najaktuelnije članke o roditeljstvu veličine oko 30MB podataka. Da li pristajete?",
+    "LanguageEnglish": "English",
+    "LanguageSerbian": "Serbian",
+    "TitleChooseLanguage": "Choose language",
+    "Language": "Language",
+    "ChangeLanguage": "Change language"
 }

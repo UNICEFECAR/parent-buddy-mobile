@@ -22,6 +22,12 @@ export class SyncingScreen extends React.Component<Props, object> {
         this.startSync();
     }
 
+    // if(dataRealmStore.getVariable("languageCode")){
+    //     setI18nConfig(dataRealmStore.getVariable("languageCode"))
+    // }else{
+    //     setI18nConfig()
+    // }
+
     private async startSync() {
 
         const userIsLoggedIn = dataRealmStore.getVariable('userIsLoggedIn');
@@ -99,6 +105,7 @@ export class SyncingScreen extends React.Component<Props, object> {
     }
 
 }
+
 
 export interface SyncingScreenStyles {
     container?: ViewStyle;

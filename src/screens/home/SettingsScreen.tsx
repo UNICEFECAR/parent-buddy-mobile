@@ -10,7 +10,7 @@ import { Typography, TypographyType } from '../../components/Typography';
 import { TextButton, TextButtonColor } from '../../components/TextButton';
 import { RoundedButton, RoundedButtonType } from '../../components/RoundedButton';
 import { dataRealmStore, VariableEntity, userRealmStore, ChildEntity, apiStore } from '../../stores';
-import { Variables } from '../../stores/dataRealmStore';
+import { languageList, Variables } from '../../stores/dataRealmStore';
 import { navigation, backup, googleDrive } from '../../app';
 import { VariableEntitySchema } from '../../stores/VariableEntity';
 import { variables } from '../../themes/defaultTheme/variables';
@@ -110,7 +110,7 @@ export class SettingsScreen extends React.Component<Props, State> {
             translate('logoutAlert'),
             "",
             [{
-                text: translate('settingsLogout'), 
+                text: translate('settingsLogout'),
                 onPress: () => {
                     dataRealmStore.deleteVariable("userEmail");
                     dataRealmStore.deleteVariable("userIsLoggedIn");
@@ -132,7 +132,7 @@ export class SettingsScreen extends React.Component<Props, State> {
                 text: translate('logoutCancel'),
                 onPress: () => { }
             }
-        ]);
+            ]);
     };
 
     private async exportAllData() {
@@ -145,11 +145,11 @@ export class SettingsScreen extends React.Component<Props, State> {
                 isSnackbarVisible: true,
                 snackbarMessage: translate('settingsButtonExportError'),
             });
-        }else{
+        } else {
             this.setState({
                 isSnackbarSuccessVisible: true,
                 snackbarSuccessMessage: translate('exportDataSuccess'),
-            });  
+            });
         };
     };
 
@@ -179,22 +179,22 @@ export class SettingsScreen extends React.Component<Props, State> {
         dataRealmStore.setVariable("followDoctorVisits", true);
         dataRealmStore.setVariable("followGrowth", true)
         dataRealmStore.setVariable("notificationsApp", true);
-        
+
         try {
             await GoogleSignin.revokeAccess();
             await GoogleSignin.signOut();
-          } catch (error) {
+        } catch (error) {
             console.error(error);
-          }
+        }
     };
 
     private async deleteAccountCms() {
         const deleteAcc = await apiStore.deleteAccount();
         try {
             await GoogleSignin.signOut();
-          } catch (error) {
+        } catch (error) {
             console.error(error, "ERROR");
-          }
+        }
         if (deleteAcc) {
             this.deleteAccountFromLocal()
         };
@@ -238,11 +238,11 @@ export class SettingsScreen extends React.Component<Props, State> {
                 isSnackbarVisible: true,
                 snackbarMessage: importResponse.message,
             });
-        }else{
+        } else {
             this.setState({
                 isSnackbarSuccessVisible: true,
                 snackbarSuccessMessage: translate('importDataSuccess'),
-            });             
+            });
         }
     }
 
@@ -250,6 +250,15 @@ export class SettingsScreen extends React.Component<Props, State> {
         if (!this.state.isExportRunning && !this.state.isImportRunning) {
             navigation.resetStackAndNavigate('DrawerNavigator');
         }
+    }
+
+    private getLanguageName = () => {
+        const languages = languageList;
+        const currentActiveLanguage = dataRealmStore.getVariable("languageCode");
+        
+        if(!currentActiveLanguage) return 
+
+        return  languages.find(lang => lang.code === currentActiveLanguage)?.title;
     }
 
     public render() {
@@ -267,6 +276,19 @@ export class SettingsScreen extends React.Component<Props, State> {
                             contentContainerStyle={[styles.container]}
                         >
                             <View style={{ alignItems: 'flex-start', padding: themeContext.theme.screenContainer?.padding }}>
+
+                                <Typography type={TypographyType.headingSecondary}>
+                                    {translate("Language")}: {translate(this.getLanguageName())}
+                                </Typography>
+                                <RoundedButton
+                                    text={translate("ChangeLanguage")}
+                                    type={RoundedButtonType.hollowPurple}
+                                    iconName="file-export"
+                                    disabled={this.state.isExportRunning || this.state.isImportRunning}
+                                    onPress={() => { this.exportAllData() }}
+                                    style={{ flex: 1 }}
+                                />
+                                
 
                                 {/* TITLE */}
                                 <Typography type={TypographyType.headingSecondary}>
@@ -307,7 +329,7 @@ export class SettingsScreen extends React.Component<Props, State> {
 
                                 {/* Notifications help */}
                                 <Caption style={{ fontSize: moderateScale(14) }}>
-                                    <Typography  style={{ fontSize: moderateScale(14), opacity: 0.7 }}>{translate('settingsNotificationsHelp')}</Typography>
+                                    <Typography style={{ fontSize: moderateScale(14), opacity: 0.7 }}>{translate('settingsNotificationsHelp')}</Typography>
                                 </Caption>
 
                                 <View style={{ height: themeContext.theme.variables?.sizes.verticalPaddingLarge }} />
