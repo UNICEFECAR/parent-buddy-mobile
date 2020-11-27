@@ -18,6 +18,7 @@ import { ErrorFallback } from '../components/ErrorFallback';
 import { utils } from '.';
 import SplashScreen from 'react-native-splash-screen'
 import { setI18nConfig } from '../translations';
+import { firebase } from '@react-native-firebase/analytics';
 
 // ADD GLOBAL POLYFILLS: atob, btoa
 if (!(global as any).btoa) (global as any).btoa = btoa;
@@ -67,13 +68,15 @@ export class App extends React.Component<object> {
             }
         });
 
+        dataRealmStore.setVariable("userIsLoggedIn", true);
         this.addItemsToDevMenu();
-        googleAuth.configure();
+        // googleAuth.configure();
         localize.setLocalesIfNotSet();
         this.initOnboarding();
   
         // initGlobalErrorHandler();
     }
+
 
     private async initOnboarding() {
         const notificationsApp = dataRealmStore.getVariable('notificationsApp');
