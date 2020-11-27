@@ -27,20 +27,23 @@ class Utils {
     public logAnalitic(eventName: string, payload: object) {
         let send = true;
         let allowAnonymousUsage = dataRealmStore.getVariable('allowAnonymousUsage');
+        console.log(allowAnonymousUsage, "allow")
         if (eventName === "onParentGenderSave" || eventName === "onChildAgeSave" ||
             eventName === "onAdditionalChildEntered" || eventName === "onChildGenderSave") {
             if (allowAnonymousUsage === null) {
                 send = false;
             } else {
+                console.log("uso")
                 send = allowAnonymousUsage;
             };
         }else {
             send = true;
         };
         if (send) {
+            console.log("PROSAO")
             analytics().logEvent(eventName, {
                 ...payload
-            });
+            }).then(res => console.log(res, "RES")).catch(e => console.log(e, "E"));
         } else {
             // if allow anonimus usage === false
             if (appConfig.showLog) {
@@ -61,15 +64,11 @@ class Utils {
         const userParentalRole = dataRealmStore.getVariable('userParentalRole');
         const userSetLanguage = dataRealmStore.getVariable('isUserSetLanguage');
         // Set routeName
-        let routeName: string | null = 'LoginStackNavigator';
+        let routeName: string | null = 'RootModalStackNavigator_SyncingScreen';
 
         if(userSetLanguage === undefined || userSetLanguage === null || userSetLanguage === false){
             routeName = 'RootModalStackNavigtor_LanguageChooser';
         }else{
-            routeName = 'LoginStackNavigator';
-        };
-
-        if (userIsLoggedIn) {
             if (!userIsOnboarded) {
                 routeName = 'WalkthroughStackNavigator';
             } else if (!userEnteredChildData || !userParentalRole) {

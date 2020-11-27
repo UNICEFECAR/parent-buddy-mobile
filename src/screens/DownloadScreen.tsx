@@ -54,8 +54,7 @@ export class DownloadScreen extends React.Component<Props, object> {
                 </View>
 
                 <View style={{ width: '90%', height: scale(200), position: 'absolute', bottom: 10 }}>
-                    <RoundedButton text={translate('newMeasureScreenVaccineOptionYes')} onPress={() => this.onDownloadAccepted()} style={{ marginBottom: 15 }} />
-                    <RoundedButton text={translate("newMeasureScreenVaccineOptionNo")} onPress={() => this.logout()} />
+                    <RoundedButton text={translate('DownloadArticlesButton')} onPress={() => this.onDownloadAccepted()} style={{ marginBottom: 15 }} />
                 </View>
             </SafeAreaView>
         );

@@ -183,6 +183,7 @@ export class SettingsScreen extends React.Component<Props, State> {
         dataRealmStore.deleteVariable("vocabulariesAndTerms");
         dataRealmStore.deleteVariable("acceptTerms");
         dataRealmStore.deleteVariable("acceptDownload");
+        dataRealmStore.deleteVariable("isUserSetLanguage");
 
         // reset variables
         dataRealmStore.setVariable("followDevelopment", true);
@@ -190,12 +191,12 @@ export class SettingsScreen extends React.Component<Props, State> {
         dataRealmStore.setVariable("followGrowth", true)
         dataRealmStore.setVariable("notificationsApp", true);
 
-        try {
-            await GoogleSignin.revokeAccess();
-            await GoogleSignin.signOut();
-        } catch (error) {
-            console.error(error);
-        }
+        // try {
+        //     await GoogleSignin.revokeAccess();
+        //     await GoogleSignin.signOut();
+        // } catch (error) {
+        //     console.error(error);
+        // }
     };
 
     private async deleteAccountCms() {
@@ -221,11 +222,11 @@ export class SettingsScreen extends React.Component<Props, State> {
                 {
                     text: translate('deleteAcc'),
                     onPress: () => {
-                        if (loginMethod === "cms") {
-                            this.deleteAccountCms()
-                        } else {
-                            this.deleteAccountFromLocal();
-                        }
+                        // if (loginMethod === "cms") {
+                        //     this.deleteAccountCms()
+                        // }
+                        // } else {
+                        this.deleteAccountFromLocal();
 
                         navigation.resetStackAndNavigate('RootModalStackNavigator_SyncingScreen')
                     }
@@ -330,8 +331,35 @@ export class SettingsScreen extends React.Component<Props, State> {
                                         items={this.getSelectItems()}
                                         value={this.state.currentActiveLanguage}
                                         useNativeAndroidPickerStyle={false}
-                                        style={pickerStyle()}
-                                        Icon={() => (<Icon name="chevron-down" style={{  color: 'silver', fontSize: 12, left: Platform.OS === "ios" ? 4 : 10, top: -2}} />)}
+                                        style={{
+                                            done: { color: 'black' },
+                                            viewContainer: {
+                                                backgroundColor: 'trasnparent',
+                                            },
+                                            headlessAndroidContainer: {
+                                                backgroundColor: 'transparent',
+                                                paddingHorizontal: scale(10),
+                                            },
+                                            placeholder: {
+                                            },
+                                            inputIOSContainer: { justifyContent: 'center' },
+                                            inputAndroidContainer: { justifyContent: 'center' },
+                                            inputIOS: {
+                                                color: 'black',
+                                                fontSize: scale(16),
+                                                padding: scale(10),
+                                                marginTop: -5,
+                                                marginLeft: -3,
+                                            },
+                                            inputAndroid: {
+                                                color: 'black',
+                                                marginTop: -5,
+                                                marginLeft: -3,
+                                                fontSize: scale(16)
+                                            },
+                                            chevron: { display: 'none' },
+                                        }}
+                                        Icon={() => (<Icon name="chevron-down" style={{ color: 'silver', fontSize: 12, left: Platform.OS === "ios" ? 4 : 10, top: -2 }} />)}
                                     />
                                 </View>
                                 {
@@ -489,8 +517,8 @@ export class SettingsScreen extends React.Component<Props, State> {
                                 <Divider style={{ width: '100%', height: 1, marginTop: scale(60), marginBottom: scale(40) }} />
 
 
-                                {/* Logout */}
-                                <View style={{ alignSelf: 'center', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
+                                {/* Logout DISABLED */}
+                                {/* <View style={{ alignSelf: 'center', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
                                     <Icon
                                         name={"sign-out"}
                                         style={{ color: themeContext.theme.variables?.colors?.primary, fontSize: scale(20), marginRight: scale(10) }}
@@ -504,11 +532,11 @@ export class SettingsScreen extends React.Component<Props, State> {
                                     >
                                         {translate('settingsLogout')}
                                     </TextButton>
-                                </View>
+                                </View> */}
 
                                 <View style={{ height: scale(70) }} />
 
-                                {/* Delete account */}
+                                {/* Delete account => Change to earse data (Back to delete account if we have logic for login) */}
                                 <View style={{ alignSelf: 'center', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
                                     <Icon
                                         name={"exclamation-triangle"}
@@ -579,33 +607,3 @@ const styles = StyleSheet.create<SettingsScreenStyles>({
     },
 });
 
-const pickerStyle = () => {
-    return {
-        done: { color: '#ffffff' },
-        viewContainer: {
-            backgroundColor: 'trasnparent',
-        },
-        headlessAndroidContainer: {
-            backgroundColor: 'transparent',
-            paddingHorizontal: scale(10),
-        },
-        placeholder: {
-        },
-        inputIOSContainer: { justifyContent: 'center' },
-        inputAndroidContainer: { justifyContent: 'center' },
-        inputIOS: {
-            color: 'black',
-            fontSize: scale(16),
-            padding: scale(10),
-            marginTop: -5,
-            marginLeft: -3,
-        },
-        inputAndroid: {
-            color: 'black',
-            marginTop: -5,
-            marginLeft: -3,
-            fontSize: scale(16)
-        },
-        chevron: { display: 'none' },
-    };
-};
