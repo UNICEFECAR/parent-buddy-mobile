@@ -59,9 +59,15 @@ class Utils {
         const userIsOnboarded = dataRealmStore.getVariable('userIsOnboarded');
         const userEnteredChildData = dataRealmStore.getVariable('userEnteredChildData');
         const userParentalRole = dataRealmStore.getVariable('userParentalRole');
-
+        const userSetLanguage = dataRealmStore.getVariable('isUserSetLanguage');
         // Set routeName
         let routeName: string | null = 'LoginStackNavigator';
+
+        if(userSetLanguage === undefined || userSetLanguage === null || userSetLanguage === false){
+            routeName = 'RootModalStackNavigtor_LanguageChooser';
+        }else{
+            routeName = 'LoginStackNavigator';
+        };
 
         if (userIsLoggedIn) {
             if (!userIsOnboarded) {

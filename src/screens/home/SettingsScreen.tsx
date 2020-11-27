@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, View, Text, Button, StyleSheet, ViewStyle, ScrollView, Alert } from 'react-native';
+import { SafeAreaView, View, Text, Button, StyleSheet, ViewStyle, ScrollView, Alert, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { NavigationStackProp, NavigationStackState, NavigationStackOptions } from 'react-navigation-stack';
 import { ThemeContextValue, ThemeConsumer } from '../../themes/ThemeContext';
@@ -9,8 +9,8 @@ import { Switch, Caption, Divider } from 'react-native-paper';
 import { Typography, TypographyType } from '../../components/Typography';
 import { TextButton, TextButtonColor } from '../../components/TextButton';
 import { RoundedButton, RoundedButtonType } from '../../components/RoundedButton';
-import { dataRealmStore, VariableEntity, userRealmStore, ChildEntity, apiStore } from '../../stores';
-import { Variables } from '../../stores/dataRealmStore';
+import { dataRealmStore, VariableEntity, userRealmStore, ChildEntity, apiStore, ContentEntity } from '../../stores';
+import { languageList, Variables } from '../../stores/dataRealmStore';
 import { navigation, backup, googleDrive } from '../../app';
 import { VariableEntitySchema } from '../../stores/VariableEntity';
 import { variables } from '../../themes/defaultTheme/variables';
@@ -19,6 +19,10 @@ import { appConfig } from '../../app/appConfig';
 import { ChildEntitySchema } from '../../stores/ChildEntity';
 import { UserRealmConsumer, UserRealmContextValue } from '../../stores/UserRealmContext';
 import { GoogleSignin } from '@react-native-community/google-signin';
+import RNPickerSelect, { Item } from 'react-native-picker-select';
+import { PollsEntity, PollsEntitySchema } from '../../stores/PollsEntity';
+import { ContentEntitySchema } from '../../stores/ContentEntity';
+import { updateLangCode } from '../../translationsData/translateData';
 
 export interface SettingsScreenParams {
     searchTerm?: string;
@@ -40,6 +44,8 @@ export interface State {
     snackbarMessage: string;
     isSnackbarSuccessVisible: boolean;
     snackbarSuccessMessage: string;
+    currentActiveLanguage: string;
+    firstChosedLanuage: string;
 }
 
 export class SettingsScreen extends React.Component<Props, State> {
@@ -70,6 +76,7 @@ export class SettingsScreen extends React.Component<Props, State> {
         const followDoctorVisits = dataRealmStore.getVariable('followDoctorVisits');
         const notificationApp = dataRealmStore.getVariable('notificationsApp');
         const notificationsEmail = dataRealmStore.getVariable('notificationsEmail');
+        const currentActiveLanguage = dataRealmStore.getVariable('languageCode');
 
         let state: State = {
             notificationsApp: notificationApp ? notificationApp : false,
@@ -83,6 +90,9 @@ export class SettingsScreen extends React.Component<Props, State> {
             isSnackbarSuccessVisible: false,
             snackbarMessage: '',
             snackbarSuccessMessage: '',
+            currentActiveLanguage: currentActiveLanguage ?? "",
+            firstChosedLanuage: currentActiveLanguage ?? ""
+
         };
 
         this.state = state;
@@ -110,7 +120,7 @@ export class SettingsScreen extends React.Component<Props, State> {
             translate('logoutAlert'),
             "",
             [{
-                text: translate('settingsLogout'), 
+                text: translate('settingsLogout'),
                 onPress: () => {
                     dataRealmStore.deleteVariable("userEmail");
                     dataRealmStore.deleteVariable("userIsLoggedIn");
@@ -132,7 +142,7 @@ export class SettingsScreen extends React.Component<Props, State> {
                 text: translate('logoutCancel'),
                 onPress: () => { }
             }
-        ]);
+            ]);
     };
 
     private async exportAllData() {
@@ -145,11 +155,11 @@ export class SettingsScreen extends React.Component<Props, State> {
                 isSnackbarVisible: true,
                 snackbarMessage: translate('settingsButtonExportError'),
             });
-        }else{
+        } else {
             this.setState({
                 isSnackbarSuccessVisible: true,
                 snackbarSuccessMessage: translate('exportDataSuccess'),
-            });  
+            });
         };
     };
 
@@ -179,22 +189,22 @@ export class SettingsScreen extends React.Component<Props, State> {
         dataRealmStore.setVariable("followDoctorVisits", true);
         dataRealmStore.setVariable("followGrowth", true)
         dataRealmStore.setVariable("notificationsApp", true);
-        
+
         try {
             await GoogleSignin.revokeAccess();
             await GoogleSignin.signOut();
-          } catch (error) {
+        } catch (error) {
             console.error(error);
-          }
+        }
     };
 
     private async deleteAccountCms() {
         const deleteAcc = await apiStore.deleteAccount();
         try {
             await GoogleSignin.signOut();
-          } catch (error) {
+        } catch (error) {
             console.error(error, "ERROR");
-          }
+        }
         if (deleteAcc) {
             this.deleteAccountFromLocal()
         };
@@ -238,21 +248,63 @@ export class SettingsScreen extends React.Component<Props, State> {
                 isSnackbarVisible: true,
                 snackbarMessage: importResponse.message,
             });
-        }else{
+        } else {
             this.setState({
                 isSnackbarSuccessVisible: true,
                 snackbarSuccessMessage: translate('importDataSuccess'),
-            });             
+            });
         }
     }
 
     private onBackButtonClick() {
+
+        if (this.state.currentActiveLanguage !== this.state.firstChosedLanuage) {
+            this.onLanguageChange(this.state.firstChosedLanuage);
+        };
+
         if (!this.state.isExportRunning && !this.state.isImportRunning) {
             navigation.resetStackAndNavigate('DrawerNavigator');
-        }
+        };
+    };
+
+    private getLanguageName = () => {
+        const languages = languageList;
+        const currentActiveLanguage = dataRealmStore.getVariable("languageCode");
+
+        if (!currentActiveLanguage) return
+
+        return languages.find(lang => lang.code === currentActiveLanguage)?.title;
     }
 
+    private getSelectItems(): Item[] {
+        let list: Item[] = languageList.map(lang => {
+            return {
+                label: translate(lang.title),
+                key: lang.code,
+                value: lang.code
+            }
+        });
+
+        return list;
+    };
+
+    private onLanguageChange(value: string) {
+        this.setState({
+            currentActiveLanguage: value
+        });
+
+        updateLangCode(value)
+        dataRealmStore.changeLanguage(value);
+    };
+
+    private async saveNewLanguage() {
+        await dataRealmStore.deleteDataOnLanguageChange();
+        this.forceUpdate()
+        navigation.resetStackAndNavigate("RootModalStackNavigator_SyncingScreen")
+    };
+
     public render() {
+
         return (
             <ThemeConsumer>
                 {(themeContext: ThemeContextValue) => (
@@ -267,6 +319,31 @@ export class SettingsScreen extends React.Component<Props, State> {
                             contentContainerStyle={[styles.container]}
                         >
                             <View style={{ alignItems: 'flex-start', padding: themeContext.theme.screenContainer?.padding }}>
+
+                                <View style={{ flexDirection: 'row', flex: 1, alignItems: 'center' }}>
+                                    <Typography type={TypographyType.headingSecondary}>
+                                        {translate("Language")}:
+                                    </Typography>
+
+                                    <RNPickerSelect
+                                        onValueChange={(value) => this.onLanguageChange(value)}
+                                        items={this.getSelectItems()}
+                                        value={this.state.currentActiveLanguage}
+                                        useNativeAndroidPickerStyle={false}
+                                        style={pickerStyle()}
+                                        Icon={() => (<Icon name="chevron-down" style={{  color: 'silver', fontSize: 12, left: Platform.OS === "ios" ? 4 : 10, top: -2}} />)}
+                                    />
+                                </View>
+                                {
+                                    this.state.firstChosedLanuage !== this.state.currentActiveLanguage &&
+                                    <RoundedButton
+                                        text={translate('SaveNewLanguage')}
+                                        type={RoundedButtonType.hollowPurple}
+                                        disabled={this.state.isExportRunning || this.state.isImportRunning}
+                                        onPress={() => { this.saveNewLanguage() }}
+                                        style={{ flex: 1, marginBottom: 15, marginTop: -5 }}
+                                    />
+                                }
 
                                 {/* TITLE */}
                                 <Typography type={TypographyType.headingSecondary}>
@@ -307,7 +384,7 @@ export class SettingsScreen extends React.Component<Props, State> {
 
                                 {/* Notifications help */}
                                 <Caption style={{ fontSize: moderateScale(14) }}>
-                                    <Typography  style={{ fontSize: moderateScale(14), opacity: 0.7 }}>{translate('settingsNotificationsHelp')}</Typography>
+                                    <Typography style={{ fontSize: moderateScale(14), opacity: 0.7 }}>{translate('settingsNotificationsHelp')}</Typography>
                                 </Caption>
 
                                 <View style={{ height: themeContext.theme.variables?.sizes.verticalPaddingLarge }} />
@@ -501,3 +578,34 @@ const styles = StyleSheet.create<SettingsScreenStyles>({
 
     },
 });
+
+const pickerStyle = () => {
+    return {
+        done: { color: '#ffffff' },
+        viewContainer: {
+            backgroundColor: 'trasnparent',
+        },
+        headlessAndroidContainer: {
+            backgroundColor: 'transparent',
+            paddingHorizontal: scale(10),
+        },
+        placeholder: {
+        },
+        inputIOSContainer: { justifyContent: 'center' },
+        inputAndroidContainer: { justifyContent: 'center' },
+        inputIOS: {
+            color: 'black',
+            fontSize: scale(16),
+            padding: scale(10),
+            marginTop: -5,
+            marginLeft: -3,
+        },
+        inputAndroid: {
+            color: 'black',
+            marginTop: -5,
+            marginLeft: -3,
+            fontSize: scale(16)
+        },
+        chevron: { display: 'none' },
+    };
+};

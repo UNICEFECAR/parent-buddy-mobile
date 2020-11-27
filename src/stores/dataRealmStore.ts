@@ -6,7 +6,7 @@ import { VocabulariesAndTermsResponse, TermChildren, BasicPagesResponse } from '
 import { ListCardItem } from '../screens/home/ListCard';
 import { ContentEntity, ChildEntity } from '.';
 import { ContentEntitySchema } from './ContentEntity';
-import { translate } from '../translations/translate';
+import { setI18nConfig, translate } from '../translations/translate';
 import { DateTime } from "luxon";
 import { userRealmStore } from './userRealmStore';
 import { BasicPageEntity, BasicPagesEntitySchema } from './BasicPageEntity';
@@ -16,8 +16,10 @@ import { MilestoneItem } from '../components/development/MilestoneForm';
 import { DailyMessageVariable } from '../app/homeMessages';
 import { ChildEntitySchema } from './ChildEntity';
 import { navigation } from '../app';
-import { Alert } from 'react-native';
+import { Alert, Platform } from 'react-native';
 import { PollsEntity, PollsEntitySchema } from './PollsEntity';
+import { DailyMessageEntity, DailyMessageEntitySchema } from './DailyMessageEntity';
+import RNFS from 'react-native-fs';
 
 export type Variables = {
     'userEmail': string;
@@ -48,6 +50,7 @@ export type Variables = {
     'finishedPolls': FinishedPolls[];
     'acceptDownload': boolean;
     'acceptTerms': boolean;
+    'isUserSetLanguage': boolean;
 };
 
 type VariableKey = keyof Variables;
@@ -93,6 +96,42 @@ class DataRealmStore {
     public getBasicPage(id: 4516 | 4836 | 5911) {
         const basicPageVariable = this.realm?.objects<BasicPageEntity>(BasicPagesEntitySchema.name);
         return basicPageVariable?.filtered(`id == ${id}`).find(item => item);
+    }
+
+    public deleteContentFolder(){
+        const path = RNFS.DocumentDirectoryPath + '/content';
+        const fullPath = Platform.OS === 'android' ? 'file://' : '' + path;
+
+        return RNFS.unlink(fullPath)
+        .then(() => {
+          console.log('FILE DELETED');
+        })
+        // `unlink` will throw an error, if the item to unlink does not exist
+        .catch((err) => {
+          console.log(err.message);
+        });
+    }
+
+    public async deleteDataOnLanguageChange() {
+        const milestones = this.realm?.objects<MilestoneEntity>(MilestoneEntitySchema.name);
+        const content = this.realm?.objects<ContentEntity>(ContentEntitySchema.name);
+        const basicPage = this.realm?.objects<BasicPageEntity>(BasicPagesEntitySchema.name);
+        const polls = this.realm?.objects<PollsEntity>(PollsEntitySchema.name);
+        const dailyMessages = this.realm?.objects<DailyMessageEntity>(DailyMessageEntitySchema.name);
+
+        this.deleteVariable("lastSyncTimestamp");
+        this.deleteVariable("dailyMessage");
+
+        this.deleteContentFolder();
+        
+        this.realm?.write(() => {
+            this.realm?.delete(milestones);
+            this.realm?.delete(content);
+            this.realm?.delete(basicPage);
+            this.realm?.delete(polls);
+            this.realm?.delete(dailyMessages);
+        })
+
     }
 
 
@@ -343,13 +382,13 @@ class DataRealmStore {
 
         const childAge = userRealmStore.getCurrentChild()?.birthDate;
         let childAgeMonths = DateTime.local().diff(DateTime.fromJSDate(childAge ? childAge : new Date()), "months",).months;
-        
-        if(childAgeMonths < 1){
+
+        if (childAgeMonths < 1) {
             childAgeMonths = 1;
         }
 
         const childAgeTagId = this.getTagIdFromChildAge(parseInt(childAgeMonths.toString()) + 1);
-        
+
         let allPeriods = this.getDevelopmentPeriods().filter(item => item.childAgeTagId ? item.childAgeTagId < childAgeTagId : null);
 
         for (let i = 0; i < allPeriods.length; i++) {
@@ -688,6 +727,11 @@ class DataRealmStore {
         return rval;
     }
 
+    public changeLanguage(languageCode: string) {
+        this.setVariable("languageCode", languageCode);
+        setI18nConfig(languageCode);
+    }
+
     public getFaqScreenData(): FaqScreenDataResponse {
         const rval: FaqScreenDataResponse = [];
         const vocabulariesAndTerms = this.getVariable('vocabulariesAndTerms');
@@ -858,5 +902,15 @@ export type SearchResultsScreenDataResponse = {
     articles?: SearchResultsScreenDataCategoryArticles[];
     faqs?: ContentEntity[];
 };
+
+export type Language = {
+    code: string,
+    title: string,
+};
+
+export const languageList: Language[] = [
+    { code: "en", title: 'LanguageEnglish' },
+    { code: "sr", title: 'LanguageSerbian' },
+]
 
 export const dataRealmStore = DataRealmStore.getInstance();

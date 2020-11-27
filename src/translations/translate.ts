@@ -21,7 +21,7 @@ export const translate = memoize(
     (key, config = null) => (config ? key + JSON.stringify(config) : key)
 );
 
-export const setI18nConfig = () => {
+export const setI18nConfig = (newLanguage?: string) => {
     const fallback = { languageTag: 'en' };
 
     const { languageTag } =
@@ -40,6 +40,10 @@ export const setI18nConfig = () => {
     }else{
         tag = languageTag;
     };
+
+    if(newLanguage && newLanguage !== ""){
+        tag = newLanguage;
+    }
 
     i18n.translations = { [tag]: translationGetters[tag]() }
     i18n.locale = tag;

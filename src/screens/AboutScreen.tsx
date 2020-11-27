@@ -107,7 +107,7 @@ export class AboutScreen extends React.Component<Props, State> {
             hideCheckboxes: true,
             showBackButton: true
         };
-        this.props.navigation.navigate('HomeStackNavigator_TermsScreen', screenParams);
+        this.props.navigation.navigate('RootModalStackNavigator_TermsScreen', screenParams);
     }
     
     public render() {
@@ -134,7 +134,7 @@ export class AboutScreen extends React.Component<Props, State> {
                             <TextButton 
                                 style={{marginTop: scale(20), marginBottom: scale(20)}} 
                                 color={TextButtonColor.purple}
-                                onPress={() => this.props.navigation.push('HomeStackNavigator_TermsScreen', {hideCheckboxes: true})}
+                                onPress={() => this.props.navigation.push('RootModalStackNavigator_TermsScreen', {hideCheckboxes: true})}
                             >
                                     {translate('termsAndConditionsTitle')}
                             </TextButton>

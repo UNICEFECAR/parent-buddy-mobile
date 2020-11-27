@@ -4,7 +4,7 @@ const apiUrlDevelop = 'http://ecaroparentingappt8q2psucpz.devcloud.acquia-sites.
 const apiUrlProduction = 'http://ecaroparentingapppi3xep5h4v.devcloud.acquia-sites.com/api';
 // const apiUrlProduction = 'https://parentbuddyapp.org/api';
 
-const forceOneLanguage: string | undefined = "sr";
+const forceOneLanguage: string | undefined = undefined;
 const apiImagesUrl: string | undefined = undefined;
 
 export const appConfig = {
