@@ -5,7 +5,7 @@ import { Typography } from '../components';
 import { TypographyType } from '../components/Typography';
 import { utils, syncData, navigation } from '../app';
 import { appConfig } from '../app/appConfig';
-import { translate } from '../translations';
+import { setI18nConfig, translate } from '../translations';
 import { ActivityIndicator, ProgressBar } from 'react-native-paper';
 import { scale } from 'react-native-size-matters';
 import FastImage from 'react-native-fast-image';
@@ -15,18 +15,32 @@ export interface Props {
     navigation: NavigationStackProp<NavigationStackState>;
 }
 
-export class SyncingScreen extends React.Component<Props, object> {
+export interface State {
+    isReady: boolean
+}
+export class SyncingScreen extends React.Component<Props, State> {
 
     public constructor(props: Props) {
         super(props);
         this.startSync();
+        this.state = {
+            isReady: false,
+        }
     }
 
-    // if(dataRealmStore.getVariable("languageCode")){
-    //     setI18nConfig(dataRealmStore.getVariable("languageCode"))
-    // }else{
-    //     setI18nConfig()
-    // }
+    private async checkLanguage(){
+        let languageCode = await dataRealmStore.getVariable("languageCode");
+        
+        if(languageCode){
+            setI18nConfig(languageCode);
+            this.setState({isReady: true})
+        }
+    }
+
+    componentDidMount() {
+        this.checkLanguage()
+    }
+
 
     private async startSync() {
 
@@ -42,7 +56,7 @@ export class SyncingScreen extends React.Component<Props, object> {
                 if (accpetTerms) {
                     setTimeout(() => { utils.gotoNextScreenOnAppOpen() }, 0);
                 } else {
-                    setTimeout(() => { navigation.navigate('HomeStackNavigator_TermsScreen') }, 0);
+                    setTimeout(() => { navigation.navigate('RootModalStackNavigator_TermsScreen') }, 0);
                 }
 
                 setTimeout(() => {
@@ -77,7 +91,7 @@ export class SyncingScreen extends React.Component<Props, object> {
         />
 
         return (
-            dataRealmStore.getVariable('acceptDownload') ?
+            dataRealmStore.getVariable('acceptDownload') && this.state.isReady ?
                 <SafeAreaView style={styles.container}>
                     <FastImage
                         source={require('../themes/assets/sync_data.png')}

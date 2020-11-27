@@ -71,6 +71,7 @@ class HomeMessages {
 
         // Daily message
         const dailyMessage = this.getDailyMessage();
+        console.log(this.getDailyMessage(), "DAILY MESSAGE")
         if (dailyMessage) rval.push(dailyMessage);
 
         // Growth messages

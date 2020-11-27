@@ -15,7 +15,7 @@ export function translateData(key: TranslateDataKey): TranslateDataValue {
     }
 
     return null;
-}
+};
 
 let languageCode: string | null = null;
 type TranslateDataKey = keyof typeof en;
@@ -43,7 +43,13 @@ type TranslateDataValue =
 
 function getLanguageCode() {
     return dataRealmStore.getVariable('languageCode');
-}
+};
+
+export function updateLangCode(langCode?: string){
+    if(langCode){
+        languageCode = langCode;
+    };
+};
 
 RNLocalize.addEventListener('change', () => {
     languageCode = getLanguageCode();

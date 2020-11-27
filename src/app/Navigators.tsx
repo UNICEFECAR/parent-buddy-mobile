@@ -173,12 +173,6 @@ const HomeStackNavigator = createStackNavigator({
             title: "Search results"
         }
     },
-    HomeStackNavigator_TermsScreen: {
-        screen: TermsScreen,
-        navigationOptions: {
-            title: translate('termsAndConditionsTitle'),
-        }
-    },
     HomeStackNavigator_FaqScreenScreen: {
         screen: FaqScreen,
         navigationOptions: {
@@ -558,6 +552,12 @@ const RootModalStackNavigator = createStackNavigator({
         screen: SyncingScreen,
         navigationOptions: {
             title: "Title"
+        }
+    },
+    RootModalStackNavigator_TermsScreen: {
+        screen: TermsScreen,
+        navigationOptions: {
+            title: translate('termsAndConditionsTitle'),
         }
     },
     RootModalStackNavigator_PrivacyPolicyScreen: {
