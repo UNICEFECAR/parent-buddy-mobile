@@ -131,8 +131,8 @@ android {
         applicationId "org.unicef.ecar.parentbuddy"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 25
-        versionName "1.25"
+        versionCode 27
+        versionName "1.27"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
     }

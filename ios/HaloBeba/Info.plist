@@ -79,7 +79,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>So you can take baby photos</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
+	<string></string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>So you can choose baby photos</string>
 	<key>UIAppFonts</key>
