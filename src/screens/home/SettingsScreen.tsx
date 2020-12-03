@@ -278,18 +278,22 @@ export class SettingsScreen extends React.Component<Props, State> {
     }
 
     private getSelectItems(): Item[] {
-        let list: Item[] = languageList.map(lang => {
-            return {
-                label: translate(lang.title),
-                key: lang.code,
-                value: lang.code
-            }
+        let list: Item[] = languageList.filter(lang => lang.code !== "en").map(lang => {
+                return {
+                    label: translate(lang.title),
+                    key: lang.code,
+                    value: lang.code
+                };;
         });
 
         return list;
     };
 
     private onLanguageChange(value: string) {
+
+        if (value === null) return;
+
+
         this.setState({
             currentActiveLanguage: value
         });
@@ -330,6 +334,10 @@ export class SettingsScreen extends React.Component<Props, State> {
                                         onValueChange={(value) => this.onLanguageChange(value)}
                                         items={this.getSelectItems()}
                                         value={this.state.currentActiveLanguage}
+                                        placeholder={{
+                                            label: translate("LanguageEnglish"),
+                                            value: "en"
+                                        }}
                                         useNativeAndroidPickerStyle={false}
                                         style={{
                                             done: { color: 'black' },
@@ -341,6 +349,7 @@ export class SettingsScreen extends React.Component<Props, State> {
                                                 paddingHorizontal: scale(10),
                                             },
                                             placeholder: {
+                                                color: 'black'
                                             },
                                             inputIOSContainer: { justifyContent: 'center' },
                                             inputAndroidContainer: { justifyContent: 'center' },
