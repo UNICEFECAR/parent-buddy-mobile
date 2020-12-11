@@ -56,7 +56,7 @@ export class App extends React.Component<object> {
 
     public async componentDidMount() {
         SplashScreen.hide();
-
+        googleAuth.configure()
         userRealmStore.removeEmptyChild();
         AppState.addEventListener("change", state => {
             if (state === "active") {
@@ -70,7 +70,6 @@ export class App extends React.Component<object> {
 
         dataRealmStore.setVariable("userIsLoggedIn", true);
         this.addItemsToDevMenu();
-        // googleAuth.configure();
         localize.setLocalesIfNotSet();
         this.initOnboarding();
   
