@@ -176,7 +176,7 @@ export class SettingsScreen extends React.Component<Props, State> {
         dataRealmStore.deleteVariable("notificationsEmail");
         dataRealmStore.deleteVariable("userEmail");
         dataRealmStore.deleteVariable("userEnteredChildData");
-        dataRealmStore.deleteVariable("userIsLoggedIn");
+        // dataRealmStore.deleteVariable("userIsLoggedIn");
         dataRealmStore.deleteVariable("userIsOnboarded");
         dataRealmStore.deleteVariable("userName");
         dataRealmStore.deleteVariable("userParentalRole");
