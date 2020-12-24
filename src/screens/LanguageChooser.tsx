@@ -39,12 +39,14 @@ export class LanguageChooser extends React.Component<Props, State> {
         super(props);
     };
 
-    private onLanguageChange(languageCode: string){
+    private  onLanguageChange(languageCode: string){
         dataRealmStore.changeLanguage(languageCode)
     };
 
-    private onNext(){
+    private async onNext(){
         dataRealmStore.setVariable("isUserSetLanguage", true);
+        await dataRealmStore.deleteDataOnLanguageChange();
+
         utils.gotoNextScreenOnAppOpen();
     }
 
