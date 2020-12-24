@@ -20,7 +20,7 @@ import { TypographyType } from '../components/Typography';
 import { Theme, themes } from '../themes';
 import { theme } from '@storybook/react-native/dist/preview/components/Shared/theme';
 import { LanguageItem } from '../components/LanguageItem';
-import { utils } from '../app';
+import { navigation, utils } from '../app';
 
 export interface LanguageChooserParams { }
 
@@ -47,7 +47,15 @@ export class LanguageChooser extends React.Component<Props, State> {
         dataRealmStore.setVariable("isUserSetLanguage", true);
         await dataRealmStore.deleteDataOnLanguageChange();
 
-        utils.gotoNextScreenOnAppOpen();
+        let isOnboarderd = dataRealmStore.getVariable('userIsOnboarded');
+
+        if(isOnboarderd){
+            navigation.navigate("RootModalStackNavigator_SyncingScreen")
+        }else{
+            utils.gotoNextScreenOnAppOpen();
+
+        }
+
     }
 
     public render() {
