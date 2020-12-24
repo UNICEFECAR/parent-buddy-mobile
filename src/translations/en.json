@@ -29,8 +29,8 @@
     "notValidEmail": "E-mail is not valid.",
     "passwordToShort": "Password must have at least 6 characters.",
     "passwordDosntMatch": "Passwords don’t match.",
-    "syncScreenText": "Loading data",
-    "syncScreenSubText": "and getting content",
+    "syncScreenText": "We are preparing content for you and your little ones.",
+    "syncScreenSubText": "It will not take 9 months, but it will take a minute or two :)",
 
     "accountTitle": "Introduce your child",
     "accountGirl": "Girl",
