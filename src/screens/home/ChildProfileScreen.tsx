@@ -45,6 +45,12 @@ export class ChildProfileScreen extends React.Component<Props, State> {
         let parentRole = dataRealmStore.getVariable('userParentalRole');
         let parentName = dataRealmStore.getVariable('userName');
 
+        let activeChild = dataRealmStore.getVariable('currentActiveChildId');
+
+        if(!activeChild){
+            this.props.navigation.goBack()
+        }
+
         if (parentRole && parentName) {
             let state: State = {
                 parentName: parentName,
