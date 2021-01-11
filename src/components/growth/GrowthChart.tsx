@@ -15,6 +15,7 @@ import { translate } from '../../translations';
 import Orientation from 'react-native-orientation-locker';
 import { scale, moderateScale } from 'react-native-size-matters';
 import { DateTime } from 'luxon';
+import { userRealmStore } from '../../stores';
 
 const fontFamily = 'SFUIDisplay-Regular';
 const dayLimit = 730;
@@ -63,7 +64,8 @@ export class GrowthChart extends React.Component<Props, State> {
                 if (this.getChildAge() <= dayLimit) {
                     obj = this.formatHeightData(GrowthChartBoys0_2);
                 } else {
-                    obj = this.formatHeightData(GrowthChartBoys2_5);
+                    obj = this.formatHeightData(GrowthChartBoys0_2)
+
                 }
             } else {
                 obj = this.formatDaysData(Height_age_boys0_5);
@@ -71,10 +73,12 @@ export class GrowthChart extends React.Component<Props, State> {
         } else {
             // girls
             if (chartType === chartTypes.heightLength) {
+                console.log(this.getChildAge(), "CHILD AGE");
+                console.log(dayLimit, "Day limit");
                 if (this.getChildAge() <= dayLimit) {
                     obj = this.formatHeightData(GrowthChartGirls0_2);
                 } else {
-                    obj = this.formatHeightData(GrowthChartGirls2_5);
+                    obj = this.formatHeightData(GrowthChartGirls2_5)
                 }
             } else {
                 obj = this.formatDaysData(Height_age_girls0_5);
@@ -88,10 +92,10 @@ export class GrowthChart extends React.Component<Props, State> {
             chartData.push(this.props.chartType === chartTypes.heightLength ? { x: item.length, y: item.weight } : { x: item.measurementDate / 30, y: item.length })
         })
 
-        let orientation: "portrait"  | "landscape" = windowWidth > windowHeight ? 'landscape' : 'portrait';
+        let orientation: "portrait" | "landscape" = windowWidth > windowHeight ? 'landscape' : 'portrait';
 
         let chartHeight = this.props.showFullscreen ? Dimensions.get('window').height - 120 : windowHeight - 300;
-        
+
         let state: State = {
             orientation: orientation,
             width: windowWidth,
@@ -108,10 +112,7 @@ export class GrowthChart extends React.Component<Props, State> {
     }
 
     private getChildAge = () => {
-        let dateNow = DateTime.local();
-        let diff = dateNow.diff(this.props.childBirthDate);
-        
-        return diff.days
+        return userRealmStore.getCurrentChildAgeInDays()
     }
 
 
@@ -139,6 +140,7 @@ export class GrowthChart extends React.Component<Props, State> {
 
     private formatHeightData = (data: GrowthChart0_2Type) => {
         let obj: chartAreaDataFormat;
+        // console.log(JSON.stringify(data, null, 4), "data")
 
         let topArea: singleAreaDataFormat[] = [];
         let middleArea: singleAreaDataFormat[] = [];
@@ -167,16 +169,15 @@ export class GrowthChart extends React.Component<Props, State> {
         return obj;
     }
 
-    private fullScreenEvents(){
-        if(this.props.openFullScreen){
+    private fullScreenEvents() {
+        if (this.props.openFullScreen) {
             this.props.openFullScreen()
         }
 
-        if(this.props.closeFullScreen){
+        if (this.props.closeFullScreen) {
             this.props.closeFullScreen()
         }
     }
-
 
     private renderProps = () => {
         // return this.props.showFullscreen ? {height:  : null
@@ -232,7 +233,7 @@ export class GrowthChart extends React.Component<Props, State> {
 
                 {/********** SCATTER ********* */}
                 {/* @ts-ignore */}
-                 <VictoryScatter
+                <VictoryScatter
                     data={this.state.lineChart}
                     size={9}
                     style={victoryStyles.VictoryScatter}
@@ -247,13 +248,13 @@ export class GrowthChart extends React.Component<Props, State> {
                     events={[{
                         target: "data",
                         eventHandlers: {
-                            onPressIn: (evt:any, pressedProps:any) => {
+                            onPressIn: (evt: any, pressedProps: any) => {
                                 const selectedDataIndex = pressedProps.index
                                 return [
                                     {
                                         eventKey: 'all',
                                         target: 'labels',
-                                        mutation: (props:any) => {
+                                        mutation: (props: any) => {
                                             let activeState: boolean | null = true;
                                             if (props.active === true) {
                                                 activeState = null;
@@ -288,7 +289,7 @@ export class GrowthChart extends React.Component<Props, State> {
                                     },
                                 ]
                             },
-                            onPressOut: (evt: any, pressedProps:any) => {
+                            onPressOut: (evt: any, pressedProps: any) => {
                                 const selectedDataIndex = pressedProps.index
                                 return [
                                     {
@@ -337,17 +338,18 @@ export class GrowthChart extends React.Component<Props, State> {
     )
 
     public render() {
+        // console.log(JSON.stringify(this.state.middleArea, null, 4), "middle area")
         return (
-            <View style={[styles.container, this.props.showFullscreen ? {marginLeft: 20} : null]} >
+            <View style={[styles.container, this.props.showFullscreen ? { marginLeft: 20 } : null]} >
                 <View style={styles.chartHeader}>
                     <Typography type={TypographyType.headingSecondary}>{this.props.title}</Typography>
                     {
                         this.props.showFullscreen ?
-                            <Icon name="md-close" style={{ position: 'absolute', right: 15, top: 20, fontSize: 20 }} onPress={() => this.fullScreenEvents()}/>
+                            <Icon name="md-close" style={{ position: 'absolute', right: 15, top: 20, fontSize: 20 }} onPress={() => this.fullScreenEvents()} />
                             :
-                            <Icon name="md-resize" 
-                                style={{ position: 'absolute', right: 15, top: 20, fontSize: 20 }} 
-                                onPress={() => this.fullScreenEvents()}/>
+                            <Icon name="md-resize"
+                                style={{ position: 'absolute', right: 15, top: 20, fontSize: 20 }}
+                                onPress={() => this.fullScreenEvents()} />
 
                     }
                 </View>
@@ -355,7 +357,7 @@ export class GrowthChart extends React.Component<Props, State> {
                     Platform.OS === 'ios' ?
                         this.renderChart()
                         :
-                        <Svg style={{ marginLeft: -10}} >
+                        <Svg style={{ marginLeft: -10 }} >
                             {this.renderChart()}
                         </Svg>
                 }
