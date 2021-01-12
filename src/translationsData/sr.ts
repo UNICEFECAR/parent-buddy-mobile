@@ -41,7 +41,7 @@ export const sr = {
 
         {
             period: '2 meseca',
-            daysStart: 60,
+            daysStart: 31,
             dayShowStart: 41,
             dayShowEnd: 61.99, 
             name: 'Period međusobnog usklađivanja',
@@ -82,7 +82,7 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
 
         {   
             period: '3-4 meseca',
-            daysStart: 90,
+            daysStart: 62,
             dayShowStart: 72,
             dayShowEnd: 112.99, 
             name: 'Period raznovrsnih iskustava ',
@@ -124,7 +124,7 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
 
         {
             period: '5-6 meseci',
-            daysStart: 150,
+            daysStart: 123,
             dayShowStart: 113,
             dayShowEnd: 143.99, 
             name: 'Period intenzivnog istraživanja',
@@ -167,7 +167,7 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
 
         {
             period: '7-9 meseci',
-            daysStart: 210,
+            daysStart: 184,
             dayShowStart: 174,
             dayShowEnd: 204.99, 
             name: 'Vreme za nova otkrića',
@@ -211,7 +211,7 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
 
         {
             period: '10-12 meseci',
-            daysStart: 300,
+            daysStart: 275,
             dayShowStart: 265,
             dayShowEnd: 295.99, 
             name: 'Vreme ustaljivanja navika i doslednosti',
@@ -253,7 +253,7 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
 
         {
             period: '13-18 meseci',
-            daysStart: 390,
+            daysStart: 366,
             dayShowStart: 356,
             dayShowEnd: 416.99, 
             name: 'Period prvog koraka i prve reči',
@@ -297,9 +297,9 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
 
         {
             period: '19-24 meseca',
-            daysStart: 570,
-            dayShowStart: 549,
-            dayShowEnd: 730.99, 
+            daysStart: 549,
+            dayShowStart: 539,
+            dayShowEnd: 599.99, 
             name: 'Period osamostaljivanja',
             homeMessageBefore: '%CHILD% uskoro puni 19 meseci',
             homeMessageAfter: '%CHILD% ima 19 meseci',
@@ -340,7 +340,7 @@ Pratite razvoj i obratite se pedijatru ili patronažnoj sestri ukoliko beba:
 
         {
             period: '25-36 meseci',
-            daysStart: 750,
+            daysStart: 731,
             dayShowStart: 721,
             dayShowEnd: 900.99, 
             name: 'Period kad mašta cveta',

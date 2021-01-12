@@ -73,8 +73,6 @@ export class GrowthChart extends React.Component<Props, State> {
         } else {
             // girls
             if (chartType === chartTypes.heightLength) {
-                console.log(this.getChildAge(), "CHILD AGE");
-                console.log(dayLimit, "Day limit");
                 if (this.getChildAge() <= dayLimit) {
                     obj = this.formatHeightData(GrowthChartGirls0_2);
                 } else {

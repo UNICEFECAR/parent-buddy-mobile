@@ -43,7 +43,7 @@ Watch your baby's behaviour and talk to your paediatrician or visiting nurse if 
 
         {
             period: '2nd month',
-            daysStart: 60,
+            daysStart: 31,
             dayShowStart: 41,
             dayShowEnd: 61.99, 
             name: 'The period of mutual adjustments  and establishing routines',
@@ -88,7 +88,7 @@ Watch your baby's behavior and talk to your paediatrician or visiting nurse if y
 
         {
             period: '3-4 months',
-            daysStart: 90,
+            daysStart: 62,
             dayShowStart: 72,
             dayShowEnd: 112.99, 
             name: 'The period of diverse experiences',
@@ -132,7 +132,7 @@ Watch your baby's behaviour and talk to your paediatrician or visiting nurse if 
 
         {
             period: '5-6 months',
-            daysStart: 150,
+            daysStart: 123,
             dayShowStart: 113,
             dayShowEnd: 143.99, 
             name: 'The period of intensive exploration  ',
@@ -177,7 +177,7 @@ Watch your baby's behaviour and talk to your paediatrician or visiting nurse if 
 
         {
             period: '7-9 months',
-            daysStart: 210,
+            daysStart: 184,
             dayShowStart: 174,
             dayShowEnd: 204.99, 
             name: 'The period of new discoveries',
@@ -223,7 +223,7 @@ Watch your baby’s behaviour and talk to your paediatrician or visiting nurse i
 
         {
             period: '10-12 months',
-            daysStart: 300,
+            daysStart: 275,
             dayShowStart: 265,
             dayShowEnd: 295.99, 
             name: 'The period of establishing habits and consistency',
@@ -267,7 +267,7 @@ Watch your child’s behaviour and talk to your paediatrician if you notice that
 
         {
             period: '13-18 months',
-            daysStart: 390,
+            daysStart: 366,
             dayShowStart: 356,
             dayShowEnd: 416.99, 
             name: 'The first step and the first word',
@@ -313,9 +313,9 @@ Watch your child’s behaviour and talk to your paediatrician if you notice that
 
         {
             period: '19-24 months',
-            daysStart: 570,
-            dayShowStart: 549,
-            dayShowEnd: 730.99, 
+            daysStart: 549,
+            dayShowStart: 539,
+            dayShowEnd: 599.99, 
             name: 'The period of becoming independent',
             homeMessageBefore: '%CHILD% will soon have 19 months',
             homeMessageAfter: '%CHILD% has 19 months',
@@ -358,7 +358,7 @@ Follow your child's behaviour and talk to your paediatrician if you notice that 
 
         {
             period: '25-36 months',
-            daysStart: 750,
+            daysStart: 731,
             dayShowStart: 721,
             dayShowEnd: 900.99, 
             name: 'The period when imagination flourishes ',
