@@ -162,18 +162,17 @@ class Content {
         if (childBirthDay === undefined || childBirthDay === null) {
             return rval
         } else {
-            const dateNow = DateTime.local();
-            const diff = dateNow.diff(DateTime.fromJSDate(childBirthDay), ["month", "day"],).toObject();
- 
+            const diff = userRealmStore.getCurrentChildAgeInDays(DateTime.fromJSDate(childBirthDay).toMillis())
             const developmentPeriods = translateData('developmentPeriods') as (TranslateDataDevelopmentPeriods | null);
 
             // get info is child in development period 
-            if(diff.days){
-                let days = diff.days
+            if(diff){
+                let days = diff
                 let period = developmentPeriods?.find(period => period.dayShowStart <= days && period.dayShowEnd >= days);
-                
+
                 if(period !== undefined && period !== null){
                     isChildInDevelopmentPeriod = true;
+                    console.log("treba uvde da udje")
                 };
             };
 
@@ -184,6 +183,7 @@ class Content {
                 const timeNow = DateTime.local();
 
                 if(!birthday) return rval;
+
 
                 let date = DateTime.fromJSDate(birthday);
                 let monthsDiff = timeNow.diff(date, "month").toObject();
@@ -211,9 +211,9 @@ class Content {
                 if (childAgeTagid && childAgeTagid > 51) {
                     childAgeTagid = 51
                 }
+                let days = diff;
 
-                const featuredData = featuredArticles?.find(item => item.predefinedTagId === childAgeTagid);
-
+                const featuredData = featuredArticles?.find(period => period.dayShowStart <= days && period.dayShowEnd >= days);
                 const featuredPredefinedTagId = featuredData?.predefinedTagId;
                 const featuredArticleId = childGender === "girl" ? featuredData?.moreAboutPeriodArticleIdFemale : featuredData?.moreAboutPeriodArticleIdMale;
 

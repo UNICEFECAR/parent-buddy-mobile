@@ -440,11 +440,9 @@ class HomeMessages {
 
         // Set babyBirthday, currentDate
         const babyBirthDate = DateTime.fromJSDate(this.currentChild.birthDate);
-        const currentDate = DateTime.local();
 
         // Set babyAgeInDays
-        const diffDate = currentDate.diff(babyBirthDate, 'days');
-        let babyAgeInDays = diffDate.get('days');
+        let babyAgeInDays = userRealmStore.getCurrentChildAgeInDays(babyBirthDate.toMillis())
 
         if (babyAgeInDays < 0) return null;
         babyAgeInDays = Math.ceil(babyAgeInDays);
@@ -461,7 +459,10 @@ class HomeMessages {
                 && (value.daysStart - babyAgeInDays <= 10)
             ) {
                 if (value.homeMessageBefore) {
+                    console.log(value.daysStart, "value.daysStart")
                     activePeriodHomeMessage = value.homeMessageBefore;
+                    console.log(babyAgeInDays, "babyAgeInDays")
+                    console.log(activePeriodHomeMessage, "activePeriodHomeMessage")
                 }
             }
         });
