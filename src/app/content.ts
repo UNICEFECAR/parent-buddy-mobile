@@ -172,7 +172,6 @@ class Content {
 
                 if(period !== undefined && period !== null){
                     isChildInDevelopmentPeriod = true;
-                    console.log("treba uvde da udje")
                 };
             };
 

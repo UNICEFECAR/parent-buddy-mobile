@@ -459,10 +459,7 @@ class HomeMessages {
                 && (value.daysStart - babyAgeInDays <= 10)
             ) {
                 if (value.homeMessageBefore) {
-                    console.log(value.daysStart, "value.daysStart")
                     activePeriodHomeMessage = value.homeMessageBefore;
-                    console.log(babyAgeInDays, "babyAgeInDays")
-                    console.log(activePeriodHomeMessage, "activePeriodHomeMessage")
                 }
             }
         });
