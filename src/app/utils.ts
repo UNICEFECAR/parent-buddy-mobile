@@ -25,22 +25,29 @@ class Utils {
     }
 
     public logAnalitic(eventName: string, payload: object) {
-        let send = true;
+        let send = false;
         let allowAnonymousUsage = dataRealmStore.getVariable('allowAnonymousUsage');
-        console.log(allowAnonymousUsage, "allow")
-        if (eventName === "onParentGenderSave" || eventName === "onChildAgeSave" ||
-            eventName === "onAdditionalChildEntered" || eventName === "onChildGenderSave") {
-            if (allowAnonymousUsage === null) {
-                send = false;
-            } else {
-                console.log("uso")
-                send = allowAnonymousUsage;
-            };
-        }else {
+        
+        if(allowAnonymousUsage === null || allowAnonymousUsage === false){
+            send = false
+        }else{
             send = true;
-        };
+        }
+
+        // if (eventName === "onParentGenderSave" || eventName === "onChildAgeSave" ||
+        //     eventName === "onAdditionalChildEntered" || eventName === "onChildGenderSave") {
+        //     if (allowAnonymousUsage === null) {
+        //         send = false;
+        //     } else {
+        //         console.log("uso")
+        //         send = allowAnonymousUsage;
+        //     };
+        // }else {
+        //     send = true;
+        // };
+
         if (send) {
-            console.log("PROSAO")
+            console.log("PROSAO U SEND")
             analytics().logEvent(eventName, {
                 ...payload
             }).then(res => console.log(res, "RES")).catch(e => console.log(e, "E"));
