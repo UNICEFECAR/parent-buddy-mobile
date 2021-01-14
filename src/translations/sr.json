@@ -48,7 +48,7 @@
     "accountErrorAllNamesMustBeGiven": "Popuni sva imena",
     "accountErrorEnterName": "Unesi ime",
     "accountSendSmsText": "%PARENT% ti kaže da instaliraš ovu aplikaciju: %APP_URL%",
-    "accountSendSmsAppUrl": "https://www.halobeba.rs/",
+    "accountSendSmsAppUrl": "https://play.google.com/store/apps/details?id=org.unicef.ecar.parentbuddy",
 
     "drawerTitleArticles": "Članci i saveti",
     "drawerTitleGrowthDiary": "Dnevnik razvoja",
