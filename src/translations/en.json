@@ -48,7 +48,7 @@
     "accountErrorAllNamesMustBeGiven":  "Enter all names",
     "accountErrorEnterName": "Enter the name",
     "accountSendSmsText": "%PARENT% tells you to install this application: %APP_URL%",
-    "accountSendSmsAppUrl": "https://www.halobeba.rs/",
+    "accountSendSmsAppUrl": "https://play.google.com/store/apps/details?id=org.unicef.ecar.parentbuddy",
 
     "drawerTitleArticles": "Articles and advices",
     "drawerTitleGrowthDiary": "Developmental Diary",
