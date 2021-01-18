@@ -150,10 +150,10 @@ class HomeMessages {
 
                         if (recivedVaccinationIds.indexOf(vaccine.uuid) === -1) {
                             complete = false;
-                        }else{
-                            if(recivedVaccinations.find(item => item.uuid.find(uuid => vaccine.uuid))?.date){
+                        } else {
+                            if (recivedVaccinations.find(item => item.uuid.find(uuid => vaccine.uuid))?.date) {
                                 let date = recivedVaccinations.find(item => item.uuid.find(uuid => vaccine.uuid))?.date;
-                                if(date){
+                                if (date) {
                                     recivedVacinationDate.push(date)
                                 };
                             };
@@ -171,7 +171,7 @@ class HomeMessages {
 
                     if (nonRecivedVaccinations.length > 0) {
                         // SET messageVaccines
-                        messageFinal =  translate('vaccinationMessages').replace('%NAME%', utils.upperCaseFirstLetter(childName ? childName : ""));
+                        messageFinal = translate('vaccinationMessages').replace('%NAME%', utils.upperCaseFirstLetter(childName ? childName : ""));
                         let messageVaccines: string | null = null;
 
                         messageVaccines = nonRecivedVaccinations.map((vaccine) => {
@@ -187,24 +187,24 @@ class HomeMessages {
                         let currentMonth = currentDate.month;
                         let currentDayInMonth = currentDate.day;
 
-                        let lastReceivedVaccinationMonth = recivedVacinationDate.length > 0 ? recivedVacinationDate.sort((a,b) => a - b) : null;
+                        let lastReceivedVaccinationMonth = recivedVacinationDate.length > 0 ? recivedVacinationDate.sort((a, b) => a - b) : null;
 
-                        if(lastReceivedVaccinationMonth){
+                        if (lastReceivedVaccinationMonth) {
 
                             let lastVaccinationDay = DateTime.fromMillis(lastReceivedVaccinationMonth[lastReceivedVaccinationMonth.length - 1]).day
                             let lastVaccinationMonth = DateTime.fromMillis(lastReceivedVaccinationMonth[lastReceivedVaccinationMonth.length - 1]).month;
 
-                            if(currentMonth === lastVaccinationMonth){
-                                if(
-                                    currentDayInMonth - lastVaccinationDay >= 0 && 
+                            if (currentMonth === lastVaccinationMonth) {
+                                if (
+                                    currentDayInMonth - lastVaccinationDay >= 0 &&
                                     currentDayInMonth - lastVaccinationDay <= 10
-                                ){
-                                    messageFinal =  translate('vaccinationAllVaccinesReceivedMessage').replace('%NAME%', utils.upperCaseFirstLetter(childName ? childName : "")).replace('%RECEIVED%', genderString).replace('%HIS_HER%', hisHerString);
+                                ) {
+                                    messageFinal = translate('vaccinationAllVaccinesReceivedMessage').replace('%NAME%', utils.upperCaseFirstLetter(childName ? childName : "")).replace('%RECEIVED%', genderString).replace('%HIS_HER%', hisHerString);
                                 }
-                            }else{
+                            } else {
                                 // If last vaccination not received this month get message 10 days from month start 
-                                if(currentDayInMonth <= 10){
-                                    messageFinal =  translate('vaccinationAllVaccinesReceivedMessage').replace('%NAME%', utils.upperCaseFirstLetter(childName ? childName : "")).replace('%RECEIVED%', genderString).replace('%HIS_HER%', hisHerString);
+                                if (currentDayInMonth <= 10) {
+                                    messageFinal = translate('vaccinationAllVaccinesReceivedMessage').replace('%NAME%', utils.upperCaseFirstLetter(childName ? childName : "")).replace('%RECEIVED%', genderString).replace('%HIS_HER%', hisHerString);
                                 };
                             };
                         };
@@ -238,7 +238,7 @@ class HomeMessages {
         return rval;
     }
 
-    public getHomePollMessages(): Message[]{
+    public getHomePollMessages(): Message[] {
         let rval: Message[] = [];
         // Polls messages 
         const pollsMessages = this.getPollsMessages();
@@ -252,7 +252,7 @@ class HomeMessages {
 
         let activePolls = dataRealmStore.getActivePolls();
 
-        if(activePolls.length === 0) return [];
+        if (activePolls.length === 0) return [];
 
         activePolls.forEach(poll => {
             rval.push({
@@ -263,7 +263,7 @@ class HomeMessages {
                     type: RoundedButtonType.hollowWhite,
                     showArrow: true,
                     onPress: () => {
-                        navigation.navigate('HomeStackNavigator_PollsScreen', {polls: poll, title: poll.title});
+                        navigation.navigate('HomeStackNavigator_PollsScreen', { polls: poll, title: poll.title });
                     }
                 }
             });
@@ -454,10 +454,7 @@ class HomeMessages {
         let activePeriodHomeMessage: string | null = null;
 
         developmentPeriods?.forEach((value: any, index: any) => {
-            if (
-                (value.daysStart - babyAgeInDays > 0)
-                && (value.daysStart - babyAgeInDays <= 10)
-            ) {
+            if (value.homeMessageBeforeStart <= babyAgeInDays && value.homeMessageBeforeEnd >= babyAgeInDays) {
                 if (value.homeMessageBefore) {
                     activePeriodHomeMessage = value.homeMessageBefore;
                 }
@@ -505,10 +502,7 @@ class HomeMessages {
         let activePeriodHomeMessage: string | null = null;
 
         developmentPeriods?.forEach((value: any, index: any) => {
-            if (
-                (babyAgeInDays - value.daysStart >= 0)
-                && (babyAgeInDays - value.daysStart <= 10)
-            ) {
+            if (value.homeMessageAfterStart <= babyAgeInDays && value.homeMessageAfterEnd >= babyAgeInDays) {
                 if (value.homeMessageAfter) {
                     activePeriodHomeMessage = value.homeMessageAfter;
                 }
@@ -546,7 +540,7 @@ class HomeMessages {
         // Set measuresForHealthCheckPeriod
         const measuresForHealthCheckPeriod = this.measuresForHealthCheckPeriod(currentHealthCheckPeriod);
         // Show "Measurement data is NOT entered"
-        
+
         if (!measuresForHealthCheckPeriod) {
             rval.push({
                 text: translate('homeMessageGrowthMeasurementNotEntered'),
@@ -622,7 +616,7 @@ class HomeMessages {
         developmentPeriods?.forEach((period) => {
             let difference = period.daysStart - childAgeInDays;
 
-            if(difference < 0){
+            if (difference < 0) {
                 difference = difference * -1;
             }
 
@@ -648,7 +642,7 @@ class HomeMessages {
             };
         };
 
-    
+
         return rval;
     }
 
@@ -811,7 +805,7 @@ class HomeMessages {
         let a = 0;
 
 
-        if (!healthCheckPeriod || healthCheckPeriod.childAgeInDays.from === null || healthCheckPeriod.childAgeInDays.from === undefined|| !healthCheckPeriod.childAgeInDays.to) {
+        if (!healthCheckPeriod || healthCheckPeriod.childAgeInDays.from === null || healthCheckPeriod.childAgeInDays.from === undefined || !healthCheckPeriod.childAgeInDays.to) {
             return null;
         }
 
@@ -820,7 +814,7 @@ class HomeMessages {
 
         // Set importantMeasures
         const importantMeasures: Measures[] = [];
-        
+
         allMeasures.forEach((measure) => {
             const childBirtDateTimestampMills = this.currentChild?.birthDate?.getTime();
             const currentMesaureDateTimestampMills = measure.measurementDate;
