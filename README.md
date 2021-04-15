@@ -5,7 +5,7 @@
     <img src="https://github.com/byteout/halo-beba/blob/master/android/app/src/main/res/drawable/icon.png?raw=true" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">Parent Buddy</h3>
+  <h3 align="center">Parent Buddy Mobile App</h3>
 
   <p align="center">
     Interactive guide for parents
